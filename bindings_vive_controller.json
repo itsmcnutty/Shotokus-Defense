@@ -1,5 +1,7 @@
 {
-   "app_key" : "application.generated.unity.steamvr.exe",
+   "action_manifest_version" : 0,
+   "alias_info" : {},
+   "app_key" : "application.generated.unity.ritsumeigroup2.exe",
    "bindings" : {
       "/actions/buggy" : {
          "sources" : [
@@ -250,7 +252,10 @@
          ]
       }
    },
+   "category" : "steamvr_input",
    "controller_type" : "vive_controller",
    "description" : "",
-   "name" : "vive_controller"
+   "name" : "My Ritsumei Group 2 [Testing] configuration for Vive Controller",
+   "options" : {},
+   "simulated_actions" : []
 }
