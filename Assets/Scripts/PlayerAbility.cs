@@ -9,18 +9,14 @@ public class PlayerAbility : MonoBehaviour
     public SteamVR_Input_Sources handType;
     public SteamVR_Behaviour_Pose controllerPose;
     public SteamVR_Action_Boolean grabAction;
-    public GameObject rockPrefab;
     public float rockStartSize;
     public float energyCost;
     public float damage;
 
     private PlayerEnergy playerEnergy;
-    private float actionTime;
+    private static float actionTime;
     private GameObject spawnedRock;
     private float rockSize;
-
-    public Hand hand;
-    private SpawnAndAttachToHand spawnRock;
 
     private void Awake ()
     {
@@ -34,9 +30,7 @@ public class PlayerAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start ()
     {
-        rockSize = rockStartSize;
-        spawnRock = new GameObject ().AddComponent<SpawnAndAttachToHand> () as SpawnAndAttachToHand;
-        spawnRock.prefab = rockPrefab;
+        rockSize = rockStartSize;    
     }
 
     // Update is called once per frame
@@ -44,19 +38,20 @@ public class PlayerAbility : MonoBehaviour
     {
         if (GrabPress ())
         {
+            Debug.Log("Grab Press");
             if (playerEnergy.energyIsNotZero ())
             {
-                spawnRock.SpawnAndAttach (hand);
+                GetComponent<SpawnAndAttachToHand>().SpawnAndAttach (null);
                 GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
                 spawnedRock = allRocks[allRocks.Length - 1];
-                GrabObject ();
+                //GrabObject ();
                 this.useEnergy ();
             }
             actionTime = Time.time;
         }
         else if (GrabHold ())
         {
-
+            Debug.Log("Grab Hold");
             if (playerEnergy.energyIsNotZero ())
             {
                 GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
@@ -74,12 +69,13 @@ public class PlayerAbility : MonoBehaviour
         }
         else
         {
+            Debug.Log("Grab Release");
             rockSize = rockStartSize;
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             if (allRocks != null && allRocks.Length > 1)
             {
                 spawnedRock = allRocks[allRocks.Length - 1];
-                ReleaseObject ();
+                //ReleaseObject ();
                 //hand.DetachObject(spawnedRock, false);
             
             }
