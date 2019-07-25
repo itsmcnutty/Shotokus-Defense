@@ -7,11 +7,14 @@ public class PlayerAbility : MonoBehaviour
 {
     public SteamVR_Input_Sources handType;
     public SteamVR_Action_Boolean grabAction;
-    public PlayerEnergy playerEnergy;
+    public GameObject rockPrefab;
     public float energyCost;
     public float damage;
 
+
+    private PlayerEnergy playerEnergy;
     private float actionTime;
+    private GameObject spawnedRock;
 
     private void Awake()
     {
@@ -32,6 +35,11 @@ public class PlayerAbility : MonoBehaviour
     {
         if (GetGrab())
         {
+            // int getRockCount = GameObject.FindGameObjectsWithTag ("Rock").Length;
+            // if(getRockCount < 1) {
+            //     spawnedRock = Instantiate(rockPrefab) as GameObject;
+            // }
+            // spawnedRock.transform.position = new Vector3(10,0,0);
             this.useEnergy();
             actionTime = Time.time;
         }
