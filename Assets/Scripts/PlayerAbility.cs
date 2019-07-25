@@ -6,18 +6,16 @@ using Valve.VR;
 public class PlayerAbility : MonoBehaviour
 {
     public SteamVR_Input_Sources handType;
+    public SteamVR_Behaviour_Pose controllerPose;
     public SteamVR_Action_Boolean grabAction;
     public GameObject rockPrefab;
     public float energyCost;
     public float damage;
 
-    private GameObject collidingObject;
-    private GameObject objectInHand;
-
     private PlayerEnergy playerEnergy;
     private float actionTime;
     private GameObject spawnedRock;
-    private float rockSize = 0.5f;
+    private float rockSize = 0.1f;
 
     private void Awake()
     {
@@ -44,8 +42,8 @@ public class PlayerAbility : MonoBehaviour
                 if (getRockCount < 1)
                 {
                     spawnedRock = Instantiate(rockPrefab) as GameObject;
-                    spawnedRock.transform.position = new Vector3(10, 0, 0);
-                    //GrabObject();
+                    spawnedRock.transform.position = controllerPose.transform.position;
+                    GrabObject();
                 }
                 else
                 {
@@ -83,22 +81,19 @@ public class PlayerAbility : MonoBehaviour
     //     collidingObject = null;
     // }
 
-    // private void GrabObject()
-    // {
-    //     objectInHand = collidingObject;
-    //     collidingObject = null;
+    private void GrabObject()
+    {
+        var joint = AddFixedJoint();
+        joint.connectedBody = spawnedRock.GetComponent<Rigidbody>();
+    }
 
-    //     var joint = AddFixedJoint();
-    //     joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
-    // }
-
-    // private FixedJoint AddFixedJoint()
-    // {
-    //     FixedJoint fx = gameObject.AddComponent<FixedJoint>();
-    //     fx.breakForce = 20000;
-    //     fx.breakTorque = 20000;
-    //     return fx;
-    // }
+    private FixedJoint AddFixedJoint()
+    {
+        FixedJoint fx = gameObject.AddComponent<FixedJoint>();
+        fx.breakForce = 20000;
+        fx.breakTorque = 20000;
+        return fx;
+    }
 
     // private void ReleaseObject()
     // {
