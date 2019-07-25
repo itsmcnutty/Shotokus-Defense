@@ -10,13 +10,14 @@ public class PlayerAbility : MonoBehaviour
     public SteamVR_Behaviour_Pose controllerPose;
     public SteamVR_Action_Boolean grabAction;
     public GameObject rockPrefab;
+    public float rockStartSize;
     public float energyCost;
     public float damage;
 
     private PlayerEnergy playerEnergy;
     private float actionTime;
     private GameObject spawnedRock;
-    private float rockSize = 0.1f;
+    private float rockSize;
 
     public Hand hand;
     private SpawnAndAttachToHand spawnRock;
@@ -33,6 +34,7 @@ public class PlayerAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start ()
     {
+        rockSize = rockStartSize;
         spawnRock = new GameObject ().AddComponent<SpawnAndAttachToHand> () as SpawnAndAttachToHand;
         spawnRock.prefab = rockPrefab;
     }
@@ -45,6 +47,8 @@ public class PlayerAbility : MonoBehaviour
             if (playerEnergy.energyIsNotZero ())
             {
                 spawnRock.SpawnAndAttach (hand);
+                GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
+                spawnedRock = allRocks[allRocks.Length - 1];
                 GrabObject ();
                 this.useEnergy ();
             }
@@ -70,6 +74,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else
         {
+            rockSize = rockStartSize;
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             if (allRocks != null && allRocks.Length > 1)
             {
