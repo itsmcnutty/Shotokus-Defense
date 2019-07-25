@@ -1,16 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public Slider healthBar;
+    public Text healthPointText;
     public float maxHealth = 100;
+    public float regenHealthRate;
     private float currentHealth;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxHealth;       
+        currentHealth = maxHealth;      
+        healthBar.maxValue = maxHealth;
+        healthBar.value = maxHealth;
+        SetHealthBarText(); 
     }
 
     // Update is called once per frame
@@ -18,11 +25,35 @@ public class PlayerHealth : MonoBehaviour
     {
         
     }
- 
-    public void TakeDamage(float damage)
+
+    public void TakeDamage(float health)
     {
-        currentHealth -= damage;
-        Debug.Log(currentHealth);
+        if(currentHealth > 0) {
+            currentHealth -= health;
+            healthBar.value = currentHealth;
+            SetHealthBarText();
+        }
+    }
+
+    public void RegenHealth()
+    {
+        if(currentHealth < maxHealth) {
+            currentHealth += regenHealthRate;
+            if(currentHealth > maxHealth) {
+                currentHealth = maxHealth;
+            }
+            healthBar.value = currentHealth;
+            SetHealthBarText();
+        }
+    }
+
+    public bool HealthIsNotZero()
+    {
+        return currentHealth > 0;
+    }
+
+    public void SetHealthBarText() {
+        healthPointText.text = currentHealth + " / " + maxHealth;
     }
 
 }
