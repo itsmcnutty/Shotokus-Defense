@@ -11,10 +11,13 @@ public class PlayerAbility : MonoBehaviour
     public float energyCost;
     public float damage;
 
+    private GameObject collidingObject;
+    private GameObject objectInHand;
 
     private PlayerEnergy playerEnergy;
     private float actionTime;
     private GameObject spawnedRock;
+    private float rockSize = 0.5f;
 
     private void Awake()
     {
@@ -35,12 +38,23 @@ public class PlayerAbility : MonoBehaviour
     {
         if (GetGrab())
         {
-            // int getRockCount = GameObject.FindGameObjectsWithTag ("Rock").Length;
-            // if(getRockCount < 1) {
-            //     spawnedRock = Instantiate(rockPrefab) as GameObject;
-            // }
-            // spawnedRock.transform.position = new Vector3(10,0,0);
-            this.useEnergy();
+            if (playerEnergy.energyIsNotZero())
+            {
+                int getRockCount = GameObject.FindGameObjectsWithTag("Rock").Length;
+                if (getRockCount < 1)
+                {
+                    spawnedRock = Instantiate(rockPrefab) as GameObject;
+                    spawnedRock.transform.position = new Vector3(10, 0, 0);
+                    //GrabObject();
+                }
+                else
+                {
+                    spawnedRock = GameObject.FindWithTag("Rock");
+                    rockSize += (0.01f * Time.deltaTime);
+                }
+                spawnedRock.transform.localScale = new Vector3(rockSize, rockSize, rockSize);
+                this.useEnergy();
+            }
             actionTime = Time.time;
         }
         else if (!GetGrab() && (Time.time - actionTime) > 1)
@@ -48,6 +62,66 @@ public class PlayerAbility : MonoBehaviour
             playerEnergy.regenEnergy();
         }
     }
+
+    // public void OnTriggerEnter(Collider other)
+    // {
+    //     SetCollidingObject(other);
+    // }
+
+    // public void OnTriggerStay(Collider other)
+    // {
+    //     SetCollidingObject(other);
+    // }
+
+    // public void OnTriggerExit(Collider other)
+    // {
+    //     if (!collidingObject)
+    //     {
+    //         return;
+    //     }
+
+    //     collidingObject = null;
+    // }
+
+    // private void GrabObject()
+    // {
+    //     objectInHand = collidingObject;
+    //     collidingObject = null;
+
+    //     var joint = AddFixedJoint();
+    //     joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
+    // }
+
+    // private FixedJoint AddFixedJoint()
+    // {
+    //     FixedJoint fx = gameObject.AddComponent<FixedJoint>();
+    //     fx.breakForce = 20000;
+    //     fx.breakTorque = 20000;
+    //     return fx;
+    // }
+
+    // private void ReleaseObject()
+    // {
+    //     if (GetComponent<FixedJoint>())
+    //     {
+    //         GetComponent<FixedJoint>().connectedBody = null;
+    //         Destroy(GetComponent<FixedJoint>());
+           
+    //         objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
+    //         objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
+
+    //     }
+    //     objectInHand = null;
+    // }
+
+    // private void SetCollidingObject(Collider col)
+    // {
+    //     if (collidingObject || !col.GetComponent<Rigidbody>())
+    //     {
+    //         return;
+    //     }
+    //     collidingObject = col.gameObject;
+    // }
 
     public bool GetGrab()
     {
