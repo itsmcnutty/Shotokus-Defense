@@ -302,7 +302,7 @@ PlayerSettings:
   - m_BuildTarget: Standalone
     m_Enabled: 1
     m_Devices:
-    - Oculus
+    - None
     - OpenVR
   - m_BuildTarget: iPhone
     m_Enabled: 1
@@ -313,11 +313,23 @@ PlayerSettings:
     m_Devices:
     - WindowsMR
   - m_BuildTarget: Android
-    m_Enabled: 1
-    m_Devices:
-    - Oculus
-    - daydream
-    - cardboard
+    m_Enabled: 0
+    m_Devices: []
+  - m_BuildTarget: WebGL
+    m_Enabled: 0
+    m_Devices: []
+  - m_BuildTarget: PS4
+    m_Enabled: 0
+    m_Devices: []
+  - m_BuildTarget: XboxOne
+    m_Enabled: 0
+    m_Devices: []
+  - m_BuildTarget: tvOS
+    m_Enabled: 0
+    m_Devices: []
+  - m_BuildTarget: Lumin
+    m_Enabled: 0
+    m_Devices: []
   m_BuildTargetEnableVuforiaSettings: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
@@ -561,7 +573,7 @@ PlayerSettings:
     4: UNITY_POST_PROCESSING_STACK_V2
     7: UNITY_POST_PROCESSING_STACK_V2;VRTK_VERSION_3_3_0;VRTK_VERSION_3_3_0_OR_NEWER;VRTK_VERSION_3_1_0_OR_NEWER;VRTK_VERSION_3_2_0_OR_NEWER;VRTK_VERSION_3_2_1_OR_NEWER
     13: UNITY_POST_PROCESSING_STACK_V2;VRTK_VERSION_3_3_0;VRTK_VERSION_3_3_0_OR_NEWER;VRTK_VERSION_3_1_0_OR_NEWER;VRTK_VERSION_3_2_0_OR_NEWER;VRTK_VERSION_3_2_1_OR_NEWER
-    14: UNITY_POST_PROCESSING_STACK_V2
+    14: VRTK_DEFINE_SDK_WINDOWSMR
     17: UNITY_POST_PROCESSING_STACK_V2
     18: UNITY_POST_PROCESSING_STACK_V2
     19: UNITY_POST_PROCESSING_STACK_V2;VRTK_VERSION_3_3_0;VRTK_VERSION_3_3_0_OR_NEWER;VRTK_VERSION_3_1_0_OR_NEWER;VRTK_VERSION_3_2_0_OR_NEWER;VRTK_VERSION_3_2_1_OR_NEWER
