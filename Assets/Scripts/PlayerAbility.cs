@@ -33,7 +33,7 @@ public class PlayerAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnRock = new GameObject().AddComponent<SpawnAndAttachToHand>();
+        spawnRock = new GameObject().AddComponent<SpawnAndAttachToHand>() as SpawnAndAttachToHand;
         spawnRock.prefab = rockPrefab;
     }
 
