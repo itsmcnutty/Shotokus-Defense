@@ -1,19 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SamuraiMovement : MonoBehaviour
 {
 
-    public const float SPEED = 0.001f;
+    public float SPEED = 0.01f;
 
     // Update is called once per frame
     void Update()
     {
+        // Store transform variables for player and this enemy
         Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        Transform gameObjTransform = transform;
 
-        Vector3 move = SPEED * (transform.position - playerTransform.position).normalized;
-        
-        transform.Translate(move);
+        // Calculate direction 
+        Vector2 moveDir = gameObjTransform.position - playerTransform.position;
+        moveDir.Normalize();
+        gameObjTransform.forward = moveDir;
+
+        gameObject.GetComponent<CharacterController>().SimpleMove(SPEED * Time.deltaTime * moveDir);
     }
 }
