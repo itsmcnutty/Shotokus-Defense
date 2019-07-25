@@ -49,6 +49,11 @@ public class PlayerEnergy : MonoBehaviour
         }
     }
 
+    public bool energyIsNotZero()
+    {
+        return currentEnergy > 0;
+    }
+
     public void setEnergyBarText() {
         energyBarText.text = currentEnergy + " / " + maxEnergy;
     }
