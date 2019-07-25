@@ -16,7 +16,8 @@ public class PlayerAbility : MonoBehaviour
     private PlayerEnergy playerEnergy;
     private static float actionTime;
     private GameObject spawnedRock;
-    private float rockSize;
+    private float rockSize = 0;
+    private int rockNum = 0;
 
     private void Awake ()
     {
@@ -40,7 +41,7 @@ public class PlayerAbility : MonoBehaviour
         {
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
-            spawnedRock = allRocks[allRocks.Length - 1];
+            rockNum = allRocks.Length - 1;
             this.useEnergy ();
             actionTime = Time.time;
         }
@@ -49,13 +50,9 @@ public class PlayerAbility : MonoBehaviour
             if (playerEnergy.energyIsNotZero ())
             {
                 GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
-                int numRocks = allRocks.Length;
-                spawnedRock = allRocks[numRocks - 1];
-                if (spawnedRock != null)
-                {
-                    rockSize += (0.01f * Time.deltaTime);
-                    spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-                }
+                spawnedRock = allRocks[rockNum];
+                rockSize += (0.01f * Time.deltaTime);
+                spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
                 actionTime = Time.time;
                 this.useEnergy ();
             }
@@ -63,12 +60,11 @@ public class PlayerAbility : MonoBehaviour
         }
         else
         {
-            rockSize = rockStartSize;
-            GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
-            if (allRocks != null && allRocks.Length > 1)
-            {
-                spawnedRock = allRocks[allRocks.Length - 1];                
+            if(rockNum != 0) {
+                GetComponent<SpawnAndAttachToHand> ().hand.DetachObject(GameObject.FindGameObjectsWithTag ("Rock")[rockNum]);
             }
+            rockSize = rockStartSize;
+            rockNum = 0;
             if ((Time.time - actionTime) > 1)
             {
                 playerEnergy.regenEnergy ();
