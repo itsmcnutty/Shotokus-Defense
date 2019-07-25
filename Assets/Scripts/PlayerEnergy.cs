@@ -17,7 +17,7 @@ public class PlayerEnergy : MonoBehaviour
         currentEnergy = maxEnergy;
         energyBar.maxValue = maxEnergy;
         energyBar.value = maxEnergy;
-        setEnergyBarText();
+        SetEnergyBarText();
     }
 
     // Update is called once per frame
@@ -26,17 +26,17 @@ public class PlayerEnergy : MonoBehaviour
         
     }
  
-    public void useEnergy(float energy)
+    public void UseEnergy(float energy)
     {
         if(currentEnergy > 0) {
             currentEnergy -= energy;
             Debug.Log(currentEnergy);
             energyBar.value = currentEnergy;
-            setEnergyBarText();
+            SetEnergyBarText();
         }
     }
 
-    public void regenEnergy()
+    public void RegenEnergy()
     {
         if(currentEnergy < maxEnergy) {
             currentEnergy += regenEnergyRate;
@@ -44,17 +44,17 @@ public class PlayerEnergy : MonoBehaviour
                 currentEnergy = maxEnergy;
             }
             energyBar.value = currentEnergy;
-            setEnergyBarText();
+            SetEnergyBarText();
             Debug.Log(currentEnergy);
         }
     }
 
-    public bool energyIsNotZero()
+    public bool EnergyIsNotZero()
     {
         return currentEnergy > 0;
     }
 
-    public void setEnergyBarText() {
+    public void SetEnergyBarText() {
         energyBarText.text = currentEnergy + " / " + maxEnergy;
     }
 

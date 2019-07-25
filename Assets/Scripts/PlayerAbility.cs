@@ -42,19 +42,18 @@ public class PlayerAbility : MonoBehaviour
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             rockNum = allRocks.Length - 1;
-            this.useEnergy ();
             actionTime = Time.time;
         }
         else if (GrabHold ())
         {
-            if (playerEnergy.energyIsNotZero ())
+            if (playerEnergy.EnergyIsNotZero ())
             {
                 GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
                 spawnedRock = allRocks[rockNum];
                 rockSize += (0.01f * Time.deltaTime);
                 spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
                 actionTime = Time.time;
-                this.useEnergy ();
+                playerEnergy.UseEnergy (energyCost);
             }
 
         }
@@ -67,7 +66,7 @@ public class PlayerAbility : MonoBehaviour
             rockNum = 0;
             if ((Time.time - actionTime) > 1)
             {
-                playerEnergy.regenEnergy ();
+                playerEnergy.RegenEnergy ();
             }
         }
     }
@@ -80,11 +79,6 @@ public class PlayerAbility : MonoBehaviour
     public bool GrabPress ()
     {
         return grabAction.GetStateDown (handType);
-    }
-
-    public void useEnergy ()
-    {
-        playerEnergy.useEnergy (energyCost);
     }
 
 }
