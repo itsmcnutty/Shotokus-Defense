@@ -30,7 +30,7 @@ public class PlayerAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start ()
     {
-        rockSize = rockStartSize;    
+        rockSize = rockStartSize;
     }
 
     // Update is called once per frame
@@ -38,20 +38,14 @@ public class PlayerAbility : MonoBehaviour
     {
         if (GrabPress ())
         {
-            Debug.Log("Grab Press");
-            if (playerEnergy.energyIsNotZero ())
-            {
-                GetComponent<SpawnAndAttachToHand>().SpawnAndAttach (null);
-                GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
-                spawnedRock = allRocks[allRocks.Length - 1];
-                //GrabObject ();
-                this.useEnergy ();
-            }
+            GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
+            GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
+            spawnedRock = allRocks[allRocks.Length - 1];
+            this.useEnergy ();
             actionTime = Time.time;
         }
         else if (GrabHold ())
         {
-            Debug.Log("Grab Hold");
             if (playerEnergy.energyIsNotZero ())
             {
                 GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
@@ -69,50 +63,17 @@ public class PlayerAbility : MonoBehaviour
         }
         else
         {
-            Debug.Log("Grab Release");
             rockSize = rockStartSize;
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             if (allRocks != null && allRocks.Length > 1)
             {
-                spawnedRock = allRocks[allRocks.Length - 1];
-                //ReleaseObject ();
-                //hand.DetachObject(spawnedRock, false);
-            
+                spawnedRock = allRocks[allRocks.Length - 1];                
             }
             if ((Time.time - actionTime) > 1)
             {
                 playerEnergy.regenEnergy ();
             }
         }
-    }
-
-    private void GrabObject ()
-    {
-        var joint = AddFixedJoint ();
-        joint.connectedBody = spawnedRock.GetComponent<Rigidbody> ();
-    }
-
-    private FixedJoint AddFixedJoint ()
-    {
-        FixedJoint fx = gameObject.AddComponent<FixedJoint> ();
-        fx.breakForce = 20000;
-        fx.breakTorque = 20000;
-        return fx;
-    }
-
-    private void ReleaseObject ()
-    {
-        spawnedRock = GameObject.FindWithTag ("Rock");
-        if (GetComponent<FixedJoint> ())
-        {
-            GetComponent<FixedJoint> ().connectedBody = null;
-            Destroy (GetComponent<FixedJoint> ());
-
-            spawnedRock.GetComponent<Rigidbody> ().velocity = controllerPose.GetVelocity ();
-            spawnedRock.GetComponent<Rigidbody> ().angularVelocity = controllerPose.GetAngularVelocity ();
-
-        }
-        spawnedRock = null;
     }
 
     public bool GrabHold ()

@@ -1510,6 +1510,7 @@ namespace Valve.VR.InteractionSystem
 
             switch (type)
             {
+                case GrabTypes.Scripted:
                 case GrabTypes.Pinch:
                     return grabPinchAction.GetState(handType);
 
