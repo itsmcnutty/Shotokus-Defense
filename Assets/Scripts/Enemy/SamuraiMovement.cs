@@ -36,5 +36,6 @@ public class SamuraiMovement : MonoBehaviour
         
         // Pass speed to animation controller
         gameObject.GetComponent<Animator>().parameters.SetValue(moveSpeed, 0);
+        Debug.Log(gameObject.GetComponent<Animator>().parameters.GetValue(0));
     }
 }
