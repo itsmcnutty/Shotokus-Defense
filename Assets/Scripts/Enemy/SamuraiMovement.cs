@@ -63,6 +63,7 @@ public class SamuraiMovement : MonoBehaviour
         if (attackTimer <= 0f && dist < attackRadius)
         {
             animator.SetTrigger("Slashing");
+            Debug.Log("Slash!");
             attackTimer = ATTACK_DELAY;
         }
     }
