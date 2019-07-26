@@ -23,10 +23,10 @@ public class SwordDamage : MonoBehaviour
         parentEnemy = transform.parent.transform.parent.gameObject;
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         // Deal damage if colliding with player's body and enemy is in "Slashing" animation
-        if (other.collider.Equals(player.GetComponent<CapsuleCollider>()) &&
+        if (other.Equals(player.GetComponent<CapsuleCollider>()) &&
             parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Slashing"))
         {
             other.gameObject.GetComponent<PlayerHealth>().TakeDamage(DAMAGE);

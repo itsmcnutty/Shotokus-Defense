@@ -28,7 +28,7 @@ public class SamuraiMovement : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
 
-        attackRadius = FOLLOW_RADIUS + 0.15f;
+        attackRadius = FOLLOW_RADIUS + 1.0f;
     }
 
     // Update is called once per frame
@@ -55,14 +55,14 @@ public class SamuraiMovement : MonoBehaviour
         characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
         
         // Pass speed to animation controller
-        animator.SetFloat("WalkSpeed", moveSpeed / 75f);
+        animator.SetFloat("WalkSpeed", moveSpeed / 80f);
 
         // Decrement attack timer
         attackTimer -= Time.deltaTime;
         
         if (attackTimer <= 0f && dist < attackRadius)
         {
-            animator.SetTrigger("Slashing");
+            animator.SetTrigger("Slash");
             Debug.Log("Slash!");
             attackTimer = ATTACK_DELAY;
         }
