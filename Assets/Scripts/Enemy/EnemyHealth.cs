@@ -18,7 +18,7 @@ public class EnemyHealth : MonoBehaviour
 	public float ARMOR_PROFICIENCY;
 
 	private float health;
-	private event Action<EnemyHealth> onEnemyDeath; // todo add docs
+	private event Action<EnemyHealth> onEnemyDeath; //  testing
 
 
 	// Start is called before the first frame update
