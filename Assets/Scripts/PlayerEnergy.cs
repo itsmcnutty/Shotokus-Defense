@@ -9,7 +9,9 @@ public class PlayerEnergy : MonoBehaviour
     public Text energyBarText;
     public float maxEnergy;
     public float regenEnergyRate;
+    public float regenDelayInSec;
     private float currentEnergy;
+    private float lastAbilityUsedTime;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +35,13 @@ public class PlayerEnergy : MonoBehaviour
             Debug.Log(currentEnergy);
             energyBar.value = currentEnergy;
             SetEnergyBarText();
+            lastAbilityUsedTime = Time.time;
         }
     }
 
     public void RegenEnergy()
     {
-        if(currentEnergy < maxEnergy) {
+        if((Time.time - lastAbilityUsedTime) > regenDelayInSec && currentEnergy < maxEnergy) {
             currentEnergy += regenEnergyRate;
             if(currentEnergy > maxEnergy) {
                 currentEnergy = maxEnergy;

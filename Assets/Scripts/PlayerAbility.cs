@@ -14,7 +14,6 @@ public class PlayerAbility : MonoBehaviour
     public float damage;
 
     private PlayerEnergy playerEnergy;
-    private static float actionTime;
     private GameObject spawnedRock;
     private float rockSize = 0;
     private int rockNum = 0;
@@ -42,7 +41,6 @@ public class PlayerAbility : MonoBehaviour
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             rockNum = allRocks.Length - 1;
-            actionTime = Time.time;
         }
         else if (GrabHold ())
         {
@@ -52,7 +50,6 @@ public class PlayerAbility : MonoBehaviour
                 spawnedRock = allRocks[rockNum];
                 rockSize += (0.01f * Time.deltaTime);
                 spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-                actionTime = Time.time;
                 playerEnergy.UseEnergy (energyCost);
             }
 
@@ -64,10 +61,7 @@ public class PlayerAbility : MonoBehaviour
             }
             rockSize = rockStartSize;
             rockNum = 0;
-            if ((Time.time - actionTime) > 1)
-            {
-                playerEnergy.RegenEnergy ();
-            }
+            playerEnergy.RegenEnergy ();
         }
     }
 
