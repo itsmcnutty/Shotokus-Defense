@@ -11,11 +11,22 @@ public class SamuraiMovement : MonoBehaviour
     // How close the character must be before it stops coming closer
     public float FOLLOW_RADIUS = 1f;
 
+    private CharacterController characterController;
+    private Animator animator;
+    private GameObject player;
+
+    private void Start()
+    {
+        characterController = gameObject.GetComponent<CharacterController>();
+        animator = gameObject.GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
     // Update is called once per frame
     void Update()
     {
         // Store transform variables for player and this enemy
-        Vector3 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        Vector3 playerPos = player.transform.position;
         Vector3 gameObjPos = transform.position;
     
         // Calculate direction 
@@ -32,10 +43,10 @@ public class SamuraiMovement : MonoBehaviour
         float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
         
 	    // Move
-        gameObject.GetComponent<CharacterController>().SimpleMove(moveSpeed * Time.deltaTime * moveDir);
+        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
         
         // Pass speed to animation controller
-        gameObject.GetComponent<Animator>().parameters.SetValue(moveSpeed, 0);
-        Debug.Log(gameObject.GetComponent<Animator>().parameters.GetValue(0));
+        animator.SetFloat("WalkSpeed", moveSpeed / 75f);
+        Debug.Log("AnimSpeed: " + animator.GetFloat("WalkSpeed"));
     }
 }

@@ -23,10 +23,10 @@ AnimatorState:
   m_Motion: {fileID: -203655887218126122, guid: ec229899c819585409afd34def08ca17,
     type: 3}
   m_Tag: 
-  m_SpeedParameter: speed
+  m_SpeedParameter: WalkSpeed
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: speed
+  m_TimeParameter: WalkSpeed
 --- !u!206 &-4385555070158655430
 BlendTree:
   m_ObjectHideFlags: 1
@@ -51,7 +51,7 @@ AnimatorController:
   m_Name: SamuraiAnimationController
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: speed
+  - m_Name: WalkSpeed
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
