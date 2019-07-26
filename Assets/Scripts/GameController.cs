@@ -13,10 +13,12 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemiesDestroyed = 0;
+        // CAREFUL might return an array
+        var enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyHealth>();
+        enemy.onEnemyDeath += onEnemyDeath;
         StartWave(numOfEnemiesPerWave);
+        
     }
-    
 
     // Update is called once per frame
     void Update()
@@ -28,6 +30,7 @@ public class GameController : MonoBehaviour
     // 
     void StartWave(int numOfEnemies)
     {
+        enemiesDestroyed = 0;
         enemyProducer.spawnEnemy(numOfEnemies);
     }
     
@@ -39,12 +42,19 @@ public class GameController : MonoBehaviour
         if (enemiesDestroyed == numOfEnemiesPerWave)
         {
             numOfEnemiesPerWave += increaseOfEnePerWave;
+            Debug.Log("Starting new Wave!!");
             Invoke("StartWave", 3);
         }
     }
     
     
-    // make function that calls StartWave when enemies die
+    
+    // work around
+//    public int getEnemiesDestroyed()
+//    {
+//        return this.enemiesDestroyed;
+//    }
+    
     
     
 }

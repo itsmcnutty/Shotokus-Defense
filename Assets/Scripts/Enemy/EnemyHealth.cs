@@ -18,7 +18,9 @@ public class EnemyHealth : MonoBehaviour
 	public float ARMOR_PROFICIENCY;
 
 	private float health;
-	private event Action<EnemyHealth> onEnemyDeath; //  testing
+	public event Action<EnemyHealth> onEnemyDeath; //  testing
+	// work around -----------
+//	public GameController gameController;
 
 
 	// Start is called before the first frame update
@@ -37,6 +39,9 @@ public class EnemyHealth : MonoBehaviour
 			if(onEnemyDeath != null) {
 				onEnemyDeath(this);
 			}
+			// workaround--------
+//			gameController.getEnemiesDestroyed() += 1;
+			// ------------
 			Destroy(gameObject);
 		}
 		
