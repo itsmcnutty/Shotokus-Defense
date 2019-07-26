@@ -37,6 +37,7 @@ public class PlayerEnergy : MonoBehaviour
  
     public void UseEnergy(float energy, AbilityType type)
     {
+        SetActiveAbility(type);
         if(currentEnergy > 0) {
             currentEnergy -= energy;
             if(currentEnergy < 0) {
@@ -70,10 +71,12 @@ public class PlayerEnergy : MonoBehaviour
         energyBarText.text = currentEnergy + " / " + maxEnergy;
     }
 
+    public bool AbilityIsActive(AbilityType type)
     {
         return type == activeAbility;
     }
 
+    public void SetActiveAbility(AbilityType type)
     {
         activeAbility = type;
     }
