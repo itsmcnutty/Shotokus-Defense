@@ -5,6 +5,12 @@ using UnityEngine.UI;
 
 public class PlayerEnergy : MonoBehaviour
 {
+    public enum AbilityType {
+        None,
+        Heal,
+        Rock
+    };
+
     public Slider energyBar;
     public Text energyBarText;
     public float maxEnergy;
@@ -12,6 +18,7 @@ public class PlayerEnergy : MonoBehaviour
     public float regenDelayInSec;
     private float currentEnergy;
     private float lastAbilityUsedTime;
+    private AbilityType activeAbility;
 
     // Start is called before the first frame update
     void Start()
@@ -28,11 +35,13 @@ public class PlayerEnergy : MonoBehaviour
         
     }
  
-    public void UseEnergy(float energy)
+    public void UseEnergy(float energy, AbilityType type)
     {
         if(currentEnergy > 0) {
             currentEnergy -= energy;
-            Debug.Log(currentEnergy);
+            if(currentEnergy < 0) {
+                currentEnergy = 0;
+            }
             energyBar.value = currentEnergy;
             SetEnergyBarText();
             lastAbilityUsedTime = Time.time;
@@ -48,7 +57,6 @@ public class PlayerEnergy : MonoBehaviour
             }
             energyBar.value = currentEnergy;
             SetEnergyBarText();
-            Debug.Log(currentEnergy);
         }
     }
 
@@ -57,8 +65,17 @@ public class PlayerEnergy : MonoBehaviour
         return currentEnergy > 0;
     }
 
-    public void SetEnergyBarText() {
+    public void SetEnergyBarText()
+    {
         energyBarText.text = currentEnergy + " / " + maxEnergy;
+    }
+
+    {
+        return type == activeAbility;
+    }
+
+    {
+        activeAbility = type;
     }
 
 }

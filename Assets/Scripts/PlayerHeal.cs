@@ -37,7 +37,12 @@ public class PlayerHeal : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if (GripHold () && !GrabHold())
+        if(GrabPress() && !playerEnergy.AbilityIsActive(PlayerEnergy.AbilityType.Rock))
+        {
+            playerEnergy.SetActiveAbility(PlayerEnergy.AbilityType.Rock);
+            firstTriggerHeld = null;
+        }
+        else if (GripHold() && !playerEnergy.AbilityIsActive(PlayerEnergy.AbilityType.Rock))
         {
             if (firstTriggerHeld == null)
             {
@@ -46,7 +51,7 @@ public class PlayerHeal : MonoBehaviour
             else if (firstTriggerHeld != hand && HandClose ())
             {
                 playerHealth.RegenHealth ();
-                playerEnergy.UseEnergy (energyCost);
+                playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Heal);
             }
         }
         else
@@ -60,9 +65,9 @@ public class PlayerHeal : MonoBehaviour
         return gripAction.GetState (handType);
     }
 
-    public bool GrabHold ()
+    public bool GrabPress ()
     {
-        return grabAction.GetState (handType);
+        return grabAction.GetStateDown (handType);
     }
 
     public bool HandClose ()

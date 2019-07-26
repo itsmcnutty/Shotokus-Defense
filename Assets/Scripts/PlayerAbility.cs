@@ -12,7 +12,6 @@ public class PlayerAbility : MonoBehaviour
     public SteamVR_Action_Boolean gripAction;
     public float rockStartSize;
     public float energyCost;
-    public float damage;
 
     private PlayerEnergy playerEnergy;
     private GameObject spawnedRock;
@@ -37,13 +36,19 @@ public class PlayerAbility : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if (GrabPress () && !GripHold ())
+        if (GripPress ())
         {
+            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
+            RemoveRockFromHand();
+        }
+        else if (GrabPress ())
+        {
+            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             rockNum = allRocks.Length - 1;
         }
-        else if (GrabHold () && !GripHold ())
+        else if (GrabHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Heal))
         {
             if (playerEnergy.EnergyIsNotZero ())
             {
@@ -51,19 +56,13 @@ public class PlayerAbility : MonoBehaviour
                 spawnedRock = allRocks[rockNum];
                 rockSize += (0.01f * Time.deltaTime);
                 spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-                playerEnergy.UseEnergy (energyCost);
+                playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
             }
 
         }
         else
         {
-            if (rockNum != 0)
-            {
-                GetComponent<SpawnAndAttachToHand> ().hand.DetachObject (GameObject.FindGameObjectsWithTag ("Rock") [rockNum]);
-            }
-            rockSize = rockStartSize;
-            rockNum = 0;
-            playerEnergy.RegenEnergy ();
+            RemoveRockFromHand();
         }
     }
 
@@ -77,9 +76,20 @@ public class PlayerAbility : MonoBehaviour
         return grabAction.GetStateDown (handType);
     }
 
-    public bool GripHold ()
+    public bool GripPress ()
     {
-        return gripAction.GetState (handType);
+        return gripAction.GetStateDown (handType);
+    }
+
+    public void RemoveRockFromHand ()
+    {
+        if (rockNum != 0)
+        {
+            GetComponent<SpawnAndAttachToHand> ().hand.DetachObject (GameObject.FindGameObjectsWithTag ("Rock") [rockNum]);
+        }
+        rockSize = rockStartSize;
+        rockNum = 0;
+        playerEnergy.RegenEnergy ();
     }
 
 }
