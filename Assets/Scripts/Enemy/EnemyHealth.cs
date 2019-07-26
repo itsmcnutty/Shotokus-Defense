@@ -18,7 +18,11 @@ public class EnemyHealth : MonoBehaviour
 	public float ARMOR_PROFICIENCY;
 
 	private float health;
-	public event Action<EnemyHealth> onEnemyDeath; //  testing
+
+	public delegate void EnemyDeathEvent();
+	public event EnemyDeathEvent OnEnemyDeath;
+	
+	// public event Action<EnemyHealth> OnEnemyDeath; //  testing
 	// work around -----------
 //	public GameController gameController;
 
@@ -38,8 +42,9 @@ public class EnemyHealth : MonoBehaviour
 		{
 			Debug.Log("Enemy Died");
 			// Testing -------------------
-			if(onEnemyDeath != null) {
-				onEnemyDeath(this);
+			if(OnEnemyDeath != null) {
+				Debug.Log("SUBSCRIBE TO MEEEEEEEEEEEEEEEEEEEE");
+				OnEnemyDeath();
 			}
 			// workaround--------
 //			gameController.getEnemiesDestroyed() += 1;
