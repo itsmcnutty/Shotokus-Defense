@@ -6,11 +6,13 @@ public class GameController : MonoBehaviour
 {
     
     public EnemyProducer enemyProducer;
+    public int numOfEnemiesPerWave; // number of enemies per wave
+    public int increaseOfEnePerWave; // how many more enemies per wave
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartWave(numOfEnemiesPerWave);
     }
 
     // Update is called once per frame
