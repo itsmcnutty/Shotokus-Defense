@@ -32,9 +32,11 @@ public class EnemyHealth : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		health -= calculateDamage(other.impulse.magnitude);
+		
 
 		if (health <= 0f)
 		{
+			Debug.Log("Enemy Died");
 			// Testing -------------------
 			if(onEnemyDeath != null) {
 				onEnemyDeath(this);
