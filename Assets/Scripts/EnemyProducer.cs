@@ -37,7 +37,7 @@ public class EnemyProducer : MonoBehaviour
     {
         numOfEnemies = maxNumOfEnemies;
         spawnArea = this.GetComponent<BoxCollider>().bounds;
-        InvokeRepeating("Spawner", 5f, 2f);
+        InvokeRepeating("Spawner", 3f, 2f);
     }
 
     // todo document

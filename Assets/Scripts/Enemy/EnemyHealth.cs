@@ -18,6 +18,8 @@ public class EnemyHealth : MonoBehaviour
 	public float ARMOR_PROFICIENCY;
 
 	private float health;
+	private event Action<EnemyHealth> onEnemyDeath; // todo add docs
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -31,6 +33,10 @@ public class EnemyHealth : MonoBehaviour
 
 		if (health <= 0f)
 		{
+			// Testing -------------------
+			if(onEnemyDeath != null) {
+				onEnemyDeath(this);
+			}
 			Destroy(gameObject);
 		}
 		
