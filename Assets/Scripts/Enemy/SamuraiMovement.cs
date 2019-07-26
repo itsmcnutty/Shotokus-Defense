@@ -11,14 +11,6 @@ public class SamuraiMovement : MonoBehaviour
     // How close the character must be before it stops coming closer
     public float FOLLOW_RADIUS = 1f;
 
-    // Square of follow radius (for simplified calculations)
-    private float sqrFollowRadius;
-
-    private void Start()
-    {
-        sqrFollowRadius = FOLLOW_RADIUS;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -32,14 +24,28 @@ public class SamuraiMovement : MonoBehaviour
         moveDir.Normalize();
         transform.forward = moveDir;
     
-        // Move if far enough away
-        double sqrDist = Math.Pow(playerPos.x - gameObjPos.x, 2) +
-                         Math.Pow(playerPos.z - gameObjPos.z, 2);
-        if (sqrDist > sqrFollowRadius)
+        // Calculate enemy distance
+        double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+                                Math.Pow(playerPos.z - gameObjPos.z, 2));
+        
+        // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
+        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
+        
+        if (dist > FOLLOW_RADIUS)
         {
-            // Move speed is equal to speed if character is far away. Otherwise proportional to dist from follow radius.
-            float moveSpeed = SPEED * (float)Math.Min(1f, sqrDist - sqrFollowRadius);
+            // Move
             gameObject.GetComponent<CharacterController>().SimpleMove(moveSpeed * Time.deltaTime * moveDir);
+        
+            // Pass speed to animation controller
+            gameObject.GetComponent<Animator>().parameters.SetValue(moveSpeed, 0);
+        }
+        else
+        {
+            // Move
+            gameObject.GetComponent<CharacterController>().SimpleMove(-moveSpeed * Time.deltaTime * moveDir);
+        
+            // Pass speed to animation controller
+            gameObject.GetComponent<Animator>().parameters.SetValue(-moveSpeed, 0);
         }
     }
 }
