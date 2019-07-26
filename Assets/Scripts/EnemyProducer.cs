@@ -10,14 +10,14 @@ public class EnemyProducer : MonoBehaviour
 
     private Bounds spawnArea;
     private int numOfEnemies; // max number of enemies per round
-    private int spawnedEnemies = 0; // number of enemies spawned already
+    private int spawnedEnemies = 0; // number of enemies spawned already // todo remove
 
     // Start is called before the first frame update
     void Start()
     {
-        numOfEnemies = 10;
-        spawnArea = this.GetComponent<BoxCollider>().bounds;
-        InvokeRepeating("spawnEnemy", 5f, 2f);
+//        numOfEnemies = 10;
+//        spawnArea = this.GetComponent<BoxCollider>().bounds;
+//        InvokeRepeating("spawnEnemy", 5f, 2f);
     }
 
     // Returns: Vector3 random coordinates inside the spawnArea
@@ -28,16 +28,29 @@ public class EnemyProducer : MonoBehaviour
         return new Vector3(x, y, z);
     }
     
+    // this will be called by GameController.cs
     // self explanatory??
     // TODO add stop spawning based on how many enemies are already there or on a maximun number of enemies
-    void spawnEnemy()
+    public void spawnEnemy(int maxNumOfEnemies)
     {
-        if (spawnedEnemies >= numOfEnemies)
+        
+        numOfEnemies = maxNumOfEnemies;
+        spawnArea = this.GetComponent<BoxCollider>().bounds;
+        
+        // use for loop instead
+        // InvokeRepeating("spawnEnemy", 5f, 2f);
+
+        // add for loop to instantiation
+        for (int i = 0; i < numOfEnemies; i++)
         {
-            return;
+//            if (spawnedEnemies >= numOfEnemies)
+//            {
+//                return;
+//            }
+            Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
+//            spawnedEnemies += 1; // unnecessary
         }
-        Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
-        spawnedEnemies += 1;
+
     }
     
 
