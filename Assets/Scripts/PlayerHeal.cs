@@ -9,10 +9,14 @@ public class PlayerHeal : MonoBehaviour
 {
     public SteamVR_Input_Sources handType;
     public SteamVR_Action_Boolean gripAction;
+    public SteamVR_Action_Boolean grabAction;
+    public Hand hand;
     public float energyCost;
-    private static SteamVR_Input_Sources firstTriggerHeld;
+    private static Hand firstTriggerHeld;
     private PlayerHealth playerHealth;
     private PlayerEnergy playerEnergy;
+    private const float HAND_DIST_Y = 0.1f;
+    private const float HAND_DIST_XZ = 0.2f;
 
     private void Awake ()
     {
@@ -33,13 +37,13 @@ public class PlayerHeal : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if (HandClose () && GripHold ())
+        if (GripHold () && !GrabHold())
         {
-            if (firstTriggerHeld == SteamVR_Input_Sources.Any)
+            if (firstTriggerHeld == null)
             {
-                firstTriggerHeld = handType;
+                firstTriggerHeld = hand;
             }
-            else if (firstTriggerHeld != handType)
+            else if (firstTriggerHeld != hand && HandClose ())
             {
                 playerHealth.RegenHealth ();
                 playerEnergy.UseEnergy (energyCost);
@@ -47,7 +51,7 @@ public class PlayerHeal : MonoBehaviour
         }
         else
         {
-            firstTriggerHeld = SteamVR_Input_Sources.Any;
+            firstTriggerHeld = null;
         }
     }
 
@@ -56,11 +60,17 @@ public class PlayerHeal : MonoBehaviour
         return gripAction.GetState (handType);
     }
 
+    public bool GrabHold ()
+    {
+        return grabAction.GetState (handType);
+    }
+
     public bool HandClose ()
     {
-        //Debug.Log ("Pos x = " + hand.transform.position.x);
-        //Debug.Log ("Pos y = " + hand.transform.position.y);
-        //Debug.Log ("Pos z = " + hand.transform.position.z);
-        return true;
+        Vector3 handPos = hand.transform.position;
+        Vector3 otherHandPos = firstTriggerHeld.transform.position;
+        return (Math.Abs (otherHandPos.x - handPos.x) < HAND_DIST_XZ) &&
+            (Math.Abs (otherHandPos.y - handPos.y) < HAND_DIST_Y) &&
+            (Math.Abs (otherHandPos.z - handPos.z) < HAND_DIST_XZ);
     }
 }

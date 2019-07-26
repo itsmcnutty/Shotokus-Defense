@@ -9,6 +9,7 @@ public class PlayerAbility : MonoBehaviour
     public SteamVR_Input_Sources handType;
     public SteamVR_Behaviour_Pose controllerPose;
     public SteamVR_Action_Boolean grabAction;
+    public SteamVR_Action_Boolean gripAction;
     public float rockStartSize;
     public float energyCost;
     public float damage;
@@ -36,13 +37,13 @@ public class PlayerAbility : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if (GrabPress ())
+        if (GrabPress () && !GripHold ())
         {
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             rockNum = allRocks.Length - 1;
         }
-        else if (GrabHold ())
+        else if (GrabHold () && !GripHold ())
         {
             if (playerEnergy.EnergyIsNotZero ())
             {
@@ -56,8 +57,9 @@ public class PlayerAbility : MonoBehaviour
         }
         else
         {
-            if(rockNum != 0) {
-                GetComponent<SpawnAndAttachToHand> ().hand.DetachObject(GameObject.FindGameObjectsWithTag ("Rock")[rockNum]);
+            if (rockNum != 0)
+            {
+                GetComponent<SpawnAndAttachToHand> ().hand.DetachObject (GameObject.FindGameObjectsWithTag ("Rock") [rockNum]);
             }
             rockSize = rockStartSize;
             rockNum = 0;
@@ -73,6 +75,11 @@ public class PlayerAbility : MonoBehaviour
     public bool GrabPress ()
     {
         return grabAction.GetStateDown (handType);
+    }
+
+    public bool GripHold ()
+    {
+        return gripAction.GetState (handType);
     }
 
 }
