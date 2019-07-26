@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 
 public class SamuraiMovement : MonoBehaviour
@@ -8,8 +9,14 @@ public class SamuraiMovement : MonoBehaviour
 
     // Character speed
     public float SPEED = 0f;
-    // How close the character must be before it stops coming closer
+    // How close to the player the enemy attempts to stay
     public float FOLLOW_RADIUS = 1f;
+    // Time between attacks (seconds)
+    public float ATTACK_DELAY = 2f;
+    // How close the enemy must be to begin attacking
+    private float attackRadius;
+    // Timer for attack delay
+    private float attackTimer = 0f;
 
     private CharacterController characterController;
     private Animator animator;
@@ -20,6 +27,8 @@ public class SamuraiMovement : MonoBehaviour
         characterController = gameObject.GetComponent<CharacterController>();
         animator = gameObject.GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
+
+        attackRadius = FOLLOW_RADIUS + 0.15f;
     }
 
     // Update is called once per frame
@@ -47,6 +56,14 @@ public class SamuraiMovement : MonoBehaviour
         
         // Pass speed to animation controller
         animator.SetFloat("WalkSpeed", moveSpeed / 75f);
-        Debug.Log("AnimSpeed: " + animator.GetFloat("WalkSpeed"));
+
+        // Decrement attack timer
+        attackTimer -= Time.deltaTime;
+        
+        if (attackTimer <= 0f && dist < attackRadius)
+        {
+            animator.SetTrigger("Slashing");
+            attackTimer = ATTACK_DELAY;
+        }
     }
 }
