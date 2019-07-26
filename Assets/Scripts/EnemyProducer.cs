@@ -19,6 +19,8 @@ public class EnemyProducer : MonoBehaviour
 //        spawnArea = this.GetComponent<BoxCollider>().bounds;
 //        InvokeRepeating("spawnEnemy", 5f, 2f);
     }
+    
+    
 
     // Returns: Vector3 random coordinates inside the spawnArea
     Vector3 randomSpawnPosition() {
@@ -33,24 +35,20 @@ public class EnemyProducer : MonoBehaviour
     // TODO add stop spawning based on how many enemies are already there or on a maximun number of enemies
     public void spawnEnemy(int maxNumOfEnemies)
     {
-        
         numOfEnemies = maxNumOfEnemies;
         spawnArea = this.GetComponent<BoxCollider>().bounds;
-        
-        // use for loop instead
-        // InvokeRepeating("spawnEnemy", 5f, 2f);
+        InvokeRepeating("Spawner", 5f, 2f);
+    }
 
-        // add for loop to instantiation
-        for (int i = 0; i < numOfEnemies; i++)
+    // todo document
+    private void Spawner()
+    {
+        if (spawnedEnemies >= numOfEnemies)
         {
-//            if (spawnedEnemies >= numOfEnemies)
-//            {
-//                return;
-//            }
-            Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
-//            spawnedEnemies += 1; // unnecessary
+            return;
         }
-
+        Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
+        spawnedEnemies += 1; // unnecessary
     }
     
 

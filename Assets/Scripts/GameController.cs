@@ -26,5 +26,11 @@ public class GameController : MonoBehaviour
     void StartWave(int numOfEnemies)
     {
         enemyProducer.spawnEnemy(numOfEnemies);
+        numOfEnemiesPerWave += increaseOfEnePerWave;
     }
+    
+    
+    // make function that calls StartWave when enemies die
+    
+    
 }
