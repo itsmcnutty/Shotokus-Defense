@@ -31,21 +31,10 @@ public class SamuraiMovement : MonoBehaviour
         // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
         float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
         
-        if (dist > FOLLOW_RADIUS)
-        {
-            // Move
-            gameObject.GetComponent<CharacterController>().SimpleMove(moveSpeed * Time.deltaTime * moveDir);
+	    // Move
+        gameObject.GetComponent<CharacterController>().SimpleMove(moveSpeed * Time.deltaTime * moveDir);
         
-            // Pass speed to animation controller
-            gameObject.GetComponent<Animator>().parameters.SetValue(moveSpeed, 0);
-        }
-        else
-        {
-            // Move
-            gameObject.GetComponent<CharacterController>().SimpleMove(-moveSpeed * Time.deltaTime * moveDir);
-        
-            // Pass speed to animation controller
-            gameObject.GetComponent<Animator>().parameters.SetValue(-moveSpeed, 0);
-        }
+        // Pass speed to animation controller
+        gameObject.GetComponent<Animator>().parameters.SetValue(moveSpeed, 0);
     }
 }
