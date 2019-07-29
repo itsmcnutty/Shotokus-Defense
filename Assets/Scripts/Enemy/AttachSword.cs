@@ -9,8 +9,7 @@ public class AttachSword : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //TODO
-        transform.parent = transform.parent.transform.Find("hand.R");
+        transform.parent = transform.parent.transform.Find("hand.R").transform;
     }
 
     // Update is called once per frame
