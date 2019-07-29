@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2035748637300991295}
   - component: {fileID: 7885428903752383790}
   - component: {fileID: 1102498266812779408}
+  - component: {fileID: -5153772403058024875}
   m_Layer: 0
   m_Name: DummySword
   m_TagString: Untagged
@@ -106,3 +107,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DAMAGE: 20
+--- !u!114 &-5153772403058024875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7051926668648841850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081262f1cceaea946bf73c4a9302a077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
