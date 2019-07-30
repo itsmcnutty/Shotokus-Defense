@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SamuraiMovement : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class SamuraiMovement : MonoBehaviour
     private double attackRadius;
     // Timer for attack delay
     private float attackTimer = 0f;
+    
+    // THis is the agent to move around by NavMesh
+    public NavMeshAgent agent;
+
 
     private CharacterController characterController;
     private Animator animator;
@@ -39,10 +44,10 @@ public class SamuraiMovement : MonoBehaviour
         Vector3 gameObjPos = transform.position;
     
         // Calculate direction 
-        Vector3 moveDir = playerPos - gameObjPos;
-        moveDir.y = 0;
-        moveDir.Normalize();
-        transform.forward = moveDir;
+//        Vector3 moveDir = playerPos - gameObjPos;
+//        moveDir.y = 0;
+//        moveDir.Normalize();
+//        transform.forward = moveDir;
     
         // Calculate enemy distance
         double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
@@ -50,10 +55,11 @@ public class SamuraiMovement : MonoBehaviour
         
         // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
         float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
-        
+//        
 	    // Move
-        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
-        
+//        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
+        agent.SetDestination(playerPos);
+
         // Pass speed to animation controller
         animator.SetFloat("WalkSpeed", moveSpeed / 80f);
 
@@ -65,5 +71,7 @@ public class SamuraiMovement : MonoBehaviour
             animator.SetTrigger("Slash");
             attackTimer = ATTACK_DELAY;
         }
+        
+
     }
 }
