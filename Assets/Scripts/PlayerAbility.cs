@@ -20,7 +20,7 @@ public class PlayerAbility : MonoBehaviour
 
     private void Awake ()
     {
-        GameObject player = GameObject.FindWithTag ("Player");
+        GameObject player = GameObject.FindWithTag ("MainCamera");
         if (player != null)
         {
             playerEnergy = player.GetComponent<PlayerEnergy> ();
