@@ -36,26 +36,18 @@ namespace Valve.VR.InteractionSystem
 
 		private TeleportMarkerBase[] teleportMarkers;
 		private TeleportMarkerBase pointedAtTeleportMarker;
-		private TeleportMarkerBase teleportingToMarker;
 		private Vector3 pointedAtPosition;
 		private Vector3 prevPointedAtPosition;
-		private bool teleporting = false;
-		private float currentFadeTime = 0.0f;
 
 		private float pointerShowStartTime = 0.0f;
 		private float pointerHideStartTime = 0.0f;
-		private bool meshFading = false;
-		private float fullTintAlpha;
-
+		
 		private float invalidReticleMinScale = 0.2f;
 		private float invalidReticleMaxScale = 1.0f;
 		private float invalidReticleMinScaleDistance = 0.4f;
 		private float invalidReticleMaxScaleDistance = 2.0f;
 		private Vector3 invalidReticleScale = Vector3.one;
 		private Quaternion invalidReticleTargetRotation = Quaternion.identity;
-
-		private bool originalHoverLockState = false;
-		private Interactable originalHoveringInteractable = null;
 
 		//-------------------------------------------------
 		private static Test _instance;
@@ -79,9 +71,6 @@ namespace Valve.VR.InteractionSystem
 
 			pointerLineRenderer = GetComponentInChildren<LineRenderer> ();
 			teleportPointerObject = pointerLineRenderer.gameObject;
-
-			int tintColorID = Shader.PropertyToID ("_TintColor");
-			fullTintAlpha = pointVisibleMaterial.GetColor (tintColorID).a;
 
 			teleportArc = GetComponent<TeleportArc> ();
 			teleportArc.traceLayerMask = traceLayerMask;
@@ -130,7 +119,6 @@ namespace Valve.VR.InteractionSystem
 					{
 						if (pointerHand == hand) //This is the pointer hand
 						{
-							TryTeleportPlayer ();
 						}
 					}
 				}
@@ -322,7 +310,6 @@ namespace Valve.VR.InteractionSystem
 				pointedAtTeleportMarker = null;
 				pointerShowStartTime = Time.time;
 				visible = true;
-				meshFading = true;
 
 				teleportPointerObject.SetActive (false);
 				teleportArc.Show ();
@@ -342,10 +329,6 @@ namespace Valve.VR.InteractionSystem
 			if (pointerHand)
 			{
 				pointerStartTransform = pointerHand.transform;
-
-				//Keep track of any existing hovering interactable on the hand
-				originalHoverLockState = pointerHand.hoverLocked;
-				originalHoveringInteractable = pointerHand.hoveringInteractable;
 			}
 		}
 
@@ -363,48 +346,6 @@ namespace Valve.VR.InteractionSystem
 					pointerHand.TriggerHapticPulse (100);
 				}
 			}
-		}
-
-		//-------------------------------------------------
-		private void TryTeleportPlayer ()
-		{
-			if (visible && !teleporting)
-			{
-				if (pointedAtTeleportMarker != null && pointedAtTeleportMarker.locked == false)
-				{
-					//Pointing at an unlocked teleport marker
-					teleportingToMarker = pointedAtTeleportMarker;
-				}
-			}
-		}
-
-		//-------------------------------------------------
-		private void TeleportPlayer ()
-		{
-			teleporting = false;
-
-			Teleport.PlayerPre.Send (pointedAtTeleportMarker);
-
-			SteamVR_Fade.Start (Color.clear, currentFadeTime);
-
-			Vector3 teleportPosition = pointedAtPosition;
-
-			if (teleportingToMarker.ShouldMovePlayer ())
-			{
-				Vector3 playerFeetOffset = player.trackingOriginTransform.position - player.feetPositionGuess;
-				player.trackingOriginTransform.position = teleportPosition + playerFeetOffset;
-
-				if (player.leftHand.currentAttachedObjectInfo.HasValue)
-					player.leftHand.ResetAttachedTransform (player.leftHand.currentAttachedObjectInfo.Value);
-				if (player.rightHand.currentAttachedObjectInfo.HasValue)
-					player.rightHand.ResetAttachedTransform (player.rightHand.currentAttachedObjectInfo.Value);
-			}
-			else
-			{
-				teleportingToMarker.TeleportPlayer (pointedAtPosition);
-			}
-
-			Teleport.Player.Send (pointedAtTeleportMarker);
 		}
 
 		//-------------------------------------------------
