@@ -44,13 +44,6 @@ namespace Valve.VR.InteractionSystem
 		public float activateObjectTime = 1.0f;
 		public float deactivateObjectTime = 1.0f;
 
-		[Header( "Debug" )]
-		public bool debugFloor = false;
-		public bool showOffsetReticle = false;
-		public Transform offsetReticleTransform;
-		public MeshRenderer floorDebugSphere;
-		public LineRenderer floorDebugLine;
-
 		private LineRenderer pointerLineRenderer;
 		private GameObject teleportPointerObject;
 		private Transform pointerStartTransform;
@@ -159,7 +152,6 @@ namespace Valve.VR.InteractionSystem
 
 			if ( player == null )
 			{
-				Debug.LogError("<b>[SteamVR Interaction]</b> Teleport: No Player instance found in map.");
 				Destroy( this.gameObject );
 				return;
 			}
@@ -352,8 +344,6 @@ namespace Valve.VR.InteractionSystem
 					destinationReticleTransform.gameObject.SetActive( hitTeleportMarker.showReticle );
 				}
 
-				offsetReticleTransform.gameObject.SetActive( true );
-
 				invalidReticleTransform.gameObject.SetActive( false );
 
 				pointedAtTeleportMarker = hitTeleportMarker;
@@ -396,7 +386,6 @@ namespace Valve.VR.InteractionSystem
 			else //Hit neither
 			{
 				destinationReticleTransform.gameObject.SetActive( false );
-				offsetReticleTransform.gameObject.SetActive( false );
 
 				teleportArc.SetColor( pointerInvalidColor );
 #if (UNITY_5_4)
@@ -435,13 +424,6 @@ namespace Valve.VR.InteractionSystem
 				{
 					pointerEnd = teleportArc.GetArcPositionAtTime( teleportArc.arcDuration );
 				}
-
-				//Debug floor
-				if ( debugFloor )
-				{
-					floorDebugSphere.gameObject.SetActive( false );
-					floorDebugLine.gameObject.SetActive( false );
-				}
 			}
 
 			if ( playAreaPreviewTransform != null )
@@ -449,76 +431,14 @@ namespace Valve.VR.InteractionSystem
 				playAreaPreviewTransform.gameObject.SetActive( showPlayAreaPreview );
 			}
 
-			if ( !showOffsetReticle )
-			{
-				offsetReticleTransform.gameObject.SetActive( false );
-			}
-
 			destinationReticleTransform.position = pointedAtPosition;
 			invalidReticleTransform.position = pointerEnd;
 			onActivateObjectTransform.position = pointerEnd;
 			onDeactivateObjectTransform.position = pointerEnd;
-			offsetReticleTransform.position = pointerEnd - playerFeetOffset;
 
 			pointerLineRenderer.SetPosition( 0, pointerStart );
 			pointerLineRenderer.SetPosition( 1, pointerEnd );
 		}
-
-
-		//-------------------------------------------------
-		void FixedUpdate()
-		{
-			if ( !visible )
-			{
-				return;
-			}
-
-			if ( debugFloor )
-			{
-				//Debug floor
-// 				TeleportArea teleportArea = pointedAtTeleportMarker as TeleportArea;
-// 				if ( teleportArea != null )
-// 				{
-// 					if ( floorFixupMaximumTraceDistance > 0.0f )
-// 					{
-// 						floorDebugSphere.gameObject.SetActive( true );
-// 						floorDebugLine.gameObject.SetActive( true );
-
-// 						RaycastHit raycastHit;
-// 						Vector3 traceDir = Vector3.down;
-// 						traceDir.x = 0.01f;
-// 						if ( Physics.Raycast( pointedAtPosition + 0.05f * traceDir, traceDir, out raycastHit, floorFixupMaximumTraceDistance, floorFixupTraceLayerMask ) )
-// 						{
-// 							floorDebugSphere.transform.position = raycastHit.point;
-// 							floorDebugSphere.material.color = Color.green;
-// #if (UNITY_5_4)
-// 							floorDebugLine.SetColors( Color.green, Color.green );
-// #else
-// 							floorDebugLine.startColor = Color.green;
-// 							floorDebugLine.endColor = Color.green;
-// #endif
-// 							floorDebugLine.SetPosition( 0, pointedAtPosition );
-// 							floorDebugLine.SetPosition( 1, raycastHit.point );
-// 						}
-// 						else
-// 						{
-// 							Vector3 rayEnd = pointedAtPosition + ( traceDir * floorFixupMaximumTraceDistance );
-// 							floorDebugSphere.transform.position = rayEnd;
-// 							floorDebugSphere.material.color = Color.red;
-// #if (UNITY_5_4)
-// 							floorDebugLine.SetColors( Color.red, Color.red );
-// #else
-// 							floorDebugLine.startColor = Color.red;
-// 							floorDebugLine.endColor = Color.red;
-// #endif
-// 							floorDebugLine.SetPosition( 0, pointedAtPosition );
-// 							floorDebugLine.SetPosition( 1, rayEnd );
-// 						}
-// 					}
-// 				}
-			}
-		}
-
 
 		//-------------------------------------------------
 		private void OnChaperoneInfoInitialized()
@@ -631,7 +551,6 @@ namespace Valve.VR.InteractionSystem
 
 			destinationReticleTransform.gameObject.SetActive( false );
 			invalidReticleTransform.gameObject.SetActive( false );
-			offsetReticleTransform.gameObject.SetActive( false );
 
 			if ( playAreaPreviewTransform != null )
 			{
