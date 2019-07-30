@@ -32,7 +32,6 @@ namespace Valve.VR.InteractionSystem
 		public bool showPlayAreaMarker = true;
 
 		public float teleportFadeTime = 0.1f;
-		public float meshFadeTime = 0.2f;
 
 		public float arcDistance = 10.0f;
 
@@ -517,30 +516,9 @@ namespace Valve.VR.InteractionSystem
 				if (pointedAtTeleportMarker != null && pointedAtTeleportMarker.locked == false)
 				{
 					//Pointing at an unlocked teleport marker
-					teleportingToMarker = pointedAtTeleportMarker;
-					InitiateTeleportFade ();
+					teleportingToMarker = pointedAtTeleportMarker;	
 				}
 			}
-		}
-
-		//-------------------------------------------------
-		private void InitiateTeleportFade ()
-		{
-			teleporting = true;
-
-			currentFadeTime = teleportFadeTime;
-
-			// TeleportPoint teleportPoint = teleportingToMarker as TeleportPoint;
-			// if ( teleportPoint != null && teleportPoint.teleportType == TeleportPoint.TeleportPointType.SwitchToNewScene )
-			// {
-			// 	currentFadeTime *= 3.0f;
-			// 	Teleport.ChangeScene.Send( currentFadeTime );
-			// }
-
-			SteamVR_Fade.Start (Color.clear, 0);
-			SteamVR_Fade.Start (Color.black, currentFadeTime);
-
-			Invoke ("TeleportPlayer", currentFadeTime);
 		}
 
 		//-------------------------------------------------
