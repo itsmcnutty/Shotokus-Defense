@@ -16,7 +16,6 @@ namespace Valve.VR.InteractionSystem
 		public SteamVR_Action_Boolean teleportAction = SteamVR_Input.GetAction<SteamVR_Action_Boolean> ("Teleport");
 
 		public LayerMask traceLayerMask;
-		public Material pointVisibleMaterial;
 		public Transform destinationReticleTransform;
 		public Transform invalidReticleTransform;
 		public Color pointerValidColor;
@@ -26,8 +25,6 @@ namespace Valve.VR.InteractionSystem
 		public float arcDistance = 10.0f;
 
 		private LineRenderer pointerLineRenderer;
-		private GameObject teleportPointerObject;
-		private Transform pointerStartTransform;
 		private Hand pointerHand = null;
 		private Player player = null;
 		private TeleportArc teleportArc = null;
@@ -35,9 +32,6 @@ namespace Valve.VR.InteractionSystem
 		private bool visible = false;
 
 		private Vector3 pointedAtPosition;
-
-		private float pointerShowStartTime = 0.0f;
-		private float pointerHideStartTime = 0.0f;
 		
 		private float invalidReticleMinScale = 0.2f;
 		private float invalidReticleMaxScale = 1.0f;
@@ -67,7 +61,6 @@ namespace Valve.VR.InteractionSystem
 			_instance = this;
 
 			pointerLineRenderer = GetComponentInChildren<LineRenderer> ();
-			teleportPointerObject = pointerLineRenderer.gameObject;
 
 			teleportArc = GetComponent<TeleportArc> ();
 			teleportArc.traceLayerMask = traceLayerMask;
@@ -103,7 +96,6 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		void Update ()
 		{
-			Hand oldPointerHand = pointerHand;
 			Hand newPointerHand = null;
 
 			foreach (Hand hand in player.hands)
@@ -112,9 +104,6 @@ namespace Valve.VR.InteractionSystem
 				{
 					if (WasTeleportButtonReleased (hand))
 					{
-						if (pointerHand == hand) //This is the pointer hand
-						{
-						}
 					}
 				}
 
@@ -127,7 +116,7 @@ namespace Valve.VR.InteractionSystem
 			if (!visible && newPointerHand != null)
 			{
 				//Begin showing the pointer
-				ShowPointer (newPointerHand, oldPointerHand);
+				ShowPointer (newPointerHand);
 			}
 			else if (visible)
 			{
@@ -139,7 +128,7 @@ namespace Valve.VR.InteractionSystem
 				else if (newPointerHand != null)
 				{
 					//Move the pointer to a new hand
-					ShowPointer (newPointerHand, oldPointerHand);
+					ShowPointer (newPointerHand);
 				}
 			}
 
@@ -152,11 +141,10 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		private void UpdatePointer ()
 		{
-			Vector3 pointerStart = pointerStartTransform.position;
+			Vector3 pointerStart = pointerHand.transform.position;
 			Vector3 pointerEnd;
-			Vector3 pointerDir = pointerStartTransform.forward;
+			Vector3 pointerDir = pointerHand.transform.forward;
 			bool hitSomething = false;
-			bool showPlayAreaPreview = false;
 
 			Vector3 arcVelocity = pointerDir * arcDistance;
 
@@ -255,13 +243,7 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		private void HidePointer ()
 		{
-			if (visible)
-			{
-				pointerHideStartTime = Time.time;
-			}
-
 			visible = false;
-			teleportPointerObject.SetActive (false);
 
 			teleportArc.Hide ();
 
@@ -272,39 +254,16 @@ namespace Valve.VR.InteractionSystem
 		}
 
 		//-------------------------------------------------
-		private void ShowPointer (Hand newPointerHand, Hand oldPointerHand)
+		private void ShowPointer (Hand newPointerHand)
 		{
 			if (!visible)
 			{
-				pointerShowStartTime = Time.time;
 				visible = true;
 
-				teleportPointerObject.SetActive (false);
 				teleportArc.Show ();
 			}
 
 			pointerHand = newPointerHand;
-
-			if (pointerHand)
-			{
-				pointerStartTransform = pointerHand.transform;
-			}
-		}
-
-		//-------------------------------------------------
-		private void PlayPointerHaptic (bool validLocation)
-		{
-			if (pointerHand != null)
-			{
-				if (validLocation)
-				{
-					pointerHand.TriggerHapticPulse (800);
-				}
-				else
-				{
-					pointerHand.TriggerHapticPulse (100);
-				}
-			}
 		}
 
 		//-------------------------------------------------
