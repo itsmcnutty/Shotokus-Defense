@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3436606845556179081}
   - component: {fileID: 6837201861802775351}
   - component: {fileID: 7191589670482388299}
+  - component: {fileID: -3138388518036797745}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Rock
@@ -212,3 +213,15 @@ MonoBehaviour:
     m_TypeName: Valve.VR.InteractionSystem.HandEvent, SteamVR, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   interactable: {fileID: 0}
+--- !u!114 &-3138388518036797745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9120694383006430445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4866c4df87342848963f9959c7d1946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
