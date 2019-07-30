@@ -4,9 +4,10 @@ using UnityEngine.Events;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
-public class Test : MonoBehaviour
+public class ControllerArc : MonoBehaviour
 {
-	public SteamVR_Action_Boolean teleportAction = SteamVR_Input.GetAction<SteamVR_Action_Boolean> ("Teleport");
+	public SteamVR_Action_Boolean grabAction;
+	public SteamVR_Action_Boolean gripAction;
 
 	public LayerMask traceLayerMask;
 	public Transform destinationReticleTransform;
@@ -17,10 +18,12 @@ public class Test : MonoBehaviour
 
 	public float arcDistance = 10.0f;
 
+	public Hand hand;
+
 	private LineRenderer pointerLineRenderer;
-	private Hand pointerHand = null;
+	private bool applyPoint = true;
 	private Player player = null;
-	private TeleportArc teleportArc = null;
+	private TeleportArc arc = null;
 
 	private bool visible = false;
 
@@ -33,14 +36,16 @@ public class Test : MonoBehaviour
 	private Vector3 invalidReticleScale = Vector3.one;
 	private Quaternion invalidReticleTargetRotation = Quaternion.identity;
 
-	private static Test _instance;
-	public static Test instance
+	private bool canUseAbility;
+
+	private static ControllerArc _instance;
+	public static ControllerArc instance
 	{
 		get
 		{
 			if (_instance == null)
 			{
-				_instance = GameObject.FindObjectOfType<Test> ();
+				_instance = GameObject.FindObjectOfType<ControllerArc> ();
 			}
 
 			return _instance;
@@ -53,8 +58,8 @@ public class Test : MonoBehaviour
 
 		pointerLineRenderer = GetComponentInChildren<LineRenderer> ();
 
-		teleportArc = GetComponent<TeleportArc> ();
-		teleportArc.traceLayerMask = traceLayerMask;
+		arc = GetComponent<TeleportArc> ();
+		arc.traceLayerMask = traceLayerMask;
 
 		float invalidReticleStartingScale = invalidReticleTransform.localScale.x;
 		invalidReticleMinScale *= invalidReticleStartingScale;
@@ -75,54 +80,47 @@ public class Test : MonoBehaviour
 
 	void Update ()
 	{
-		Hand newPointerHand = null;
-
-		foreach (Hand hand in player.hands)
+		if (visible)
 		{
-			if (visible)
-			{
-				if (WasTeleportButtonReleased (hand))
-				{ }
-			}
-
-			if (WasTeleportButtonPressed (hand))
-			{
-				newPointerHand = hand;
-			}
+			if (WasButtonReleased ()) { }
 		}
 
-		if (!visible && newPointerHand != null)
+		if (IsButtonDown ())
 		{
-			ShowPointer (newPointerHand);
+			applyPoint = false;
+		}
+		else
+		{
+			applyPoint = true;
+		}
+
+		if (!visible && applyPoint)
+		{
+			ShowPointer ();
 		}
 		else if (visible)
 		{
-			if (newPointerHand == null && !IsTeleportButtonDown (pointerHand))
+			if (!applyPoint && IsButtonDown ())
 			{
 				HidePointer ();
 			}
-			else if (newPointerHand != null)
+			else
 			{
-				ShowPointer (newPointerHand);
+				UpdatePointer ();
 			}
-		}
-
-		if (visible)
-		{
-			UpdatePointer ();
 		}
 	}
 
 	private void UpdatePointer ()
 	{
-		Vector3 pointerStart = pointerHand.transform.position;
+		Vector3 pointerStart = hand.transform.position;
 		Vector3 pointerEnd;
-		Vector3 pointerDir = pointerHand.transform.forward;
+		Vector3 pointerDir = hand.transform.forward;
 		bool hitSomething = false;
 
 		Vector3 arcVelocity = pointerDir * arcDistance;
 
-		TeleportMarkerBase hitTeleportMarker = null;
+		AbilityUsageMarker hitMarker = null;
 
 		float dotUp = Vector3.Dot (pointerDir, Vector3.up);
 		float dotForward = Vector3.Dot (pointerDir, player.hmdTransform.forward);
@@ -133,33 +131,37 @@ public class Test : MonoBehaviour
 		}
 
 		RaycastHit hitInfo;
-		teleportArc.SetArcData (pointerStart, arcVelocity, true, pointerAtBadAngle);
-		if (teleportArc.DrawArc (out hitInfo))
+		arc.SetArcData (pointerStart, arcVelocity, true, pointerAtBadAngle);
+		if (arc.DrawArc (out hitInfo))
 		{
 			hitSomething = true;
-			hitTeleportMarker = hitInfo.collider.GetComponentInParent<TeleportMarkerBase> ();
+			hitMarker = hitInfo.collider.GetComponentInParent<AbilityUsageMarker> ();
 		}
 
 		if (pointerAtBadAngle)
 		{
-			hitTeleportMarker = null;
+			hitMarker = null;
 		}
 
-		if (hitTeleportMarker != null)
+		if (hitMarker != null)
 		{
-			if (hitTeleportMarker.locked)
+			if (hitMarker.locked)
 			{
-				teleportArc.SetColor (pointerLockedColor);
+				arc.SetColor (pointerLockedColor);
 				pointerLineRenderer.startColor = pointerLockedColor;
 				pointerLineRenderer.endColor = pointerLockedColor;
 				destinationReticleTransform.gameObject.SetActive (false);
+
+				canUseAbility = false;
 			}
 			else
 			{
-				teleportArc.SetColor (pointerValidColor);
+				arc.SetColor (pointerValidColor);
 				pointerLineRenderer.startColor = pointerValidColor;
 				pointerLineRenderer.endColor = pointerValidColor;
-				destinationReticleTransform.gameObject.SetActive (hitTeleportMarker.showReticle);
+				destinationReticleTransform.gameObject.SetActive (true);
+
+				canUseAbility = true;
 			}
 
 			invalidReticleTransform.gameObject.SetActive (false);
@@ -170,9 +172,11 @@ public class Test : MonoBehaviour
 		}
 		else
 		{
+			canUseAbility = false;
+
 			destinationReticleTransform.gameObject.SetActive (false);
 
-			teleportArc.SetColor (pointerInvalidColor);
+			arc.SetColor (pointerInvalidColor);
 			pointerLineRenderer.startColor = pointerInvalidColor;
 			pointerLineRenderer.endColor = pointerInvalidColor;
 			invalidReticleTransform.gameObject.SetActive (!pointerAtBadAngle);
@@ -199,7 +203,7 @@ public class Test : MonoBehaviour
 			}
 			else
 			{
-				pointerEnd = teleportArc.GetArcPositionAtTime (teleportArc.arcDuration);
+				pointerEnd = arc.GetArcPositionAtTime (arc.arcDuration);
 			}
 		}
 
@@ -214,27 +218,27 @@ public class Test : MonoBehaviour
 	{
 		visible = false;
 
-		teleportArc.Hide ();
+		arc.Hide ();
 
 		destinationReticleTransform.gameObject.SetActive (false);
 		invalidReticleTransform.gameObject.SetActive (false);
 
-		pointerHand = null;
+		applyPoint = false;
 	}
 
-	private void ShowPointer (Hand newPointerHand)
+	private void ShowPointer ()
 	{
 		if (!visible)
 		{
 			visible = true;
 
-			teleportArc.Show ();
+			arc.Show ();
 		}
 
-		pointerHand = newPointerHand;
+		applyPoint = true;
 	}
 
-	public bool IsEligibleForTeleport (Hand hand)
+	public bool IsEligibleToUseAbility ()
 	{
 		if (hand == null)
 		{
@@ -249,33 +253,37 @@ public class Test : MonoBehaviour
 		return true;
 	}
 
-	private bool WasTeleportButtonReleased (Hand hand)
+	private bool WasButtonReleased ()
 	{
-		if (IsEligibleForTeleport (hand))
+		if (IsEligibleToUseAbility ())
 		{
-			return teleportAction.GetStateUp (hand.handType);
+			return grabAction.GetStateUp (hand.handType) && gripAction.GetStateUp (hand.handType);
 		}
 
 		return false;
 	}
 
-	private bool IsTeleportButtonDown (Hand hand)
+	private bool IsButtonDown ()
 	{
-		if (IsEligibleForTeleport (hand))
+		if (IsEligibleToUseAbility ())
 		{
-			return teleportAction.GetState (hand.handType);
+			return grabAction.GetState (hand.handType) || gripAction.GetState (hand.handType);
 		}
 
 		return false;
 	}
 
-	private bool WasTeleportButtonPressed (Hand hand)
+	private bool WasButtonPressed ()
 	{
-		if (IsEligibleForTeleport (hand))
+		if (IsEligibleToUseAbility ())
 		{
-			return teleportAction.GetStateDown (hand.handType);
+			return grabAction.GetStateDown (hand.handType) || gripAction.GetStateDown (hand.handType);
 		}
 
 		return false;
+	}
+
+	public bool CanUseAbility() {
+		return canUseAbility;
 	}
 }

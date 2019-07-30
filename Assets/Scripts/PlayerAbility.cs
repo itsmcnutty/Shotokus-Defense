@@ -14,6 +14,7 @@ public class PlayerAbility : MonoBehaviour
     public float energyCost;
 
     private PlayerEnergy playerEnergy;
+    private ControllerArc arc;
     private GameObject spawnedRock;
     private float rockSize = 0;
     private int rockNum = 0;
@@ -25,6 +26,8 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
+
+        arc = GetComponentInChildren<ControllerArc>();
     }
 
     // Start is called before the first frame update
@@ -41,7 +44,7 @@ public class PlayerAbility : MonoBehaviour
             playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
             RemoveRockFromHand();
         }
-        else if (GrabPress ())
+        else if (GrabPress () && arc.CanUseAbility())
         {
             playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
