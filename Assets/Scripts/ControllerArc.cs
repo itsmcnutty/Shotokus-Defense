@@ -33,8 +33,8 @@ public class ControllerArc : MonoBehaviour
 	private float invalidReticleMaxScale = 1.0f;
 	private float invalidReticleMinScaleDistance = 0.4f;
 	private float invalidReticleMaxScaleDistance = 2.0f;
-	private Vector3 invalidReticleScale = Vector3.one;
-	private Quaternion invalidReticleTargetRotation = Quaternion.identity;
+	private Vector3 reticleScale = Vector3.one;
+	private Quaternion reticleTargetRotation = Quaternion.identity;
 
 	private bool canUseAbility;
 
@@ -159,7 +159,17 @@ public class ControllerArc : MonoBehaviour
 				arc.SetColor (pointerValidColor);
 				pointerLineRenderer.startColor = pointerValidColor;
 				pointerLineRenderer.endColor = pointerValidColor;
+
 				destinationReticleTransform.gameObject.SetActive (true);
+
+				Vector3 normalToUse = hitInfo.normal;
+				float angle = Vector3.Angle (hitInfo.normal, Vector3.up);
+				if (angle < 15.0f)
+				{
+					normalToUse = Vector3.up;
+				}
+				reticleTargetRotation = Quaternion.FromToRotation (Vector3.up, normalToUse);
+				destinationReticleTransform.rotation = Quaternion.Slerp (destinationReticleTransform.rotation, reticleTargetRotation, 0.1f);
 
 				canUseAbility = true;
 			}
@@ -187,15 +197,15 @@ public class ControllerArc : MonoBehaviour
 			{
 				normalToUse = Vector3.up;
 			}
-			invalidReticleTargetRotation = Quaternion.FromToRotation (Vector3.up, normalToUse);
-			invalidReticleTransform.rotation = Quaternion.Slerp (invalidReticleTransform.rotation, invalidReticleTargetRotation, 0.1f);
+			reticleTargetRotation = Quaternion.FromToRotation (Vector3.up, normalToUse);
+			invalidReticleTransform.rotation = Quaternion.Slerp (invalidReticleTransform.rotation, reticleTargetRotation, 0.1f);
 
 			float distanceFromPlayer = Vector3.Distance (hitInfo.point, player.hmdTransform.position);
 			float invalidReticleCurrentScale = Util.RemapNumberClamped (distanceFromPlayer, invalidReticleMinScaleDistance, invalidReticleMaxScaleDistance, invalidReticleMinScale, invalidReticleMaxScale);
-			invalidReticleScale.x = invalidReticleCurrentScale;
-			invalidReticleScale.y = invalidReticleCurrentScale;
-			invalidReticleScale.z = invalidReticleCurrentScale;
-			invalidReticleTransform.transform.localScale = invalidReticleScale;
+			reticleScale.x = invalidReticleCurrentScale;
+			reticleScale.y = invalidReticleCurrentScale;
+			reticleScale.z = invalidReticleCurrentScale;
+			invalidReticleTransform.transform.localScale = reticleScale;
 
 			if (hitSomething)
 			{
@@ -283,7 +293,8 @@ public class ControllerArc : MonoBehaviour
 		return false;
 	}
 
-	public bool CanUseAbility() {
+	public bool CanUseAbility ()
+	{
 		return canUseAbility;
 	}
 }
