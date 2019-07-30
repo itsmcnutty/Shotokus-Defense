@@ -24,7 +24,7 @@ public class EnemyHealth : MonoBehaviour
 	
 	// public event Action<EnemyHealth> OnEnemyDeath; //  testing
 	// work around -----------
-//	public GameController gameController;
+	public GameController gameController;
 
 
 	// Start is called before the first frame update
@@ -41,15 +41,15 @@ public class EnemyHealth : MonoBehaviour
 		if (health <= 0f)
 		{
 			Debug.Log("Enemy Died");
-			// Testing -------------------
-			if(OnEnemyDeath != null) {
-				Debug.Log("SUBSCRIBE TO MEEEEEEEEEEEEEEEEEEEE");
-				OnEnemyDeath();
-			}
-			// workaround--------
-//			gameController.getEnemiesDestroyed() += 1;
-			// ------------
+			// Testing subscriptions -------------------
+//			if(OnEnemyDeath != null) {
+//				Debug.Log("SUBSCRIBE TO MEEEEEEEEEEEEEEEEEEEE");
+//				OnEnemyDeath();
+//			}
 			Destroy(gameObject);
+			// Indicate the Game Controller that an enemy was destroyed
+			gameController.enemyGotDestroyed();
+			// ------------
 		}
 		
 		Debug.Log("Collision: " + health);

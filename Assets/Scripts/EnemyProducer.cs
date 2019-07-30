@@ -32,7 +32,7 @@ public class EnemyProducer : MonoBehaviour
     
     // this will be called by GameController.cs
     // self explanatory??
-    // TODO add stop spawning based on how many enemies are already there or on a maximun number of enemies
+    // TODO add stop spawning based on how many enemies are already there or on a maximum number of enemies
     public void spawnEnemy(int maxNumOfEnemies)
     {
         numOfEnemies = maxNumOfEnemies;
@@ -43,7 +43,7 @@ public class EnemyProducer : MonoBehaviour
     // todo document
     private void Spawner()
     {
-        if (spawnedEnemies >= numOfEnemies)
+        if (spawnedEnemies == numOfEnemies)
         {
             return;
         }
