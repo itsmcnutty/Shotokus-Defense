@@ -144,6 +144,24 @@
                   "click_deactivate_threshold" : "0.7"
                },
                "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/grabgrip"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/grabgrip"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/grip"
             }
          ]
       },
