@@ -22,7 +22,7 @@ namespace Valve.VR.InteractionSystem
 		public Color pointerValidColor;
 		public Color pointerInvalidColor;
 		public Color pointerLockedColor;
-		
+
 		public float arcDistance = 10.0f;
 
 		private LineRenderer pointerLineRenderer;
@@ -54,14 +54,8 @@ namespace Valve.VR.InteractionSystem
 		private Vector3 invalidReticleScale = Vector3.one;
 		private Quaternion invalidReticleTargetRotation = Quaternion.identity;
 
-		private Transform playAreaPreviewTransform;
-
 		private bool originalHoverLockState = false;
 		private Interactable originalHoveringInteractable = null;
-		private AllowTeleportWhileAttachedToHand allowTeleportWhileAttached = null;
-
-		private Vector3 startingFeetOffset = Vector3.zero;
-		private bool movedFeetFarEnough = false;
 
 		//-------------------------------------------------
 		private static Test _instance;
@@ -147,30 +141,22 @@ namespace Valve.VR.InteractionSystem
 				}
 			}
 
-			//If something is attached to the hand that is preventing teleport
-			if (allowTeleportWhileAttached && !allowTeleportWhileAttached.teleportAllowed)
+			if (!visible && newPointerHand != null)
 			{
-				HidePointer ();
+				//Begin showing the pointer
+				ShowPointer (newPointerHand, oldPointerHand);
 			}
-			else
+			else if (visible)
 			{
-				if (!visible && newPointerHand != null)
+				if (newPointerHand == null && !IsTeleportButtonDown (pointerHand))
 				{
-					//Begin showing the pointer
-					ShowPointer (newPointerHand, oldPointerHand);
+					//Hide the pointer
+					HidePointer ();
 				}
-				else if (visible)
+				else if (newPointerHand != null)
 				{
-					if (newPointerHand == null && !IsTeleportButtonDown (pointerHand))
-					{
-						//Hide the pointer
-						HidePointer ();
-					}
-					else if (newPointerHand != null)
-					{
-						//Move the pointer to a new hand
-						ShowPointer (newPointerHand, oldPointerHand);
-					}
+					//Move the pointer to a new hand
+					ShowPointer (newPointerHand, oldPointerHand);
 				}
 			}
 
@@ -294,11 +280,6 @@ namespace Valve.VR.InteractionSystem
 				}
 			}
 
-			if (playAreaPreviewTransform != null)
-			{
-				playAreaPreviewTransform.gameObject.SetActive (showPlayAreaPreview);
-			}
-
 			destinationReticleTransform.position = pointedAtPosition;
 			invalidReticleTransform.position = pointerEnd;
 
@@ -315,21 +296,6 @@ namespace Valve.VR.InteractionSystem
 			}
 
 			visible = false;
-			if (pointerHand)
-			{
-				if (ShouldOverrideHoverLock ())
-				{
-					//Restore the original hovering interactable on the hand
-					if (originalHoverLockState == true)
-					{
-						pointerHand.HoverLock (originalHoveringInteractable);
-					}
-					else
-					{
-						pointerHand.HoverUnlock (null);
-					}
-				}
-			}
 			teleportPointerObject.SetActive (false);
 
 			teleportArc.Hide ();
@@ -344,11 +310,6 @@ namespace Valve.VR.InteractionSystem
 
 			destinationReticleTransform.gameObject.SetActive (false);
 			invalidReticleTransform.gameObject.SetActive (false);
-
-			if (playAreaPreviewTransform != null)
-			{
-				playAreaPreviewTransform.gameObject.SetActive (false);
-			}
 
 			pointerHand = null;
 		}
@@ -374,25 +335,6 @@ namespace Valve.VR.InteractionSystem
 						teleportMarker.Highlight (false);
 					}
 				}
-
-				startingFeetOffset = player.trackingOriginTransform.position - player.feetPositionGuess;
-				movedFeetFarEnough = false;
-			}
-
-			if (oldPointerHand)
-			{
-				if (ShouldOverrideHoverLock ())
-				{
-					//Restore the original hovering interactable on the hand
-					if (originalHoverLockState == true)
-					{
-						oldPointerHand.HoverLock (originalHoveringInteractable);
-					}
-					else
-					{
-						oldPointerHand.HoverUnlock (null);
-					}
-				}
 			}
 
 			pointerHand = newPointerHand;
@@ -401,19 +343,9 @@ namespace Valve.VR.InteractionSystem
 			{
 				pointerStartTransform = pointerHand.transform;
 
-				if (pointerHand.currentAttachedObject != null)
-				{
-					allowTeleportWhileAttached = pointerHand.currentAttachedObject.GetComponent<AllowTeleportWhileAttachedToHand> ();
-				}
-
 				//Keep track of any existing hovering interactable on the hand
 				originalHoverLockState = pointerHand.hoverLocked;
 				originalHoveringInteractable = pointerHand.hoveringInteractable;
-
-				if (ShouldOverrideHoverLock ())
-				{
-					pointerHand.HoverLock (null);
-				}
 			}
 		}
 
@@ -441,7 +373,7 @@ namespace Valve.VR.InteractionSystem
 				if (pointedAtTeleportMarker != null && pointedAtTeleportMarker.locked == false)
 				{
 					//Pointing at an unlocked teleport marker
-					teleportingToMarker = pointedAtTeleportMarker;	
+					teleportingToMarker = pointedAtTeleportMarker;
 				}
 			}
 		}
@@ -527,35 +459,9 @@ namespace Valve.VR.InteractionSystem
 				{
 					return false;
 				}
-
-				//Something is attached to the hand
-				if (hand.currentAttachedObject != null)
-				{
-					AllowTeleportWhileAttachedToHand allowTeleportWhileAttachedToHand = hand.currentAttachedObject.GetComponent<AllowTeleportWhileAttachedToHand> ();
-
-					if (allowTeleportWhileAttachedToHand != null && allowTeleportWhileAttachedToHand.teleportAllowed == true)
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}
-				}
 			}
 
 			return true;
-		}
-
-		//-------------------------------------------------
-		private bool ShouldOverrideHoverLock ()
-		{
-			if (!allowTeleportWhileAttached || allowTeleportWhileAttached.overrideHoverLock)
-			{
-				return true;
-			}
-
-			return false;
 		}
 
 		//-------------------------------------------------
