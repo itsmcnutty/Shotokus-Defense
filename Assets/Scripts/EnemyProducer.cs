@@ -34,7 +34,14 @@ public class EnemyProducer : MonoBehaviour
     {
         numOfEnemies = maxNumOfEnemies;
         spawnArea = this.GetComponent<BoxCollider>().bounds;
-        InvokeRepeating("Spawner", 3f, 2f);
+//        InvokeRepeating("Spawner", 3f, 2f);
+        // maybe use invoke 
+
+        for (int i = 0; i < numOfEnemies; i++)
+        {
+            Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
+        }
+        
     }
 
     // This function checks if the all enemies have been spawned for the current wave

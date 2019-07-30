@@ -72,14 +72,15 @@ public class GameController : MonoBehaviour
         }
         numOfEnemiesPerWave += increaseOfEnePerWave;
         Debug.Log("Starting new Wave!!");
-        Invoke("StartWave", 3);
+        StartWave(numOfEnemiesPerWave);
+//        Invoke("StartWave", 3);
     }
     
     // To be called when an enemey is destroyed
     // This function keeps track of destroyed enemies by updating enemiesDestroyed variable
     public void enemyGotDestroyed()
     {
-        enemiesDestroyed++;
+        enemiesDestroyed += 1;
     }
     
     
