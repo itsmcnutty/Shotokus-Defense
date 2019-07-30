@@ -25,12 +25,6 @@ namespace Valve.VR.InteractionSystem
 		
 		public float arcDistance = 10.0f;
 
-		[Header ("Effects")]
-		public Transform onActivateObjectTransform;
-		public Transform onDeactivateObjectTransform;
-		public float activateObjectTime = 1.0f;
-		public float deactivateObjectTime = 1.0f;
-
 		private LineRenderer pointerLineRenderer;
 		private GameObject teleportPointerObject;
 		private Transform pointerStartTransform;
@@ -183,18 +177,6 @@ namespace Valve.VR.InteractionSystem
 			if (visible)
 			{
 				UpdatePointer ();
-
-				if (onActivateObjectTransform.gameObject.activeSelf && Time.time - pointerShowStartTime > activateObjectTime)
-				{
-					onActivateObjectTransform.gameObject.SetActive (false);
-				}
-			}
-			else
-			{
-				if (onDeactivateObjectTransform.gameObject.activeSelf && Time.time - pointerHideStartTime > deactivateObjectTime)
-				{
-					onDeactivateObjectTransform.gameObject.SetActive (false);
-				}
 			}
 		}
 
@@ -319,8 +301,6 @@ namespace Valve.VR.InteractionSystem
 
 			destinationReticleTransform.position = pointedAtPosition;
 			invalidReticleTransform.position = pointerEnd;
-			onActivateObjectTransform.position = pointerEnd;
-			onDeactivateObjectTransform.position = pointerEnd;
 
 			pointerLineRenderer.SetPosition (0, pointerStart);
 			pointerLineRenderer.SetPosition (1, pointerEnd);
@@ -370,12 +350,6 @@ namespace Valve.VR.InteractionSystem
 				playAreaPreviewTransform.gameObject.SetActive (false);
 			}
 
-			if (onActivateObjectTransform.gameObject.activeSelf)
-			{
-				onActivateObjectTransform.gameObject.SetActive (false);
-			}
-			onDeactivateObjectTransform.gameObject.SetActive (true);
-
 			pointerHand = null;
 		}
 
@@ -403,12 +377,6 @@ namespace Valve.VR.InteractionSystem
 
 				startingFeetOffset = player.trackingOriginTransform.position - player.feetPositionGuess;
 				movedFeetFarEnough = false;
-
-				if (onDeactivateObjectTransform.gameObject.activeSelf)
-				{
-					onDeactivateObjectTransform.gameObject.SetActive (false);
-				}
-				onActivateObjectTransform.gameObject.SetActive (true);
 			}
 
 			if (oldPointerHand)
