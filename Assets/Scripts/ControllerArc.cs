@@ -36,6 +36,8 @@ public class ControllerArc : MonoBehaviour
 	private Vector3 invalidReticleScale = Vector3.one;
 	private Quaternion invalidReticleTargetRotation = Quaternion.identity;
 
+	private bool canUseAbility;
+
 	private static ControllerArc _instance;
 	public static ControllerArc instance
 	{
@@ -118,7 +120,7 @@ public class ControllerArc : MonoBehaviour
 
 		Vector3 arcVelocity = pointerDir * arcDistance;
 
-		TeleportMarkerBase hitTeleportMarker = null;
+		AbilityUsageMarker hitMarker = null;
 
 		float dotUp = Vector3.Dot (pointerDir, Vector3.up);
 		float dotForward = Vector3.Dot (pointerDir, player.hmdTransform.forward);
@@ -133,29 +135,33 @@ public class ControllerArc : MonoBehaviour
 		if (arc.DrawArc (out hitInfo))
 		{
 			hitSomething = true;
-			hitTeleportMarker = hitInfo.collider.GetComponentInParent<TeleportMarkerBase> ();
+			hitMarker = hitInfo.collider.GetComponentInParent<AbilityUsageMarker> ();
 		}
 
 		if (pointerAtBadAngle)
 		{
-			hitTeleportMarker = null;
+			hitMarker = null;
 		}
 
-		if (hitTeleportMarker != null)
+		if (hitMarker != null)
 		{
-			if (hitTeleportMarker.locked)
+			if (hitMarker.locked)
 			{
 				arc.SetColor (pointerLockedColor);
 				pointerLineRenderer.startColor = pointerLockedColor;
 				pointerLineRenderer.endColor = pointerLockedColor;
 				destinationReticleTransform.gameObject.SetActive (false);
+
+				canUseAbility = false;
 			}
 			else
 			{
 				arc.SetColor (pointerValidColor);
 				pointerLineRenderer.startColor = pointerValidColor;
 				pointerLineRenderer.endColor = pointerValidColor;
-				destinationReticleTransform.gameObject.SetActive (hitTeleportMarker.showReticle);
+				destinationReticleTransform.gameObject.SetActive (true);
+
+				canUseAbility = true;
 			}
 
 			invalidReticleTransform.gameObject.SetActive (false);
@@ -166,6 +172,8 @@ public class ControllerArc : MonoBehaviour
 		}
 		else
 		{
+			canUseAbility = false;
+
 			destinationReticleTransform.gameObject.SetActive (false);
 
 			arc.SetColor (pointerInvalidColor);
@@ -273,5 +281,9 @@ public class ControllerArc : MonoBehaviour
 		}
 
 		return false;
+	}
+
+	public bool CanUseAbility() {
+		return canUseAbility;
 	}
 }
