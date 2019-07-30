@@ -16,23 +16,13 @@ namespace Valve.VR.InteractionSystem
 		public SteamVR_Action_Boolean teleportAction = SteamVR_Input.GetAction<SteamVR_Action_Boolean> ("Teleport");
 
 		public LayerMask traceLayerMask;
-		public LayerMask floorFixupTraceLayerMask;
-		public float floorFixupMaximumTraceDistance = 1.0f;
-		public Material areaVisibleMaterial;
-		public Material areaLockedMaterial;
-		public Material areaHighlightedMaterial;
 		public Material pointVisibleMaterial;
-		public Material pointLockedMaterial;
-		public Material pointHighlightedMaterial;
 		public Transform destinationReticleTransform;
 		public Transform invalidReticleTransform;
 		public Color pointerValidColor;
 		public Color pointerInvalidColor;
 		public Color pointerLockedColor;
-		public bool showPlayAreaMarker = true;
-
-		public float teleportFadeTime = 0.1f;
-
+		
 		public float arcDistance = 10.0f;
 
 		[Header ("Effects")]
@@ -58,7 +48,6 @@ namespace Valve.VR.InteractionSystem
 		private bool teleporting = false;
 		private float currentFadeTime = 0.0f;
 
-		private float meshAlphaPercent = 1.0f;
 		private float pointerShowStartTime = 0.0f;
 		private float pointerHideStartTime = 0.0f;
 		private bool meshFading = false;
@@ -277,38 +266,6 @@ namespace Valve.VR.InteractionSystem
 
 				pointedAtTeleportMarker = hitTeleportMarker;
 				pointedAtPosition = hitInfo.point;
-
-				if (showPlayAreaMarker)
-				{
-					//Show the play area marker if this is a teleport area
-					// TeleportArea teleportArea = pointedAtTeleportMarker as TeleportArea;
-					// if ( teleportArea != null && !teleportArea.locked && playAreaPreviewTransform != null )
-					// {
-					// 	Vector3 offsetToUse = playerFeetOffset;
-
-					// 	//Adjust the actual offset to prevent the play area marker from moving too much
-					// 	if ( !movedFeetFarEnough )
-					// 	{
-					// 		float distanceFromStartingOffset = Vector3.Distance( playerFeetOffset, startingFeetOffset );
-					// 		if ( distanceFromStartingOffset < 0.1f )
-					// 		{
-					// 			offsetToUse = startingFeetOffset;
-					// 		}
-					// 		else if ( distanceFromStartingOffset < 0.4f )
-					// 		{
-					// 			offsetToUse = Vector3.Lerp( startingFeetOffset, playerFeetOffset, ( distanceFromStartingOffset - 0.1f ) / 0.3f );
-					// 		}
-					// 		else
-					// 		{
-					// 			movedFeetFarEnough = true;
-					// 		}
-					// 	}
-
-					// 	playAreaPreviewTransform.position = pointedAtPosition + offsetToUse;
-
-					// 	showPlayAreaPreview = true;
-					// }
-				}
 
 				pointerEnd = hitInfo.point;
 			}
@@ -530,34 +487,7 @@ namespace Valve.VR.InteractionSystem
 
 			SteamVR_Fade.Start (Color.clear, currentFadeTime);
 
-			// TeleportPoint teleportPoint = teleportingToMarker as TeleportPoint;
 			Vector3 teleportPosition = pointedAtPosition;
-
-			// if ( teleportPoint != null )
-			// {
-			// 	teleportPosition = teleportPoint.transform.position;
-
-			// 	//Teleport to a new scene
-			// 	if ( teleportPoint.teleportType == TeleportPoint.TeleportPointType.SwitchToNewScene )
-			// 	{
-			// 		teleportPoint.TeleportToScene();
-			// 		return;
-			// 	}
-			// }
-
-			// Find the actual floor position below the navigation mesh
-			// TeleportArea teleportArea = teleportingToMarker as TeleportArea;
-			// if ( teleportArea != null )
-			// {
-			// 	if ( floorFixupMaximumTraceDistance > 0.0f )
-			// 	{
-			// 		RaycastHit raycastHit;
-			// 		if ( Physics.Raycast( teleportPosition + 0.05f * Vector3.down, Vector3.down, out raycastHit, floorFixupMaximumTraceDistance, floorFixupTraceLayerMask ) )
-			// 		{
-			// 			teleportPosition = raycastHit.point;
-			// 		}
-			// 	}
-			// }
 
 			if (teleportingToMarker.ShouldMovePlayer ())
 			{
