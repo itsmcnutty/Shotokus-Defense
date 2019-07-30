@@ -5,11 +5,29 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    
+
+    private static GameController instance; // instance for singleton pattern
     public EnemyProducer enemyProducer;
     public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave
     public int increaseOfEnePerWave; // how many more enemies per wave
     private int enemiesDestroyed; // number of enemies destroyed in current Wave
+    
+    // Constructor
+    private GameController(){}
+    
+    // Instance getter and initialization
+    public static GameController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType(typeof(GameController)) as GameController;
+            }
+            return instance;
+        }
+    }
+
 
     private void Awake()
     {
