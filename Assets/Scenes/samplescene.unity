@@ -1270,6 +1270,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 912942990}
     m_Modifications:
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Name
+      value: Controller Arch
+      objectReference: {fileID: 0}
     - target: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1310,36 +1314,16 @@ PrefabInstance:
       propertyPath: material
       value: 
       objectReference: {fileID: 2100000, guid: fcf033fc1efbb8e49a7e5f0ac4a55512, type: 2}
+    - target: {fileID: 180358, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Name
+      value: ArchPointer
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
 --- !u!4 &747466407 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &747466408 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8265126, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &747466409 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8261204, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &747466410 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8269332, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &747466411 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8252162, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 747466406}
   m_PrefabAsset: {fileID: 0}
@@ -1364,24 +1348,6 @@ GameObject:
 --- !u!1 &747466415 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 167516, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!120 &747466416 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 12050142, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &747466417 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2336214, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &747466418 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 457198, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 747466406}
   m_PrefabAsset: {fileID: 0}
@@ -1449,21 +1415,6 @@ MonoBehaviour:
   onDeactivateObjectTransform: {fileID: 747466412}
   activateObjectTime: 1
   deactivateObjectTime: 1
-  pointerAudioSource: {fileID: 747466409}
-  loopingAudioSource: {fileID: 747466410}
-  headAudioSource: {fileID: 747466411}
-  reticleAudioSource: {fileID: 747466408}
-  teleportSound: {fileID: 8300000, guid: efee776e88902a74684c56ce2962678f, type: 3}
-  pointerStartSound: {fileID: 8300000, guid: 0e220b97baa73db4fab6fba879e1b024, type: 3}
-  pointerLoopSound: {fileID: 8300000, guid: 128eba63f6457ff41a65fbae1979778e, type: 3}
-  pointerStopSound: {fileID: 8300000, guid: e45d903a97eada14bbd5177c2da9703d, type: 3}
-  goodHighlightSound: {fileID: 8300000, guid: c9b9c3bb824daba4b9cb39713cd412a6, type: 3}
-  badHighlightSound: {fileID: 8300000, guid: cef9a0102c9fe0c4fad4ebcf9ec72a45, type: 3}
-  debugFloor: 0
-  showOffsetReticle: 0
-  offsetReticleTransform: {fileID: 747466418}
-  floorDebugSphere: {fileID: 747466417}
-  floorDebugLine: {fileID: 747466416}
 --- !u!1 &766333378
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,7 +1827,7 @@ GameObject:
   m_Component:
   - component: {fileID: 912942990}
   m_Layer: 0
-  m_Name: Teleport
+  m_Name: Controller Arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

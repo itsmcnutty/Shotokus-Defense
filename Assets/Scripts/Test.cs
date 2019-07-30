@@ -26,8 +26,6 @@ namespace Valve.VR.InteractionSystem
 		public Material pointHighlightedMaterial;
 		public Transform destinationReticleTransform;
 		public Transform invalidReticleTransform;
-		public GameObject playAreaPreviewCorner;
-		public GameObject playAreaPreviewSide;
 		public Color pointerValidColor;
 		public Color pointerInvalidColor;
 		public Color pointerLockedColor;
@@ -75,8 +73,6 @@ namespace Valve.VR.InteractionSystem
 		private Quaternion invalidReticleTargetRotation = Quaternion.identity;
 
 		private Transform playAreaPreviewTransform;
-		private Transform[] playAreaPreviewCorners;
-		private Transform[] playAreaPreviewSides;
 
 		private Coroutine hintCoroutine = null;
 
@@ -86,8 +82,6 @@ namespace Valve.VR.InteractionSystem
 
 		private Vector3 startingFeetOffset = Vector3.zero;
 		private bool movedFeetFarEnough = false;
-
-		SteamVR_Events.Action chaperoneInfoInitializedAction;
 
 		// Events
 
@@ -121,8 +115,6 @@ namespace Valve.VR.InteractionSystem
         {
             _instance = this;
 
-			chaperoneInfoInitializedAction = ChaperoneInfo.InitializedAction( OnChaperoneInfoInitialized );
-
 			pointerLineRenderer = GetComponentInChildren<LineRenderer>();
 			teleportPointerObject = pointerLineRenderer.gameObject;
 
@@ -131,9 +123,6 @@ namespace Valve.VR.InteractionSystem
 
 			teleportArc = GetComponent<TeleportArc>();
 			teleportArc.traceLayerMask = traceLayerMask;
-
-			playAreaPreviewCorner.SetActive( false );
-			playAreaPreviewSide.SetActive( false );
 
 			float invalidReticleStartingScale = invalidReticleTransform.localScale.x;
 			invalidReticleMinScale *= invalidReticleStartingScale;
@@ -159,22 +148,6 @@ namespace Valve.VR.InteractionSystem
 			//CheckForSpawnPoint();
 
 			Invoke( "ShowTeleportHint", 5.0f );
-		}
-
-
-		//-------------------------------------------------
-		void OnEnable()
-		{
-			chaperoneInfoInitializedAction.enabled = true;
-			OnChaperoneInfoInitialized(); // In case it's already initialized
-		}
-
-
-		//-------------------------------------------------
-		void OnDisable()
-		{
-			chaperoneInfoInitializedAction.enabled = false;
-			HidePointer();
 		}
 
 
@@ -439,79 +412,6 @@ namespace Valve.VR.InteractionSystem
 			pointerLineRenderer.SetPosition( 0, pointerStart );
 			pointerLineRenderer.SetPosition( 1, pointerEnd );
 		}
-
-		//-------------------------------------------------
-		private void OnChaperoneInfoInitialized()
-		{
-			ChaperoneInfo chaperone = ChaperoneInfo.instance;
-
-			if ( chaperone.initialized && chaperone.roomscale )
-			{
-				//Set up the render model for the play area bounds
-
-				if ( playAreaPreviewTransform == null )
-				{
-					playAreaPreviewTransform = new GameObject( "PlayAreaPreviewTransform" ).transform;
-					playAreaPreviewTransform.parent = transform;
-					Util.ResetTransform( playAreaPreviewTransform );
-
-					playAreaPreviewCorner.SetActive( true );
-					playAreaPreviewCorners = new Transform[4];
-					playAreaPreviewCorners[0] = playAreaPreviewCorner.transform;
-					playAreaPreviewCorners[1] = Instantiate( playAreaPreviewCorners[0] );
-					playAreaPreviewCorners[2] = Instantiate( playAreaPreviewCorners[0] );
-					playAreaPreviewCorners[3] = Instantiate( playAreaPreviewCorners[0] );
-
-					playAreaPreviewCorners[0].transform.parent = playAreaPreviewTransform;
-					playAreaPreviewCorners[1].transform.parent = playAreaPreviewTransform;
-					playAreaPreviewCorners[2].transform.parent = playAreaPreviewTransform;
-					playAreaPreviewCorners[3].transform.parent = playAreaPreviewTransform;
-
-					playAreaPreviewSide.SetActive( true );
-					playAreaPreviewSides = new Transform[4];
-					playAreaPreviewSides[0] = playAreaPreviewSide.transform;
-					playAreaPreviewSides[1] = Instantiate( playAreaPreviewSides[0] );
-					playAreaPreviewSides[2] = Instantiate( playAreaPreviewSides[0] );
-					playAreaPreviewSides[3] = Instantiate( playAreaPreviewSides[0] );
-
-					playAreaPreviewSides[0].transform.parent = playAreaPreviewTransform;
-					playAreaPreviewSides[1].transform.parent = playAreaPreviewTransform;
-					playAreaPreviewSides[2].transform.parent = playAreaPreviewTransform;
-					playAreaPreviewSides[3].transform.parent = playAreaPreviewTransform;
-				}
-
-				float x = chaperone.playAreaSizeX;
-				float z = chaperone.playAreaSizeZ;
-
-				playAreaPreviewSides[0].localPosition = new Vector3( 0.0f, 0.0f, 0.5f * z - 0.25f );
-				playAreaPreviewSides[1].localPosition = new Vector3( 0.0f, 0.0f, -0.5f * z + 0.25f );
-				playAreaPreviewSides[2].localPosition = new Vector3( 0.5f * x - 0.25f, 0.0f, 0.0f );
-				playAreaPreviewSides[3].localPosition = new Vector3( -0.5f * x + 0.25f, 0.0f, 0.0f );
-
-				playAreaPreviewSides[0].localScale = new Vector3( x - 0.5f, 1.0f, 1.0f );
-				playAreaPreviewSides[1].localScale = new Vector3( x - 0.5f, 1.0f, 1.0f );
-				playAreaPreviewSides[2].localScale = new Vector3( z - 0.5f, 1.0f, 1.0f );
-				playAreaPreviewSides[3].localScale = new Vector3( z - 0.5f, 1.0f, 1.0f );
-
-				playAreaPreviewSides[0].localRotation = Quaternion.Euler( 0.0f, 0.0f, 0.0f );
-				playAreaPreviewSides[1].localRotation = Quaternion.Euler( 0.0f, 180.0f, 0.0f );
-				playAreaPreviewSides[2].localRotation = Quaternion.Euler( 0.0f, 90.0f, 0.0f );
-				playAreaPreviewSides[3].localRotation = Quaternion.Euler( 0.0f, 270.0f, 0.0f );
-
-				playAreaPreviewCorners[0].localPosition = new Vector3( 0.5f * x - 0.25f, 0.0f, 0.5f * z - 0.25f );
-				playAreaPreviewCorners[1].localPosition = new Vector3( 0.5f * x - 0.25f, 0.0f, -0.5f * z + 0.25f );
-				playAreaPreviewCorners[2].localPosition = new Vector3( -0.5f * x + 0.25f, 0.0f, -0.5f * z + 0.25f );
-				playAreaPreviewCorners[3].localPosition = new Vector3( -0.5f * x + 0.25f, 0.0f, 0.5f * z - 0.25f );
-
-				playAreaPreviewCorners[0].localRotation = Quaternion.Euler( 0.0f, 0.0f, 0.0f );
-				playAreaPreviewCorners[1].localRotation = Quaternion.Euler( 0.0f, 90.0f, 0.0f );
-				playAreaPreviewCorners[2].localRotation = Quaternion.Euler( 0.0f, 180.0f, 0.0f );
-				playAreaPreviewCorners[3].localRotation = Quaternion.Euler( 0.0f, 270.0f, 0.0f );
-
-				playAreaPreviewTransform.gameObject.SetActive( false );
-			}
-		}
-
 
 		//-------------------------------------------------
 		private void HidePointer()
