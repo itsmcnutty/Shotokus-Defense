@@ -74,8 +74,6 @@ namespace Valve.VR.InteractionSystem
 
 		private Transform playAreaPreviewTransform;
 
-		private Coroutine hintCoroutine = null;
-
 		private bool originalHoverLockState = false;
 		private Interactable originalHoveringInteractable = null;
 		private AllowTeleportWhileAttachedToHand allowTeleportWhileAttached = null;
@@ -144,10 +142,6 @@ namespace Valve.VR.InteractionSystem
 				Destroy( this.gameObject );
 				return;
 			}
-
-			//CheckForSpawnPoint();
-
-			Invoke( "ShowTeleportHint", 5.0f );
 		}
 
 
@@ -588,8 +582,6 @@ namespace Valve.VR.InteractionSystem
 					//Pointing at an unlocked teleport marker
 					teleportingToMarker = pointedAtTeleportMarker;
 					InitiateTeleportFade();
-
-					CancelTeleportHint();
 				}
 			}
 		}
@@ -700,88 +692,6 @@ namespace Valve.VR.InteractionSystem
 				}
 			}
 		}
-
-
-		//-------------------------------------------------
-		public void ShowTeleportHint()
-		{
-			CancelTeleportHint();
-
-			hintCoroutine = StartCoroutine( TeleportHintCoroutine() );
-		}
-
-
-		//-------------------------------------------------
-		public void CancelTeleportHint()
-		{
-			if ( hintCoroutine != null )
-            {
-                ControllerButtonHints.HideTextHint(player.leftHand, teleportAction);
-                ControllerButtonHints.HideTextHint(player.rightHand, teleportAction);
-
-				StopCoroutine( hintCoroutine );
-				hintCoroutine = null;
-			}
-
-			CancelInvoke( "ShowTeleportHint" );
-		}
-
-
-		//-------------------------------------------------
-		private IEnumerator TeleportHintCoroutine()
-		{
-			float prevBreakTime = Time.time;
-			float prevHapticPulseTime = Time.time;
-
-			while ( true )
-			{
-				bool pulsed = false;
-
-				//Show the hint on each eligible hand
-				foreach ( Hand hand in player.hands )
-				{
-					bool showHint = IsEligibleForTeleport( hand );
-					bool isShowingHint = !string.IsNullOrEmpty( ControllerButtonHints.GetActiveHintText( hand, teleportAction) );
-					if ( showHint )
-					{
-						if ( !isShowingHint )
-						{
-							// ControllerButtonHints.ShowTextHint( hand, teleportAction, "Teleport" );
-							prevBreakTime = Time.time;
-							prevHapticPulseTime = Time.time;
-						}
-
-						if ( Time.time > prevHapticPulseTime + 0.05f )
-						{
-							//Haptic pulse for a few seconds
-							pulsed = true;
-
-							hand.TriggerHapticPulse( 500 );
-						}
-					}
-					else if ( !showHint && isShowingHint )
-					{
-						ControllerButtonHints.HideTextHint( hand, teleportAction);
-					}
-				}
-
-				if ( Time.time > prevBreakTime + 3.0f )
-				{
-					//Take a break for a few seconds
-					yield return new WaitForSeconds( 3.0f );
-
-					prevBreakTime = Time.time;
-				}
-
-				if ( pulsed )
-				{
-					prevHapticPulseTime = Time.time;
-				}
-
-				yield return null;
-			}
-		}
-
 
 		//-------------------------------------------------
 		public bool IsEligibleForTeleport( Hand hand )
