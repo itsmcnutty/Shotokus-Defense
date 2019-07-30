@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SamuraiMovement : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class SamuraiMovement : MonoBehaviour
     public float SPEED = 0f;
     // How close the character must be before it stops coming closer
     public float FOLLOW_RADIUS = 1f;
+    // THis is the agent to move around by NavMesh
+    public NavMeshAgent agent;
 
     // Square of follow radius (for simplified calculations)
     private float sqrFollowRadius;
@@ -27,19 +30,23 @@ public class SamuraiMovement : MonoBehaviour
         Vector3 gameObjPos = transform.position;
     
         // Calculate direction 
-        Vector3 moveDir = playerPos - gameObjPos;
-        moveDir.y = 0;
-        moveDir.Normalize();
-        transform.forward = moveDir;
-    
-        // Move if far enough away
-        double sqrDist = Math.Pow(playerPos.x - gameObjPos.x, 2) +
-                         Math.Pow(playerPos.z - gameObjPos.z, 2);
-        if (sqrDist > sqrFollowRadius)
-        {
-            // Move speed is equal to speed if character is far away. Otherwise proportional to dist from follow radius.
-            float moveSpeed = SPEED * (float)Math.Min(1f, sqrDist - sqrFollowRadius);
-            gameObject.GetComponent<CharacterController>().SimpleMove(moveSpeed * Time.deltaTime * moveDir);
-        }
+//        Vector3 moveDir = playerPos - gameObjPos;
+//        moveDir.y = 0;
+//        moveDir.Normalize();
+//        transform.forward = moveDir;
+//    
+//        // Move if far enough away
+//        double sqrDist = Math.Pow(playerPos.x - gameObjPos.x, 2) +
+//                         Math.Pow(playerPos.z - gameObjPos.z, 2);
+//        if (sqrDist > sqrFollowRadius)
+//        {
+//            // Move speed is equal to speed if character is far away. Otherwise proportional to dist from follow radius.
+//            float moveSpeed = SPEED * (float)Math.Min(1f, sqrDist - sqrFollowRadius);
+//            gameObject.GetComponent<CharacterController>().SimpleMove(moveSpeed * Time.deltaTime * moveDir);
+//        }
+
+        agent.SetDestination(playerPos);
+
+
     }
 }
