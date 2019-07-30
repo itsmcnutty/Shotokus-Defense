@@ -10,11 +10,11 @@ public class SamuraiMovement : MonoBehaviour
     // Character speed
     public float SPEED = 0f;
     // How close to the player the enemy attempts to stay
-    public float FOLLOW_RADIUS = 1f;
+    public double FOLLOW_RADIUS = 1f;
     // Time between attacks (seconds)
     public float ATTACK_DELAY = 2f;
     // How close the enemy must be to begin attacking
-    private float attackRadius;
+    private double attackRadius;
     // Timer for attack delay
     private float attackTimer = 0f;
 
@@ -28,7 +28,7 @@ public class SamuraiMovement : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
 
-        attackRadius = FOLLOW_RADIUS + 1.0f;
+        attackRadius = FOLLOW_RADIUS + 0.5;
     }
 
     // Update is called once per frame
@@ -46,7 +46,7 @@ public class SamuraiMovement : MonoBehaviour
     
         // Calculate enemy distance
         double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-                                Math.Pow(playerPos.z - gameObjPos.z, 2));
+                                      Math.Pow(playerPos.z - gameObjPos.z, 2));
         
         // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
         float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
@@ -60,7 +60,7 @@ public class SamuraiMovement : MonoBehaviour
         // Decrement attack timer
         attackTimer -= Time.deltaTime;
         
-        if (attackTimer <= 0f && dist < attackRadius)
+        if (attackTimer <= 0f && dist <= attackRadius)
         {
             animator.SetTrigger("Slash");
             attackTimer = ATTACK_DELAY;

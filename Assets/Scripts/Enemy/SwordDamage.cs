@@ -25,11 +25,19 @@ public class SwordDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.Equals(player));
+        Debug.Log(parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Slashing"));
+        
         // Deal damage if colliding with player's body and enemy is in "Slashing" animation
-        if (other.Equals(player.GetComponent<CapsuleCollider>()) &&
+        if (other.gameObject.Equals(player) &&
             parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Slashing"))
         {
             other.gameObject.GetComponent<PlayerHealth>().TakeDamage(DAMAGE);
+            Debug.Log("Hit!");
+        }
+        else
+        {
+            Debug.Log("No hit!");
         }
     }
 }
