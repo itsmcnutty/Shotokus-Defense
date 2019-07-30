@@ -34,10 +34,7 @@ namespace Valve.VR.InteractionSystem
 
 		private bool visible = false;
 
-		private TeleportMarkerBase[] teleportMarkers;
-		private TeleportMarkerBase pointedAtTeleportMarker;
 		private Vector3 pointedAtPosition;
-		private Vector3 prevPointedAtPosition;
 
 		private float pointerShowStartTime = 0.0f;
 		private float pointerHideStartTime = 0.0f;
@@ -83,8 +80,6 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		void Start ()
 		{
-			teleportMarkers = GameObject.FindObjectsOfType<TeleportMarkerBase> ();
-
 			HidePointer ();
 
 			player = InteractionSystem.Player.instance;
@@ -191,8 +186,6 @@ namespace Valve.VR.InteractionSystem
 				hitTeleportMarker = null;
 			}
 
-			HighlightSelected (hitTeleportMarker);
-
 			if (hitTeleportMarker != null) //Hit a teleport marker
 			{
 				if (hitTeleportMarker.locked)
@@ -220,7 +213,6 @@ namespace Valve.VR.InteractionSystem
 
 				invalidReticleTransform.gameObject.SetActive (false);
 
-				pointedAtTeleportMarker = hitTeleportMarker;
 				pointedAtPosition = hitInfo.point;
 
 				pointerEnd = hitInfo.point;
@@ -256,8 +248,6 @@ namespace Valve.VR.InteractionSystem
 				invalidReticleScale.z = invalidReticleCurrentScale;
 				invalidReticleTransform.transform.localScale = invalidReticleScale;
 
-				pointedAtTeleportMarker = null;
-
 				if (hitSomething)
 				{
 					pointerEnd = hitInfo.point;
@@ -288,14 +278,6 @@ namespace Valve.VR.InteractionSystem
 
 			teleportArc.Hide ();
 
-			foreach (TeleportMarkerBase teleportMarker in teleportMarkers)
-			{
-				if (teleportMarker != null && teleportMarker.markerActive && teleportMarker.gameObject != null)
-				{
-					teleportMarker.gameObject.SetActive (false);
-				}
-			}
-
 			destinationReticleTransform.gameObject.SetActive (false);
 			invalidReticleTransform.gameObject.SetActive (false);
 
@@ -307,21 +289,11 @@ namespace Valve.VR.InteractionSystem
 		{
 			if (!visible)
 			{
-				pointedAtTeleportMarker = null;
 				pointerShowStartTime = Time.time;
 				visible = true;
 
 				teleportPointerObject.SetActive (false);
 				teleportArc.Show ();
-
-				foreach (TeleportMarkerBase teleportMarker in teleportMarkers)
-				{
-					if (teleportMarker.markerActive && teleportMarker.ShouldActivate (player.feetPositionGuess))
-					{
-						teleportMarker.gameObject.SetActive (true);
-						teleportMarker.Highlight (false);
-					}
-				}
 			}
 
 			pointerHand = newPointerHand;
@@ -344,34 +316,6 @@ namespace Valve.VR.InteractionSystem
 				else
 				{
 					pointerHand.TriggerHapticPulse (100);
-				}
-			}
-		}
-
-		//-------------------------------------------------
-		private void HighlightSelected (TeleportMarkerBase hitTeleportMarker)
-		{
-			if (pointedAtTeleportMarker != hitTeleportMarker) //Pointing at a new teleport marker
-			{
-				if (pointedAtTeleportMarker != null)
-				{
-					pointedAtTeleportMarker.Highlight (false);
-				}
-
-				if (hitTeleportMarker != null)
-				{
-					hitTeleportMarker.Highlight (true);
-
-					prevPointedAtPosition = pointedAtPosition;
-					PlayPointerHaptic (!hitTeleportMarker.locked);
-				}
-			}
-			else if (hitTeleportMarker != null) //Pointing at the same teleport marker
-			{
-				if (Vector3.Distance (prevPointedAtPosition, pointedAtPosition) > 1.0f)
-				{
-					prevPointedAtPosition = pointedAtPosition;
-					PlayPointerHaptic (!hitTeleportMarker.locked);
 				}
 			}
 		}
