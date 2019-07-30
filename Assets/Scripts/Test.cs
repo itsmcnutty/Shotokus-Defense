@@ -65,6 +65,7 @@ public class Test : MonoBehaviour
 	{
 		HidePointer ();
 
+		player = Valve.VR.InteractionSystem.Player.instance;
 
 		if (player == null)
 		{
