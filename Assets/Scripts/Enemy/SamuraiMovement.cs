@@ -26,7 +26,7 @@ public class SamuraiMovement : MonoBehaviour
     {
         characterController = gameObject.GetComponent<CharacterController>();
         animator = gameObject.GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("MainCamera");
 
         attackRadius = FOLLOW_RADIUS + 0.5;
     }

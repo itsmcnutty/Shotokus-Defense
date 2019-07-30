@@ -20,7 +20,7 @@ public class PlayerHeal : MonoBehaviour
 
     private void Awake ()
     {
-        GameObject player = GameObject.FindWithTag ("Player");
+        GameObject player = GameObject.FindWithTag ("MainCamera");
         if (player != null)
         {
             playerHealth = player.GetComponent<PlayerHealth> ();
