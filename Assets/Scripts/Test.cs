@@ -81,17 +81,6 @@ namespace Valve.VR.InteractionSystem
 		private Vector3 startingFeetOffset = Vector3.zero;
 		private bool movedFeetFarEnough = false;
 
-		// Events
-
-		public static SteamVR_Events.Event<float> ChangeScene = new SteamVR_Events.Event<float> ();
-		public static SteamVR_Events.Action<float> ChangeSceneAction (UnityAction<float> action) { return new SteamVR_Events.Action<float> (ChangeScene, action); }
-
-		public static SteamVR_Events.Event<TeleportMarkerBase> Player = new SteamVR_Events.Event<TeleportMarkerBase> ();
-		public static SteamVR_Events.Action<TeleportMarkerBase> PlayerAction (UnityAction<TeleportMarkerBase> action) { return new SteamVR_Events.Action<TeleportMarkerBase> (Player, action); }
-
-		public static SteamVR_Events.Event<TeleportMarkerBase> PlayerPre = new SteamVR_Events.Event<TeleportMarkerBase> ();
-		public static SteamVR_Events.Action<TeleportMarkerBase> PlayerPreAction (UnityAction<TeleportMarkerBase> action) { return new SteamVR_Events.Action<TeleportMarkerBase> (PlayerPre, action); }
-
 		//-------------------------------------------------
 		private static Test _instance;
 		public static Test instance
@@ -141,21 +130,6 @@ namespace Valve.VR.InteractionSystem
 				return;
 			}
 		}
-
-		//-------------------------------------------------
-		// private void CheckForSpawnPoint()
-		// {
-		// 	foreach ( TeleportMarkerBase teleportMarker in teleportMarkers )
-		// 	{
-		// 		TeleportPoint teleportPoint = teleportMarker as TeleportPoint;
-		// 		if ( teleportPoint && teleportPoint.playerSpawnPoint )
-		// 		{
-		// 			teleportingToMarker = teleportMarker;
-		// 			TeleportPlayer();
-		// 			break;
-		// 		}
-		// 	}
-		// }
 
 		//-------------------------------------------------
 		public void HideTeleportPointer ()
@@ -221,11 +195,6 @@ namespace Valve.VR.InteractionSystem
 			if (visible)
 			{
 				UpdatePointer ();
-
-				if (meshFading)
-				{
-					UpdateTeleportColors ();
-				}
 
 				if (onActivateObjectTransform.gameObject.activeSelf && Time.time - pointerShowStartTime > activateObjectTime)
 				{
@@ -521,27 +490,6 @@ namespace Valve.VR.InteractionSystem
 				{
 					pointerHand.HoverLock (null);
 				}
-			}
-		}
-
-		//-------------------------------------------------
-		private void UpdateTeleportColors ()
-		{
-			float deltaTime = Time.time - pointerShowStartTime;
-			if (deltaTime > meshFadeTime)
-			{
-				meshAlphaPercent = 1.0f;
-				meshFading = false;
-			}
-			else
-			{
-				meshAlphaPercent = Mathf.Lerp (0.0f, 1.0f, deltaTime / meshFadeTime);
-			}
-
-			//Tint color for the teleport points
-			foreach (TeleportMarkerBase teleportMarker in teleportMarkers)
-			{
-				teleportMarker.SetAlpha (fullTintAlpha * meshAlphaPercent, meshAlphaPercent);
 			}
 		}
 

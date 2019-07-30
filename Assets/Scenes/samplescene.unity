@@ -1339,18 +1339,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 747466406}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &747466414 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 127276, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &747466415 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 167516, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 747466406}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &747466419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 460596, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
@@ -1402,8 +1390,6 @@ MonoBehaviour:
     type: 2}
   destinationReticleTransform: {fileID: 747466420}
   invalidReticleTransform: {fileID: 747466419}
-  playAreaPreviewCorner: {fileID: 747466415}
-  playAreaPreviewSide: {fileID: 747466414}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
   pointerInvalidColor: {r: 1, g: 0, b: 0, a: 0}
   pointerLockedColor: {r: 0, g: 0, b: 0, a: 0}
