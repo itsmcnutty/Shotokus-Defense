@@ -157,7 +157,6 @@ namespace Valve.VR.InteractionSystem
 			Vector3 pointerDir = pointerStartTransform.forward;
 			bool hitSomething = false;
 			bool showPlayAreaPreview = false;
-			Vector3 playerFeetOffset = player.trackingOriginTransform.position - player.feetPositionGuess;
 
 			Vector3 arcVelocity = pointerDir * arcDistance;
 
@@ -191,23 +190,15 @@ namespace Valve.VR.InteractionSystem
 				if (hitTeleportMarker.locked)
 				{
 					teleportArc.SetColor (pointerLockedColor);
-#if (UNITY_5_4)
-					pointerLineRenderer.SetColors (pointerLockedColor, pointerLockedColor);
-#else
 					pointerLineRenderer.startColor = pointerLockedColor;
 					pointerLineRenderer.endColor = pointerLockedColor;
-#endif
 					destinationReticleTransform.gameObject.SetActive (false);
 				}
 				else
 				{
 					teleportArc.SetColor (pointerValidColor);
-#if (UNITY_5_4)
-					pointerLineRenderer.SetColors (pointerValidColor, pointerValidColor);
-#else
 					pointerLineRenderer.startColor = pointerValidColor;
 					pointerLineRenderer.endColor = pointerValidColor;
-#endif
 					destinationReticleTransform.gameObject.SetActive (hitTeleportMarker.showReticle);
 				}
 
@@ -222,12 +213,8 @@ namespace Valve.VR.InteractionSystem
 				destinationReticleTransform.gameObject.SetActive (false);
 
 				teleportArc.SetColor (pointerInvalidColor);
-#if (UNITY_5_4)
-				pointerLineRenderer.SetColors (pointerInvalidColor, pointerInvalidColor);
-#else
 				pointerLineRenderer.startColor = pointerInvalidColor;
 				pointerLineRenderer.endColor = pointerInvalidColor;
-#endif
 				invalidReticleTransform.gameObject.SetActive (!pointerAtBadAngle);
 
 				//Orient the invalid reticle to the normal of the trace hit point
