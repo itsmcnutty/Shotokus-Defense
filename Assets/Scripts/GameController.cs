@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
         if (enemiesDestroyed != numOfEnemiesPerWave)
         {
             // do nothing
+            return;
         }
         numOfEnemiesPerWave += increaseOfEnePerWave;
         Debug.Log("Starting new Wave!!");

@@ -19,11 +19,12 @@ public class EnemyHealth : MonoBehaviour
 
 	private float health;
 
-	public delegate void EnemyDeathEvent();
-	public event EnemyDeathEvent OnEnemyDeath;
+	// EVENTS STUFF DELETE IF other method works
+//	public delegate void EnemyDeathEvent();
+//	public event EnemyDeathEvent OnEnemyDeath;
 	
 	// public event Action<EnemyHealth> OnEnemyDeath; //  testing
-	// work around -----------
+	// Reference to game controller in order to update how many enemies have been destroyed
 	public GameController gameController;
 
 

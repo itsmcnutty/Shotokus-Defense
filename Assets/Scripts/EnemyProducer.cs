@@ -20,8 +20,6 @@ public class EnemyProducer : MonoBehaviour
 //        InvokeRepeating("spawnEnemy", 5f, 2f);
     }
     
-    
-
     // Returns: Vector3 random coordinates inside the spawnArea
     Vector3 randomSpawnPosition() {
         float x = Random.Range(spawnArea.min.x, spawnArea.max.x);
@@ -31,8 +29,7 @@ public class EnemyProducer : MonoBehaviour
     }
     
     // this will be called by GameController.cs
-    // self explanatory??
-    // TODO add stop spawning based on how many enemies are already there or on a maximum number of enemies
+    // This spawns the amount of enemies specified by GameController
     public void spawnEnemy(int maxNumOfEnemies)
     {
         numOfEnemies = maxNumOfEnemies;
@@ -40,7 +37,8 @@ public class EnemyProducer : MonoBehaviour
         InvokeRepeating("Spawner", 3f, 2f);
     }
 
-    // todo document
+    // This function checks if the all enemies have been spawned for the current wave
+    // if not then it spawns an enemy an increases the spawnedEnemies counter.
     private void Spawner()
     {
         if (spawnedEnemies == numOfEnemies)
@@ -48,10 +46,9 @@ public class EnemyProducer : MonoBehaviour
             return;
         }
         Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
-        spawnedEnemies += 1; // unnecessary
+        spawnedEnemies += 1;
     }
     
-
     // Update is called once per frame
     void Update()
     {
