@@ -48,30 +48,30 @@ public class SamuraiMovement : MonoBehaviour
 //        moveDir.y = 0;
 //        moveDir.Normalize();
 //        transform.forward = moveDir;
-//    
-//        // Calculate enemy distance
-//        double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-//                                      Math.Pow(playerPos.z - gameObjPos.z, 2));
-//        
-//        // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
-//        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
+    
+        // Calculate enemy distance
+        double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+                                      Math.Pow(playerPos.z - gameObjPos.z, 2));
+        
+        // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
+        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
 //        
 	    // Move
 //        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
         agent.SetDestination(playerPos);
 
-//        // Pass speed to animation controller
-//        animator.SetFloat("WalkSpeed", moveSpeed / 80f);
-//
-//        // Decrement attack timer
-//        attackTimer -= Time.deltaTime;
-//        
-//        if (attackTimer <= 0f && dist <= attackRadius)
-//        {
-//            animator.SetTrigger("Slash");
-//            attackTimer = ATTACK_DELAY;
-//        }
-//        
+        // Pass speed to animation controller
+        animator.SetFloat("WalkSpeed", moveSpeed / 80f);
+
+        // Decrement attack timer
+        attackTimer -= Time.deltaTime;
+        
+        if (attackTimer <= 0f && dist <= attackRadius)
+        {
+            animator.SetTrigger("Slash");
+            attackTimer = ATTACK_DELAY;
+        }
+        
 
     }
 }
