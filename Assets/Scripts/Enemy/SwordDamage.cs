@@ -19,7 +19,7 @@ public class SwordDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("MainCamera");
         parentEnemy = transform.parent.transform.parent.gameObject;
     }
 
