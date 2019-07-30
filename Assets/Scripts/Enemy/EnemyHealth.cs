@@ -25,7 +25,9 @@ public class EnemyHealth : MonoBehaviour
 	
 	// public event Action<EnemyHealth> OnEnemyDeath; //  testing
 	// Reference to game controller in order to update how many enemies have been destroyed
-	public GameController gameController;
+	// MAYBE THIS NEEDS TO TAKE A GAME OBJECT AND GET THE GAMECONTROLLER COMPONENT
+	// TODO CANT ADD THIS SHIT TO THE PREFAB CUZ ITS NOT UNIVERSAL, ITS JUST FOR THE SCENE FIX
+	public GameObject gameController;
 
 
 	// Start is called before the first frame update
@@ -49,7 +51,12 @@ public class EnemyHealth : MonoBehaviour
 //			}
 			Destroy(gameObject);
 			// Indicate the Game Controller that an enemy was destroyed
-			gameController.enemyGotDestroyed();
+			GameController gameControlComp = gameController.GetComponent<GameController>();
+			if (gameControlComp != null)
+			{
+				gameControlComp.enemyGotDestroyed();
+
+			}
 			// ------------
 		}
 		
