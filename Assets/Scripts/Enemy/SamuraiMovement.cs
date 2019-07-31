@@ -59,6 +59,9 @@ public class SamuraiMovement : MonoBehaviour
 	    // Move
 //        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
         agent.SetDestination(playerPos);
+        
+        
+        
 
         // Pass speed to animation controller
         animator.SetFloat("WalkSpeed", moveSpeed / 80f);
