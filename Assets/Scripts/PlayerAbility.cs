@@ -19,6 +19,8 @@ public class PlayerAbility : MonoBehaviour
     private float rockSize = 0;
     private int rockNum = -1;
 
+    private const float ROCK_CREATE_DIST = 3f;
+
     private void Awake ()
     {
         GameObject player = GameObject.FindWithTag ("MainCamera");
@@ -27,7 +29,7 @@ public class PlayerAbility : MonoBehaviour
             playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
 
-        arc = GetComponentInChildren<ControllerArc>();
+        arc = GetComponentInChildren<ControllerArc> ();
     }
 
     // Start is called before the first frame update
@@ -41,37 +43,27 @@ public class PlayerAbility : MonoBehaviour
     {
         if (GripPress ())
         {
-            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
-            RemoveRockFromHand();
+            CancelAbility();
         }
-        else if (GrabPress () && arc.CanUseAbility())
+        else if (GrabPress () && arc.CanUseAbility ())
         {
-            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
-            GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
-            GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
-            rockNum = allRocks.Length - 1;
-			GetComponent<Hand>().TriggerHapticPulse( 800 );
+            TriggerNewAbility ();
         }
         else if (GrabHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Heal) && rockNum != -1)
         {
             if (playerEnergy.EnergyIsNotZero ())
             {
-                GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
-                spawnedRock = allRocks[rockNum];
-                rockSize += (0.01f * Time.deltaTime);
-                spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-                playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
-			    GetComponent<Hand>().TriggerHapticPulse( 800 );
+                UpdateAbility ();
             }
             else
             {
-                playerEnergy.UpdateAbilityUseTime();
+                playerEnergy.UpdateAbilityUseTime ();
             }
 
         }
         else
         {
-            RemoveRockFromHand();
+            EndAbility ();
         }
     }
 
@@ -90,6 +82,52 @@ public class PlayerAbility : MonoBehaviour
         return gripAction.GetStateDown (handType);
     }
 
+    public void TriggerNewAbility ()
+    {
+        if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
+        {
+            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
+            GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
+            GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
+            rockNum = allRocks.Length - 1;
+            GetComponent<Hand> ().TriggerHapticPulse (800);
+        }
+        else
+        {
+            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Spike);
+        }
+    }
+
+    public void UpdateAbility ()
+    {
+        if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
+        {
+            GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
+            spawnedRock = allRocks[rockNum];
+            rockSize += (0.01f * Time.deltaTime);
+            spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
+            playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
+            GetComponent<Hand> ().TriggerHapticPulse (800);
+        }
+    }
+
+    public void EndAbility ()
+    {
+        if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
+        {
+            RemoveRockFromHand ();
+        }
+    }
+
+    public void CancelAbility()
+    {
+        if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
+        {
+            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
+            RemoveRockFromHand ();
+        }
+    }
+    
     public void RemoveRockFromHand ()
     {
         if (rockNum != -1)

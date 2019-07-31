@@ -27,8 +27,6 @@ public class ControllerArc : MonoBehaviour
 
 	private bool visible = false;
 
-	private Vector3 pointedAtPosition;
-
 	private float invalidReticleMinScale = 0.2f;
 	private float invalidReticleMaxScale = 1.0f;
 	private float invalidReticleMinScaleDistance = 0.4f;
@@ -37,6 +35,7 @@ public class ControllerArc : MonoBehaviour
 	private Quaternion reticleTargetRotation = Quaternion.identity;
 
 	private bool canUseAbility;
+	private float distanceFromPlayer;
 
 	private static ControllerArc _instance;
 	public static ControllerArc instance
@@ -136,6 +135,7 @@ public class ControllerArc : MonoBehaviour
 		{
 			hitSomething = true;
 			hitMarker = hitInfo.collider.GetComponentInParent<AbilityUsageMarker> ();
+			distanceFromPlayer = Vector3.Distance (hitInfo.point, player.hmdTransform.position);
 		}
 
 		if (pointerAtBadAngle)
@@ -176,8 +176,6 @@ public class ControllerArc : MonoBehaviour
 
 			invalidReticleTransform.gameObject.SetActive (false);
 
-			pointedAtPosition = hitInfo.point;
-
 			pointerEnd = hitInfo.point;
 		}
 		else
@@ -200,7 +198,6 @@ public class ControllerArc : MonoBehaviour
 			reticleTargetRotation = Quaternion.FromToRotation (Vector3.up, normalToUse);
 			invalidReticleTransform.rotation = Quaternion.Slerp (invalidReticleTransform.rotation, reticleTargetRotation, 0.1f);
 
-			float distanceFromPlayer = Vector3.Distance (hitInfo.point, player.hmdTransform.position);
 			float invalidReticleCurrentScale = Util.RemapNumberClamped (distanceFromPlayer, invalidReticleMinScaleDistance, invalidReticleMaxScaleDistance, invalidReticleMinScale, invalidReticleMaxScale);
 			reticleScale.x = invalidReticleCurrentScale;
 			reticleScale.y = invalidReticleCurrentScale;
@@ -217,7 +214,7 @@ public class ControllerArc : MonoBehaviour
 			}
 		}
 
-		destinationReticleTransform.position = pointedAtPosition;
+		destinationReticleTransform.position = pointerEnd;
 		invalidReticleTransform.position = pointerEnd;
 
 		pointerLineRenderer.SetPosition (0, pointerStart);
@@ -296,5 +293,10 @@ public class ControllerArc : MonoBehaviour
 	public bool CanUseAbility ()
 	{
 		return canUseAbility;
+	}
+
+	public float GetDistanceFromPlayer()
+	{
+		return distanceFromPlayer;
 	}
 }

@@ -8,7 +8,10 @@ public class PlayerEnergy : MonoBehaviour
     public enum AbilityType {
         None,
         Heal,
-        Rock
+        Rock,
+        Spike,
+        Wall,
+        Quicksand
     };
 
     public Slider energyBar;
