@@ -13,15 +13,16 @@ public class PlayerAbility : MonoBehaviour
     public SteamVR_Action_Boolean gripAction;
     public float rockStartSize;
     public float energyCost;
+    public GameObject actionPlaceholderPrefab;
     public GameObject spikePrefab;
     public GameObject quicksandPrefab;
 
     private PlayerEnergy playerEnergy;
     private ControllerArc arc;
     private float rockSize = 0;
-    private float spikeSize = 0;
+    private float placeholderSize = 0;
     private GameObject rock;
-    private GameObject spike;
+    private GameObject placeholderInstance;
     private Vector3 spikeEndPosition;
 
     private const float ROCK_CREATE_DIST = 3f;
@@ -58,7 +59,7 @@ public class PlayerAbility : MonoBehaviour
         {
             TriggerNewAbility ();
         }
-        else if (GrabHold () && !playerEnergy.HealAbilityIsActive ())
+        else if (GrabHold () && !playerEnergy.HealAbilityIsActive () && arc.CanUseAbility ())
         {
             if (playerEnergy.EnergyIsNotZero ())
             {
@@ -110,10 +111,9 @@ public class PlayerAbility : MonoBehaviour
         else
         {
             playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Spike);
-            spike = Instantiate (spikePrefab) as GameObject;
-            spikeSize = 0;
-            spike.transform.position = arc.GetEndPosition ();
-            spikeEndPosition = spike.transform.position;
+            placeholderInstance = Instantiate (actionPlaceholderPrefab) as GameObject;
+            placeholderSize = 0;
+            placeholderInstance.transform.position = arc.GetEndPosition ();
         }
     }
 
@@ -121,20 +121,19 @@ public class PlayerAbility : MonoBehaviour
     {
         if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock) && rock != null)
         {
-                rockSize += (ROCK_SIZE_INCREASE_RATE * Time.deltaTime);
-                rock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-                playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
-                GetComponent<Hand> ().TriggerHapticPulse (800);
+            rockSize += (ROCK_SIZE_INCREASE_RATE * Time.deltaTime);
+            rock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
+            playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
+            GetComponent<Hand> ().TriggerHapticPulse (800);
         }
-        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && spike != null)
+        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && placeholderInstance != null)
         {
-                spikeSize += (SPIKE_SIZE_INCREASE_RATE * Time.deltaTime);
-                float spikeXY = spikeSize + spike.transform.localScale.x;
-                float spikeZ = (spikeSize * 2) + spike.transform.localScale.z;
-                spike.transform.localScale = new Vector3 (spikeXY, spikeXY, spikeZ);
-                spikeEndPosition = spike.transform.position;
-                spikeEndPosition.y += spike.transform.localScale.y;
-                playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Spike);
+            placeholderSize += (SPIKE_SIZE_INCREASE_RATE * Time.deltaTime);
+            float sizeXZ = placeholderSize + placeholderInstance.transform.localScale.x;
+            placeholderInstance.transform.localScale = new Vector3 (sizeXZ, 0.5f, sizeXZ);
+            spikeEndPosition = placeholderInstance.transform.position;
+            spikeEndPosition.y += placeholderInstance.transform.localScale.y + 1f;
+            playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Spike);
         }
     }
 
@@ -144,13 +143,29 @@ public class PlayerAbility : MonoBehaviour
         {
             RemoveRockFromHand ();
         }
-        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && spike != null)
+        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && placeholderInstance != null)
         {
-            float controllerVelocity = Math.Abs(controllerPose.GetVelocity().y);
-            float spikeVelocity = (controllerVelocity / SPIKE_SPEED_REDUCTION) + SPIKE_BASE_SPEED;
-            spike.GetComponent<SpikeMovement>().SetSpeed(spikeVelocity);
-            spike.GetComponent<SpikeMovement>().SetEndPosition(spikeEndPosition);
-            spike = null;
+            float controllerVelocity = controllerPose.GetVelocity ().y;
+            if (controllerVelocity <= 0)
+            {
+                playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Quicksand);
+                GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
+                quicksand.transform.position = placeholderInstance.transform.position;
+                quicksand.transform.localScale = new Vector3 (placeholderInstance.transform.localScale.x, .01f, placeholderInstance.transform.localScale.z);
+                Destroy (placeholderInstance);
+            }
+            else
+            {
+                GameObject spike = Instantiate (spikePrefab) as GameObject;
+                spike.transform.position = placeholderInstance.transform.position;
+                spike.transform.localScale = new Vector3 (placeholderInstance.transform.localScale.x, placeholderInstance.transform.localScale.z, placeholderInstance.transform.localScale.z * 2);
+
+                float spikeVelocity = (controllerVelocity / SPIKE_SPEED_REDUCTION) + SPIKE_BASE_SPEED;
+                spike.GetComponent<SpikeMovement> ().SetSpeed (spikeVelocity);
+                spike.GetComponent<SpikeMovement> ().SetEndPosition (spikeEndPosition);
+            }
+
+            Destroy (placeholderInstance);
         }
     }
 
@@ -160,10 +175,10 @@ public class PlayerAbility : MonoBehaviour
         {
             RemoveRockFromHand ();
         }
-        else if (spike != null)
+        else if (placeholderInstance != null)
         {
-            Destroy(spike);
-            spikeSize = 0;
+            Destroy (placeholderInstance);
+            placeholderSize = 0;
         }
         playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
     }
