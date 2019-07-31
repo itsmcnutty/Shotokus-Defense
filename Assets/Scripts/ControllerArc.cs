@@ -36,6 +36,7 @@ public class ControllerArc : MonoBehaviour
 
 	private bool canUseAbility;
 	private float distanceFromPlayer;
+	private Vector3 pointerEnd;
 
 	private static ControllerArc _instance;
 	public static ControllerArc instance
@@ -113,7 +114,6 @@ public class ControllerArc : MonoBehaviour
 	private void UpdatePointer ()
 	{
 		Vector3 pointerStart = hand.transform.position;
-		Vector3 pointerEnd;
 		Vector3 pointerDir = hand.transform.forward;
 		bool hitSomething = false;
 
@@ -298,5 +298,10 @@ public class ControllerArc : MonoBehaviour
 	public float GetDistanceFromPlayer()
 	{
 		return distanceFromPlayer;
+	}
+
+	public Vector3 GetEndPosition()
+	{
+		return pointerEnd;
 	}
 }
