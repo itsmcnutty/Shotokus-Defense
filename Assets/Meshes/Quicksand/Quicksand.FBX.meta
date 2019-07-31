@@ -1,11 +1,16 @@
 fileFormatVersion: 2
-guid: a0e602248f4ec0247858271c9901aa15
+guid: f94045ad7e827be4ebf703ed148d5212
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 08 - sand_cap
+    second: {fileID: 2100000, guid: 45ef6d76f6230884fadc0f57844fb836, type: 2}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

@@ -19,7 +19,7 @@ public class SamuraiMovement : MonoBehaviour
     // Timer for attack delay
     private float attackTimer = 0f;
     
-    // THis is the agent to move around by NavMesh
+    // THis is the agent to move around by NavMesh/**/
     public NavMeshAgent agent;
 
 

@@ -174,7 +174,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101119270}
-  m_Material: {fileID: 13400000, guid: 0aa34d7d628bdb04082aa16112cc8fd1, type: 2}
+  m_Material: {fileID: 13400000, guid: 55da8bef809f2e04c9398df2fdaa7ea3, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -860,6 +860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 586554820}
+  - component: {fileID: 586554821}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -881,6 +882,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &586554821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586554819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6b751a15f431fa4fac78513c0baabf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyProducer: {fileID: 274783960}
+  numOfEnemiesPerWave: 2
+  increaseOfEnePerWave: 2
 --- !u!1 &605528914
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,6 +1947,53 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 821952736}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1285139710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1285139711}
+  - component: {fileID: 1285139712}
+  m_Layer: 0
+  m_Name: PlayerRadius
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1285139711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285139710}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2115013168}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1285139712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285139710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Size: {x: 4, y: 3, z: 4}
+  m_Center: {x: 0, y: 1, z: 0}
+  m_Area: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &1345382580
 GameObject:
   m_ObjectHideFlags: 0
@@ -3215,7 +3278,7 @@ MonoBehaviour:
   gripAction:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
-  rockStartSize: 0.1
+  rockStartSize: 0.04
   energyCost: 1
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
@@ -3255,7 +3318,7 @@ MonoBehaviour:
   gripAction:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
-  rockStartSize: 0.1
+  rockStartSize: 0.04
   energyCost: 1
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
