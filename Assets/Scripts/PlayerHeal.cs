@@ -38,12 +38,12 @@ public class PlayerHeal : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if (GrabPress () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
+        if (GrabPress () && playerEnergy.HealAbilityIsActive ())
         {
             playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
             firstTriggerHeld = null;
         }
-        else if (GripHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
+        else if (GripHold () && !playerEnergy.RockAbilityIsActive ())
         {
             if (firstTriggerHeld == null)
             {
