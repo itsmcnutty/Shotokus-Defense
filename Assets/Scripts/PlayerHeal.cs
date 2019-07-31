@@ -13,6 +13,7 @@ public class PlayerHeal : MonoBehaviour
     public Hand hand;
     public float energyCost;
     private static Hand firstTriggerHeld;
+    private static bool bothTriggersHeld;
     private PlayerHealth playerHealth;
     private PlayerEnergy playerEnergy;
     private const float HAND_DIST_Y = 0.1f;
@@ -48,15 +49,22 @@ public class PlayerHeal : MonoBehaviour
             {
                 firstTriggerHeld = hand;
             }
-            else if (firstTriggerHeld != hand && HandClose ())
+            else if (firstTriggerHeld != hand && HandsAreClose ())
             {
                 playerHealth.RegenHealth ();
                 playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Heal);
+                bothTriggersHeld = true;
+            }
+
+            if(bothTriggersHeld)
+            {
+                GetComponent<Hand>().TriggerHapticPulse( 1500 );
             }
         }
         else
         {
             firstTriggerHeld = null;
+            bothTriggersHeld = false;
         }
     }
 
@@ -70,7 +78,7 @@ public class PlayerHeal : MonoBehaviour
         return grabAction.GetStateDown (handType);
     }
 
-    public bool HandClose ()
+    public bool HandsAreClose ()
     {
         Vector3 handPos = hand.transform.position;
         Vector3 otherHandPos = firstTriggerHeld.transform.position;

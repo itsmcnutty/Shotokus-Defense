@@ -50,6 +50,7 @@ public class PlayerAbility : MonoBehaviour
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             rockNum = allRocks.Length - 1;
+			GetComponent<Hand>().TriggerHapticPulse( 800 );
         }
         else if (GrabHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Heal))
         {
@@ -60,6 +61,7 @@ public class PlayerAbility : MonoBehaviour
                 rockSize += (0.01f * Time.deltaTime);
                 spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
                 playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
+			    GetComponent<Hand>().TriggerHapticPulse( 800 );
             }
 
         }
