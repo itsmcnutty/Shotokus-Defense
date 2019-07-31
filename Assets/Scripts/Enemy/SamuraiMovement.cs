@@ -55,8 +55,8 @@ public class SamuraiMovement : MonoBehaviour
         
         // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
 //        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
-        // todo check that this is the current speed of the agent at a certain point in time
-        float moveSpeed = agent.speed;
+        // todo what do i need? current speed at a certain time?
+        float moveSpeed = agent.velocity.magnitude;
         Debug.Log("movement speed is " + moveSpeed);
 //        
 	    // Move
@@ -67,7 +67,7 @@ public class SamuraiMovement : MonoBehaviour
         
 
         // Pass speed to animation controller
-        animator.SetFloat("WalkSpeed", moveSpeed / 80f);
+        animator.SetFloat("WalkSpeed", moveSpeed );
 
         // Decrement attack timer
         attackTimer -= Time.deltaTime;
