@@ -149,8 +149,11 @@ public class PlayerAbility : MonoBehaviour
             float controllerVelocity = controllerPose.GetVelocity ().y;
             if (controllerVelocity <= 0)
             {
-                playerEnergy.SetActiveAbility(PlayerEnergy.AbilityType.Quicksand);
-                Debug.Log("Quicksand goes here...");
+                playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Quicksand);
+                GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
+                quicksand.transform.position = new Vector3(spike.transform.position.x, spike.transform.position.y - 1f, spike.transform.position.z);
+                quicksand.transform.localScale = new Vector3 (spike.transform.localScale.x, 1.01f, spike.transform.localScale.x);
+                Destroy (spike);
             }
             else
             {
