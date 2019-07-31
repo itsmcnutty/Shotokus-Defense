@@ -1,45 +1,77 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SamuraiMovement : MonoBehaviour
 {
 
     // Character speed
     public float SPEED = 0f;
-    // How close the character must be before it stops coming closer
-    public float FOLLOW_RADIUS = 1f;
+    // How close to the player the enemy attempts to stay
+    public double FOLLOW_RADIUS = 1f;
+    // Time between attacks (seconds)
+    public float ATTACK_DELAY = 2f;
+    // How close the enemy must be to begin attacking
+    private double attackRadius;
+    // Timer for attack delay
+    private float attackTimer = 0f;
+    
+    // THis is the agent to move around by NavMesh
+    public NavMeshAgent agent;
 
-    // Square of follow radius (for simplified calculations)
-    private float sqrFollowRadius;
+
+    private CharacterController characterController;
+    private Animator animator;
+    private GameObject player;
 
     private void Start()
     {
-        sqrFollowRadius = FOLLOW_RADIUS;
+        characterController = gameObject.GetComponent<CharacterController>();
+        animator = gameObject.GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("MainCamera");
+
+        attackRadius = FOLLOW_RADIUS + 0.5;
     }
 
     // Update is called once per frame
     void Update()
     {
         // Store transform variables for player and this enemy
-        Vector3 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+        Vector3 playerPos = player.transform.position;
         Vector3 gameObjPos = transform.position;
     
         // Calculate direction 
-        Vector3 moveDir = playerPos - gameObjPos;
-        moveDir.y = 0;
-        moveDir.Normalize();
-        transform.forward = moveDir;
+//        Vector3 moveDir = playerPos - gameObjPos;
+//        moveDir.y = 0;
+//        moveDir.Normalize();
+//        transform.forward = moveDir;
     
-        // Move if far enough away
-        double sqrDist = Math.Pow(playerPos.x - gameObjPos.x, 2) +
-                         Math.Pow(playerPos.z - gameObjPos.z, 2);
-        if (sqrDist > sqrFollowRadius)
+        // Calculate enemy distance
+        double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+                                      Math.Pow(playerPos.z - gameObjPos.z, 2));
+        
+        // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
+        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
+//        
+	    // Move
+//        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
+        agent.SetDestination(playerPos);
+
+        // Pass speed to animation controller
+        animator.SetFloat("WalkSpeed", moveSpeed / 80f);
+
+        // Decrement attack timer
+        attackTimer -= Time.deltaTime;
+        
+        if (attackTimer <= 0f && dist <= attackRadius)
         {
-            // Move speed is equal to speed if character is far away. Otherwise proportional to dist from follow radius.
-            float moveSpeed = SPEED * (float)Math.Min(1f, sqrDist - sqrFollowRadius);
-            gameObject.GetComponent<CharacterController>().SimpleMove(moveSpeed * Time.deltaTime * moveDir);
+            animator.SetTrigger("Slash");
+            attackTimer = ATTACK_DELAY;
         }
+        
+
     }
 }
