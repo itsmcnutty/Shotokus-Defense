@@ -17,7 +17,7 @@ public class PlayerAbility : MonoBehaviour
     private ControllerArc arc;
     private GameObject spawnedRock;
     private float rockSize = 0;
-    private int rockNum = 0;
+    private int rockNum = -1;
 
     private void Awake ()
     {
@@ -52,7 +52,7 @@ public class PlayerAbility : MonoBehaviour
             rockNum = allRocks.Length - 1;
 			GetComponent<Hand>().TriggerHapticPulse( 800 );
         }
-        else if (GrabHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Heal))
+        else if (GrabHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Heal) && rockNum != -1)
         {
             if (playerEnergy.EnergyIsNotZero ())
             {
@@ -92,12 +92,12 @@ public class PlayerAbility : MonoBehaviour
 
     public void RemoveRockFromHand ()
     {
-        if (rockNum != 0)
+        if (rockNum != -1)
         {
             GetComponent<SpawnAndAttachToHand> ().hand.DetachObject (GameObject.FindGameObjectsWithTag ("Rock") [rockNum]);
+            rockNum = -1;
         }
         rockSize = rockStartSize;
-        rockNum = 0;
         playerEnergy.RegenEnergy ();
     }
 
