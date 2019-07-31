@@ -54,7 +54,10 @@ public class SamuraiMovement : MonoBehaviour
                                       Math.Pow(playerPos.z - gameObjPos.z, 2));
         
         // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
-        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
+//        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
+        // todo check that this is the current speed of the agent at a certain point in time
+        float moveSpeed = agent.speed;
+        Debug.Log("movement speed is " + moveSpeed);
 //        
 	    // Move
 //        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
