@@ -14,9 +14,10 @@ public class PlayerAbility : MonoBehaviour
     public float energyCost;
 
     private PlayerEnergy playerEnergy;
+    private ControllerArc arc;
     private GameObject spawnedRock;
     private float rockSize = 0;
-    private int rockNum = 0;
+    private int rockNum = -1;
 
     private void Awake ()
     {
@@ -25,6 +26,8 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
+
+        arc = GetComponentInChildren<ControllerArc>();
     }
 
     // Start is called before the first frame update
@@ -41,14 +44,15 @@ public class PlayerAbility : MonoBehaviour
             playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
             RemoveRockFromHand();
         }
-        else if (GrabPress ())
+        else if (GrabPress () && arc.CanUseAbility())
         {
             playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
             GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
             GameObject[] allRocks = GameObject.FindGameObjectsWithTag ("Rock");
             rockNum = allRocks.Length - 1;
+			GetComponent<Hand>().TriggerHapticPulse( 800 );
         }
-        else if (GrabHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Heal))
+        else if (GrabHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Heal) && rockNum != -1)
         {
             if (playerEnergy.EnergyIsNotZero ())
             {
@@ -57,6 +61,11 @@ public class PlayerAbility : MonoBehaviour
                 rockSize += (0.01f * Time.deltaTime);
                 spawnedRock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
                 playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
+			    GetComponent<Hand>().TriggerHapticPulse( 800 );
+            }
+            else
+            {
+                playerEnergy.UpdateAbilityUseTime();
             }
 
         }
@@ -83,12 +92,12 @@ public class PlayerAbility : MonoBehaviour
 
     public void RemoveRockFromHand ()
     {
-        if (rockNum != 0)
+        if (rockNum != -1)
         {
             GetComponent<SpawnAndAttachToHand> ().hand.DetachObject (GameObject.FindGameObjectsWithTag ("Rock") [rockNum]);
+            rockNum = -1;
         }
         rockSize = rockStartSize;
-        rockNum = 0;
         playerEnergy.RegenEnergy ();
     }
 

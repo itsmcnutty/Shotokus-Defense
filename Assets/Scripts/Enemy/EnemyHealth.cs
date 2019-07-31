@@ -19,6 +19,17 @@ public class EnemyHealth : MonoBehaviour
 
 	private float health;
 
+	// EVENTS STUFF DELETE IF other method works
+//	public delegate void EnemyDeathEvent();
+//	public event EnemyDeathEvent OnEnemyDeath;
+	
+	// public event Action<EnemyHealth> OnEnemyDeath; //  testing
+	// Reference to game controller in order to update how many enemies have been destroyed
+	// MAYBE THIS NEEDS TO TAKE A GAME OBJECT AND GET THE GAMECONTROLLER COMPONENT
+	// TODO CANT ADD THIS SHIT TO THE PREFAB CUZ ITS NOT UNIVERSAL, ITS JUST FOR THE SCENE FIX
+//	public GameObject gameController;
+
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -28,10 +39,26 @@ public class EnemyHealth : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		health -= calculateDamage(other.impulse.magnitude);
+		
 
 		if (health <= 0f)
 		{
+			Debug.Log("Enemy Died");
+			// Testing subscriptions -------------------
+//			if(OnEnemyDeath != null) {
+//				Debug.Log("SUBSCRIBE TO MEEEEEEEEEEEEEEEEEEEE");
+//				OnEnemyDeath();
+//			}
 			Destroy(gameObject);
+			// Indicate the Game Controller that an enemy was destroyed
+//			GameController gameControlComp = gameController.GetComponent<GameController>();
+//			if (gameControlComp != null)
+//			{
+//				gameControlComp.enemyGotDestroyed();
+//
+//			}
+			GameController.Instance.enemyGotDestroyed();
+			// ------------
 		}
 		
 		Debug.Log("Collision: " + health);

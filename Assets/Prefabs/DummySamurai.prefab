@@ -1296,7 +1296,7 @@ GameObject:
   - component: {fileID: 4876990112013004936}
   m_Layer: 9
   m_Name: DummySamurai
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1404,7 +1404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd923125896806243808fdc885c49fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 50
+  MAX_HEALTH: 0.1
   ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 1
 --- !u!195 &4876990112013004936
