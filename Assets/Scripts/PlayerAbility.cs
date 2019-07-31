@@ -14,6 +14,7 @@ public class PlayerAbility : MonoBehaviour
     public float rockStartSize;
     public float energyCost;
     public GameObject spikePrefab;
+    public GameObject quicksandPrefab;
 
     private PlayerEnergy playerEnergy;
     private ControllerArc arc;
