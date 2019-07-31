@@ -45,8 +45,8 @@ public class PlayerEnergy : MonoBehaviour
             }
             energyBar.value = currentEnergy;
             SetEnergyBarText();
-            lastAbilityUsedTime = Time.time;
         }
+        UpdateAbilityUseTime();
     }
 
     public void RegenEnergy()
@@ -69,6 +69,11 @@ public class PlayerEnergy : MonoBehaviour
     public void SetEnergyBarText()
     {
         energyBarText.text = currentEnergy + " / " + maxEnergy;
+    }
+
+    public void UpdateAbilityUseTime()
+    {
+        lastAbilityUsedTime = Time.time;
     }
 
     public bool AbilityIsActive(AbilityType type)

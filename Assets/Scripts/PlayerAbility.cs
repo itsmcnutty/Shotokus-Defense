@@ -63,6 +63,10 @@ public class PlayerAbility : MonoBehaviour
                 playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
 			    GetComponent<Hand>().TriggerHapticPulse( 800 );
             }
+            else
+            {
+                playerEnergy.UpdateAbilityUseTime();
+            }
 
         }
         else

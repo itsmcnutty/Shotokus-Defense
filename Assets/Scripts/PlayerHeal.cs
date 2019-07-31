@@ -38,12 +38,12 @@ public class PlayerHeal : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if(GrabPress() && !playerEnergy.AbilityIsActive(PlayerEnergy.AbilityType.Rock))
+        if (GrabPress () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
         {
-            playerEnergy.SetActiveAbility(PlayerEnergy.AbilityType.Rock);
+            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
             firstTriggerHeld = null;
         }
-        else if (GripHold() && !playerEnergy.AbilityIsActive(PlayerEnergy.AbilityType.Rock))
+        else if (GripHold () && !playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
         {
             if (firstTriggerHeld == null)
             {
@@ -51,14 +51,22 @@ public class PlayerHeal : MonoBehaviour
             }
             else if (firstTriggerHeld != hand && HandsAreClose ())
             {
-                playerHealth.RegenHealth ();
-                playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Heal);
-                bothTriggersHeld = true;
+                if (playerEnergy.EnergyIsNotZero ())
+                {
+                    playerHealth.RegenHealth ();
+                    playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Heal);
+                    bothTriggersHeld = true;
+                }
+                else
+                {
+                    playerEnergy.UpdateAbilityUseTime ();
+                    bothTriggersHeld = false;
+                }
             }
 
-            if(bothTriggersHeld)
+            if (bothTriggersHeld && HandsAreClose ())
             {
-                GetComponent<Hand>().TriggerHapticPulse( 1500 );
+                GetComponent<Hand> ().TriggerHapticPulse (1500);
             }
         }
         else
