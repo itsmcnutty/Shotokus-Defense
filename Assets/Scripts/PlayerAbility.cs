@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,10 @@ public class PlayerAbility : MonoBehaviour
     private Vector3 spikeEndPosition;
 
     private const float ROCK_CREATE_DIST = 3f;
+    private const float ROCK_SIZE_INCREASE_RATE = 0.01f;
+    private const float SPIKE_SIZE_INCREASE_RATE = 0.001f;
+    private const float SPIKE_SPEED_REDUCTION = 10f;
+    private const float SPIKE_BASE_SPEED = .05f;
 
     private void Awake ()
     {
@@ -108,8 +113,6 @@ public class PlayerAbility : MonoBehaviour
             spikeSize = 0;
             spike.transform.position = arc.GetEndPosition ();
             spikeEndPosition = spike.transform.position;
-            spikeEndPosition.y += 1f;
-
         }
     }
 
@@ -117,19 +120,19 @@ public class PlayerAbility : MonoBehaviour
     {
         if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock) && rock != null)
         {
-                rockSize += (0.01f * Time.deltaTime);
+                rockSize += (ROCK_SIZE_INCREASE_RATE * Time.deltaTime);
                 rock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
                 playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Rock);
                 GetComponent<Hand> ().TriggerHapticPulse (800);
         }
         else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && spike != null)
         {
-                spikeSize += (10f * Time.deltaTime);
+                spikeSize += (SPIKE_SIZE_INCREASE_RATE * Time.deltaTime);
                 float spikeXY = spikeSize + spike.transform.localScale.x;
                 float spikeZ = (spikeSize * 2) + spike.transform.localScale.z;
                 spike.transform.localScale = new Vector3 (spikeXY, spikeXY, spikeZ);
                 spikeEndPosition = spike.transform.position;
-                spikeEndPosition.y += 1f;
+                spikeEndPosition.y += spike.transform.localScale.y;
                 playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Spike);
         }
     }
@@ -142,7 +145,9 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && spike != null)
         {
-            spike.GetComponent<SpikeMovement>().SetSpeed(0.1f);
+            float controllerVelocity = Math.Abs(controllerPose.GetVelocity().y);
+            float spikeVelocity = (controllerVelocity / SPIKE_SPEED_REDUCTION) + SPIKE_BASE_SPEED;
+            spike.GetComponent<SpikeMovement>().SetSpeed(spikeVelocity);
             spike.GetComponent<SpikeMovement>().SetEndPosition(spikeEndPosition);
             spike = null;
         }
@@ -150,13 +155,14 @@ public class PlayerAbility : MonoBehaviour
 
     public void CancelAbility ()
     {
-        if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock))
+        if (rock != null)
         {
             RemoveRockFromHand ();
         }
-        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike))
+        else if (spike != null)
         {
             Destroy(spike);
+            spikeSize = 0;
         }
         playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
     }
