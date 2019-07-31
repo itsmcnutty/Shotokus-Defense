@@ -5,11 +5,15 @@ using UnityEngine.UI;
 
 public class PlayerEnergy : MonoBehaviour
 {
-    public enum AbilityType {
+    public enum AbilityType
+    {
         None,
         Heal,
-        Rock
-    };
+        Rock,
+        Spike,
+        Wall,
+        Quicksand
+    }
 
     public Slider energyBar;
     public Text energyBarText;
@@ -21,67 +25,84 @@ public class PlayerEnergy : MonoBehaviour
     private AbilityType activeAbility;
 
     // Start is called before the first frame update
-    void Start()
+    void Start ()
     {
         currentEnergy = maxEnergy;
         energyBar.maxValue = maxEnergy;
         energyBar.value = maxEnergy;
-        SetEnergyBarText();
+        SetEnergyBarText ();
     }
 
     // Update is called once per frame
-    void Update()
+    void Update ()
     {
-        
+
     }
- 
-    public void UseEnergy(float energy, AbilityType type)
+
+    public void UseEnergy (float energy, AbilityType type)
     {
-        SetActiveAbility(type);
-        if(currentEnergy > 0) {
+        SetActiveAbility (type);
+        if (currentEnergy > 0)
+        {
             currentEnergy -= energy;
-            if(currentEnergy < 0) {
+            if (currentEnergy < 0)
+            {
                 currentEnergy = 0;
             }
             energyBar.value = currentEnergy;
-            SetEnergyBarText();
+            SetEnergyBarText ();
         }
-        UpdateAbilityUseTime();
+        UpdateAbilityUseTime ();
     }
 
-    public void RegenEnergy()
+    public void RegenEnergy ()
     {
-        if((Time.time - lastAbilityUsedTime) > regenDelayInSec && currentEnergy < maxEnergy) {
+        if ((Time.time - lastAbilityUsedTime) > regenDelayInSec && currentEnergy < maxEnergy)
+        {
             currentEnergy += regenEnergyRate;
-            if(currentEnergy > maxEnergy) {
+            if (currentEnergy > maxEnergy)
+            {
                 currentEnergy = maxEnergy;
             }
             energyBar.value = currentEnergy;
-            SetEnergyBarText();
+            SetEnergyBarText ();
         }
     }
 
-    public bool EnergyIsNotZero()
+    public bool EnergyIsNotZero ()
     {
         return currentEnergy > 0;
     }
 
-    public void SetEnergyBarText()
+    public void SetEnergyBarText ()
     {
         energyBarText.text = currentEnergy + " / " + maxEnergy;
     }
 
-    public void UpdateAbilityUseTime()
+    public void UpdateAbilityUseTime ()
     {
         lastAbilityUsedTime = Time.time;
     }
 
-    public bool AbilityIsActive(AbilityType type)
+    public bool AbilityIsActive (AbilityType type)
     {
         return type == activeAbility;
     }
 
-    public void SetActiveAbility(AbilityType type)
+    public bool HealAbilityIsActive ()
+    {
+        return activeAbility == AbilityType.Heal;
+    }
+
+    public bool RockAbilityIsActive ()
+    {
+        return activeAbility == AbilityType.Rock ||
+            activeAbility == AbilityType.Spike ||
+            activeAbility == AbilityType.Wall ||
+            activeAbility == AbilityType.Quicksand;
+    }
+
+    public void SetActiveAbility (AbilityType type)
     {
         activeAbility = type;
     }
