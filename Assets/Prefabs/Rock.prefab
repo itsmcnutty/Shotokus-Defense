@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 7191589670482388299}
   - component: {fileID: -3138388518036797745}
   - component: {fileID: 4662126226468682029}
-  - component: {fileID: -2687819784849404642}
+  - component: {fileID: -2513560046980156956}
+  - component: {fileID: 1232436743600896166}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Rock
@@ -183,7 +184,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2de65168f3bd06245ac2559601b712cf, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -207,7 +208,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 7702779526387289552, guid: 18257f75f80bc7340ab7ca8268cc1ce0, type: 3}
+  m_Mesh: {fileID: 0}
   m_Bones: []
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
@@ -215,7 +216,21 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.7223339, y: 0.8365116, z: -1.9245911}
     m_Extent: {x: 17.819134, y: 17.6789, z: 17.092875}
   m_DirtyAABB: 0
---- !u!114 &-2687819784849404642
+--- !u!64 &-2513560046980156956
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9120694383006430445}
+  m_Material: {fileID: 13400000, guid: 55da8bef809f2e04c9398df2fdaa7ea3, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 0}
+--- !u!114 &1232436743600896166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,3 +245,6 @@ MonoBehaviour:
   meshes:
   - {fileID: 7702779526387289552, guid: 18257f75f80bc7340ab7ca8268cc1ce0, type: 3}
   - {fileID: 5244915625381210605, guid: e8606464a4619fa40a398213a52fad3d, type: 3}
+  mats:
+  - {fileID: 2100000, guid: 2de65168f3bd06245ac2559601b712cf, type: 2}
+  - {fileID: 2100000, guid: 2de65168f3bd06245ac2559601b712cf, type: 2}
