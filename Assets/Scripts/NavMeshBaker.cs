@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class RockCrash : MonoBehaviour
+public class NavMeshBaker : MonoBehaviour
 {
 
-    private bool crashed = false;
+    public NavMeshSurface surface;
     
     // Start is called before the first frame update
     void Start()
@@ -17,11 +17,6 @@ public class RockCrash : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        crashed = true;
+        surface.BuildNavMesh();
     }
 }
