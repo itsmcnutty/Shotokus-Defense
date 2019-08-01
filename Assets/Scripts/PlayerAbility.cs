@@ -124,9 +124,9 @@ public class PlayerAbility : MonoBehaviour
                 {
                     playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Wall);
                     wall = Instantiate (wallPrefab) as GameObject;
-                    
+
                     SetWallLocation ();
-                    initialHandHeight = Math.Min(hand.transform.position.y, otherHand.transform.position.y);
+                    initialHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
                 }
                 else
                 {
@@ -198,11 +198,9 @@ public class PlayerAbility : MonoBehaviour
 
             Destroy (placeholderInstance);
         }
-        else if(playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Wall) && wall != null)
+        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Wall) && wall != null)
         {
-            firstHandHeld = null;
-            wall = null;
-            lastAngle = 0;
+            ResetWallInfo ();
         }
     }
 
@@ -217,6 +215,11 @@ public class PlayerAbility : MonoBehaviour
             Destroy (placeholderInstance);
             placeholderSize = 0;
         }
+        else if (wall != null)
+        {
+            Destroy (wall);
+            ResetWallInfo ();
+        }
         playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Heal);
     }
 
@@ -224,6 +227,13 @@ public class PlayerAbility : MonoBehaviour
     {
         GetComponent<SpawnAndAttachToHand> ().hand.DetachObject (rock);
         rockSize = rockStartSize;
+    }
+
+    private void ResetWallInfo ()
+    {
+        firstHandHeld = null;
+        wall = null;
+        lastAngle = 0;
     }
 
     private Vector3 GetWallPosition ()
@@ -236,21 +246,17 @@ public class PlayerAbility : MonoBehaviour
         return new Vector3 (wallPosX, wallPosY, wallPosZ);
     }
 
-    private bool IsRightHand ()
-    {
-        return GameObject.FindWithTag ("Left Hand") == otherHand;
-    }
-
     private void SetWallLocation ()
     {
         Vector3 wallPosition = GetWallPosition ();
 
-        float wallHeight = Math.Max(initialHandHeight, Math.Min(hand.transform.position.y, otherHand.transform.position.y));
+        float wallHeight = Math.Max (initialHandHeight, Math.Min (hand.transform.position.y, otherHand.transform.position.y));
 
         wall.transform.position = new Vector3 (wallPosition.x, wallPosition.y, wallPosition.z);
         wall.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), wallHeight, 0.1f);
-        
-        float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wall.transform.position, new Vector3(0,-1,0));
+
+        float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wall.transform.position, new Vector3 (0, -1, 0));
+        angle += Vector3.SignedAngle (wall.transform.position, new Vector3 (1, 0, 0), new Vector3 (0, -1, 0));
         float newAngle = angle;
         angle -= lastAngle;
         if (Math.Abs (angle) >= 0.1f)
@@ -258,17 +264,6 @@ public class PlayerAbility : MonoBehaviour
             lastAngle = newAngle;
             wall.transform.Rotate (0, angle, 0, Space.Self);
         }
-    }
-
-    private Vector3 UpdateWallPosition (Vector3 closeWallEdge, Vector3 farWallEdge)
-    {
-        Vector3 newWallEdge = arc.GetEndPosition ();
-        float midIncX = (newWallEdge.x - closeWallEdge.x) / (closeWallEdge.x - farWallEdge.x);
-        float newMidX = wall.transform.position.x + (midIncX * wall.transform.position.x);
-        float midIncZ = (newWallEdge.z - closeWallEdge.z) / (closeWallEdge.z - farWallEdge.z);
-        float newMidZ = wall.transform.position.z + (midIncZ * wall.transform.position.z);
-        wall.transform.position = new Vector3 (newMidX, wall.transform.position.y, newMidZ);
-        return newWallEdge;
     }
 
     public bool IsNotUsingWall ()
