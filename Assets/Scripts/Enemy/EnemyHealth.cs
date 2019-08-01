@@ -42,7 +42,6 @@ public class EnemyHealth : CallParentCollision
 		// Do nothing if enemy hit itself or environment
 		if (IsChild(other.gameObject) || other.gameObject.isStatic)
 		{
-			
 			return;
 		}
 
