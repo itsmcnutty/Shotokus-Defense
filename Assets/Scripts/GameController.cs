@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -8,7 +9,8 @@ public class GameController : MonoBehaviour
 
     private static GameController instance; // instance for singleton pattern
     public EnemyProducer enemyProducer;
-    public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave
+    public int initialNumOfEnemies; // initial number of enemies to start a round with
+    private int numOfEnemiesPerWave; // number of enemies to be spawned in one wave
     public int increaseOfEnePerWave; // how many more enemies per wave
     private int enemiesDestroyed; // number of enemies destroyed in current Wave
     
@@ -31,11 +33,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        // CAREFUL might return an array
-//        var enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyHealth>();
-//        Debug.Log(enemy);
-//        enemy.OnEnemyDeath += OnEnemyDeath;
-
+        numOfEnemiesPerWave = initialNumOfEnemies;
         StartWave(numOfEnemiesPerWave);
     }
 
@@ -74,6 +72,23 @@ public class GameController : MonoBehaviour
         Debug.Log("Starting new Wave!!");
         StartWave(numOfEnemiesPerWave);
 //        Invoke("StartWave", 3);
+    }
+
+    public void RestartGame()
+    {
+        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var enemy in enemies)
+        {
+            Destroy(enemy);
+        }
+        
+        // todo translate player to beginning position
+        
+        // Message to indicate the player they lost
+        Debug.Log("You LOST");
+        
+        // Reset values of wave
+        StartWave(initialNumOfEnemies);
     }
     
     // To be called when an enemey is destroyed

@@ -57,15 +57,13 @@ public class SamuraiMovement : MonoBehaviour
 //        float moveSpeed = SPEED * (float)Math.Min(1f, dist - FOLLOW_RADIUS);
         // todo what do i need? current speed at a certain time?
         float moveSpeed = agent.velocity.magnitude;
-        Debug.Log("movement speed is " + moveSpeed);
+//        Debug.Log("movement speed is " + moveSpeed);
 //        
 	    // Move
 //        characterController.SimpleMove(moveSpeed * Time.deltaTime * moveDir);
         agent.SetDestination(playerPos);
         
         
-        
-
         // Pass speed to animation controller
         animator.SetFloat("WalkSpeed", moveSpeed );
 
