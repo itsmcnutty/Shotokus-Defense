@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : CallParentCollision
 {
 	// Scalar value to compute damage from impulse
 	private static float IMPULSE_MULTIPLIER = 0.4f;
@@ -36,8 +36,22 @@ public class EnemyHealth : MonoBehaviour
 		health = MAX_HEALTH;
 	}
 
-	private void OnCollisionEnter(Collision other)
+	// Called by child when receiving a collision event or a collision from its child
+	protected override void OnCollisionEnterChild(GameObject child, Collision other)
 	{
+		// Do nothing if enemy hit itself or environment
+		if (IsChild(other.gameObject) || other.gameObject.isStatic)
+		{
+			
+			return;
+		}
+
+		// Begin ragdolling if not already ragdolling
+		if (!GetComponent<RagdollController>().IsRagdolling())
+		{
+			GetComponent<RagdollController>().StartRagdoll();
+		}
+		
 		health -= calculateDamage(other.impulse.magnitude);
 		
 
@@ -79,5 +93,20 @@ public class EnemyHealth : MonoBehaviour
 		}
 
 		return damage;
+	}
+
+	// Returns true if the specified GameObject is a child of this GameObject
+	private bool IsChild(GameObject obj)
+	{
+		// Reached uppermost GameObject in hierarchy
+		if (obj.transform.parent == null)
+		{
+			// True if found this enemy
+			return gameObject == obj;
+		}
+		
+		// True if found this enemy, continue to recurse if not
+		return gameObject == obj || 
+		       IsChild(obj.transform.parent.gameObject);
 	}
 }
