@@ -40,7 +40,7 @@ public class EnemyHealth : CallParentCollision
 	protected override void OnCollisionEnterChild(GameObject child, Collision other)
 	{
 		// Do nothing if enemy hit itself or environment
-		if (IsChild(other.gameObject) || other.gameObject.isStatic)
+		if (IsChildOfEnemy(other.gameObject) || other.gameObject.isStatic)
 		{
 			return;
 		}
@@ -95,17 +95,17 @@ public class EnemyHealth : CallParentCollision
 	}
 
 	// Returns true if the specified GameObject is a child of this GameObject
-	private bool IsChild(GameObject obj)
+	private bool IsChildOfEnemy(GameObject obj)
 	{
 		// Reached uppermost GameObject in hierarchy
 		if (obj.transform.parent == null)
 		{
-			// True if found this enemy
-			return gameObject == obj;
+			// True if found an enemy
+			return obj.CompareTag("Enemy");
 		}
 		
-		// True if found this enemy, continue to recurse if not
-		return gameObject == obj || 
-		       IsChild(obj.transform.parent.gameObject);
+		// True if found an enemy, continue to recurse if not
+		return obj.CompareTag("Enemy") || 
+		       IsChildOfEnemy(obj.transform.parent.gameObject);
 	}
 }

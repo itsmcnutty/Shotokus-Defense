@@ -24,6 +24,11 @@ public class RagdollController : MonoBehaviour
             rigidbody.gameObject.AddComponent<CallParentCollision>();
             rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
     }
     
     // Returns true when the enemy is ragdolling
