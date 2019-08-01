@@ -14,6 +14,8 @@ public class PlayerAbility : MonoBehaviour
     public Hand otherHand;
     public float rockStartSize;
     public float energyCost;
+
+    [Header( "Prefabs" )]
     public GameObject actionPlaceholderPrefab;
     public GameObject spikePrefab;
     public GameObject quicksandPrefab;
@@ -40,7 +42,7 @@ public class PlayerAbility : MonoBehaviour
     private const float SPIKE_SIZE_INCREASE_RATE = 0.001f;
     private const float SPIKE_SPEED_REDUCTION = 10f;
     private const float SPIKE_BASE_SPEED = .05f;
-    private const float WALL_OVERLAP_DISTANCE = 20f;
+    private const float WALL_OVERLAP_DISTANCE = 2f;
 
     private void Awake ()
     {
@@ -259,7 +261,7 @@ public class PlayerAbility : MonoBehaviour
         angle += Vector3.SignedAngle (wall.transform.position, new Vector3 (1, 0, 0), new Vector3 (0, -1, 0));
         float newAngle = angle;
         angle -= lastAngle;
-        if (Math.Abs (angle) >= 0.1f)
+        if (Math.Abs (angle) >= 0.5f)
         {
             lastAngle = newAngle;
             wall.transform.Rotate (0, angle, 0, Space.Self);
