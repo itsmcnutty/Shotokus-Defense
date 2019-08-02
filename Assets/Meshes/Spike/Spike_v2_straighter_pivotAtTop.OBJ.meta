@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 47686f0215fbb7a4283a6b435f90c6e6
+guid: 40cd24decb080af47b80879633ec9777
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Group56570Mat
+    second: {fileID: 2100000, guid: 2de65168f3bd06245ac2559601b712cf, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -59,8 +64,8 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
