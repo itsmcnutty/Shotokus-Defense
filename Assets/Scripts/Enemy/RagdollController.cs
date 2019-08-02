@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RagdollController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class RagdollController : MonoBehaviour
     private Rigidbody[] rigidbodies;
     // The enemy's Animator component
     private Animator animator;
+    // The enemy's NavMeshAgent componenet
+    private NavMeshAgent agent;
     // True when ragdolling
     private bool ragdolling = false;
     
@@ -18,6 +21,7 @@ public class RagdollController : MonoBehaviour
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
 
         foreach (var rigidbody in rigidbodies)
         {
@@ -36,12 +40,15 @@ public class RagdollController : MonoBehaviour
     public void StartRagdoll()
     {
         ragdolling = true;
+        
+        // Disable animation and pathfinding
         animator.enabled = false;
+        agent.enabled = false;
 
         // Zero velocity of all rigidbodies so they don't maintain this from the animation
         foreach (var rigidbody in rigidbodies)
         {
-            rigidbody.velocity = 10f*Vector3.back;
+            rigidbody.velocity = Vector3.zero;
         }
 
         StartCoroutine("WaitAndStop");
@@ -51,8 +58,15 @@ public class RagdollController : MonoBehaviour
     public void StopRagdoll()
     {
         ragdolling = false;
+        
+        // Re-enable animation
         animator.enabled = true;
+        
+        // Move to position where ragdoll was laying and re-enable pathfinding
         transform.position = rigidbodies[0].transform.position;
+        agent.enabled = true;
+        
+        // Restart animation in Walking state
         animator.SetTrigger("Reset");
         animator.Update(0f);
     }
