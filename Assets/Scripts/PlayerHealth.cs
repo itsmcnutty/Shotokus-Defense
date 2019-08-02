@@ -35,6 +35,11 @@ public class PlayerHealth : MonoBehaviour
             healthBar.value = currentHealth;
             SetHealthBarText();
         }
+        else
+        {
+            // restart game
+            GameController.Instance.RestartGame();
+        }
     }
 
     public void RegenHealth()
@@ -47,6 +52,14 @@ public class PlayerHealth : MonoBehaviour
             healthBar.value = currentHealth;
             SetHealthBarText();
         }
+    }
+
+    // restore all health - used when dying & maybe power up 
+    public void RecoverAllHealth()
+    {
+        currentHealth = maxHealth;
+        healthBar.value = currentHealth;
+        SetHealthBarText();
     }
 
     public bool HealthIsNotZero()

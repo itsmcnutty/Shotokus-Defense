@@ -922,7 +922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyProducer: {fileID: 274783960}
-  numOfEnemiesPerWave: 2
+  initialNumOfEnemies: 2
   increaseOfEnePerWave: 2
 --- !u!1 &605528914
 GameObject:
@@ -2448,6 +2448,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4876990112013004936, guid: 1d7c91bf1c6fbcc42a86dd578f14cc8f,
+        type: 3}
+      propertyPath: m_Speed
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d7c91bf1c6fbcc42a86dd578f14cc8f, type: 3}
 --- !u!1 &1490744157 stripped
@@ -3195,6 +3200,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 13693334, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 13693334, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 11455280, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -3242,6 +3255,10 @@ PrefabInstance:
     - target: {fileID: 191996, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 191996, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_TagString
+      value: PlayerCollider
       objectReference: {fileID: 0}
     - target: {fileID: 1000013281422588, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_Layer
@@ -3459,8 +3476,7 @@ MonoBehaviour:
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
     type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
-    type: 3}
+  wallPrefab: {fileID: 0}
 --- !u!54 &2115013162
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3506,8 +3522,7 @@ MonoBehaviour:
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
     type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
-    type: 3}
+  wallPrefab: {fileID: 0}
 --- !u!114 &2115013164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3582,6 +3597,22 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2115013148}
   m_PrefabAsset: {fileID: 0}
+--- !u!208 &2115013169
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115013157}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 1, y: 1, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0
