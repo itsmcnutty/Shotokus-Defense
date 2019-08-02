@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dee9c749964c8e544b4be6106ce914ec
+guid: e2a67416ac5616d44b24898d552dc2bf
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
@@ -7,7 +7,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: 'Material #1'
+      name: Group33034Mat
     second: {fileID: 2100000, guid: 2de65168f3bd06245ac2559601b712cf, type: 2}
   materials:
     importMaterials: 1
@@ -62,10 +62,10 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
