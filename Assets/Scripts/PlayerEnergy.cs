@@ -48,7 +48,6 @@ public class PlayerEnergy : MonoBehaviour
         if (EnergyIsNotZero ())
         {
             activeAbilityEnergyCost[activeHand] += energy;
-            Debug.Log ("Energy: " + activeAbilityEnergyCost[activeHand]);
             float afterAbilityEnergy = GetTotalEnergyUsage ();
             if (afterAbilityEnergy < 0)
             {
@@ -59,6 +58,21 @@ public class PlayerEnergy : MonoBehaviour
             SetEnergyBarText ();
         }
         UpdateAbilityUseTime ();
+    }
+
+    public float SetTempEnergy (Hand activeHand, float energy)
+    {
+        activeAbilityEnergyCost[activeHand] = energy;
+        float afterAbilityEnergy = GetTotalEnergyUsage ();
+        if (afterAbilityEnergy < 0)
+        {
+            afterAbilityEnergy = 0;
+            activeAbilityEnergyCost[activeHand] -= (energy - afterAbilityEnergy);
+        }
+        energyBarAfter.value = currentEnergy - afterAbilityEnergy;
+        SetEnergyBarText ();
+        UpdateAbilityUseTime ();
+        return energy - afterAbilityEnergy;
     }
 
     public void DrainRealEnergy (float energy)
