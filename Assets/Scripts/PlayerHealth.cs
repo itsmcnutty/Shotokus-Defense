@@ -54,6 +54,14 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    // restore all health - used when dying & maybe power up 
+    public void RecoverAllHealth()
+    {
+        currentHealth = maxHealth;
+        healthBar.value = currentHealth;
+        SetHealthBarText();
+    }
+
     public bool HealthIsNotZero()
     {
         return currentHealth > 0;

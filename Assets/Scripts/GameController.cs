@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using Valve.VR.InteractionSystem;
 
 public class GameController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class GameController : MonoBehaviour
     private int numOfEnemiesPerWave; // number of enemies to be spawned in one wave
     public int increaseOfEnePerWave; // how many more enemies per wave
     private int enemiesDestroyed; // number of enemies destroyed in current Wave
+    private PlayerHealth playerHealth; // controller for player health once round ends
+
+    
     
     // Constructor
     private GameController(){}
@@ -33,6 +37,13 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+        GameObject player = GameObject.FindWithTag ("MainCamera");
+        if (player != null)
+        {
+            playerHealth = player.GetComponent<PlayerHealth> ();
+//            playerEnergy = player.GetComponent<PlayerEnergy> ();
+        }
+        
         numOfEnemiesPerWave = initialNumOfEnemies;
         StartWave(numOfEnemiesPerWave);
     }
@@ -88,6 +99,7 @@ public class GameController : MonoBehaviour
         Debug.Log("You LOST");
         
         // Reset values of wave
+        playerHealth.RecoverAllHealth();
         StartWave(initialNumOfEnemies);
     }
     

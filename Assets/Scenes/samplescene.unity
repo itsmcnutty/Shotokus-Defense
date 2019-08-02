@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 274783960}
   m_Layer: 0
   m_Name: EnemyProducer
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3467,7 +3467,7 @@ MonoBehaviour:
   gripAction:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
-  otherHand: {fileID: 0}
+  otherHand: {fileID: 2115013156}
   rockStartSize: 0.04
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
@@ -3513,7 +3513,7 @@ MonoBehaviour:
   gripAction:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
-  otherHand: {fileID: 0}
+  otherHand: {fileID: 2115013155}
   rockStartSize: 0.04
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
