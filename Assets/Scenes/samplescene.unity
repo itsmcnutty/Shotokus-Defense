@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyProducer: {fileID: 274783960}
-  initialNumOfEnemies: 2
+  initialNumOfEnemies: 0
   increaseOfEnePerWave: 2
 --- !u!1 &605528914
 GameObject:
@@ -2256,7 +2256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8396226, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3755,7 +3755,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af27627367acba45b0d2bb22b971028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBar: {fileID: 430679209}
+  energyBarBefore: {fileID: 430679209}
+  energyBarAfter: {fileID: 1987855673}
   energyBarText: {fileID: 387317435}
   maxEnergy: 1000
   regenEnergyRate: 5
