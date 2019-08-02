@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Valve.VR.InteractionSystem;
 
 public class PlayerEnergy : MonoBehaviour
 {
@@ -20,17 +21,18 @@ public class PlayerEnergy : MonoBehaviour
     public float maxEnergy;
     public float regenEnergyRate;
     public float regenDelayInSec;
+
     private float currentEnergy;
-    private float afterAbilityEnergy;
     private float lastAbilityUsedTime;
     private List<AbilityType> activeAbilities;
+    private Dictionary<Hand, float> activeAbilityEnergyCost;
 
     // Start is called before the first frame update
     void Start ()
     {
-        activeAbilities = new List<AbilityType>();
+        activeAbilities = new List<AbilityType> ();
+        activeAbilityEnergyCost = new Dictionary<Hand, float> ();
         currentEnergy = maxEnergy;
-        afterAbilityEnergy = maxEnergy;
         energyBarBefore.maxValue = maxEnergy;
         energyBarBefore.value = maxEnergy;
         energyBarAfter.maxValue = maxEnergy;
@@ -39,21 +41,21 @@ public class PlayerEnergy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update ()
-    {
-        Debug.Log(activeAbilities.Count);
-    }
+    void Update () { }
 
-    public void DrainTempEnergy (float energy)
+    public void DrainTempEnergy (Hand activeHand, float energy)
     {
-        if (afterAbilityEnergy > 0)
+        if (EnergyIsNotZero ())
         {
-            afterAbilityEnergy -= energy;
+            activeAbilityEnergyCost[activeHand] += energy;
+            Debug.Log ("Energy: " + activeAbilityEnergyCost[activeHand]);
+            float afterAbilityEnergy = GetTotalEnergyUsage ();
             if (afterAbilityEnergy < 0)
             {
                 afterAbilityEnergy = 0;
+                activeAbilityEnergyCost[activeHand] -= (energy - afterAbilityEnergy);
             }
-            energyBarAfter.value = afterAbilityEnergy;
+            energyBarAfter.value = currentEnergy - afterAbilityEnergy;
             SetEnergyBarText ();
         }
         UpdateAbilityUseTime ();
@@ -68,7 +70,6 @@ public class PlayerEnergy : MonoBehaviour
             {
                 currentEnergy = 0;
             }
-            afterAbilityEnergy = currentEnergy;
             energyBarBefore.value = currentEnergy;
             energyBarAfter.value = currentEnergy;
             SetEnergyBarText ();
@@ -76,17 +77,18 @@ public class PlayerEnergy : MonoBehaviour
         UpdateAbilityUseTime ();
     }
 
-    public void UseEnergy (AbilityType type)
+    public void UseEnergy (AbilityType type, Hand activeHand)
     {
-        currentEnergy = afterAbilityEnergy;
+        currentEnergy -= activeAbilityEnergyCost[activeHand];
         energyBarBefore.value = currentEnergy;
+        activeAbilityEnergyCost[activeHand] = 0;
         RemoveActiveAbility (type);
     }
 
-    public void CancelEnergyUsage (AbilityType type)
+    public void CancelEnergyUsage (AbilityType type, Hand activeHand)
     {
-        afterAbilityEnergy = currentEnergy;
         energyBarAfter.value = currentEnergy;
+        activeAbilityEnergyCost[activeHand] = 0;
         SetEnergyBarText ();
         RemoveActiveAbility (type);
     }
@@ -100,7 +102,6 @@ public class PlayerEnergy : MonoBehaviour
             {
                 currentEnergy = maxEnergy;
             }
-            afterAbilityEnergy = currentEnergy;
             energyBarBefore.value = currentEnergy;
             energyBarAfter.value = currentEnergy;
             SetEnergyBarText ();
@@ -109,12 +110,12 @@ public class PlayerEnergy : MonoBehaviour
 
     public bool EnergyIsNotZero ()
     {
-        return afterAbilityEnergy > 0;
+        return (currentEnergy - GetTotalEnergyUsage ()) > 0;
     }
 
     public void SetEnergyBarText ()
     {
-        energyBarText.text = afterAbilityEnergy + " / " + maxEnergy;
+        energyBarText.text = (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
     }
 
     public void UpdateAbilityUseTime ()
@@ -151,6 +152,31 @@ public class PlayerEnergy : MonoBehaviour
         {
             activeAbilities.Remove (type);
         }
+    }
+
+    public void AddHandToActive (Hand activeHand)
+    {
+        activeAbilityEnergyCost.Add (activeHand, 0);
+    }
+
+    public void RemoveHandFromActive (Hand activeHand)
+    {
+        float entry;
+        if (activeAbilityEnergyCost.TryGetValue (activeHand, out entry))
+        {
+            activeAbilityEnergyCost.Remove (activeHand);
+        }
+    }
+
+    private float GetTotalEnergyUsage ()
+    {
+        float totalEnergy = 0;
+        foreach (float abilityEnergyCost in activeAbilityEnergyCost.Values)
+        {
+            totalEnergy += abilityEnergyCost;
+        }
+        return totalEnergy;
+
     }
 
 }
