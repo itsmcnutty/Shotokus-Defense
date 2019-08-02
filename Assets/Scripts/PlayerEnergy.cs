@@ -7,7 +7,6 @@ public class PlayerEnergy : MonoBehaviour
 {
     public enum AbilityType
     {
-        None,
         Heal,
         Rock,
         Spike,
@@ -15,33 +14,53 @@ public class PlayerEnergy : MonoBehaviour
         Quicksand
     }
 
-    public Slider energyBar;
+    public Slider energyBarBefore;
+    public Slider energyBarAfter;
     public Text energyBarText;
     public float maxEnergy;
     public float regenEnergyRate;
     public float regenDelayInSec;
     private float currentEnergy;
+    private float afterAbilityEnergy;
     private float lastAbilityUsedTime;
-    private AbilityType activeAbility;
+    private List<AbilityType> activeAbilities;
 
     // Start is called before the first frame update
     void Start ()
     {
+        activeAbilities = new List<AbilityType>();
         currentEnergy = maxEnergy;
-        energyBar.maxValue = maxEnergy;
-        energyBar.value = maxEnergy;
+        afterAbilityEnergy = maxEnergy;
+        energyBarBefore.maxValue = maxEnergy;
+        energyBarBefore.value = maxEnergy;
+        energyBarAfter.maxValue = maxEnergy;
+        energyBarAfter.value = maxEnergy;
         SetEnergyBarText ();
     }
 
     // Update is called once per frame
     void Update ()
     {
-
+        Debug.Log(activeAbilities.Count);
     }
 
-    public void UseEnergy (float energy, AbilityType type)
+    public void DrainTempEnergy (float energy)
     {
-        SetActiveAbility (type);
+        if (afterAbilityEnergy > 0)
+        {
+            afterAbilityEnergy -= energy;
+            if (afterAbilityEnergy < 0)
+            {
+                afterAbilityEnergy = 0;
+            }
+            energyBarAfter.value = afterAbilityEnergy;
+            SetEnergyBarText ();
+        }
+        UpdateAbilityUseTime ();
+    }
+
+    public void DrainRealEnergy (float energy)
+    {
         if (currentEnergy > 0)
         {
             currentEnergy -= energy;
@@ -49,10 +68,27 @@ public class PlayerEnergy : MonoBehaviour
             {
                 currentEnergy = 0;
             }
-            energyBar.value = currentEnergy;
+            afterAbilityEnergy = currentEnergy;
+            energyBarBefore.value = currentEnergy;
+            energyBarAfter.value = currentEnergy;
             SetEnergyBarText ();
         }
         UpdateAbilityUseTime ();
+    }
+
+    public void UseEnergy (AbilityType type)
+    {
+        currentEnergy = afterAbilityEnergy;
+        energyBarBefore.value = currentEnergy;
+        RemoveActiveAbility (type);
+    }
+
+    public void CancelEnergyUsage (AbilityType type)
+    {
+        afterAbilityEnergy = currentEnergy;
+        energyBarAfter.value = currentEnergy;
+        SetEnergyBarText ();
+        RemoveActiveAbility (type);
     }
 
     public void RegenEnergy ()
@@ -64,19 +100,21 @@ public class PlayerEnergy : MonoBehaviour
             {
                 currentEnergy = maxEnergy;
             }
-            energyBar.value = currentEnergy;
+            afterAbilityEnergy = currentEnergy;
+            energyBarBefore.value = currentEnergy;
+            energyBarAfter.value = currentEnergy;
             SetEnergyBarText ();
         }
     }
 
     public bool EnergyIsNotZero ()
     {
-        return currentEnergy > 0;
+        return afterAbilityEnergy > 0;
     }
 
     public void SetEnergyBarText ()
     {
-        energyBarText.text = currentEnergy + " / " + maxEnergy;
+        energyBarText.text = afterAbilityEnergy + " / " + maxEnergy;
     }
 
     public void UpdateAbilityUseTime ()
@@ -86,25 +124,33 @@ public class PlayerEnergy : MonoBehaviour
 
     public bool AbilityIsActive (AbilityType type)
     {
-        return type == activeAbility;
+        return activeAbilities.Contains (type);
     }
 
     public bool HealAbilityIsActive ()
     {
-        return activeAbility == AbilityType.Heal;
+        return activeAbilities.Contains (AbilityType.Heal);
     }
 
     public bool RockAbilityIsActive ()
     {
-        return activeAbility == AbilityType.Rock ||
-            activeAbility == AbilityType.Spike ||
-            activeAbility == AbilityType.Wall ||
-            activeAbility == AbilityType.Quicksand;
+        return activeAbilities.Contains (AbilityType.Rock) ||
+            activeAbilities.Contains (AbilityType.Spike) ||
+            activeAbilities.Contains (AbilityType.Wall) ||
+            activeAbilities.Contains (AbilityType.Quicksand);
     }
 
-    public void SetActiveAbility (AbilityType type)
+    public void AddActiveAbility (AbilityType type)
     {
-        activeAbility = type;
+        activeAbilities.Add (type);
+    }
+
+    public void RemoveActiveAbility (AbilityType type)
+    {
+        if (activeAbilities.Contains (type))
+        {
+            activeAbilities.Remove (type);
+        }
     }
 
 }

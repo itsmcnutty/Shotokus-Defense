@@ -40,7 +40,8 @@ public class PlayerHeal : MonoBehaviour
     {
         if (GrabPress () && playerEnergy.HealAbilityIsActive ())
         {
-            playerEnergy.SetActiveAbility (PlayerEnergy.AbilityType.Rock);
+            playerEnergy.AddActiveAbility (PlayerEnergy.AbilityType.Rock);
+            playerEnergy.RemoveActiveAbility (PlayerEnergy.AbilityType.Heal);
             firstTriggerHeld = null;
         }
         else if (GripHold () && !playerEnergy.RockAbilityIsActive ())
@@ -51,10 +52,14 @@ public class PlayerHeal : MonoBehaviour
             }
             else if (firstTriggerHeld != hand && HandsAreClose ())
             {
+                if(!playerEnergy.HealAbilityIsActive())
+                {
+                    playerEnergy.AddActiveAbility(PlayerEnergy.AbilityType.Heal);
+                }
                 if (playerEnergy.EnergyIsNotZero ())
                 {
                     playerHealth.RegenHealth ();
-                    playerEnergy.UseEnergy (energyCost, PlayerEnergy.AbilityType.Heal);
+                    playerEnergy.DrainRealEnergy (energyCost);
                     bothTriggersHeld = true;
                 }
                 else
@@ -71,6 +76,7 @@ public class PlayerHeal : MonoBehaviour
         }
         else
         {
+            playerEnergy.RemoveActiveAbility (PlayerEnergy.AbilityType.Heal);
             firstTriggerHeld = null;
             bothTriggersHeld = false;
         }
