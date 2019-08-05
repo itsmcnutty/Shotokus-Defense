@@ -117,12 +117,6 @@ public class SamuraiMovement : MonoBehaviour
         rndPos += rndPos.normalized * minRadius;
         return new Vector3(playerPos.x + rndPos.x, playerPos.y, playerPos.z + rndPos.y);
     }
-
-    public void startMoving()
-    {
-        agent.isStopped = false;
-    }
-
     
     
 }
