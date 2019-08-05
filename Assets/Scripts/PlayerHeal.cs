@@ -12,8 +12,8 @@ public class PlayerHeal : MonoBehaviour
     public SteamVR_Action_Boolean grabAction;
     public Hand hand;
     public float energyCost;
+    private static bool healAvailable;
     private static Hand firstTriggerHeld;
-    private static bool bothTriggersHeld;
     private PlayerHealth playerHealth;
     private PlayerEnergy playerEnergy;
     private const float HAND_DIST_Y = 0.1f;
@@ -38,11 +38,16 @@ public class PlayerHeal : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        Debug.Log(healAvailable);
         if (GrabPress ())
         {
-            playerEnergy.RemoveActiveAbility (PlayerEnergy.AbilityType.Heal);
+            healAvailable = false;
         }
-        else if (GripHold () && !playerEnergy.RockAbilityIsActive ())
+        else if(GripPress())
+        {
+            healAvailable = true;
+        }
+        else if (GripHold () && healAvailable)
         {
             if (firstTriggerHeld == null)
             {
@@ -52,27 +57,26 @@ public class PlayerHeal : MonoBehaviour
             {
                 if (playerEnergy.EnergyIsNotZero ())
                 {
+                    GetComponent<Hand> ().TriggerHapticPulse (1500);
+                    firstTriggerHeld.GetComponent<Hand> ().TriggerHapticPulse (1500);
                     playerHealth.RegenHealth ();
                     playerEnergy.DrainRealEnergy (energyCost);
-                    bothTriggersHeld = true;
                 }
                 else
                 {
                     playerEnergy.UpdateAbilityUseTime ();
-                    bothTriggersHeld = false;
                 }
-            }
-
-            if (bothTriggersHeld && HandsAreClose ())
-            {
-                GetComponent<Hand> ().TriggerHapticPulse (1500);
             }
         }
         else
         {
             firstTriggerHeld = null;
-            bothTriggersHeld = false;
         }
+    }
+
+    public bool GripPress ()
+    {
+        return gripAction.GetStateDown (handType);
     }
 
     public bool GripHold ()
