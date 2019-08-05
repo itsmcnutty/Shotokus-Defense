@@ -91,18 +91,16 @@ public class SamuraiMovement : MonoBehaviour
             animator.SetTrigger("Slash");
             attackTimer = ATTACK_DELAY;
         }
+        
         // outside attack radius, therefore animator should be walking
-        else
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Slashing")) // if not in slashing animation
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Slashing")) // if not in slashing animation
-            {
 //                Debug.Log("Im not slashing, I WILL WALK");
-                agent.isStopped = false;
-            }
-            else // if slashing then stop walking
-            {
-                agent.isStopped = true;
-            }
+            agent.isStopped = false;
+        }
+        else // if slashing then stop walking
+        {
+            agent.isStopped = true;
         }
         
     }
