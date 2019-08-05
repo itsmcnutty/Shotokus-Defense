@@ -40,6 +40,7 @@ public class PlayerAbility : MonoBehaviour
     private static Hand firstHandHeld;
     private static float lastAngle;
     private static float startingHandHeight;
+    private static float currentWallHeight;
 
     private const float ROCK_CREATE_DIST = 3f;
     private const float ROCK_SIZE_INCREASE_RATE = 0.01f;
@@ -74,7 +75,8 @@ public class PlayerAbility : MonoBehaviour
         {
             CancelAbility ();
         }
-        else if (GrabPress ())
+        
+        if (GrabPress ())
         {
             TriggerNewAbility ();
         }
@@ -94,12 +96,14 @@ public class PlayerAbility : MonoBehaviour
         {
             EndAbility ();
         }
-        else if (DrawPress ())
+        
+        if (DrawPress ())
         {
             EnterDrawMode ();
         }
         else if (DrawHold ())
         {
+            playerEnergy.UpdateAbilityUseTime ();
             if (WallOutlineIsActive () && arc.CanUseAbility () && otherArc.CanUseAbility ())
             {
                 SetWallLocation ();
@@ -111,10 +115,6 @@ public class PlayerAbility : MonoBehaviour
             {
                 CancelAbility ();
             }
-        }
-        else
-        {
-            playerEnergy.RegenEnergy ();
         }
     }
 
@@ -215,12 +215,17 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (WallIsActive ())
         {
-            float currentHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight;
-            if (currentHandHeight > wall.transform.position.y)
+            float newHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 10f;
+            if (newHandHeight < 1 && currentWallHeight < newHandHeight)
             {
-                Vector3 newPos = new Vector3 (wall.transform.position.x, currentHandHeight, wall.transform.position.z);
-                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 1f);
-                playerEnergy.SetTempEnergy (hand, (wall.transform.position.x * currentHandHeight) * WALL_SIZE_MULTIPLIER);
+                currentWallHeight = newHandHeight;
+                Vector3 newPos = new Vector3 (wall.transform.position.x, wall.transform.localScale.y * newHandHeight, wall.transform.position.z);
+                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 0.1f);
+                playerEnergy.SetTempEnergy (hand, (wall.transform.position.x * newHandHeight) * WALL_SIZE_MULTIPLIER);
+            }
+            else
+            {
+                playerEnergy.UpdateAbilityUseTime();
             }
         }
     }
@@ -317,6 +322,7 @@ public class PlayerAbility : MonoBehaviour
         wallOutline = null;
         wall = null;
         lastAngle = 0;
+        currentWallHeight = 0;
     }
 
     private Vector3 GetWallPosition ()
@@ -377,7 +383,7 @@ public class PlayerAbility : MonoBehaviour
         return wall != null;
     }
 
-    public bool WallOutlineIsActive ()
+    private bool WallOutlineIsActive ()
     {
         return wallOutline != null;
     }
