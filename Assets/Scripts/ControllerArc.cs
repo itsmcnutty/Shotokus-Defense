@@ -37,7 +37,6 @@ public class ControllerArc : MonoBehaviour
 	private bool canUseAbility;
 	private float distanceFromPlayer;
 	private Vector3 pointerEnd;
-	private PlayerAbility playerAbility;
 
 	private static ControllerArc _instance;
 	public static ControllerArc instance
@@ -77,8 +76,6 @@ public class ControllerArc : MonoBehaviour
 		{
 			Destroy (this.gameObject);
 		}
-
-		playerAbility = GetComponentInParent<PlayerAbility>();
 	}
 
 	void Update ()
@@ -88,7 +85,7 @@ public class ControllerArc : MonoBehaviour
 			if (WasButtonReleased ()) { }
 		}
 
-		if (IsButtonDown () && playerAbility.IsNotUsingWall())
+		if (IsButtonDown ())
 		{
 			applyPoint = false;
 		}

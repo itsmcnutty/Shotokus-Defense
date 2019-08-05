@@ -6,15 +6,6 @@ using Valve.VR.InteractionSystem;
 
 public class PlayerEnergy : MonoBehaviour
 {
-    public enum AbilityType
-    {
-        Heal,
-        Rock,
-        Spike,
-        Wall,
-        Quicksand
-    }
-
     public Slider energyBarBefore;
     public Slider energyBarAfter;
     public Text energyBarText;
@@ -24,13 +15,11 @@ public class PlayerEnergy : MonoBehaviour
 
     private float currentEnergy;
     private float lastAbilityUsedTime;
-    private List<AbilityType> activeAbilities;
     private Dictionary<Hand, float> activeAbilityEnergyCost;
 
     // Start is called before the first frame update
     void Start ()
     {
-        activeAbilities = new List<AbilityType> ();
         activeAbilityEnergyCost = new Dictionary<Hand, float> ();
         currentEnergy = maxEnergy;
         energyBarBefore.maxValue = maxEnergy;
@@ -41,7 +30,8 @@ public class PlayerEnergy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update () { }
+    void Update () { 
+    }
 
     public void DrainTempEnergy (Hand activeHand, float energy)
     {
@@ -91,20 +81,18 @@ public class PlayerEnergy : MonoBehaviour
         UpdateAbilityUseTime ();
     }
 
-    public void UseEnergy (AbilityType type, Hand activeHand)
+    public void UseEnergy (Hand activeHand)
     {
         currentEnergy -= activeAbilityEnergyCost[activeHand];
         energyBarBefore.value = currentEnergy;
         activeAbilityEnergyCost[activeHand] = 0;
-        RemoveActiveAbility (type);
     }
 
-    public void CancelEnergyUsage (AbilityType type, Hand activeHand)
+    public void CancelEnergyUsage (Hand activeHand)
     {
         energyBarAfter.value = currentEnergy;
         activeAbilityEnergyCost[activeHand] = 0;
         SetEnergyBarText ();
-        RemoveActiveAbility (type);
     }
 
     public void RegenEnergy ()
@@ -137,37 +125,6 @@ public class PlayerEnergy : MonoBehaviour
         lastAbilityUsedTime = Time.time;
     }
 
-    public bool AbilityIsActive (AbilityType type)
-    {
-        return activeAbilities.Contains (type);
-    }
-
-    public bool HealAbilityIsActive ()
-    {
-        return activeAbilities.Contains (AbilityType.Heal);
-    }
-
-    public bool RockAbilityIsActive ()
-    {
-        return activeAbilities.Contains (AbilityType.Rock) ||
-            activeAbilities.Contains (AbilityType.Spike) ||
-            activeAbilities.Contains (AbilityType.Wall) ||
-            activeAbilities.Contains (AbilityType.Quicksand);
-    }
-
-    public void AddActiveAbility (AbilityType type)
-    {
-        activeAbilities.Add (type);
-    }
-
-    public void RemoveActiveAbility (AbilityType type)
-    {
-        if (activeAbilities.Contains (type))
-        {
-            activeAbilities.Remove (type);
-        }
-    }
-
     public void AddHandToActive (Hand activeHand)
     {
         activeAbilityEnergyCost.Add (activeHand, 0);
@@ -182,6 +139,11 @@ public class PlayerEnergy : MonoBehaviour
         }
     }
 
+    public float GetRemainingEnergy()
+    {
+        return currentEnergy - GetTotalEnergyUsage ();
+    }
+
     private float GetTotalEnergyUsage ()
     {
         float totalEnergy = 0;
@@ -190,7 +152,6 @@ public class PlayerEnergy : MonoBehaviour
             totalEnergy += abilityEnergyCost;
         }
         return totalEnergy;
-
     }
 
 }
