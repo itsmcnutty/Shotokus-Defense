@@ -75,7 +75,7 @@ public class PlayerAbility : MonoBehaviour
         {
             CancelAbility ();
         }
-        
+
         if (GrabPress ())
         {
             TriggerNewAbility ();
@@ -96,7 +96,7 @@ public class PlayerAbility : MonoBehaviour
         {
             EndAbility ();
         }
-        
+
         if (DrawPress ())
         {
             EnterDrawMode ();
@@ -159,13 +159,23 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                playerEnergy.AddHandToActive (firstHandHeld);
-                wall = Instantiate (wallPrefab) as GameObject;
-                wall.transform.position = wallOutline.transform.position;
-                wall.transform.localScale = wallOutline.transform.localScale;
-                wall.transform.rotation = wallOutline.transform.rotation;
-                startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
-                Destroy (wallOutline);
+                WallOutlineProperties properties = wallOutline.GetComponent<WallOutlineProperties> ();
+                if (properties.CollisionDetected ())
+                {
+                    playerEnergy.CancelEnergyUsage (firstHandHeld);
+                    Destroy (wallOutline);
+                    ResetWallInfo ();
+                }
+                else
+                {
+                    playerEnergy.AddHandToActive (firstHandHeld);
+                    wall = Instantiate (wallPrefab) as GameObject;
+                    wall.transform.position = wallOutline.transform.position;
+                    wall.transform.localScale = wallOutline.transform.localScale;
+                    wall.transform.rotation = wallOutline.transform.rotation;
+                    startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
+                    Destroy (wallOutline);
+                }
             }
             else
             {
@@ -225,7 +235,7 @@ public class PlayerAbility : MonoBehaviour
             }
             else
             {
-                playerEnergy.UpdateAbilityUseTime();
+                playerEnergy.UpdateAbilityUseTime ();
             }
         }
     }
@@ -348,7 +358,7 @@ public class PlayerAbility : MonoBehaviour
         {
             wallOutline.transform.localScale = new Vector3 (remainingEnergy / WALL_SIZE_MULTIPLIER, 1f, 0.1f);
         }
-        else if(arc.GetEndPointsDistance (otherArc) <= 1f)
+        else if (arc.GetEndPointsDistance (otherArc) <= 1f)
         {
             wallOutline.transform.localScale = new Vector3 (1f, remainingEnergy / WALL_SIZE_MULTIPLIER, 0.1f);
         }
