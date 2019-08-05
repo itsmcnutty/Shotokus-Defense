@@ -338,13 +338,17 @@ public class PlayerAbility : MonoBehaviour
         float maxHeight = remainingEnergy / (arc.GetEndPointsDistance (otherArc) * WALL_SIZE_MULTIPLIER);
         float area = arc.GetEndPointsDistance (otherArc) * maxHeight;
         area = (float) Math.Round (area, 2) * WALL_SIZE_MULTIPLIER;
-        if (maxHeight > 1f)
+        if (maxHeight <= 1f)
         {
-            wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
+            wallOutline.transform.localScale = new Vector3 (remainingEnergy / WALL_SIZE_MULTIPLIER, 1f, 0.1f);
+        }
+        else if(arc.GetEndPointsDistance (otherArc) <= 1f)
+        {
+            wallOutline.transform.localScale = new Vector3 (1f, remainingEnergy / WALL_SIZE_MULTIPLIER, 0.1f);
         }
         else
         {
-            wallOutline.transform.localScale = new Vector3 (remainingEnergy / WALL_SIZE_MULTIPLIER, maxHeight, 0.1f);
+            wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
         }
 
         float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wallOutline.transform.position, new Vector3 (0, -1, 0));
