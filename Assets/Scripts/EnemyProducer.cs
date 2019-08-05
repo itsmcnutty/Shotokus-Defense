@@ -6,11 +6,13 @@ public class EnemyProducer : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public GameObject prefab; // prefab to be spawned. Set prefab on the editor
+    public bool shouldSpawn; // boolean to activate spawning
+    public GameObject[] prefab; // prefab to be spawned. Set prefab on the editor
 
     private Bounds spawnArea;
     private int numOfEnemies; // max number of enemies per round
     private int spawnedEnemies = 0; // number of enemies spawned already // todo remove
+    
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +34,10 @@ public class EnemyProducer : MonoBehaviour
     // This spawns the amount of enemies specified by GameController
     public void spawnEnemy(int maxNumOfEnemies)
     {
+        if (!shouldSpawn)
+        {
+            return;
+        }
         numOfEnemies = maxNumOfEnemies;
         spawnArea = this.GetComponent<BoxCollider>().bounds;
 //        InvokeRepeating("Spawner", 3f, 2f);
@@ -39,22 +45,22 @@ public class EnemyProducer : MonoBehaviour
 
         for (int i = 0; i < numOfEnemies; i++)
         {
-            Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
+            Instantiate(prefab[i%prefab.Length], randomSpawnPosition(), Quaternion.identity);
         }
         
     }
 
     // This function checks if the all enemies have been spawned for the current wave
     // if not then it spawns an enemy an increases the spawnedEnemies counter.
-    private void Spawner()
-    {
-        if (spawnedEnemies == numOfEnemies)
-        {
-            return;
-        }
-        Instantiate(prefab, randomSpawnPosition(), Quaternion.identity);
-        spawnedEnemies += 1;
-    }
+//    private void Spawner()
+//    {
+//        if (spawnedEnemies == numOfEnemies)
+//        {
+//            return;
+//        }
+//        Instantiate(prefab[0], randomSpawnPosition(), Quaternion.identity);
+//        spawnedEnemies += 1;
+//    }
     
     // Update is called once per frame
     void Update()
