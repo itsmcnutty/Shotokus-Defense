@@ -25,27 +25,19 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Boolean Teleport
+        public virtual SteamVR_Action_Boolean Trigger
         {
             get
             {
-                return SteamVR_Actions.default_Teleport;
+                return SteamVR_Actions.default_Trigger;
             }
         }
         
-        public virtual SteamVR_Action_Boolean GrabPinch
+        public virtual SteamVR_Action_Boolean Grip
         {
             get
             {
-                return SteamVR_Actions.default_GrabPinch;
-            }
-        }
-        
-        public virtual SteamVR_Action_Boolean GrabGrip
-        {
-            get
-            {
-                return SteamVR_Actions.default_GrabGrip;
+                return SteamVR_Actions.default_Grip;
             }
         }
         
@@ -73,19 +65,19 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Single Squeeze
-        {
-            get
-            {
-                return SteamVR_Actions.default_Squeeze;
-            }
-        }
-        
         public virtual SteamVR_Action_Boolean HeadsetOnHead
         {
             get
             {
                 return SteamVR_Actions.default_HeadsetOnHead;
+            }
+        }
+        
+        public virtual SteamVR_Action_Boolean Draw
+        {
+            get
+            {
+                return SteamVR_Actions.default_Draw;
             }
         }
         

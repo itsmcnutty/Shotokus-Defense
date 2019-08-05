@@ -161,6 +161,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85dfab9623c67784fa7894de63cd1604, type: 3}
+--- !u!1 &41017967 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 105336, guid: dc06161b6d97feb419f45f03b62e14b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2115013148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &41017968
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41017967}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &101119270 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1593707594805610, guid: a87f0180d46fd334b9025d0314a0dc70,
@@ -996,7 +1024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyProducer: {fileID: 274783960}
-  initialNumOfEnemies: 0
+  initialNumOfEnemies: 2
   increaseOfEnePerWave: 2
 --- !u!1 &605528914
 GameObject:
@@ -1489,10 +1517,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabAction:
-    actionPath: /actions/default/in/GrabPinch
+    actionPath: /actions/default/in/Trigger
     needsReinit: 0
   gripAction:
-    actionPath: /actions/default/in/GrabGrip
+    actionPath: /actions/default/in/Grip
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
@@ -2522,6 +2550,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4876990112013004936, guid: 1d7c91bf1c6fbcc42a86dd578f14cc8f,
+        type: 3}
+      propertyPath: m_Speed
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d7c91bf1c6fbcc42a86dd578f14cc8f, type: 3}
 --- !u!1 &1490744157 stripped
@@ -2652,10 +2685,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabAction:
-    actionPath: /actions/default/in/GrabPinch
+    actionPath: /actions/default/in/Trigger
     needsReinit: 0
   gripAction:
-    actionPath: /actions/default/in/GrabGrip
+    actionPath: /actions/default/in/Grip
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
@@ -3395,6 +3428,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 13693334, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 11455280, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -3499,6 +3536,30 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11401046, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.actionPath
+      value: /actions/default/in/Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 11401046, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.actionPath
+      value: /actions/default/in/Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.actionPath
+      value: /actions/default/in/Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.actionPath
+      value: /actions/default/in/Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.actionPath
+      value: /actions/default/in/Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.actionPath
+      value: /actions/default/in/Grip
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
 --- !u!4 &2115013149 stripped
@@ -3593,10 +3654,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 2
   gripAction:
-    actionPath: /actions/default/in/GrabGrip
+    actionPath: /actions/default/in/Grip
     needsReinit: 0
   grabAction:
-    actionPath: /actions/default/in/GrabPinch
+    actionPath: /actions/default/in/Trigger
     needsReinit: 0
   hand: {fileID: 2115013155}
   energyCost: 20
@@ -3645,21 +3706,26 @@ MonoBehaviour:
   handType: 2
   controllerPose: {fileID: 2115013151}
   grabAction:
-    actionPath: /actions/default/in/GrabPinch
+    actionPath: /actions/default/in/Trigger
     needsReinit: 0
   gripAction:
-    actionPath: /actions/default/in/GrabGrip
+    actionPath: /actions/default/in/Grip
+    needsReinit: 0
+  drawAction:
+    actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 2115013156}
   rockStartSize: 0.3
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
+  wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
+    type: 3}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
     type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
+  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
     type: 3}
 --- !u!54 &2115013162
 Rigidbody:
@@ -3692,21 +3758,26 @@ MonoBehaviour:
   handType: 1
   controllerPose: {fileID: 2115013154}
   grabAction:
-    actionPath: /actions/default/in/GrabPinch
+    actionPath: /actions/default/in/Trigger
     needsReinit: 0
   gripAction:
-    actionPath: /actions/default/in/GrabGrip
+    actionPath: /actions/default/in/Grip
+    needsReinit: 0
+  drawAction:
+    actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 2115013155}
   rockStartSize: 0.3
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
+  wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
+    type: 3}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
     type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
+  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
     type: 3}
 --- !u!114 &2115013164
 MonoBehaviour:
@@ -3736,10 +3807,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handType: 1
   gripAction:
-    actionPath: /actions/default/in/GrabGrip
+    actionPath: /actions/default/in/Grip
     needsReinit: 0
   grabAction:
-    actionPath: /actions/default/in/GrabPinch
+    actionPath: /actions/default/in/Trigger
     needsReinit: 0
   hand: {fileID: 2115013156}
   energyCost: 20
@@ -3783,6 +3854,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2115013148}
   m_PrefabAsset: {fileID: 0}
+--- !u!195 &2115013169
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115013157}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,6 @@ public class NavMeshBaker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        surface.BuildNavMesh();
+//        surface.BuildNavMesh();
     }
 }
