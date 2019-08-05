@@ -157,11 +157,13 @@ public class PlayerEnergy : MonoBehaviour
 
     public void AddActiveAbility (AbilityType type)
     {
+        Debug.Log("Adding " + type + "...");
         activeAbilities.Add (type);
     }
 
     public void RemoveActiveAbility (AbilityType type)
     {
+        Debug.Log("Removing " + type + "...");
         if (activeAbilities.Contains (type))
         {
             activeAbilities.Remove (type);
@@ -182,6 +184,11 @@ public class PlayerEnergy : MonoBehaviour
         }
     }
 
+    public float GetRemainingEnergy()
+    {
+        return currentEnergy - GetTotalEnergyUsage ();
+    }
+
     private float GetTotalEnergyUsage ()
     {
         float totalEnergy = 0;
@@ -190,7 +197,6 @@ public class PlayerEnergy : MonoBehaviour
             totalEnergy += abilityEnergyCost;
         }
         return totalEnergy;
-
     }
 
 }
