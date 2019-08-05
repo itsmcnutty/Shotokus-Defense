@@ -76,6 +76,21 @@ public class SamuraiMovement : MonoBehaviour
             attackTimer = ATTACK_DELAY;
         }
         
-
     }
+    
+    // Returns a position near the target (player) based on their transforms
+    Vector3 GetRandomNearTarget(Vector3 playerPos)
+    {
+        int maxRadius = 5;
+        int minRadius = 2;
+        
+        Vector2 rndPos = UnityEngine.Random.insideUnitCircle * (maxRadius - minRadius);
+        
+//        rndPos += rndPos.normalized * minRadius;
+        
+        return new Vector3(playerPos.x + rndPos.x, playerPos.y, playerPos.z + rndPos.y);
+    }
+
+    
+    
 }
