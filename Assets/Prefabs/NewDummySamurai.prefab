@@ -2768,7 +2768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd923125896806243808fdc885c49fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 1
+  MAX_HEALTH: 0.1
   ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 1
 --- !u!195 &7695906914557578904
@@ -2780,7 +2780,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6084799906934014311}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 3
+  m_Radius: 2.5
   m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
