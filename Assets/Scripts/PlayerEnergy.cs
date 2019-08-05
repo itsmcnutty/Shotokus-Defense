@@ -30,7 +30,8 @@ public class PlayerEnergy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update () { 
+    void Update () {
+        RegenEnergy ();
     }
 
     public void DrainTempEnergy (Hand activeHand, float energy)
