@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Timers;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Experimental.PlayerLoop;
 
 public class SamuraiMovement : MonoBehaviour
 {
@@ -26,6 +28,9 @@ public class SamuraiMovement : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
     private GameObject player;
+    
+    private Vector3 playerPos;
+    private Vector3 randomPos;
 
     private void Start()
     {
@@ -34,13 +39,19 @@ public class SamuraiMovement : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("MainCamera");
 
         attackRadius = FOLLOW_RADIUS + 0.5;
+     
+        playerPos = player.transform.position;
+        randomPos = GetRandomNearTarget(playerPos);
+        Debug.Log("Player pos is: " + playerPos);
+        Debug.Log("Enemy pos is: " + randomPos);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         // Store transform variables for player and this enemy
-        Vector3 playerPos = player.transform.position;
+        playerPos = player.transform.position;
         Vector3 gameObjPos = transform.position;
     
         // Calculate direction 
@@ -70,12 +81,40 @@ public class SamuraiMovement : MonoBehaviour
         // Decrement attack timer
         attackTimer -= Time.deltaTime;
         
+        
+        // when attackTimer is lower than 0, it allows the enemy to attack again 
         if (attackTimer <= 0f && dist <= attackRadius)
         {
+//            Debug.Log("attackTime: " + attackTimer);
+//            Debug.Log("Im going to SLASH");
+            agent.isStopped = true;
             animator.SetTrigger("Slash");
             attackTimer = ATTACK_DELAY;
         }
         
-
+        // outside attack radius, therefore animator should be walking
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Slashing")) // if not in slashing animation
+        {
+//                Debug.Log("Im not slashing, I WILL WALK");
+            agent.isStopped = false;
+        }
+        else // if slashing then stop walking
+        {
+            agent.isStopped = true;
+        }
+        
     }
+    
+    // Returns a position near the target (player) based on their transforms
+    Vector3 GetRandomNearTarget(Vector3 playerPos)
+    {
+        int maxRadius = 5;
+        int minRadius = 2;
+        
+        Vector2 rndPos = UnityEngine.Random.insideUnitCircle * (maxRadius - minRadius);
+        rndPos += rndPos.normalized * minRadius;
+        return new Vector3(playerPos.x + rndPos.x, playerPos.y, playerPos.z + rndPos.y);
+    }
+    
+    
 }
