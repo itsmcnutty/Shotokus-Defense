@@ -41,7 +41,9 @@ public class PlayerEnergy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update () { }
+    void Update () {
+        Debug.Log(activeAbilities.Count);    
+    }
 
     public void DrainTempEnergy (Hand activeHand, float energy)
     {

@@ -32,6 +32,8 @@ public class PlayerAbility : MonoBehaviour
     private GameObject player;
     private GameObject rock;
     private GameObject spikeQuicksandOutline;
+    private Rigidbody rockRigidbody;
+    private GameObject placeholderInstance;
     private Vector3 spikeEndPosition;
 
     private static GameObject wallOutline;
@@ -39,6 +41,7 @@ public class PlayerAbility : MonoBehaviour
     private static Hand firstHandHeld;
     private static float lastAngle;
     private static float startingHandHeight;
+    private static float initialHandHeight;
 
     private const float ROCK_CREATE_DIST = 3f;
     private const float ROCK_SIZE_INCREASE_RATE = 0.01f;
@@ -79,7 +82,15 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (GrabHold ())
         {
-            UpdateAbility ();
+            if (playerEnergy.EnergyIsNotZero ())
+            {
+                UpdateAbility ();
+            }
+            else
+            {
+                playerEnergy.UpdateAbilityUseTime ();
+            }
+
         }
         else if (GrabRelease ())
         {
@@ -148,15 +159,24 @@ public class PlayerAbility : MonoBehaviour
     {
         if (wallOutline != null)
         {
-            wall = Instantiate (wallPrefab) as GameObject;
-            wall.transform.position = wallOutline.transform.position;
-            wall.transform.localScale = wallOutline.transform.localScale;
-            wall.transform.rotation = wallOutline.transform.rotation;
-            startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
-            Destroy (wallOutline);
+            if (firstHandHeld != null && firstHandHeld != hand)
+            {
+                playerEnergy.AddHandToActive (firstHandHeld);
+                wall = Instantiate (wallPrefab) as GameObject;
+                wall.transform.position = wallOutline.transform.position;
+                wall.transform.localScale = wallOutline.transform.localScale;
+                wall.transform.rotation = wallOutline.transform.rotation;
+                startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
+                Destroy (wallOutline);
+            }
+            else
+            {
+                firstHandHeld = hand;
+            }
         }
         else if (!playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Wall) && arc.CanUseAbility ())
         {
+            firstHandHeld = null;
             playerEnergy.AddHandToActive (hand);
             if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
             {
@@ -164,11 +184,11 @@ public class PlayerAbility : MonoBehaviour
                 GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
                 GameObject[] allObjects = GameObject.FindGameObjectsWithTag ("Rock");
                 rock = allObjects[allObjects.Length - 1];
+                rockRigidbody = rock.GetComponent<Rigidbody> ();
                 hand.TriggerHapticPulse (800);
             }
             else
             {
-                firstHandHeld = null;
                 playerEnergy.AddActiveAbility (PlayerEnergy.AbilityType.Spike);
                 spikeQuicksandOutline = Instantiate (actionPlaceholderPrefab) as GameObject;
                 placeholderSize = 0;
@@ -179,45 +199,38 @@ public class PlayerAbility : MonoBehaviour
 
     private void UpdateAbility ()
     {
-        if (playerEnergy.EnergyIsNotZero ())
-        {
 
-            if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock) && rock != null)
-            {
-                rockSize += (ROCK_SIZE_INCREASE_RATE * Time.deltaTime);
-                rock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-                playerEnergy.DrainTempEnergy (hand, energyCost);
-                hand.TriggerHapticPulse (800);
-            }
-            else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && spikeQuicksandOutline != null)
-            {
-                placeholderSize += (SPIKE_SIZE_INCREASE_RATE * Time.deltaTime);
-                float sizeXZ = placeholderSize + spikeQuicksandOutline.transform.localScale.x;
-                spikeQuicksandOutline.transform.localScale = new Vector3 (sizeXZ, 0.5f, sizeXZ);
-                spikeEndPosition = spikeQuicksandOutline.transform.position;
-                spikeEndPosition.y += spikeQuicksandOutline.transform.localScale.y + 1f;
-                playerEnergy.DrainTempEnergy (hand, energyCost);
-            }
-            else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Wall) && wall != null)
-            {
-                float currentHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight;
-                if (currentHandHeight > wall.transform.position.y)
-                {
-                    Vector3 newPos = new Vector3 (wall.transform.position.x, currentHandHeight, wall.transform.position.z);
-                    wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 1f);
-                    playerEnergy.SetTempEnergy (hand, (wall.transform.position.x * currentHandHeight) * 200f);
-                }
-            }
-        }
-        else
+        if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock) && rock != null)
         {
-            playerEnergy.UpdateAbilityUseTime ();
+            rockSize += (ROCK_SIZE_INCREASE_RATE * Time.deltaTime);
+            rock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
+            rockRigidbody.mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
+            playerEnergy.DrainTempEnergy (hand, energyCost);
+            hand.TriggerHapticPulse (800);
+        }
+        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Spike) && spikeQuicksandOutline != null)
+        {
+            placeholderSize += (SPIKE_SIZE_INCREASE_RATE * Time.deltaTime);
+            float sizeXZ = placeholderSize + spikeQuicksandOutline.transform.localScale.x;
+            spikeQuicksandOutline.transform.localScale = new Vector3 (sizeXZ, 0.5f, sizeXZ);
+            spikeEndPosition = spikeQuicksandOutline.transform.position;
+            spikeEndPosition.y += spikeQuicksandOutline.transform.localScale.y + 1f;
+            playerEnergy.DrainTempEnergy (hand, energyCost);
+        }
+        else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Wall) && wall != null)
+        {
+            float currentHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight;
+            if (currentHandHeight > wall.transform.position.y)
+            {
+                Vector3 newPos = new Vector3 (wall.transform.position.x, currentHandHeight, wall.transform.position.z);
+                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 1f);
+                playerEnergy.SetTempEnergy (hand, (wall.transform.position.x * currentHandHeight) * 200f);
+            }
         }
     }
 
     private void EndAbility ()
     {
-        Debug.Log ("Ability ended");
         if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Rock) && rock != null)
         {
             playerEnergy.UseEnergy (PlayerEnergy.AbilityType.Rock, hand);
@@ -248,7 +261,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (playerEnergy.AbilityIsActive (PlayerEnergy.AbilityType.Wall) && wall != null)
         {
-            playerEnergy.UseEnergy (PlayerEnergy.AbilityType.Wall, hand);
+            playerEnergy.UseEnergy (PlayerEnergy.AbilityType.Wall, firstHandHeld);
             ResetWallInfo ();
         }
         playerEnergy.RemoveHandFromActive (hand);
@@ -256,7 +269,6 @@ public class PlayerAbility : MonoBehaviour
 
     private void CancelAbility ()
     {
-        Debug.Log ("Ability Canceled");
         if (rock != null)
         {
             playerEnergy.CancelEnergyUsage (PlayerEnergy.AbilityType.Rock, hand);
@@ -279,7 +291,7 @@ public class PlayerAbility : MonoBehaviour
             ResetWallInfo ();
         }
         playerEnergy.RemoveHandFromActive (hand);
-        playerEnergy.AddActiveAbility (PlayerEnergy.AbilityType.Heal);
+        playerEnergy.AddActiveAbility(PlayerEnergy.AbilityType.Heal);
     }
 
     private void EnterDrawMode ()
@@ -290,6 +302,7 @@ public class PlayerAbility : MonoBehaviour
             wallOutline = Instantiate (wallOutlinePrefab) as GameObject;
 
             SetWallLocation ();
+            firstHandHeld = null;
         }
         else
         {
@@ -334,6 +347,10 @@ public class PlayerAbility : MonoBehaviour
         if (maxHeight > 1f)
         {
             wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
+        }
+        else
+        {
+            wallOutline.transform.localScale = new Vector3 (remainingEnergy / 200f, maxHeight, 0.1f);
         }
 
         float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wallOutline.transform.position, new Vector3 (0, -1, 0));

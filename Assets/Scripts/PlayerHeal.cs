@@ -41,7 +41,6 @@ public class PlayerHeal : MonoBehaviour
         if (GrabPress ())
         {
             playerEnergy.RemoveActiveAbility (PlayerEnergy.AbilityType.Heal);
-            firstTriggerHeld = null;
         }
         else if (GripHold () && !playerEnergy.RockAbilityIsActive ())
         {
