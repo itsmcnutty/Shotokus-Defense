@@ -19,7 +19,7 @@ public class SwordDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("MainCamera");
+        player = GameObject.FindGameObjectWithTag("PlayerCollider");
         parentEnemy = transform.parent.transform.parent.gameObject;
     }
 
@@ -32,8 +32,9 @@ public class SwordDamage : MonoBehaviour
         if (other.gameObject.Equals(player) &&
             parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Slashing"))
         {
-            other.gameObject.GetComponent<PlayerHealth>().TakeDamage(DAMAGE);
-            //Debug.Log("Hit!");
+            Debug.Log("Hit!");
+//            other.gameObject.GetComponent<PlayerHealth>().TakeDamage(DAMAGE);
+            other.gameObject.transform.parent.GetComponentInChildren<PlayerHealth>().TakeDamage(DAMAGE);
         }
         else
         {
