@@ -240,7 +240,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &140734093
 MonoBehaviour:
@@ -981,7 +981,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &586554821
 MonoBehaviour:
@@ -3377,7 +3377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3651,7 +3651,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
   otherHand: {fileID: 2115013156}
-  rockStartSize: 0.04
+  rockStartSize: 0.3
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
@@ -3698,7 +3698,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
   otherHand: {fileID: 2115013155}
-  rockStartSize: 0.04
+  rockStartSize: 0.3
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
