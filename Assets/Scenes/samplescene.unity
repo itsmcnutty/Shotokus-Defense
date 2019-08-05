@@ -599,7 +599,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1318d48d64be0a149a1bc44355adbfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6084799906934014311, guid: 3477d8c43c465ce48af8fb0b926dde47, type: 3}
+  shouldSpawn: 1
+  prefab:
+  - {fileID: 6084799906934014311, guid: 3477d8c43c465ce48af8fb0b926dde47, type: 3}
+  - {fileID: 1065938169411510748, guid: 92e341dac4bc65c4bb9a27df1108cf16, type: 3}
 --- !u!1 &354870450
 GameObject:
   m_ObjectHideFlags: 0
@@ -3712,15 +3715,14 @@ MonoBehaviour:
     actionPath: /actions/default/in/Grip
     needsReinit: 0
   drawAction:
-    actionPath: /actions/default/in/Draw
+    actionPath: 
     needsReinit: 0
   otherHand: {fileID: 2115013156}
   rockStartSize: 0.3
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
-  wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
-    type: 3}
+  wallOutlinePrefab: {fileID: 0}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
@@ -3764,15 +3766,14 @@ MonoBehaviour:
     actionPath: /actions/default/in/Grip
     needsReinit: 0
   drawAction:
-    actionPath: /actions/default/in/Draw
+    actionPath: 
     needsReinit: 0
   otherHand: {fileID: 2115013155}
   rockStartSize: 0.3
   energyCost: 1
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
-  wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
-    type: 3}
+  wallOutlinePrefab: {fileID: 0}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
