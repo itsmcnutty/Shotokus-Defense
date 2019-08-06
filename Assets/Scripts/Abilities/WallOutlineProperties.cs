@@ -9,7 +9,6 @@ public class WallOutlineProperties : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -25,12 +24,10 @@ public class WallOutlineProperties : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         collisionDetected = true;
-        Debug.Log("entered");
     }
 
     private void OnTriggerExit(Collider other)
     {
         collisionDetected = false;
-        Debug.Log("exit");
     }
 }

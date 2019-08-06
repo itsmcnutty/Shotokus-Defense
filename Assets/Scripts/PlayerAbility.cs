@@ -104,7 +104,7 @@ public class PlayerAbility : MonoBehaviour
         else if (DrawHold ())
         {
             playerEnergy.UpdateAbilityUseTime ();
-            if (WallOutlineIsActive () && arc.CanUseAbility () && otherArc.CanUseAbility ())
+            if (WallOutlineIsActive () && !WallIsActive() && arc.CanUseAbility() && otherArc.CanUseAbility())
             {
                 SetWallLocation ();
             }
@@ -182,7 +182,7 @@ public class PlayerAbility : MonoBehaviour
                 firstHandHeld = hand;
             }
         }
-        else if (!WallOutlineIsActive () && !WallIsActive () && arc.CanUseAbility ())
+        else if (!WallIsActive () && arc.CanUseAbility ())
         {
             firstHandHeld = null;
             playerEnergy.AddHandToActive (hand);
@@ -347,7 +347,7 @@ public class PlayerAbility : MonoBehaviour
 
     private void SetWallLocation ()
     {
-        Vector3 wallPosition = GetWallPosition ();
+        Vector3 wallPosition = GetWallPosition (); 
         wallOutline.transform.position = new Vector3 (wallPosition.x, wallPosition.y, wallPosition.z);
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy ();
