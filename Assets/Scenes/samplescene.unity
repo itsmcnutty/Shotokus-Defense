@@ -601,7 +601,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shouldSpawn: 1
   prefab:
-  - {fileID: 6084799906934014311, guid: 3477d8c43c465ce48af8fb0b926dde47, type: 3}
   - {fileID: 1065938169411510748, guid: 92e341dac4bc65c4bb9a27df1108cf16, type: 3}
 --- !u!1 &354870450
 GameObject:
@@ -3383,6 +3382,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 105336, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3484,10 +3487,6 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1000013281422588, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 105336, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
