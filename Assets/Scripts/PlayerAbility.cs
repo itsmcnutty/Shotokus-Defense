@@ -97,7 +97,7 @@ public class PlayerAbility : MonoBehaviour
             EndAbility ();
         }
 
-        if (DrawPress ())
+        if (DrawPress () && playerEnergy.EnergyIsNotZero())
         {
             EnterDrawMode ();
         }
@@ -160,7 +160,7 @@ public class PlayerAbility : MonoBehaviour
             if (firstHandHeld != null && firstHandHeld != hand)
             {
                 WallOutlineProperties properties = wallOutline.GetComponent<WallOutlineProperties> ();
-                if (properties.CollisionDetected ())
+                if (properties.CollisionDetected () || Vector3.Distance(player.transform.position, wallOutline.transform.position) < ROCK_CREATE_DIST)
                 {
                     playerEnergy.CancelEnergyUsage (firstHandHeld);
                     Destroy (wallOutline);
@@ -230,8 +230,9 @@ public class PlayerAbility : MonoBehaviour
             {
                 currentWallHeight = newHandHeight;
                 Vector3 newPos = new Vector3 (wall.transform.position.x, wall.transform.localScale.y * newHandHeight, wall.transform.position.z);
-                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 0.1f);
-                playerEnergy.SetTempEnergy (hand, (wall.transform.position.x * newHandHeight) * WALL_SIZE_MULTIPLIER);
+                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 0.01f);
+                float area = (float) Math.Round(wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * WALL_SIZE_MULTIPLIER;
+                playerEnergy.SetTempEnergy (hand, area);
             }
             else
             {
