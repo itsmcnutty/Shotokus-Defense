@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2816802675583756699
+--- !u!1 &2742844521605057898
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1118003940250603461}
-  - component: {fileID: 2898039012254964145}
-  - component: {fileID: 207996559640273834}
-  - component: {fileID: 3384877183683094561}
-  - component: {fileID: 940370148264286728}
+  - component: {fileID: 3525149541872249385}
+  - component: {fileID: 7893549802313980799}
+  - component: {fileID: 4721121698812697936}
+  - component: {fileID: 2466945113756771464}
   m_Layer: 11
   m_Name: Spike
   m_TagString: Spike
@@ -20,39 +19,39 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1118003940250603461
+--- !u!4 &3525149541872249385
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2816802675583756699}
+  m_GameObject: {fileID: 2742844521605057898}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1.5}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1118003940250603461}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &2898039012254964145
+--- !u!114 &7893549802313980799
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2816802675583756699}
+  m_GameObject: {fileID: 2742844521605057898}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11ae84c4d6e85fb448b185677acfd935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!137 &207996559640273834
+--- !u!137 &4721121698812697936
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2816802675583756699}
+  m_GameObject: {fileID: 2742844521605057898}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -95,6 +94,64 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0.75}
     m_Extent: {x: 0.25, y: 0.25, z: 0.75}
   m_DirtyAABB: 0
+--- !u!114 &2466945113756771464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2742844521605057898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4866c4df87342848963f9959c7d1946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2816802675583756699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1118003940250603461}
+  - component: {fileID: 2898039012254964145}
+  - component: {fileID: 3384877183683094561}
+  - component: {fileID: 940370148264286728}
+  m_Layer: 11
+  m_Name: Spike
+  m_TagString: Spike
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1118003940250603461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2816802675583756699}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3525149541872249385}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2898039012254964145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2816802675583756699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ae84c4d6e85fb448b185677acfd935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &3384877183683094561
 Rigidbody:
   m_ObjectHideFlags: 0
