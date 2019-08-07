@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 public class WallProperties : MonoBehaviour
 {
-    public float wallLifetime = 5.0f;
-    private bool collisionDetected;
+    private float wallLifetime = 5.0f;
     // Start is called before the first frame update
     void Start()
     {

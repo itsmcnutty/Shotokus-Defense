@@ -282,6 +282,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (WallIsActive ())
         {
+            wall.AddComponent<WallProperties>();
             playerEnergy.UseEnergy (firstHandHeld);
             ResetWallInfo ();
         }

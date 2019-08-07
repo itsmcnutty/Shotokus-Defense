@@ -103,7 +103,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1702220870442628939}
-  - component: {fileID: 4056451739381000583}
   - component: {fileID: 7838002292087576063}
   m_Layer: 12
   m_Name: Wall
@@ -127,19 +126,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4056451739381000583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4777704666276339869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5104ae781464c44787497d105f6926f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallLifetime: 5
 --- !u!54 &7838002292087576063
 Rigidbody:
   m_ObjectHideFlags: 0
