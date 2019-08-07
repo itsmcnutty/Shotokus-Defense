@@ -463,7 +463,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 27f7ed912a8e7c140bb31bded1708c35, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -508,8 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe960ef236b0794e822b53e0bf9c296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SPEED: 0
-  ATTACK_DELAY: 2
+  ATTACK_DELAY: 3
   ATTACK_RADIUS: 2.5
   agent: {fileID: 324325786130137908}
 --- !u!137 &-4228375011515652084
@@ -571,7 +570,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.5
-  m_Speed: 7
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1609,7 +1608,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 3.4315772e-11, y: 0.45146325, z: 0.05313998}
+  m_ConnectedAnchor: {x: 1.05272346e-10, y: 0.45146325, z: 0.05313998}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1953,7 +1952,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000011098785, y: 0.78609204, z: 0.026587157}
+  m_ConnectedAnchor: {x: -0.0000000011641533, y: 0.78609204, z: 0.026587155}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2073,8 +2072,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7448893346959778457}
-  m_LocalRotation: {x: -0.000000003968704, y: 0.000000021166423, z: -0.0000000013229013,
-    w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0036470073, y: 0.8155345, z: 0.0039869854}
   m_LocalScale: {x: 0.9999999, y: 1, z: 0.9999999}
   m_Children:
@@ -2403,7 +2401,7 @@ PrefabInstance:
     - target: {fileID: 4687669883987991774, guid: d5bd64be0d9952c4cad0a5bd25633dcf,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.073
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 4687669883987991774, guid: d5bd64be0d9952c4cad0a5bd25633dcf,
         type: 3}

@@ -9,9 +9,6 @@ using UnityEngine.Experimental.PlayerLoop;
 
 public class HeavyEnemyController : MonoBehaviour
 {
-
-    // Character speed
-    public float SPEED = 0f;
     // Time between attacks (seconds)
     public float ATTACK_DELAY = 2f;
     // Radius for attacking
@@ -66,12 +63,12 @@ public class HeavyEnemyController : MonoBehaviour
         
         
         // Pass speed to animation controller
-        animator.SetFloat("WalkSpeed", moveSpeed );
+        animator.SetFloat("WalkSpeed", moveSpeed);
 
         // Decrement attack timer
         attackTimer -= Time.deltaTime;
         
-        // when attackTimer is lower than 0, it allows the enemy to attack again 
+        // When attackTimer is lower than 0, it allows the enemy to attack again 
         if (attackTimer <= 0f && dist <= ATTACK_RADIUS)
         {
             agent.isStopped = true;
@@ -79,15 +76,8 @@ public class HeavyEnemyController : MonoBehaviour
             attackTimer = ATTACK_DELAY;
         }
         
-        // outside attack radius, therefore animator should be walking
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Meleeing")) // if not in slashing animation
-        {
-            agent.isStopped = false;
-        }
-        else // if slashing then stop walking
-        {
-            agent.isStopped = true;
-        }
+        // Animator should be walking if outside attack radius
+        agent.isStopped = animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee");
         
     }
     
