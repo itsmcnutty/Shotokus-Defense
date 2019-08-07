@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
+using UnityEngine.AI;
+
 
 public class PlayerAbility : MonoBehaviour
 {
@@ -40,6 +42,7 @@ public class PlayerAbility : MonoBehaviour
     private static Hand firstHandHeld;
     private static float lastAngle;
     private static float startingHandHeight;
+    private static float currentWallHeight;
 
     private const float ROCK_CREATE_DIST = 3f;
     private const float ROCK_SIZE_INCREASE_RATE = 0.01f;
@@ -48,6 +51,8 @@ public class PlayerAbility : MonoBehaviour
     private const float SPIKE_BASE_SPEED = .05f;
     private const float WALL_SIZE_MULTIPLIER = 200f;
 
+    public NavMeshSurface surface;
+
     private void Awake ()
     {
         player = GameObject.FindWithTag ("MainCamera");
@@ -55,6 +60,9 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
+
+        //surface = GameObject.FindGameObjectsWithTag("NavMesh");
+
     }
 
     // Start is called before the first frame update
@@ -74,7 +82,8 @@ public class PlayerAbility : MonoBehaviour
         {
             CancelAbility ();
         }
-        else if (GrabPress ())
+
+        if (GrabPress ())
         {
             TriggerNewAbility ();
         }
@@ -94,13 +103,15 @@ public class PlayerAbility : MonoBehaviour
         {
             EndAbility ();
         }
-        else if (DrawPress ())
+
+        if (DrawPress () && playerEnergy.EnergyAboveThreshold())
         {
             EnterDrawMode ();
         }
         else if (DrawHold ())
         {
-            if (WallOutlineIsActive () && arc.CanUseAbility () && otherArc.CanUseAbility ())
+            playerEnergy.UpdateAbilityUseTime ();
+            if (WallOutlineIsActive () && !WallIsActive() && arc.CanUseAbility() && otherArc.CanUseAbility())
             {
                 SetWallLocation ();
             }
@@ -111,10 +122,6 @@ public class PlayerAbility : MonoBehaviour
             {
                 CancelAbility ();
             }
-        }
-        else
-        {
-            playerEnergy.RegenEnergy ();
         }
     }
 
@@ -159,20 +166,31 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                playerEnergy.AddHandToActive (firstHandHeld);
-                wall = Instantiate (wallPrefab) as GameObject;
-                wall.transform.position = wallOutline.transform.position;
-                wall.transform.localScale = wallOutline.transform.localScale;
-                wall.transform.rotation = wallOutline.transform.rotation;
-                startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
-                Destroy (wallOutline);
+                WallOutlineProperties properties = wallOutline.GetComponent<WallOutlineProperties> ();
+                if (properties.CollisionDetected () || Vector3.Distance(player.transform.position, wallOutline.transform.position) < ROCK_CREATE_DIST)
+                {
+                    playerEnergy.CancelEnergyUsage (firstHandHeld);
+                    Destroy (wallOutline);
+                    ResetWallInfo ();
+                }
+                else
+                {
+                    playerEnergy.AddHandToActive (firstHandHeld);
+                    wall = Instantiate (wallPrefab) as GameObject;
+                    wall.transform.position = wallOutline.transform.position;
+                    wall.transform.localScale = wallOutline.transform.localScale;
+                    wall.transform.rotation = wallOutline.transform.rotation;
+                    startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
+                    Destroy (wallOutline);
+
+                }
             }
             else
             {
                 firstHandHeld = hand;
             }
         }
-        else if (!WallOutlineIsActive () && !WallIsActive () && arc.CanUseAbility ())
+        else if (!WallIsActive () && arc.CanUseAbility ())
         {
             firstHandHeld = null;
             playerEnergy.AddHandToActive (hand);
@@ -215,12 +233,19 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (WallIsActive ())
         {
-            float currentHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight;
-            if (currentHandHeight > wall.transform.position.y)
+            float newHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+            if (newHandHeight < 1 && currentWallHeight < newHandHeight)
             {
-                Vector3 newPos = new Vector3 (wall.transform.position.x, currentHandHeight, wall.transform.position.z);
-                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 1f);
-                playerEnergy.SetTempEnergy (hand, (wall.transform.position.x * currentHandHeight) * WALL_SIZE_MULTIPLIER);
+                currentWallHeight = newHandHeight;
+                Vector3 newPos = new Vector3 (wall.transform.position.x, wall.transform.localScale.y * newHandHeight, wall.transform.position.z);
+                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 0.05f);
+                float area = (float) Math.Round(wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * WALL_SIZE_MULTIPLIER;
+                playerEnergy.SetTempEnergy (firstHandHeld, area);
+                surface.BuildNavMesh();
+            }
+            else
+            {
+                playerEnergy.UpdateAbilityUseTime ();
             }
         }
     }
@@ -259,6 +284,10 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy.UseEnergy (firstHandHeld);
             ResetWallInfo ();
+        }
+        else if(WallOutlineIsActive())
+        {
+            firstHandHeld = null;
         }
         playerEnergy.RemoveHandFromActive (hand);
     }
@@ -317,6 +346,7 @@ public class PlayerAbility : MonoBehaviour
         wallOutline = null;
         wall = null;
         lastAngle = 0;
+        currentWallHeight = 0;
     }
 
     private Vector3 GetWallPosition ()
@@ -331,20 +361,24 @@ public class PlayerAbility : MonoBehaviour
 
     private void SetWallLocation ()
     {
-        Vector3 wallPosition = GetWallPosition ();
+        Vector3 wallPosition = GetWallPosition (); 
         wallOutline.transform.position = new Vector3 (wallPosition.x, wallPosition.y, wallPosition.z);
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy ();
         float maxHeight = remainingEnergy / (arc.GetEndPointsDistance (otherArc) * WALL_SIZE_MULTIPLIER);
         float area = arc.GetEndPointsDistance (otherArc) * maxHeight;
         area = (float) Math.Round (area, 2) * WALL_SIZE_MULTIPLIER;
-        if (maxHeight > 1f)
+        if (maxHeight <= 1f)
         {
-            wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
+            wallOutline.transform.localScale = new Vector3 (remainingEnergy / WALL_SIZE_MULTIPLIER, 1f, 0.1f);
+        }
+        else if (arc.GetEndPointsDistance (otherArc) <= 1f)
+        {
+            wallOutline.transform.localScale = new Vector3 (1f, remainingEnergy / WALL_SIZE_MULTIPLIER, 0.1f);
         }
         else
         {
-            wallOutline.transform.localScale = new Vector3 (remainingEnergy / WALL_SIZE_MULTIPLIER, maxHeight, 0.1f);
+            wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
         }
 
         float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wallOutline.transform.position, new Vector3 (0, -1, 0));
@@ -373,7 +407,7 @@ public class PlayerAbility : MonoBehaviour
         return wall != null;
     }
 
-    public bool WallOutlineIsActive ()
+    private bool WallOutlineIsActive ()
     {
         return wallOutline != null;
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,11 +27,13 @@ public class PlayerEnergy : MonoBehaviour
         energyBarBefore.value = maxEnergy;
         energyBarAfter.maxValue = maxEnergy;
         energyBarAfter.value = maxEnergy;
-        SetEnergyBarText ();
     }
 
     // Update is called once per frame
-    void Update () { 
+    void Update ()
+    {
+        RegenEnergy ();
+        SetEnergyBarText ();
     }
 
     public void DrainTempEnergy (Hand activeHand, float energy)
@@ -39,30 +42,29 @@ public class PlayerEnergy : MonoBehaviour
         {
             activeAbilityEnergyCost[activeHand] += energy;
             float afterAbilityEnergy = GetTotalEnergyUsage ();
-            if (afterAbilityEnergy < 0)
+            if (afterAbilityEnergy > currentEnergy)
             {
-                afterAbilityEnergy = 0;
-                activeAbilityEnergyCost[activeHand] -= (energy - afterAbilityEnergy);
+                afterAbilityEnergy = currentEnergy;
+                activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
+                Debug.Log("Energy Overflow Drain");
             }
             energyBarAfter.value = currentEnergy - afterAbilityEnergy;
-            SetEnergyBarText ();
         }
         UpdateAbilityUseTime ();
     }
 
-    public float SetTempEnergy (Hand activeHand, float energy)
+    public void SetTempEnergy (Hand activeHand, float energy)
     {
         activeAbilityEnergyCost[activeHand] = energy;
         float afterAbilityEnergy = GetTotalEnergyUsage ();
-        if (afterAbilityEnergy < 0)
+        if (afterAbilityEnergy > currentEnergy)
         {
-            afterAbilityEnergy = 0;
-            activeAbilityEnergyCost[activeHand] -= (energy - afterAbilityEnergy);
+            activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
+            afterAbilityEnergy = currentEnergy;
+            Debug.Log("Energy Overflow Set");
         }
         energyBarAfter.value = currentEnergy - afterAbilityEnergy;
-        SetEnergyBarText ();
         UpdateAbilityUseTime ();
-        return energy - afterAbilityEnergy;
     }
 
     public void DrainRealEnergy (float energy)
@@ -76,7 +78,6 @@ public class PlayerEnergy : MonoBehaviour
             }
             energyBarBefore.value = currentEnergy;
             energyBarAfter.value = currentEnergy;
-            SetEnergyBarText ();
         }
         UpdateAbilityUseTime ();
     }
@@ -92,7 +93,6 @@ public class PlayerEnergy : MonoBehaviour
     {
         energyBarAfter.value = currentEnergy;
         activeAbilityEnergyCost[activeHand] = 0;
-        SetEnergyBarText ();
     }
 
     public void RegenEnergy ()
@@ -106,7 +106,6 @@ public class PlayerEnergy : MonoBehaviour
             }
             energyBarBefore.value = currentEnergy;
             energyBarAfter.value = currentEnergy;
-            SetEnergyBarText ();
         }
     }
 
@@ -115,9 +114,14 @@ public class PlayerEnergy : MonoBehaviour
         return (currentEnergy - GetTotalEnergyUsage ()) > 0;
     }
 
+    public bool EnergyAboveThreshold()
+    {
+        return (currentEnergy - GetTotalEnergyUsage ()) > 100;
+    }
+
     public void SetEnergyBarText ()
     {
-        energyBarText.text = (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+        energyBarText.text = currentEnergy - GetTotalEnergyUsage () + " / " + maxEnergy;
     }
 
     public void UpdateAbilityUseTime ()
@@ -139,7 +143,7 @@ public class PlayerEnergy : MonoBehaviour
         }
     }
 
-    public float GetRemainingEnergy()
+    public float GetRemainingEnergy ()
     {
         return currentEnergy - GetTotalEnergyUsage ();
     }

@@ -38,7 +38,6 @@ public class PlayerHeal : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        Debug.Log(healAvailable);
         if (GrabPress ())
         {
             healAvailable = false;
