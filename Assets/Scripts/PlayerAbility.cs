@@ -166,7 +166,7 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                WallOutlineProperties properties = wallOutline.GetComponent<WallOutlineProperties> ();
+                WallOutlineProperties properties = wallOutline.GetComponentInChildren<WallOutlineProperties> ();
                 if (properties.CollisionDetected () || Vector3.Distance(player.transform.position, wallOutline.transform.position) < ROCK_CREATE_DIST)
                 {
                     playerEnergy.CancelEnergyUsage (firstHandHeld);
