@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class WallProperties : MonoBehaviour
 {
-
-    public NavMeshSurface surface;
     public float wallLifetime = 5.0f;
     private bool collisionDetected;
     // Start is called before the first frame update
@@ -23,6 +21,6 @@ public class WallProperties : MonoBehaviour
 
     void OnDestroy()
     {
-        surface.BuildNavMesh();
+        GameObject.FindWithTag("NavMesh").GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 }
