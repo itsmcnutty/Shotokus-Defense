@@ -225,8 +225,8 @@ public class PlayerAbility : MonoBehaviour
         else if (SpikeQuicksandIsActive ())
         {
             placeholderSize += (SPIKE_SIZE_INCREASE_RATE * Time.deltaTime);
-            float sizeXZ = placeholderSize + spikeQuicksandOutline.transform.localScale.x;
-            spikeQuicksandOutline.transform.localScale = new Vector3 (sizeXZ, 0.5f, sizeXZ);
+            float size = placeholderSize + spikeQuicksandOutline.transform.localScale.x;
+            spikeQuicksandOutline.transform.localScale = new Vector3 (size, size, size);
             spikeEndPosition = spikeQuicksandOutline.transform.position;
             spikeEndPosition.y += spikeQuicksandOutline.transform.localScale.y + 1f;
             playerEnergy.DrainTempEnergy (hand, energyCost);
@@ -271,7 +271,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 GameObject spike = Instantiate (spikePrefab) as GameObject;
                 spike.transform.position = spikeQuicksandOutline.transform.position;
-                spike.transform.localScale = new Vector3 (spikeQuicksandOutline.transform.localScale.x, spikeQuicksandOutline.transform.localScale.z, spikeQuicksandOutline.transform.localScale.z * 2);
+                spike.transform.localScale = spikeQuicksandOutline.transform.localScale;
 
                 float spikeVelocity = (controllerVelocity / SPIKE_SPEED_REDUCTION) + SPIKE_BASE_SPEED;
                 spike.GetComponent<SpikeMovement> ().SetSpeed (spikeVelocity);

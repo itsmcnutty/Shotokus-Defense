@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class WallProperties : MonoBehaviour
 {
-    private float wallLifetime = 5.0f;
+    private float wallLifetime = 30.0f;
     // Start is called before the first frame update
     void Start()
     {
