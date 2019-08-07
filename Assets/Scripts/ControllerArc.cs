@@ -135,6 +135,10 @@ public class ControllerArc : MonoBehaviour
 		{
 			hitSomething = true;
 			hitMarker = hitInfo.collider.GetComponentInParent<AbilityUsageMarker> ();
+			if(hitMarker == null)
+			{
+				hitMarker = hitInfo.collider.GetComponent<AbilityUsageMarker> ();
+			}
 			distanceFromPlayer = Vector3.Distance (hitInfo.point, player.hmdTransform.position);
 		}
 
