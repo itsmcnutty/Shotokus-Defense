@@ -42,10 +42,11 @@ public class PlayerEnergy : MonoBehaviour
         {
             activeAbilityEnergyCost[activeHand] += energy;
             float afterAbilityEnergy = GetTotalEnergyUsage ();
-            if (afterAbilityEnergy < 0)
+            if (afterAbilityEnergy > currentEnergy)
             {
-                afterAbilityEnergy = 0;
-                activeAbilityEnergyCost[activeHand] -= (energy - afterAbilityEnergy);
+                afterAbilityEnergy = currentEnergy;
+                activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
+                Debug.Log("Energy Overflow Drain");
             }
             energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         }
@@ -60,6 +61,7 @@ public class PlayerEnergy : MonoBehaviour
         {
             activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
             afterAbilityEnergy = currentEnergy;
+            Debug.Log("Energy Overflow Set");
         }
         energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         UpdateAbilityUseTime ();
@@ -84,7 +86,6 @@ public class PlayerEnergy : MonoBehaviour
     {
         currentEnergy -= activeAbilityEnergyCost[activeHand];
         energyBarBefore.value = currentEnergy;
-        energyBarAfter.value = currentEnergy;
         activeAbilityEnergyCost[activeHand] = 0;
     }
 
@@ -111,6 +112,11 @@ public class PlayerEnergy : MonoBehaviour
     public bool EnergyIsNotZero ()
     {
         return (currentEnergy - GetTotalEnergyUsage ()) > 0;
+    }
+
+    public bool EnergyAboveThreshold()
+    {
+        return (currentEnergy - GetTotalEnergyUsage ()) > 100;
     }
 
     public void SetEnergyBarText ()

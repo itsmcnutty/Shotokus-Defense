@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
+using UnityEngine.AI;
+
 
 public class PlayerAbility : MonoBehaviour
 {
@@ -49,6 +51,8 @@ public class PlayerAbility : MonoBehaviour
     private const float SPIKE_BASE_SPEED = .05f;
     private const float WALL_SIZE_MULTIPLIER = 200f;
 
+    public NavMeshSurface surface;
+
     private void Awake ()
     {
         player = GameObject.FindWithTag ("MainCamera");
@@ -56,6 +60,9 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
+
+        //surface = GameObject.FindGameObjectsWithTag("NavMesh");
+
     }
 
     // Start is called before the first frame update
@@ -97,7 +104,7 @@ public class PlayerAbility : MonoBehaviour
             EndAbility ();
         }
 
-        if (DrawPress () && playerEnergy.EnergyIsNotZero())
+        if (DrawPress () && playerEnergy.EnergyAboveThreshold())
         {
             EnterDrawMode ();
         }
@@ -175,6 +182,7 @@ public class PlayerAbility : MonoBehaviour
                     wall.transform.rotation = wallOutline.transform.rotation;
                     startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
                     Destroy (wallOutline);
+
                 }
             }
             else
@@ -225,14 +233,15 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (WallIsActive ())
         {
-            float newHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 10f;
+            float newHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             if (newHandHeight < 1 && currentWallHeight < newHandHeight)
             {
                 currentWallHeight = newHandHeight;
                 Vector3 newPos = new Vector3 (wall.transform.position.x, wall.transform.localScale.y * newHandHeight, wall.transform.position.z);
-                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 0.01f);
+                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 0.05f);
                 float area = (float) Math.Round(wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * WALL_SIZE_MULTIPLIER;
-                playerEnergy.SetTempEnergy (hand, area);
+                playerEnergy.SetTempEnergy (firstHandHeld, area);
+                surface.BuildNavMesh();
             }
             else
             {
@@ -275,6 +284,10 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy.UseEnergy (firstHandHeld);
             ResetWallInfo ();
+        }
+        else if(WallOutlineIsActive())
+        {
+            firstHandHeld = null;
         }
         playerEnergy.RemoveHandFromActive (hand);
     }

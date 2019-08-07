@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7521853020276943173}
   - component: {fileID: 3144676400267748032}
+  - component: {fileID: 689601917831534214}
   m_Layer: 12
   m_Name: Wall 3x7
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,6 +81,19 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.025326967, y: -1.5557106, z: 0.0074656606}
     m_Extent: {x: 3.5134244, y: 1.5527546, z: 0.6006053}
   m_DirtyAABB: 0
+--- !u!65 &689601917831534214
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383354479478694716}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.0268507, y: 3.1055093, z: 1.2012109}
+  m_Center: {x: -0.025326973, y: -1.5557106, z: 0.0074656624}
 --- !u!1 &4777704666276339869
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,7 +104,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1702220870442628939}
   - component: {fileID: 5446153573372459638}
-  - component: {fileID: 7469301636791785866}
   - component: {fileID: 4056451739381000583}
   - component: {fileID: 7838002292087576063}
   m_Layer: 12
@@ -123,19 +136,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4777704666276339869}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &7469301636791785866
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4777704666276339869}
-  m_Material: {fileID: 13400000, guid: 0aa34d7d628bdb04082aa16112cc8fd1, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4056451739381000583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5104ae781464c44787497d105f6926f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surface: {fileID: 8618336351119341840, guid: f432ca6eb057f7148bc3fec9a3a8567d, type: 3}
 --- !u!54 &7838002292087576063
 Rigidbody:
   m_ObjectHideFlags: 0
