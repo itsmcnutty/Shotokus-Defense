@@ -37,8 +37,8 @@ public class HeavyEnemyController : MonoBehaviour
         
         playerPos = player.transform.position;
         randomPos = GetRandomNearTarget(playerPos);
-        Debug.Log("Player pos is: " + playerPos);
-        Debug.Log("Enemy pos is: " + randomPos);
+//        Debug.Log("Player pos is: " + playerPos);
+//        Debug.Log("Enemy pos is: " + randomPos);
 
     }
 
