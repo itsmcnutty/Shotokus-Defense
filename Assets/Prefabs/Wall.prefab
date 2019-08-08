@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7521853020276943173}
   - component: {fileID: 3144676400267748032}
-  - component: {fileID: 689601917831534214}
+  - component: {fileID: 2436744385535517530}
   m_Layer: 12
   m_Name: Wall 3x7
   m_TagString: Wall
@@ -81,8 +81,8 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.025326967, y: -1.5557106, z: 0.0074656606}
     m_Extent: {x: 3.5134244, y: 1.5527546, z: 0.6006053}
   m_DirtyAABB: 0
---- !u!65 &689601917831534214
-BoxCollider:
+--- !u!64 &2436744385535517530
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -91,9 +91,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 7.0268507, y: 3.1055093, z: 1.2012109}
-  m_Center: {x: -0.025326973, y: -1.5557106, z: 0.0074656624}
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: -5485461366360626707, guid: 18878c55112388649892b8201f135741, type: 3}
 --- !u!1 &4777704666276339869
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +104,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1702220870442628939}
-  - component: {fileID: 4056451739381000583}
   - component: {fileID: 7838002292087576063}
   m_Layer: 12
   m_Name: Wall
@@ -127,19 +127,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4056451739381000583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4777704666276339869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5104ae781464c44787497d105f6926f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallLifetime: 5
 --- !u!54 &7838002292087576063
 Rigidbody:
   m_ObjectHideFlags: 0
