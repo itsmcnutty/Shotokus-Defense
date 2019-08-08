@@ -60,9 +60,6 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
-
-        //surface = GameObject.FindGameObjectsWithTag("NavMesh");
-
     }
 
     // Start is called before the first frame update
