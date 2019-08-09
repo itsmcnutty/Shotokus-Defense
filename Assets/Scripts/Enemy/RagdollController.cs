@@ -22,12 +22,21 @@ public class RagdollController : MonoBehaviour
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        AddCPCToChildren(gameObject);
+    }
 
-        foreach (var rigidbody in rigidbodies)
+    // Adds a CallParentCollider component to this gameobject and all of its children recursively
+    private void AddCPCToChildren(GameObject obj)
+    {
+        obj.AddComponent<CallParentCollision>();
+        
+        // Break after looping through all children (or has no children)
+        for (int i = 0; i < obj.transform.childCount; i++)
         {
-            rigidbody.gameObject.AddComponent<CallParentCollision>();
-            rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            AddCPCToChildren(obj.transform.GetChild(i).gameObject);
         }
+        
+        return;
     }
     
     // Returns true when the enemy is ragdolling
