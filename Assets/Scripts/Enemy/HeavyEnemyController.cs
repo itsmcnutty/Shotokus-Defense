@@ -16,10 +16,10 @@ public class HeavyEnemyController : MonoBehaviour
     // Timer for attack delay
     private float attackTimer = 0f;
     
-    // THis is the agent to move around by NavMesh/**/
+    // This is the agent to move around by NavMesh/**/
     public NavMeshAgent agent;
+    public RagdollController ragdollController;
     
-    private CharacterController characterController;
     private Animator animator;
     private GameObject player;
     
@@ -28,7 +28,6 @@ public class HeavyEnemyController : MonoBehaviour
 
     private void Start()
     {
-        characterController = gameObject.GetComponent<CharacterController>();
         animator = gameObject.GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("MainCamera");
         
@@ -42,6 +41,7 @@ public class HeavyEnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Ragdoll Controller NULL", ragdollController);
         // Store transform variables for player and this enemy
         playerPos = player.transform.position;
         Vector3 gameObjPos = transform.position;
@@ -77,7 +77,8 @@ public class HeavyEnemyController : MonoBehaviour
         }
         
         // Animator should be walking if outside attack radius
-        agent.isStopped = animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee");
+        agent.isStopped = animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee") ||
+                          ragdollController.IsRagdolling();
         
     }
     

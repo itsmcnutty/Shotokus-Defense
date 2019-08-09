@@ -22,6 +22,7 @@ public class RagdollController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("I am ragdoll");
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
@@ -60,6 +61,7 @@ public class RagdollController : MonoBehaviour
         // Disable animation and pathfinding
         animator.enabled = false;
         agent.isStopped = true;
+        agent.velocity = Vector3.zero;
 
         // Zero velocity of all rigidbodies so they don't maintain this from the animation
         foreach (var rigidbody in rigidbodies)
@@ -74,6 +76,7 @@ public class RagdollController : MonoBehaviour
     // Re-enables the Animator to regain control of Rigidbodies
     public void StopRagdoll()
     {
+        Debug.Log("Stop ragdoll");
         ragdolling = false;
         
         // Re-enable animation

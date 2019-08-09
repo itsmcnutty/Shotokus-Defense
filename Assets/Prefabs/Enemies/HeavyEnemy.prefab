@@ -419,9 +419,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1212343354941062483}
   - component: {fileID: 8127347398703853538}
+  - component: {fileID: 6223994420064688182}
   - component: {fileID: -5905606208446284247}
   - component: {fileID: -7680530928621544869}
-  - component: {fileID: 6223994420064688182}
   - component: {fileID: -4228375011515652084}
   - component: {fileID: 324325786130137908}
   m_Layer: 9
@@ -469,6 +469,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6223994420064688182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065938169411510748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe960ef236b0794e822b53e0bf9c296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ATTACK_DELAY: 3
+  ATTACK_RADIUS: 2.5
+  agent: {fileID: 324325786130137908}
+  ragdollController: {fileID: -5905606208446284247}
 --- !u!114 &-5905606208446284247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,21 +513,6 @@ MonoBehaviour:
   MAX_HEALTH: 500
   ARMOR_CUTOFF: 100
   ARMOR_PROFICIENCY: 10
---- !u!114 &6223994420064688182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1065938169411510748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbe960ef236b0794e822b53e0bf9c296, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ATTACK_DELAY: 3
-  ATTACK_RADIUS: 2.5
-  agent: {fileID: 324325786130137908}
 --- !u!137 &-4228375011515652084
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
