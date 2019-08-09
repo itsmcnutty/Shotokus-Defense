@@ -7,6 +7,9 @@ using UnityEngine.AI;
 public class RagdollController : MonoBehaviour
 {
 
+    // Physics material for all of the enemy's colliders
+    public PhysicMaterial PHYSIC_MATERIAL;
+    
     // All Rigidbodies of the enemy's ragdoll
     private Rigidbody[] rigidbodies;
     // The enemy's Animator component
@@ -22,7 +25,13 @@ public class RagdollController : MonoBehaviour
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        AddCPCToChildren(gameObject);
+        AddCPCToChildren(rigidbodies[0].gameObject);
+
+        for (int i = 0; i < rigidbodies.Length; i++)
+        {
+            rigidbodies[i].gameObject.GetComponent<Collider>().material = PHYSIC_MATERIAL;
+        }
+        
     }
 
     // Adds a CallParentCollider component to this gameobject and all of its children recursively
@@ -35,8 +44,6 @@ public class RagdollController : MonoBehaviour
         {
             AddCPCToChildren(obj.transform.GetChild(i).gameObject);
         }
-        
-        return;
     }
     
     // Returns true when the enemy is ragdolling
