@@ -4,21 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.Extras;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 public class InteractLaserButton : MonoBehaviour
 {
 
-    public GameObject rightHand;
-    private bool selected;
-    private SteamVR_LaserPointer laserPointer;
+    public GameObject rightHand; // right hand VR
+    private bool selected; 
+    private SteamVR_LaserPointer laserPointer; // Laser pointer component from Steam VR
+    private Button button; // this will be the button that the laser points to
 
-    public EnemyProducer enemyProducer;
+    public EnemyProducer enemyProducer; // reference to the enemy producer to spawn enemies
 
 
     private void Awake()
     {
         laserPointer = rightHand.GetComponent<SteamVR_LaserPointer>();
+        button = null;
 //        laserPointer = gameObject.GetComponent<SteamVR_LaserPointer>();
     }
 
@@ -40,45 +43,50 @@ public class InteractLaserButton : MonoBehaviour
     
     public void PointerInside(object sender, PointerEventArgs e)
     {
-     
-        if (e.target.name == this.gameObject.name && selected==false)
+//        if (e.target.name == this.gameObject.name && selected==false)
+//        {
+//            selected = true;
+//            Debug.Log("pointer is inside this object" + e.target.name);
+//        }        
+        
+        if (e.target.gameObject.GetComponent<Button>() != null && button == null)
         {
+            button = e.target.gameObject.GetComponent<Button>();
+            button.Select();
             selected = true;
-            Debug.Log("pointer is inside this object" + e.target.name);
-        }        
+        }
     }
+    
+    
     public void PointerOutside(object sender, PointerEventArgs e)
     {
-     
-        if (e.target.name == this.gameObject.name && selected == true)
+//        if (e.target.name == this.gameObject.name && selected == true)
+//        {
+//            selected = false;
+//            Debug.Log("pointer is outside this object" + e.target.name);
+//        }
+        
+        if (button != null)
         {
             selected = false;
-            Debug.Log("pointer is outside this object" + e.target.name);
+            // todo what is this for??
+//            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+            button = null;
         }
     }
     
     public void OnPointerClick(object sender, PointerEventArgs e)
-    {
-//        IPointerClickHandler clickHandler = e.target.GetComponent<IPointerClickHandler>();
-//        if (clickHandler == null)
+    { 
+//        if (e.target.name == "Button")
 //        {
-//            return;
+//            Debug.Log("Button was clicked");
+//            enemyProducer.spawnEnemy(1);
 //        }
-// 
-// 
-//        clickHandler.OnPointerClick(new PointerEventData(EventSystem.current));
-        
-        if (e.target.name == "Cube")
+        if (selected && button != null)
         {
-            Debug.Log("Cube was exited");
+            button.onClick.Invoke();
         }
-        else if (e.target.name == "Button")
-        {
-            Debug.Log("Button was clicked");
-            enemyProducer.spawnEnemy(1);
-        }
-        
-        
+
     }
     
     public bool get_selected_value()
