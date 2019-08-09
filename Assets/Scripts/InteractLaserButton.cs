@@ -10,17 +10,19 @@ using UnityEngine.UI;
 public class InteractLaserButton : MonoBehaviour
 {
 
+    // todo TEST WITH LEFT HAND AT THE SAME TIME
     public GameObject rightHand; // right hand VR
+    public GameObject leftHand; // right hand VR
     private bool selected; 
-    private SteamVR_LaserPointer laserPointer; // Laser pointer component from Steam VR
+    private SteamVR_LaserPointer laserPointerR; // Laser pointer for Right hand
+    private SteamVR_LaserPointer laserPointerL; // Laser pointer for Left hand
     private Button button; // this will be the button that the laser points to
-
-    public EnemyProducer enemyProducer; // reference to the enemy producer to spawn enemies
-
+    
 
     private void Awake()
     {
-        laserPointer = rightHand.GetComponent<SteamVR_LaserPointer>();
+        laserPointerR = rightHand.GetComponent<SteamVR_LaserPointer>();
+        laserPointerL = leftHand.GetComponent<SteamVR_LaserPointer>();
         button = null;
 //        laserPointer = gameObject.GetComponent<SteamVR_LaserPointer>();
     }
@@ -29,9 +31,14 @@ public class InteractLaserButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        laserPointer.PointerIn += PointerInside;
-        laserPointer.PointerOut += PointerOutside;
-        laserPointer.PointerClick += OnPointerClick;
+        laserPointerR.PointerIn += PointerInside;
+        laserPointerR.PointerOut += PointerOutside;
+        laserPointerR.PointerClick += OnPointerClick;
+        
+        laserPointerL.PointerIn += PointerInside;
+        laserPointerL.PointerOut += PointerOutside;
+        laserPointerL.PointerClick += OnPointerClick;
+        
         selected = false;
     }
 
