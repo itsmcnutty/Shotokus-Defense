@@ -51,9 +51,14 @@ public class InteractLaserButton : MonoBehaviour
         
         if (e.target.gameObject.GetComponent<Button>() != null && button == null)
         {
+            Debug.Log("Inside the button");
             button = e.target.gameObject.GetComponent<Button>();
             button.Select();
             selected = true;
+        }
+        else
+        {
+            Debug.Log("THis is not a button");
         }
     }
     
@@ -68,6 +73,7 @@ public class InteractLaserButton : MonoBehaviour
         
         if (button != null)
         {
+            Debug.Log("Outside the button");
             selected = false;
             // todo what is this for??
 //            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
@@ -82,8 +88,10 @@ public class InteractLaserButton : MonoBehaviour
 //            Debug.Log("Button was clicked");
 //            enemyProducer.spawnEnemy(1);
 //        }
+        Debug.Log("Clicking somewhere");
         if (selected && button != null)
         {
+            Debug.Log("Clicking inside the button!");
             button.onClick.Invoke();
         }
 
