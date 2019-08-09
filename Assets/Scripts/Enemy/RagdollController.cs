@@ -65,6 +65,7 @@ public class RagdollController : MonoBehaviour
         foreach (var rigidbody in rigidbodies)
         {
             rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
         }
 
         StartCoroutine("WaitAndStop");
