@@ -18,8 +18,8 @@ public class HeavyEnemyController : MonoBehaviour
     
     // This is the agent to move around by NavMesh/**/
     public NavMeshAgent agent;
-    public RagdollController ragdollController;
     
+    private RagdollController ragdollController;
     private Animator animator;
     private GameObject player;
     
@@ -29,6 +29,7 @@ public class HeavyEnemyController : MonoBehaviour
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        ragdollController = gameObject.GetComponent<RagdollController>();
         player = GameObject.FindGameObjectWithTag("MainCamera");
         
         playerPos = player.transform.position;
@@ -41,7 +42,6 @@ public class HeavyEnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Ragdoll Controller NULL", ragdollController);
         // Store transform variables for player and this enemy
         playerPos = player.transform.position;
         Vector3 gameObjPos = transform.position;
@@ -77,8 +77,15 @@ public class HeavyEnemyController : MonoBehaviour
         }
         
         // Animator should be walking if outside attack radius
-        agent.isStopped = animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee") ||
-                          ragdollController.IsRagdolling();
+        if (agent.isStopped)
+        {
+            if (!ragdollController.IsRagdolling() &&
+                !animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee") &&
+                !animator.GetCurrentAnimatorStateInfo(0).IsName("BeginAttack"))
+            {
+                agent.isStopped = false;
+            }
+        }
         
     }
     
@@ -92,6 +99,5 @@ public class HeavyEnemyController : MonoBehaviour
         rndPos += rndPos.normalized * minRadius;
         return new Vector3(playerPos.x + rndPos.x, playerPos.y, playerPos.z + rndPos.y);
     }
-    
     
 }

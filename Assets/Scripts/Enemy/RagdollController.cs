@@ -22,7 +22,6 @@ public class RagdollController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("I am ragdoll");
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
