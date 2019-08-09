@@ -1317,10 +1317,10 @@ GameObject:
   - component: {fileID: 522687956}
   - component: {fileID: 522687955}
   - component: {fileID: 522687954}
-  - component: {fileID: 522687953}
   - component: {fileID: 522687957}
   - component: {fileID: 522687958}
   - component: {fileID: 522687959}
+  - component: {fileID: 522687953}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1356,10 +1356,10 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 522687951}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 160, y: 30, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &522687954
 MonoBehaviour:
@@ -1529,6 +1529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rightHand: {fileID: 2115013150}
+  leftHand: {fileID: 2115013153}
 --- !u!114 &522687959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1538,7 +1539,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 522687951}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11ae84c4d6e85fb448b185677acfd935, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b05fbd34198cdf4aa249345d11e3f2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &536585822
