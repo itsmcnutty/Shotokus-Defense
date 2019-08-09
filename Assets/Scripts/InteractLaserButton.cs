@@ -53,7 +53,7 @@ public class InteractLaserButton : MonoBehaviour
         {
             Debug.Log("Inside the button");
             button = e.target.gameObject.GetComponent<Button>();
-            button.Select();
+//            button.Select();
             selected = true;
         }
         else
@@ -71,7 +71,7 @@ public class InteractLaserButton : MonoBehaviour
 //            Debug.Log("pointer is outside this object" + e.target.name);
 //        }
         
-        if (button != null)
+        if (button != null && selected)
         {
             Debug.Log("Outside the button");
             selected = false;
