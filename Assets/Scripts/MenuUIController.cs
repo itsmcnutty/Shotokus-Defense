@@ -10,14 +10,18 @@ public class MenuUIController : MonoBehaviour
     public SteamVR_Input_Sources leftHandInput;
     public SteamVR_Action_Boolean pauseAction;
 
-    public GameObject wallPrefab;
+    public GameObject menuPrefab;
 
     private GameObject player; // get coordinates of player, to instate menu in front of hem
-    private GameObject wall;
+    private GameObject pauseMenu;
+
+    private bool isPauseMenuActive; // true if player is on pause menu, false if not
+    
 
     private void Awake()
     {
         player = GameObject.FindWithTag("MainCamera");
+        isPauseMenuActive = false;
     }
 
     // Start is called before the first frame update
@@ -30,10 +34,21 @@ public class MenuUIController : MonoBehaviour
     void Update()
     {
         // todo - otherwise, close it
-        if (PausePress())
+        if (PausePress() && !isPauseMenuActive)
         {
-            Debug.Log("Im being PaUsEd");
-            PauseGame();    
+            if (!isPauseMenuActive)
+            {
+                // menu is not active, so open it
+                Debug.Log("I want to be PaUsEd");
+                PauseGame();
+                Time.timeScale = 0;
+            }
+            else
+            {
+                // menu is active, so close it
+                Destroy(pauseMenu);
+                Time.timeScale = 1;
+            }
         }
     }
 
@@ -56,18 +71,15 @@ public class MenuUIController : MonoBehaviour
     // freezes the game, and instantiates the menu
     public void PauseGame()
     {
-
         Vector3 playerPos = player.transform.position;
         Quaternion playerRot = player.transform.rotation;
         Vector3 playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
         
-        
-        wall = Instantiate(wallPrefab, spawnPosition, playerRot);
-//        wall.transform.position = new Vector3(5,0,5);
-        
-        
+        pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
     }
+    
+    
     
     
 }

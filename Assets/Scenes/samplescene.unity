@@ -664,7 +664,7 @@ Transform:
   m_LocalScale: {x: 5, y: 0, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &274783960
 MonoBehaviour:
@@ -712,6 +712,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe61df6a8cea4f409ed90d68ca9075c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &338824657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2769,7 +2774,7 @@ MonoBehaviour:
   pauseAction:
     actionPath: /actions/default/in/Pause
     needsReinit: 0
-  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+  menuPrefab: {fileID: 318018736877818895, guid: fd0649383132fba46b157874da5f86c9,
     type: 3}
 --- !u!114 &918505224
 MonoBehaviour:
@@ -4632,7 +4637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

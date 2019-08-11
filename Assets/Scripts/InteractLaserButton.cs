@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class InteractLaserButton : MonoBehaviour
 {
 
-    // todo TEST WITH LEFT HAND AT THE SAME TIME
     public GameObject rightHand; // right hand VR
     public GameObject leftHand; // right hand VR
     private bool selected; 
@@ -24,7 +23,6 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerR = rightHand.GetComponent<SteamVR_LaserPointer>();
         laserPointerL = leftHand.GetComponent<SteamVR_LaserPointer>();
         button = null;
-//        laserPointer = gameObject.GetComponent<SteamVR_LaserPointer>();
     }
 
 
