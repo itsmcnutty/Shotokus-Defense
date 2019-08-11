@@ -612,7 +612,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: RESTART GAME
+  m_Text: Pause game
 --- !u!222 &264631807
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1318,7 +1318,6 @@ GameObject:
   - component: {fileID: 522687955}
   - component: {fileID: 522687954}
   - component: {fileID: 522687957}
-  - component: {fileID: 522687958}
   - component: {fileID: 522687959}
   - component: {fileID: 522687953}
   m_Layer: 5
@@ -1404,17 +1403,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1677014592}
-        m_MethodName: set_text
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: CLICKED
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 274783960}
         m_MethodName: spawnEnemy
         m_Mode: 3
@@ -1422,6 +1410,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 918505223}
+        m_MethodName: PauseGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1516,20 +1515,6 @@ MonoBehaviour:
   handFollowTransform: 1
   highlightOnHover: 1
   hideHighlight: []
---- !u!114 &522687958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 522687951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 068ed4047755a7b42ac35290f63843ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightHand: {fileID: 2115013150}
-  leftHand: {fileID: 2115013153}
 --- !u!114 &522687959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2750,6 +2735,7 @@ GameObject:
   m_Component:
   - component: {fileID: 918505222}
   - component: {fileID: 918505223}
+  - component: {fileID: 918505224}
   m_Layer: 0
   m_Name: UIController
   m_TagString: Untagged
@@ -2788,6 +2774,22 @@ MonoBehaviour:
   pauseAction:
     actionPath: /actions/default/in/Pause
     needsReinit: 0
+  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+    type: 3}
+--- !u!114 &918505224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918505221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068ed4047755a7b42ac35290f63843ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightHand: {fileID: 2115013150}
+  leftHand: {fileID: 2115013153}
 --- !u!1 &1109184113
 GameObject:
   m_ObjectHideFlags: 0
@@ -2872,13 +2874,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 274783960}
-        m_MethodName: spawnEnemy
-        m_Mode: 3
+      - m_Target: {fileID: 918505223}
+        m_MethodName: PauseGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
