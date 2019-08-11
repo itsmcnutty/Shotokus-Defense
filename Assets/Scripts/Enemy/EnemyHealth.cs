@@ -84,14 +84,14 @@ public class EnemyHealth : CallParentCollision
 		
 		// Reset damage timer
 		timeSinceDamage = 0f;
-		
-		// Get linear rate of decrease for ghost damage
-		healthBarBeforeDecRate = (health - healthBeforeDamage) / REMOVE_DAMAGE_DURATION;
 
 		// Update health and health bar
 		health -= CalculateDamage(other);
 		healthBarActual.SetValueWithoutNotify(health);
 		UpdateHealthString();
+		
+		// Get linear rate of decrease for ghost damage
+		healthBarBeforeDecRate = (health - healthBeforeDamage) / REMOVE_DAMAGE_DURATION;
 
 		// Begin ragdolling if not already ragdolling
 		if (!GetComponent<RagdollController>().IsRagdolling())

@@ -510,7 +510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MAX_HEALTH: 500
-  ARMOR_CUTOFF: 0
+  ARMOR_CUTOFF: 100
   ARMOR_PROFICIENCY: 10
   healthBarCanvas: {fileID: 9121232944689274987}
   healthBarText: {fileID: 1445011927171812118}
@@ -735,7 +735,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1151238942931424720}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +758,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: 0}
+  m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1981108908213299282
@@ -770,7 +770,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5852973354103854870}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -946,7 +946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1541328484642362347}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Energy After
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1014,7 +1014,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4070900052968361445}
   - component: {fileID: 1298903530987602246}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: HealthBarBefore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 5249400318254609580}
   m_HandleRect: {fileID: 0}
-  m_Direction: 0
+  m_Direction: 1
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -1418,7 +1418,7 @@ GameObject:
   - component: {fileID: 5249400318254609580}
   - component: {fileID: 2250570244799246245}
   - component: {fileID: 3125814956794701808}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1524,7 +1524,7 @@ GameObject:
   - component: {fileID: 9121232944689274987}
   - component: {fileID: 7990063642958822756}
   - component: {fileID: 295007139614090174}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: HealthBarCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2092,7 +2092,7 @@ GameObject:
   - component: {fileID: 5694739388617532928}
   - component: {fileID: 8014914487243061499}
   - component: {fileID: 1445011927171812118}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: HealthBarText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2580,7 +2580,7 @@ GameObject:
   - component: {fileID: 4016565133235703157}
   - component: {fileID: 7081098362063801144}
   - component: {fileID: 3507110986355728857}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2628,7 +2628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2794,7 +2794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6726910557789089644}
   - component: {fileID: 4515350828251530292}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: HealthBarActual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2863,7 +2863,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 4422202384025964072}
   m_HandleRect: {fileID: 0}
-  m_Direction: 0
+  m_Direction: 1
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -2884,7 +2884,7 @@ GameObject:
   - component: {fileID: 4422202384025964072}
   - component: {fileID: 6401453985723109089}
   - component: {fileID: 1878228275979350606}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
