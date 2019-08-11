@@ -114,9 +114,9 @@ public class PlayerEnergy : MonoBehaviour
         return (currentEnergy - GetTotalEnergyUsage ()) > 0;
     }
 
-    public bool EnergyAboveThreshold()
+    public bool EnergyAboveThreshold(float threshold)
     {
-        return (currentEnergy - GetTotalEnergyUsage ()) > 100;
+        return (currentEnergy - GetTotalEnergyUsage ()) > threshold;
     }
 
     private void SetEnergyBarText ()
