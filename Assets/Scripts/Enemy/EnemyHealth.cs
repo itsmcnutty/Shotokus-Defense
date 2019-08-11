@@ -16,6 +16,10 @@ public class EnemyHealth : CallParentCollision
 	// How effective armor is when hit by something below cutoff
 	public float ARMOR_PROFICIENCY;
 	
+	// UI canvas containing healthbar elements
+	public Canvas healthBarCanvas;
+	// Text that displays the enemy's health
+	public Text healthBarText;
 	// Slider which reflects actual health of enemy
 	public Slider healthBarActual;
 	// Slider which highlights how much damage the enemy took recently
@@ -48,6 +52,7 @@ public class EnemyHealth : CallParentCollision
 		healthBarBefore.minValue = 0f;
 		healthBarBefore.maxValue = MAX_HEALTH;
 		healthBarBefore.SetValueWithoutNotify(MAX_HEALTH);
+		UpdateHealthString();
 	}
 
 	// Called by child when receiving a collision event or a collision from its child (used
@@ -80,6 +85,7 @@ public class EnemyHealth : CallParentCollision
 		// Update health and health bar
 		health -= CalculateDamage(other);
 		healthBarActual.SetValueWithoutNotify(health);
+		UpdateHealthString();
 
 		// Begin ragdolling if not already ragdolling
 		if (!GetComponent<RagdollController>().IsRagdolling())
@@ -120,6 +126,12 @@ public class EnemyHealth : CallParentCollision
 	private bool IsWeapon(GameObject obj)
 	{
 		return obj.CompareTag("Rock") || obj.CompareTag("Spike");
+	}
+	
+	// Updates the text above the health bar based on the enemy's current heatlh
+	private void UpdateHealthString()
+	{
+		healthBarText.text = String.Format("{0} / {1}", Math.Ceiling(health), Math.Ceiling(MAX_HEALTH));
 	}
 
 	// For controlling the animation of the "before" health bar

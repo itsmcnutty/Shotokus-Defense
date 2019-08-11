@@ -447,7 +447,6 @@ Transform:
   - {fileID: 1668245641784820521}
   - {fileID: 5969217129002285760}
   - {fileID: 7106256742507914145}
-  - {fileID: 3068402637597871409}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -513,6 +512,8 @@ MonoBehaviour:
   MAX_HEALTH: 500
   ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 10
+  healthBarCanvas: {fileID: 9121232944689274987}
+  healthBarText: {fileID: 1445011927171812118}
   healthBarActual: {fileID: 4515350828251530292}
   healthBarBefore: {fileID: 1298903530987602246}
 --- !u!137 &-4228375011515652084
@@ -1538,18 +1539,18 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4439231732437261235}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.2}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalPosition: {x: 0, y: 0, z: 0.19601305}
+  m_LocalScale: {x: 0.010000001, y: 0.01, z: 0.010000001}
   m_Children:
   - {fileID: 5694739388617532928}
   - {fileID: 4070900052968361445}
   - {fileID: 6726910557789089644}
-  m_Father: {fileID: 1212343354941062483}
-  m_RootOrder: 5
+  m_Father: {fileID: 7106256742507914145}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.65}
+  m_AnchoredPosition: {x: 0.0036470077, y: 1.8344655}
   m_SizeDelta: {x: 180, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &9121232944689274987
@@ -2535,6 +2536,7 @@ Transform:
   - {fileID: 7322463736693047341}
   - {fileID: 2479669413032491653}
   - {fileID: 9042243175169278754}
+  - {fileID: 3068402637597871409}
   m_Father: {fileID: 1212343354941062483}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
