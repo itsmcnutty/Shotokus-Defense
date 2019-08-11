@@ -33,6 +33,7 @@ public class MenuUIController : MonoBehaviour
         if (PausePress())
         {
             Debug.Log("Im being PaUsEd");
+            PauseGame();    
         }
     }
 
@@ -63,7 +64,7 @@ public class MenuUIController : MonoBehaviour
         
         
         wall = Instantiate(wallPrefab, spawnPosition, playerRot);
-        wall.transform.position = new Vector3(5,0,5);
+//        wall.transform.position = new Vector3(5,0,5);
         
         
     }

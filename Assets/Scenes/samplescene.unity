@@ -712,11 +712,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe61df6a8cea4f409ed90d68ca9075c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &338824657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1706,7 +1701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyProducer: {fileID: 274783960}
-  initialNumOfEnemies: 2
+  initialNumOfEnemies: 0
   increaseOfEnePerWave: 2
 --- !u!1 &605528914
 GameObject:
