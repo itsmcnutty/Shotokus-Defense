@@ -21,7 +21,7 @@ public class RagdollController : MonoBehaviour
     private bool ragdolling = false;
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
