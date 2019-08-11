@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Vector3 = UnityEngine.Vector3;
 
 public class RagdollController : MonoBehaviour
 {
@@ -25,13 +26,15 @@ public class RagdollController : MonoBehaviour
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        
+        // Add components to children to alert parents on collision
         AddCPCToChildren(rigidbodies[0].gameObject);
 
+        // Set physics material
         for (int i = 0; i < rigidbodies.Length; i++)
         {
             rigidbodies[i].gameObject.GetComponent<Collider>().material = PHYSIC_MATERIAL;
         }
-        
     }
 
     // Adds a CallParentCollider component to this gameobject and all of its children recursively
@@ -60,7 +63,6 @@ public class RagdollController : MonoBehaviour
         // Disable animation and pathfinding
         animator.enabled = false;
         agent.isStopped = true;
-        agent.velocity = Vector3.zero;
 
         // Zero velocity of all rigidbodies so they don't maintain this from the animation
         foreach (var rigidbody in rigidbodies)
@@ -75,7 +77,6 @@ public class RagdollController : MonoBehaviour
     // Re-enables the Animator to regain control of Rigidbodies
     public void StopRagdoll()
     {
-        Debug.Log("Stop ragdoll");
         ragdolling = false;
         
         // Re-enable animation
