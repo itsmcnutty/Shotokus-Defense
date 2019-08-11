@@ -8,6 +8,8 @@ public class EnemyHealth : CallParentCollision
 {
 	// Scalar value to compute damage from impulse
 	private static float IMPULSE_MULTIPLIER = 0.4f;
+	// A quaternion that rotates 180 degrees when multiplied
+	private static Quaternion QUIATERNION_180 = Quaternion.Euler(180 * Vector3.up);
 
 	// The enemy's max health
 	public float MAX_HEALTH;
@@ -29,6 +31,8 @@ public class EnemyHealth : CallParentCollision
 	private float SHOW_DAMAGE_DURATION = 1f;
 	// How long it takes to remove the damage that was dealt from the "before" health bar (seconds)
 	private float REMOVE_DAMAGE_DURATION = 0.8f;
+
+	private GameObject camera;
 	
 	// Seconds since last time enemy took damage
 	private float timeSinceDamage;
@@ -44,6 +48,8 @@ public class EnemyHealth : CallParentCollision
 	void Start()
 	{
 		health = MAX_HEALTH;
+		
+		camera = GameObject.FindGameObjectWithTag("MainCamera");
 		
 		// Setup health bars
 		healthBarActual.minValue = 0f;
@@ -150,5 +156,8 @@ public class EnemyHealth : CallParentCollision
 			float decTime = timeSinceDamage - SHOW_DAMAGE_DURATION;
 			healthBarBefore.SetValueWithoutNotify(healthBeforeDamage + healthBarBeforeDecRate * decTime);
 		}
+		
+		// Rotate health bar to face player
+		healthBarCanvas.transform.rotation = camera.transform.rotation * QUIATERNION_180;
 	}
 }
