@@ -194,9 +194,8 @@ GameObject:
   - component: {fileID: 801056499150555068}
   - component: {fileID: 4086500463878098651}
   - component: {fileID: 3418500187490541435}
-  - component: {fileID: 8219386545625510540}
   m_Layer: 0
-  m_Name: Button
+  m_Name: RestartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -301,18 +300,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3497191483574667922}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8219386545625510540}
-        m_MethodName: RestartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &4086500463878098651
@@ -340,21 +328,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 160, y: 30, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8219386545625510540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3353819076916809417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6b751a15f431fa4fac78513c0baabf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyProducer: {fileID: 0}
-  initialNumOfEnemies: 0
-  increaseOfEnePerWave: 0
 --- !u!1 &5242924873168989142
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,9 +450,8 @@ GameObject:
   - component: {fileID: 2729557879715106640}
   - component: {fileID: 4659089256107328165}
   - component: {fileID: 8674139651471675229}
-  - component: {fileID: 3564034471630211609}
   m_Layer: 0
-  m_Name: Button (1)
+  m_Name: SpawnEnemyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,18 +556,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5900551860974280926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3564034471630211609}
-        m_MethodName: spawnEnemy
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &4659089256107328165
@@ -623,20 +584,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 160, y: 30, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3564034471630211609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6943671811099781993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1318d48d64be0a149a1bc44355adbfcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shouldSpawn: 0
-  prefab: []
 --- !u!1 &8314846359941831845
 GameObject:
   m_ObjectHideFlags: 0

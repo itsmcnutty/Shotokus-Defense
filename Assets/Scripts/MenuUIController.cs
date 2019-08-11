@@ -16,7 +16,11 @@ public class MenuUIController : MonoBehaviour
     private GameObject pauseMenu;
 
     private bool isPauseMenuActive; // true if player is on pause menu, false if not
-    
+
+    private Vector3 playerPos; // player transform position
+    private Quaternion playerRot; // player transform rotation
+    private Vector3 playerFor; // player transform forward
+
 
     private void Awake()
     {
@@ -34,7 +38,7 @@ public class MenuUIController : MonoBehaviour
     void Update()
     {
         // todo - otherwise, close it
-        if (PausePress() && !isPauseMenuActive)
+        if (PausePress())
         {
             if (!isPauseMenuActive)
             {
@@ -71,9 +75,9 @@ public class MenuUIController : MonoBehaviour
     // freezes the game, and instantiates the menu
     public void PauseGame()
     {
-        Vector3 playerPos = player.transform.position;
-        Quaternion playerRot = player.transform.rotation;
-        Vector3 playerFor = player.transform.forward;
+        playerPos = player.transform.position;
+        playerRot = player.transform.rotation;
+        playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
         
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
