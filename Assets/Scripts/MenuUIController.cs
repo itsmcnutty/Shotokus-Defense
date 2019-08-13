@@ -46,14 +46,14 @@ public class MenuUIController : MonoBehaviour
                 isPauseMenuActive = true;
                 Debug.Log("I want to be PaUsEd");
                 PauseGame();
-//                Time.timeScale = 0;
+                Time.timeScale = 0;
             }
             else
             {
                 // menu is active, so close it
                 isPauseMenuActive = false;
                 Destroy(pauseMenu);
-//                Time.timeScale = 1;
+                Time.timeScale = 1;
             }
         }
     }
@@ -65,12 +65,12 @@ public class MenuUIController : MonoBehaviour
     
     public bool PausePressRight()
     {
-        return pauseAction.GetState(rightHandInput);
+        return pauseAction.GetStateDown(rightHandInput);
     }    
     
     public bool PausePressLeft()
     {
-        return pauseAction.GetState(leftHandInput);
+        return pauseAction.GetStateDown(leftHandInput);
     }
 
     // todo make this toggleable, so if not in menu access it
@@ -81,8 +81,12 @@ public class MenuUIController : MonoBehaviour
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
+       spawnPosition.y =  (float)1.9407;
+        // new Vector3(playerPos.x+5, playerPos.y, playerPos.z+5)
         
-        pauseMenu = Instantiate(menuPrefab, spawnPosition, Quaternion.Inverse(playerRot));
+        pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
+        pauseMenu.transform.LookAt(player.transform.position);
+//        pauseMenu.transform.rotation.x = 0;
     }
     
     
