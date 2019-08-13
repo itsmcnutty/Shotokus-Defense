@@ -268,14 +268,15 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy.UseEnergy (hand);
             float controllerVelocity = controllerPose.GetVelocity ().y;
-            if (controllerVelocity <= 0)
+            float handPos = (hand.transform.position.y - startingSpikeWidth);
+            if (handPos < 0)
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
                 quicksand.transform.localScale = new Vector3 (spikeQuicksandOutline.transform.localScale.x, .01f, spikeQuicksandOutline.transform.localScale.z);
                 Destroy (spikeQuicksandOutline);
             }
-            else
+            else if(handPos > 0 && controllerVelocity > 0)
             {
                 float height = (float) Math.Sqrt (3) * baseSpikeRadius;
                 float size = spikeQuicksandOutline.transform.localScale.x / 2;
@@ -302,6 +303,10 @@ public class PlayerAbility : MonoBehaviour
                     spikeEndPosition.y += spikePos.y + (2f * finalSpikeRadius);
                     spike.GetComponent<SpikeMovement> ().SetEndPosition (spikeEndPosition);
                 }
+            }
+            else
+            {
+                Destroy (spikeQuicksandOutline);
             }
         }
         else if (WallIsActive ())
