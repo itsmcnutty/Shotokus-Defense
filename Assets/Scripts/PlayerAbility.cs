@@ -266,7 +266,6 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (SpikeQuicksandIsActive ())
         {
-            playerEnergy.UseEnergy (hand);
             float controllerVelocity = controllerPose.GetVelocity ().y;
             float handPos = (hand.transform.position.y - startingSpikeWidth);
             if (handPos < 0)
@@ -274,9 +273,11 @@ public class PlayerAbility : MonoBehaviour
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
                 quicksand.transform.localScale = new Vector3 (spikeQuicksandOutline.transform.localScale.x, .01f, spikeQuicksandOutline.transform.localScale.z);
+                quicksand.AddComponent<QuicksandProperties>();
                 Destroy (spikeQuicksandOutline);
+                playerEnergy.UseEnergy (hand);
             }
-            else if(handPos > 0 && controllerVelocity > 0)
+            else if (handPos > 0 && controllerVelocity > 0)
             {
                 float height = (float) Math.Sqrt (3) * baseSpikeRadius;
                 float size = spikeQuicksandOutline.transform.localScale.x / 2;
@@ -287,6 +288,7 @@ public class PlayerAbility : MonoBehaviour
                 Vector3 centerLoc = spikeQuicksandOutline.transform.position;
 
                 Destroy (spikeQuicksandOutline);
+                playerEnergy.UseEnergy (hand);
 
                 foreach (Vector3 spikePos in allSpikes)
                 {
@@ -303,10 +305,12 @@ public class PlayerAbility : MonoBehaviour
                     spikeEndPosition.y += spikePos.y + (2f * finalSpikeRadius);
                     spike.GetComponent<SpikeMovement> ().SetEndPosition (spikeEndPosition);
                 }
+                surface.BuildNavMesh ();
             }
             else
             {
                 Destroy (spikeQuicksandOutline);
+                playerEnergy.CancelEnergyUsage (hand);
             }
         }
         else if (WallIsActive ())
@@ -346,27 +350,28 @@ public class PlayerAbility : MonoBehaviour
 
     private void CancelAbility ()
     {
-        if (RockIsActive ())
-        {
-            playerEnergy.CancelEnergyUsage (hand);
-            RemoveRockFromHand ();
-        }
-        else if (SpikeQuicksandIsActive ())
-        {
-            playerEnergy.CancelEnergyUsage (hand);
-            Destroy (spikeQuicksandOutline);
-            spikeQuicksandOutline = null;
-        }
-        else if (WallOutlineIsActive ())
-        {
-            playerEnergy.CancelEnergyUsage (hand);
-            Destroy (wallOutline);
-            ResetWallInfo ();
-        }
-        else if (WallIsActive ())
+        if (WallIsActive ())
         {
             playerEnergy.UseEnergy (firstHandHeld);
             ResetWallInfo ();
+        }
+        else
+        {
+            playerEnergy.CancelEnergyUsage (hand);
+            if (RockIsActive ())
+            {
+                RemoveRockFromHand ();
+            }
+            else if (SpikeQuicksandIsActive ())
+            {
+                Destroy (spikeQuicksandOutline);
+                spikeQuicksandOutline = null;
+            }
+            else if (WallOutlineIsActive ())
+            {
+                Destroy (wallOutline);
+                ResetWallInfo ();
+            }
         }
     }
 
