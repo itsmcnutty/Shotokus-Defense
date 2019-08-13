@@ -37,6 +37,10 @@
       "requirement": "suggested"
     },
     {
+      "name": "/actions/default/in/Pause",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/default/out/Haptic",
       "type": "vibration"
     },
@@ -138,7 +142,8 @@
       "/actions/platformer/in/Jump": "Jump",
       "/actions/default/in/Draw": "draw",
       "/actions/default/in/Grip": "grip",
-      "/actions/default/in/Trigger": "trigger"
+      "/actions/default/in/Trigger": "trigger",
+      "/actions/default/in/Pause": "pause"
     }
   ]
 }
