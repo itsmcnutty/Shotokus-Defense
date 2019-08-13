@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,6 +23,9 @@ public class PlayerAbility : MonoBehaviour
     public GameObject spikePrefab;
     public GameObject quicksandPrefab;
     public GameObject wallPrefab;
+
+    public Material validWallMat;
+    public Material invalidWallMat;
 
     private Hand hand;
     private PlayerEnergy playerEnergy;
@@ -112,8 +114,16 @@ public class PlayerAbility : MonoBehaviour
         else if (DrawHold ())
         {
             playerEnergy.UpdateAbilityUseTime ();
-            if (WallOutlineIsActive () && !WallIsActive () && arc.CanUseAbility () && otherArc.CanUseAbility ())
+            if (WallOutlineIsActive () && !WallIsActive ())
             {
+                if (arc.CanUseAbility () && otherArc.CanUseAbility ())
+                {
+                    wallOutline.GetComponentInChildren<SkinnedMeshRenderer> ().material = validWallMat;
+                }
+                else
+                {
+                    wallOutline.GetComponentInChildren<SkinnedMeshRenderer> ().material = invalidWallMat;
+                }
                 SetWallLocation ();
             }
         }
@@ -167,8 +177,8 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                WallOutlineProperties properties = wallOutline.GetComponentInChildren<WallOutlineProperties> ();
-                if (properties.CollisionDetected () || Vector3.Distance (player.transform.position, wallOutline.transform.position) < ROCK_CREATE_DIST)
+                OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
+                if (!arc.CanUseAbility () || !otherArc.CanUseAbility () || properties.CollisionDetected () || Vector3.Distance (player.transform.position, wallOutline.transform.position) < ROCK_CREATE_DIST)
                 {
                     playerEnergy.CancelEnergyUsage (firstHandHeld);
                     Destroy (wallOutline);
@@ -233,12 +243,13 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (WallIsActive () && playerEnergy.EnergyIsNotZero ())
         {
+            hand.TriggerHapticPulse (1500);
             float newHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             if (newHandHeight < 1 && currentWallHeight < newHandHeight)
             {
                 currentWallHeight = newHandHeight;
                 Vector3 newPos = new Vector3 (wall.transform.position.x, wall.transform.localScale.y * newHandHeight, wall.transform.position.z);
-                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 0.05f);
+                wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 1f);
                 float area = (float) Math.Round (wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * WALL_SIZE_MULTIPLIER;
                 playerEnergy.SetTempEnergy (firstHandHeld, area);
                 surface.BuildNavMesh ();
@@ -257,7 +268,7 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy.UseEnergy (hand);
             float controllerVelocity = controllerPose.GetVelocity ().y;
-            if (false) // if (controllerVelocity <= 0)
+            if (controllerVelocity <= 0)
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
@@ -273,7 +284,7 @@ public class PlayerAbility : MonoBehaviour
 
                 finalSpikeRadius *= 2;
                 Vector3 centerLoc = spikeQuicksandOutline.transform.position;
-                
+
                 Destroy (spikeQuicksandOutline);
 
                 foreach (Vector3 spikePos in allSpikes)
@@ -389,7 +400,7 @@ public class PlayerAbility : MonoBehaviour
         Vector3 thisArcPos = arc.GetEndPosition ();
         Vector3 otherArcPos = otherArc.GetEndPosition ();
         float wallPosX = (thisArcPos.x + otherArcPos.x) / 2;
-        float wallPosY = (thisArcPos.y + otherArcPos.y) / 2;
+        float wallPosY = Math.Min (thisArcPos.y, otherArcPos.y);
         float wallPosZ = (thisArcPos.z + otherArcPos.z) / 2;
         return new Vector3 (wallPosX, wallPosY, wallPosZ);
     }

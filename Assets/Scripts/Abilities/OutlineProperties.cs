@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class WallOutlineProperties : MonoBehaviour
+public class OutlineProperties : MonoBehaviour
 {
 
     private bool collisionDetected;
