@@ -131,7 +131,14 @@ public class PlayerEnergy : MonoBehaviour
 
     public void AddHandToActive (Hand activeHand)
     {
-        activeAbilityEnergyCost.Add (activeHand, 0);
+        if(!activeAbilityEnergyCost.ContainsKey(activeHand))
+        {
+            activeAbilityEnergyCost.Add (activeHand, 0);
+        }
+        else
+        {
+            activeAbilityEnergyCost[activeHand] = 0;
+        }
     }
 
     public float GetRemainingEnergy ()
