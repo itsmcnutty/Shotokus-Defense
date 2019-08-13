@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2194356009467680579}
   - component: {fileID: 2726864197937807606}
   - component: {fileID: 7595583948006726449}
-  - component: {fileID: 1740961177800361824}
+  - component: {fileID: 1916992988276691925}
   m_Layer: 13
   m_Name: Wall
   m_TagString: Untagged
@@ -96,7 +96,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: -2092697913175892290, guid: 73671097716b0ae4cad123b04ade97d3, type: 3}
---- !u!114 &1740961177800361824
+--- !u!114 &1916992988276691925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4101575633065156151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5376dca19ff27244abdf8bf252ff5a45, type: 3}
+  m_Script: {fileID: 11500000, guid: 6751cd8dfa08aa44db4dfd801c91d082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4777704666276339869
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 1702220870442628939}
   - component: {fileID: 5953550940563984834}
   m_Layer: 13
-  m_Name: Traced Wall
+  m_Name: Wall Outline
   m_TagString: Wall Outline
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

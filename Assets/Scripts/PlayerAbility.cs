@@ -177,7 +177,7 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                WallOutlineProperties properties = wallOutline.GetComponentInChildren<WallOutlineProperties> ();
+                OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
                 if (!arc.CanUseAbility () || !otherArc.CanUseAbility () || properties.CollisionDetected () || Vector3.Distance (player.transform.position, wallOutline.transform.position) < ROCK_CREATE_DIST)
                 {
                     playerEnergy.CancelEnergyUsage (firstHandHeld);
