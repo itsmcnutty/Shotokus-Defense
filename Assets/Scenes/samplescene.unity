@@ -2916,6 +2916,11 @@ PrefabInstance:
       propertyPath: enemyProducer
       value: 
       objectReference: {fileID: 1447894952}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: initialNumOfEnemies
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1512379628719005127, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
       propertyPath: m_LocalPosition.x

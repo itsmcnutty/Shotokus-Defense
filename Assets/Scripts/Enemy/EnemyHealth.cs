@@ -103,7 +103,9 @@ public class EnemyHealth : CallParentCollision
 		{
 			Destroy(gameObject);
 			// Indicate the Game Controller that an enemy was destroyed
-			GameController.Instance.enemyGotDestroyed();
+			GameController.Instance.EnemyGotDestroyed();
+			// Check if round is over or not
+			GameController.Instance.OnEnemyDeathClear();
 		}
 	}
 
