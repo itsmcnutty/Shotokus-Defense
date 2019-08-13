@@ -7,17 +7,18 @@ using Valve.VR.InteractionSystem;
 
 public class GameController : MonoBehaviour
 {
-
-    private static GameController instance; // instance for singleton pattern
-    public EnemyProducer enemyProducer;
     public int initialNumOfEnemies; // initial number of enemies to start a round with
-    private int numOfEnemiesPerWave; // number of enemies to be spawned in one wave
     public int increaseOfEnePerWave; // how many more enemies per wave
-    private int enemiesDestroyed; // number of enemies destroyed in current Wave
+    
+    private static GameController instance; // instance for singleton pattern
+    private GameObject enemyProducerObject; // EnemyProducer Object Instance
+    private EnemyProducer enemyProducer; // EnemyProducer script functionality
     private PlayerHealth playerHealth; // controller for player health once round ends
 
-    
-    
+    private int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
+    private int enemiesDestroyed; // number of enemies destroyed in current Wave
+
+
     // Constructor
     private GameController(){}
     
@@ -41,48 +42,54 @@ public class GameController : MonoBehaviour
         if (player != null)
         {
             playerHealth = player.GetComponent<PlayerHealth> ();
+            // todo maybe restart enemy energy when restarting game
 //            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
-        
-        numOfEnemiesPerWave = initialNumOfEnemies;
-        StartWave(numOfEnemiesPerWave);
+
+        // Get enemyProducer functionality
+        enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
+        enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
+        if (enemyProducer == null)
+        {
+            Debug.Log("ERROR: Couldn't find enemy producer");
+        }
+        StartWave(initialNumOfEnemies);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        OnEnemyDeathClear();
+//        OnEnemyDeathClear();
     }
 
-    // PARAM: how many enemies on each wave
-    // 
+    // This function starts a round and spawns the corresponding number of enemies
+    // Future: this function should keep track of which types enemies to spawn and how many
+    // Future: this function should keep track of the round number
     void StartWave(int numOfEnemies)
     {
         enemiesDestroyed = 0;
-        enemyProducer.spawnEnemy(numOfEnemies);
+        enemyProducer.SpawnEnemy(numOfEnemies);
     }
     
     // This function will be called when the player eliminates all the enemies in the wave
     // It starts a new wave, while incrementing the number of enemies that will appear
-    void OnEnemyDeathClear()
+    // this function should be called everytime an enemy dies
+    public void OnEnemyDeathClear()
     {
-        // enter here if all enemies have been destroyed, to start next wave
         if (enemiesDestroyed != numOfEnemiesPerWave)
         {
-            // do nothing
+            // not all enemies have been destroyed, so don't do anything
             return;
         }
         numOfEnemiesPerWave += increaseOfEnePerWave;
         Debug.Log("Starting new Wave!!");
         StartWave(numOfEnemiesPerWave);
-//        Invoke("StartWave", 3);
     }
 
     public void RestartGame()
@@ -95,17 +102,18 @@ public class GameController : MonoBehaviour
         
         // todo translate player to beginning position
         
-        // Message to indicate the player they lost
-        Debug.Log("You LOST");
+        Debug.Log("Restarting game");
         
         // Reset values of wave
         playerHealth.RecoverAllHealth();
         StartWave(initialNumOfEnemies);
     }
     
-    // To be called when an enemey is destroyed
+    // todo make function for losing game
+
     // This function keeps track of destroyed enemies by updating enemiesDestroyed variable
-    public void enemyGotDestroyed()
+    // To be called when an enemey is destroyed
+    public void EnemyGotDestroyed()
     {
         enemiesDestroyed += 1;
     }

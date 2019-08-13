@@ -4,25 +4,18 @@ using UnityEngine;
 
 public class EnemyProducer : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     public bool shouldSpawn; // boolean to activate spawning
     public GameObject[] prefab; // prefab to be spawned. Set prefab on the editor
-
     private Bounds spawnArea;
-    private int numOfEnemies; // max number of enemies per round
-    private int spawnedEnemies = 0; // number of enemies spawned already // todo remove
-    
 
     // Start is called before the first frame update
     void Start()
     {
-//        numOfEnemies = 10;
-//        spawnArea = this.GetComponent<BoxCollider>().bounds;
-//        InvokeRepeating("spawnEnemy", 5f, 2f);
+        
     }
     
-    // Returns: Vector3 random coordinates inside the spawnArea
+    // Function for spawning enemies in random location inside spawnArea
+    // Returns: Vector3 coordinates
     Vector3 randomSpawnPosition() {
         float x = Random.Range(spawnArea.min.x, spawnArea.max.x);
         float z = Random.Range(spawnArea.min.z, spawnArea.max.z);
@@ -30,37 +23,24 @@ public class EnemyProducer : MonoBehaviour
         return new Vector3(x, y, z);
     }
     
+    // Function that instantiates enemies in spawn area
+    // PARAM: Int numOfEnemies - specifies how many enemies to be spawned
     // this will be called by GameController.cs
-    // This spawns the amount of enemies specified by GameController
-    public void spawnEnemy(int maxNumOfEnemies)
+    public void SpawnEnemy(int numOfEnemies)
     {
         if (!shouldSpawn)
         {
             return;
         }
-        numOfEnemies = maxNumOfEnemies;
         spawnArea = this.GetComponent<BoxCollider>().bounds;
-//        InvokeRepeating("Spawner", 3f, 2f);
-        // maybe use invoke 
-
+        
+        // todo maybe use invoke for delay in between enemy spawning
         for (int i = 0; i < numOfEnemies; i++)
         {
             Instantiate(prefab[i%prefab.Length], randomSpawnPosition(), Quaternion.identity);
         }
         
     }
-
-    // This function checks if the all enemies have been spawned for the current wave
-    // if not then it spawns an enemy an increases the spawnedEnemies counter.
-//    private void Spawner()
-//    {
-//        if (spawnedEnemies == numOfEnemies)
-//        {
-//            return;
-//        }
-//        Instantiate(prefab[0], randomSpawnPosition(), Quaternion.identity);
-//        spawnedEnemies += 1;
-//    }
     
     // Update is called once per frame
     void Update()
