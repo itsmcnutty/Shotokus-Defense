@@ -38,14 +38,11 @@ public class HeavyEnemyController : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         ragdollController = gameObject.GetComponent<RagdollController>();
         player = GameObject.FindGameObjectWithTag("MainCamera");
-        agent.stoppingDistance = (float)ATTACK_RADIUS;
+        agent.stoppingDistance = ATTACK_RADIUS;
         sqrAttackRadius = ATTACK_RADIUS * ATTACK_RADIUS;
         
         playerPos = player.transform.position;
         randomPos = GetRandomNearTarget(playerPos);
-//        Debug.Log("Player pos is: " + playerPos);
-//        Debug.Log("Enemy pos is: " + randomPos);
-
     }
 
     // Update is called once per frame
@@ -67,36 +64,7 @@ public class HeavyEnemyController : MonoBehaviour
 //        moveDir.y = 0;
 //        moveDir.Normalize();
 //        transform.forward = moveDir;
-        
-        /*
-        // Calculate enemy distance
-        double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-                                      Math.Pow(playerPos.z - gameObjPos.z, 2));
-	    // Move
-        agent.SetDestination(playerPos);
 
-        // When attackTimer is lower than 0, it allows the enemy to attack again 
-        if (attackTimer <= 0f && dist <= ATTACK_RADIUS)
-        {
-            agent.isStopped = true;
-            animator.SetTrigger("Slash");
-            attackTimer = ATTACK_DELAY;
-        }
-        
-        // Animator should be walking if outside attack radius
-        if (agent.isStopped)
-        {
-            if (!ragdollController.IsRagdolling() &&
-                !animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee") &&
-                !animator.GetCurrentAnimatorStateInfo(0).IsName("BeginAttack"))
-            {
-                agent.isStopped = false;
-            }
-        }
-        */
-        
-        // TODO: Re-do movement and attack control with stopping and navmesh obstacle
-        
         // Calculate enemy distance
         float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
                                 Math.Pow(playerPos.z - gameObjPos.z, 2));
