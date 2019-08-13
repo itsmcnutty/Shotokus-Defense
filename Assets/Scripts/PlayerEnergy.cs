@@ -46,7 +46,6 @@ public class PlayerEnergy : MonoBehaviour
             {
                 afterAbilityEnergy = currentEnergy;
                 activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
-                Debug.Log("Energy Overflow Drain");
             }
             energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         }
@@ -61,7 +60,6 @@ public class PlayerEnergy : MonoBehaviour
         {
             activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
             afterAbilityEnergy = currentEnergy;
-            Debug.Log("Energy Overflow Set");
         }
         energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         UpdateAbilityUseTime ();
@@ -87,12 +85,14 @@ public class PlayerEnergy : MonoBehaviour
         currentEnergy -= activeAbilityEnergyCost[activeHand];
         energyBarBefore.value = currentEnergy;
         activeAbilityEnergyCost[activeHand] = 0;
+        RemoveHandFromActive (activeHand);
     }
 
     public void CancelEnergyUsage (Hand activeHand)
     {
         energyBarAfter.value = currentEnergy;
         activeAbilityEnergyCost[activeHand] = 0;
+        RemoveHandFromActive (activeHand);
     }
 
     public void RegenEnergy ()
@@ -114,12 +114,12 @@ public class PlayerEnergy : MonoBehaviour
         return (currentEnergy - GetTotalEnergyUsage ()) > 0;
     }
 
-    public bool EnergyAboveThreshold()
+    public bool EnergyAboveThreshold(float threshold)
     {
-        return (currentEnergy - GetTotalEnergyUsage ()) > 100;
+        return (currentEnergy - GetTotalEnergyUsage ()) > threshold;
     }
 
-    public void SetEnergyBarText ()
+    private void SetEnergyBarText ()
     {
         energyBarText.text = currentEnergy - GetTotalEnergyUsage () + " / " + maxEnergy;
     }
@@ -134,18 +134,18 @@ public class PlayerEnergy : MonoBehaviour
         activeAbilityEnergyCost.Add (activeHand, 0);
     }
 
-    public void RemoveHandFromActive (Hand activeHand)
+    public float GetRemainingEnergy ()
+    {
+        return currentEnergy - GetTotalEnergyUsage ();
+    }
+
+    private void RemoveHandFromActive (Hand activeHand)
     {
         float entry;
         if (activeAbilityEnergyCost.TryGetValue (activeHand, out entry))
         {
             activeAbilityEnergyCost.Remove (activeHand);
         }
-    }
-
-    public float GetRemainingEnergy ()
-    {
-        return currentEnergy - GetTotalEnergyUsage ();
     }
 
     private float GetTotalEnergyUsage ()
