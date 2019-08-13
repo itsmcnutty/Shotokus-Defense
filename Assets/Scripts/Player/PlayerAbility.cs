@@ -117,15 +117,8 @@ public class PlayerAbility : MonoBehaviour
             playerEnergy.UpdateAbilityUseTime ();
             if (WallOutlineIsActive () && !WallIsActive ())
             {
-                if (WallIsValid())
-                {
-                    wallOutline.GetComponentInChildren<SkinnedMeshRenderer> ().material = validOutlineMat;
-                }
-                else
-                {
-                    wallOutline.GetComponentInChildren<SkinnedMeshRenderer> ().material = invalidOutlineMat;
-                }
                 SetWallLocation ();
+                SetOutlineMaterial(wallOutline, WallIsValid());
             }
         }
         else if (DrawRelease ())
@@ -179,7 +172,7 @@ public class PlayerAbility : MonoBehaviour
             if (firstHandHeld != null && firstHandHeld != hand)
             {
                 OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
-                if (WallIsValid())
+                if (WallIsValid ())
                 {
                     playerEnergy.AddHandToActive (firstHandHeld);
                     wall = Instantiate (wallPrefab) as GameObject;
@@ -195,7 +188,7 @@ public class PlayerAbility : MonoBehaviour
                     Destroy (wallOutline);
                     ResetWallInfo ();
                 }
-                
+
             }
             else
             {
@@ -241,6 +234,7 @@ public class PlayerAbility : MonoBehaviour
             spikeQuicksandOutline.transform.localScale = new Vector3 (size, 1f, size);
             float energyCost = (float) Math.Round (Math.Pow (spikeQuicksandOutline.transform.localScale.x, 2), 2) * 50f;
             playerEnergy.SetTempEnergy (hand, energyCost);
+            SetOutlineMaterial(spikeQuicksandOutline, SpikeQuicksandIsValid());
         }
         else if (WallIsActive () && playerEnergy.EnergyIsNotZero ())
         {
@@ -269,7 +263,7 @@ public class PlayerAbility : MonoBehaviour
         {
             float controllerVelocity = controllerPose.GetVelocity ().y;
             float handPos = (hand.transform.position.y - startingSpikeWidth);
-            if (handPos < 0)
+            if (handPos < 0 && SpikeQuicksandIsValid())
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
@@ -278,7 +272,7 @@ public class PlayerAbility : MonoBehaviour
                 Destroy (spikeQuicksandOutline);
                 playerEnergy.UseEnergy (hand);
             }
-            else if (handPos > 0 && controllerVelocity > 0)
+            else if (handPos > 0 && controllerVelocity > 0 && SpikeQuicksandIsValid())
             {
                 float height = (float) Math.Sqrt (3) * baseSpikeRadius;
                 float size = spikeQuicksandOutline.transform.localScale.x / 2;
@@ -458,6 +452,13 @@ public class PlayerAbility : MonoBehaviour
             Vector3.Distance (player.transform.position, wallOutline.transform.position) >= ROCK_CREATE_DIST);
     }
 
+    private bool SpikeQuicksandIsValid ()
+    {
+        OutlineProperties properties = spikeQuicksandOutline.GetComponentInChildren<OutlineProperties> ();
+        return (arc.CanUseAbility () &&
+            !properties.CollisionDetected ());
+    }
+
     private bool RockIsActive ()
     {
         return rock != null;
@@ -476,5 +477,17 @@ public class PlayerAbility : MonoBehaviour
     private bool WallOutlineIsActive ()
     {
         return wallOutline != null;
+    }
+
+    private void SetOutlineMaterial (GameObject outlineObject, bool valid)
+    {
+        if (valid)
+        {
+            outlineObject.GetComponentInChildren<SkinnedMeshRenderer> ().material = validOutlineMat;
+        }
+        else
+        {
+            outlineObject.GetComponentInChildren<SkinnedMeshRenderer> ().material = invalidOutlineMat;
+        }
     }
 }
