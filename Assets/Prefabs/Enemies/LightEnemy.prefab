@@ -1781,7 +1781,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 767a0e2f918bc89468d4ba21494813ef, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1826,9 +1826,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe960ef236b0794e822b53e0bf9c296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SPEED: 0
-  FOLLOW_RADIUS: 0
   ATTACK_DELAY: 2
+  ATTACK_RADIUS: 0
   agent: {fileID: 1275101893616847299}
 --- !u!137 &5625520736201670366
 SkinnedMeshRenderer:

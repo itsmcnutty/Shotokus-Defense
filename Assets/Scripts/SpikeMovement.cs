@@ -18,7 +18,7 @@ public class SpikeMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards (transform.position, endPosition, speed);
         if (transform.position == endPosition)
         {
-            Destroy (gameObject, 1.0f);
+            Destroy (gameObject, 5.0f);
         }
     }
 

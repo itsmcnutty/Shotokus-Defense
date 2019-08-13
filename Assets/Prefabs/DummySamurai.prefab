@@ -1290,10 +1290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6809181683348855196}
   - component: {fileID: 3527745037478556902}
-  - component: {fileID: 1651903953305371550}
-  - component: {fileID: 4593096362988437081}
-  - component: {fileID: -152876290428145222}
-  - component: {fileID: 4876990112013004936}
+  - component: {fileID: 9064154722566933398}
   m_Layer: 9
   m_Name: DummySamurai
   m_TagString: Enemy
@@ -1359,25 +1356,7 @@ Animator:
   m_HasTransformHierarchy: 0
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!143 &1651903953305371550
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7504205836274379663}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 5.600088
-  m_Radius: 0.9508159
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0.2224083, y: 2.766681, z: 0.628119}
---- !u!114 &4593096362988437081
+--- !u!114 &9064154722566933398
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1386,50 +1365,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7504205836274379663}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbe960ef236b0794e822b53e0bf9c296, type: 3}
+  m_Script: {fileID: 11500000, guid: dc3be917a80086a48b97933694257f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SPEED: 130
-  FOLLOW_RADIUS: 0.4
-  ATTACK_DELAY: 2
-  agent: {fileID: 4876990112013004936}
---- !u!114 &-152876290428145222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7504205836274379663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd923125896806243808fdc885c49fca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MAX_HEALTH: 0.1
-  ARMOR_CUTOFF: 0
-  ARMOR_PROFICIENCY: 1
---- !u!195 &4876990112013004936
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7504205836274379663}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &7714483777562245209
 GameObject:
   m_ObjectHideFlags: 0

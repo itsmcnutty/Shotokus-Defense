@@ -11,6 +11,5 @@ public class RockCollide : MonoBehaviour
 	private void OnCollisionEnter(Collision other)
 	{
 		crashed = true;
-		Debug.Log("Rock smash");
 	}
 }

@@ -12,6 +12,9 @@ TagManager:
   - PlayerCollider
   - Show on Pause
   - EnemyProducer
+  - Wall Outline
+  - Wall
+  - NavMesh
   layers:
   - Default
   - TransparentFX
@@ -25,9 +28,9 @@ TagManager:
   - Enemy
   - Player
   - Rock
-  - 
-  - 
-  - 
+  - Wall
+  - Outline
+  - Arc
   - 
   - 
   - 

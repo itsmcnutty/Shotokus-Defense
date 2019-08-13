@@ -3,10 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Vector3 = UnityEngine.Vector3;
 
 public class RagdollController : MonoBehaviour
 {
 
+    // Physics material for all of the enemy's colliders
+    public PhysicMaterial PHYSIC_MATERIAL;
+    
     // All Rigidbodies of the enemy's ragdoll
     private Rigidbody[] rigidbodies;
     // The enemy's Animator component
@@ -17,16 +21,31 @@ public class RagdollController : MonoBehaviour
     private bool ragdolling = false;
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        
+        // Add components to children to alert parents on collision
+        AddCPCToChildren(rigidbodies[0].gameObject);
 
-        foreach (var rigidbody in rigidbodies)
+        // Set physics material
+        for (int i = 0; i < rigidbodies.Length; i++)
         {
-            rigidbody.gameObject.AddComponent<CallParentCollision>();
-            rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rigidbodies[i].gameObject.GetComponent<Collider>().material = PHYSIC_MATERIAL;
+        }
+    }
+
+    // Adds a CallParentCollider component to this gameobject and all of its children recursively
+    private void AddCPCToChildren(GameObject obj)
+    {
+        obj.AddComponent<CallParentCollision>();
+        
+        // Break after looping through all children (or has no children)
+        for (int i = 0; i < obj.transform.childCount; i++)
+        {
+            AddCPCToChildren(obj.transform.GetChild(i).gameObject);
         }
     }
     
@@ -49,6 +68,7 @@ public class RagdollController : MonoBehaviour
         foreach (var rigidbody in rigidbodies)
         {
             rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
         }
 
         StartCoroutine("WaitAndStop");
