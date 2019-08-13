@@ -12,12 +12,17 @@ public class HeavyEnemyController : MonoBehaviour
     // Time between attacks (seconds)
     public float ATTACK_DELAY = 2f;
     // Radius for attacking
-    public double ATTACK_RADIUS;
+    public float ATTACK_RADIUS;
+    
+    // Squared attack radius (for optimized calculations)
+    private float sqrAttackRadius;
     // Timer for attack delay
     private float attackTimer = 0f;
     
-    // This is the agent to move around by NavMesh/**/
+    // This is the agent to move around by NavMesh
     public NavMeshAgent agent;
+    // The NavMeshObstacle used to block enemies pathfinding when not moving
+    public NavMeshObstacle obstacle;
     
     private RagdollController ragdollController;
     private Animator animator;
@@ -31,12 +36,11 @@ public class HeavyEnemyController : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
         ragdollController = gameObject.GetComponent<RagdollController>();
         player = GameObject.FindGameObjectWithTag("MainCamera");
+        agent.stoppingDistance = (float)ATTACK_RADIUS;
+        sqrAttackRadius = ATTACK_RADIUS * ATTACK_RADIUS;
         
         playerPos = player.transform.position;
         randomPos = GetRandomNearTarget(playerPos);
-        Debug.Log("Player pos is: " + playerPos);
-        Debug.Log("Enemy pos is: " + randomPos);
-
     }
 
     // Update is called once per frame
@@ -45,29 +49,27 @@ public class HeavyEnemyController : MonoBehaviour
         // Store transform variables for player and this enemy
         playerPos = player.transform.position;
         Vector3 gameObjPos = transform.position;
+        
+        // Pass speed to animation controller
+        float moveSpeed = agent.velocity.magnitude;
+        animator.SetFloat("WalkSpeed", moveSpeed);
+
+        // Decrement attack timer
+        attackTimer -= Time.deltaTime;
     
         // Calculate direction 
 //        Vector3 moveDir = playerPos - gameObjPos;
 //        moveDir.y = 0;
 //        moveDir.Normalize();
 //        transform.forward = moveDir;
-    
+        
+        /*
         // Calculate enemy distance
         double dist = Math.Sqrt(Math.Pow(playerPos.x - gameObjPos.x, 2) +
                                       Math.Pow(playerPos.z - gameObjPos.z, 2));
-        
-        // Move speed is equal to speed if enemy is far away. Otherwise proportional to dist from follow radius.
-        float moveSpeed = agent.velocity.magnitude;
 	    // Move
         agent.SetDestination(playerPos);
-        
-        
-        // Pass speed to animation controller
-        animator.SetFloat("WalkSpeed", moveSpeed);
 
-        // Decrement attack timer
-        attackTimer -= Time.deltaTime;
-        
         // When attackTimer is lower than 0, it allows the enemy to attack again 
         if (attackTimer <= 0f && dist <= ATTACK_RADIUS)
         {
@@ -86,7 +88,56 @@ public class HeavyEnemyController : MonoBehaviour
                 agent.isStopped = false;
             }
         }
+        */
         
+        // TODO: Re-do movement and attack control with stopping and navmesh obstacle
+        
+        // Calculate enemy distance
+        float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+                                Math.Pow(playerPos.z - gameObjPos.z, 2));
+
+        // Ragdolling takes precedence over other behaviors
+        if (ragdollController.IsRagdolling())
+        {
+            // No walking, no obstacle
+            agent.enabled = false;
+            obstacle.enabled = false;
+        }
+        // If not ragdolling, check if enemy is in attack range and done walking
+        else if (sqrDist <= sqrAttackRadius)
+        {
+            // Can't walk, acts as an obstacle
+            agent.enabled = false;
+            obstacle.enabled = true;
+            
+            // Turn to face player
+            Vector3 vectorToPlayer = playerPos - gameObjPos;
+            transform.rotation = Quaternion.Euler(
+                0f,
+                (float)(180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)), 
+                0f);
+
+            // When attackTimer is lower than 0, it allows the enemy to attack again 
+            if (attackTimer <= 0f)
+            {
+                animator.SetTrigger("Slash");
+                attackTimer = ATTACK_DELAY;
+            }
+        }
+        // Not attacking or ragdolling
+        else if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee") &&
+                 !animator.GetCurrentAnimatorStateInfo(0).IsName("BeginAttack"))
+        {
+            // Walks and is not an obstacle
+            obstacle.enabled = false;
+            agent.enabled = true;
+            
+            // Move
+            agent.SetDestination(playerPos);
+
+            // Stopping distance will cause enemy to decelerate into attack radius
+            agent.stoppingDistance = ATTACK_RADIUS + moveSpeed * moveSpeed / (2 * agent.acceleration);
+        }
     }
     
     // todo WIP Returns a position near the target (player) based on their transforms
