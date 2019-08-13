@@ -231,7 +231,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Spawn enemy
+  m_Text: Pause button
 --- !u!222 &24725820
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -297,8 +297,6 @@ GameObject:
   m_Component:
   - component: {fileID: 140734092}
   - component: {fileID: 140734091}
-  - component: {fileID: 140734093}
-  - component: {fileID: 140734094}
   m_Layer: 0
   m_Name: NavMesh
   m_TagString: Untagged
@@ -349,31 +347,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &140734093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140734090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d0f859cb7a72c04396b5fba6e7047ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &140734094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140734090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6654362dcaab18b4581c3d1adda47dd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  surface: {fileID: 140734091}
 --- !u!1 &150743465
 GameObject:
   m_ObjectHideFlags: 0
