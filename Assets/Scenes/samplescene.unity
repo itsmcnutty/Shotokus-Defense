@@ -3675,6 +3675,7 @@ MonoBehaviour:
   otherHand: {fileID: 2115013156}
   rockStartSize: 0.3
   energyCost: 1
+  baseSpikeRadius: 0.5
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
@@ -3685,6 +3686,8 @@ MonoBehaviour:
     type: 3}
   wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
     type: 3}
+  validWallMat: {fileID: 2100000, guid: 236cdf421d2c7c14e98f071c5b1eaad0, type: 2}
+  invalidWallMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   surface: {fileID: 140734091}
 --- !u!54 &2115013162
 Rigidbody:
@@ -3728,6 +3731,7 @@ MonoBehaviour:
   otherHand: {fileID: 2115013155}
   rockStartSize: 0.3
   energyCost: 1
+  baseSpikeRadius: 0.5
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
@@ -3738,6 +3742,8 @@ MonoBehaviour:
     type: 3}
   wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
     type: 3}
+  validWallMat: {fileID: 2100000, guid: 236cdf421d2c7c14e98f071c5b1eaad0, type: 2}
+  invalidWallMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   surface: {fileID: 140734091}
 --- !u!114 &2115013164
 MonoBehaviour:
