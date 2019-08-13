@@ -13,6 +13,8 @@ public class HeavyEnemyController : MonoBehaviour
     public float ATTACK_DELAY = 2f;
     // Radius for attacking
     public float ATTACK_RADIUS;
+
+    private float ATTACK_MARGIN = 0.2f;
     
     // Squared attack radius (for optimized calculations)
     private float sqrAttackRadius;
@@ -104,7 +106,7 @@ public class HeavyEnemyController : MonoBehaviour
             obstacle.enabled = false;
         }
         // If not ragdolling, check if enemy is in attack range and done walking
-        else if (sqrDist <= sqrAttackRadius)
+        else if (Math.Abs(sqrDist - sqrAttackRadius) <= ATTACK_MARGIN)
         {
             // Can't walk, acts as an obstacle
             agent.enabled = false;
@@ -117,7 +119,7 @@ public class HeavyEnemyController : MonoBehaviour
                 (float)(180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)), 
                 0f);
 
-            // When attackTimer is lower than 0, it allows the enemy to attack again 
+            // When attackTimer is lower than 0, it allows the enemy to attack again
             if (attackTimer <= 0f)
             {
                 animator.SetTrigger("Slash");
@@ -131,12 +133,36 @@ public class HeavyEnemyController : MonoBehaviour
             // Walks and is not an obstacle
             obstacle.enabled = false;
             agent.enabled = true;
-            
-            // Move
-            agent.SetDestination(playerPos);
 
-            // Stopping distance will cause enemy to decelerate into attack radius
-            agent.stoppingDistance = ATTACK_RADIUS + moveSpeed * moveSpeed / (2 * agent.acceleration);
+            // If too close
+            if (sqrDist - sqrAttackRadius < 0)
+            {
+                // Back up
+                Vector3 backUpVector = gameObjPos - playerPos;
+                backUpVector.Normalize();
+                agent.SetDestination(playerPos + 1.5f * ATTACK_RADIUS * backUpVector);
+            
+                // Turn to face player
+                Vector3 vectorToPlayer = playerPos - gameObjPos;
+                transform.rotation = Quaternion.Euler(
+                    0f,
+                    (float)(180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)), 
+                    0f);
+                
+                // Don't decelerate
+                agent.stoppingDistance = 0f;
+                
+                // Pass reverse move speed to animator
+                animator.SetFloat("WalkSpeed", -moveSpeed);
+            }
+            else
+            {
+                // Move to player
+                agent.SetDestination(playerPos);
+
+                // Stopping distance will cause enemy to decelerate into attack radius
+                agent.stoppingDistance = ATTACK_RADIUS + moveSpeed * moveSpeed / (2 * agent.acceleration);
+            }
         }
     }
     
