@@ -43,15 +43,17 @@ public class MenuUIController : MonoBehaviour
             if (!isPauseMenuActive)
             {
                 // menu is not active, so open it
+                isPauseMenuActive = true;
                 Debug.Log("I want to be PaUsEd");
                 PauseGame();
-                Time.timeScale = 0;
+//                Time.timeScale = 0;
             }
             else
             {
                 // menu is active, so close it
+                isPauseMenuActive = false;
                 Destroy(pauseMenu);
-                Time.timeScale = 1;
+//                Time.timeScale = 1;
             }
         }
     }
@@ -80,7 +82,7 @@ public class MenuUIController : MonoBehaviour
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
         
-        pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
+        pauseMenu = Instantiate(menuPrefab, spawnPosition, Quaternion.Inverse(playerRot));
     }
     
     
