@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class SpikeMovement : MonoBehaviour
 {
@@ -30,5 +29,10 @@ public class SpikeMovement : MonoBehaviour
     public void SetEndPosition(Vector3 endPosition)
     {
         this.endPosition = endPosition;
+    }
+
+    void OnDestroy()
+    {
+        GameObject.FindWithTag("NavMesh").GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 }
