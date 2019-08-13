@@ -483,7 +483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ATTACK_DELAY: 3
-  ATTACK_RADIUS: 5
+  ATTACK_RADIUS: 2.6
   agent: {fileID: 324325786130137908}
   obstacle: {fileID: 5508671993429460530}
 --- !u!114 &-5905606208446284247
@@ -580,7 +580,7 @@ NavMeshAgent:
   m_Speed: 6
   m_Acceleration: 4
   avoidancePriority: 50
-  m_AngularSpeed: 9999
+  m_AngularSpeed: 6000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -601,7 +601,7 @@ NavMeshObstacle:
   m_Shape: 0
   m_Extents: {x: 1.4, y: 1.4, z: 1.4}
   m_MoveThreshold: 0.1
-  m_Carve: 1
+  m_Carve: 0
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0
