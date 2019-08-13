@@ -509,9 +509,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd923125896806243808fdc885c49fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 500
+  MAX_HEALTH: 1
   ARMOR_CUTOFF: 100
-  ARMOR_PROFICIENCY: 10
+  ARMOR_PROFICIENCY: 0
   healthBarCanvas: {fileID: 9121232944689274987}
   healthBarText: {fileID: 1445011927171812118}
   healthBarActual: {fileID: 4515350828251530292}
