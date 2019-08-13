@@ -86,7 +86,7 @@ public class MenuUIController : MonoBehaviour
         
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
         pauseMenu.transform.LookAt(player.transform.position);
-//        pauseMenu.transform.rotation.x = 0;
+//        pauseMenu.transform.Rotate(0,,);;
     }
     
     
