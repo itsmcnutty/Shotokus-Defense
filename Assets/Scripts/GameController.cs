@@ -53,6 +53,8 @@ public class GameController : MonoBehaviour
         {
             Debug.Log("ERROR: Couldn't find enemy producer");
         }
+
+        numOfEnemiesPerWave = initialNumOfEnemies;
         StartWave(initialNumOfEnemies);
     }
 
@@ -65,7 +67,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-//        OnEnemyDeathClear();
+        
     }
 
     // This function starts a round and spawns the corresponding number of enemies
@@ -92,6 +94,7 @@ public class GameController : MonoBehaviour
         StartWave(numOfEnemiesPerWave);
     }
 
+    // Future: delete all other instances of objects in the scene
     public void RestartGame()
     {
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
