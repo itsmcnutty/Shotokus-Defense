@@ -11,7 +11,7 @@ public class PlayerEnergy : MonoBehaviour
     public Slider energyBarAfter;
     public Text energyBarText;
     public float maxEnergy;
-    public float regenEnergyRate;
+    public float energyRegenPerSecond;
     public float regenDelayInSec;
 
     private float currentEnergy;
@@ -116,14 +116,14 @@ public class PlayerEnergy : MonoBehaviour
 
     private void SetEnergyBarText ()
     {
-        energyBarText.text = currentEnergy - GetTotalEnergyUsage () + " / " + maxEnergy;
+        energyBarText.text = Math.Floor(currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
     }
 
     private void RegenEnergy ()
     {
         if ((Time.time - lastAbilityUsedTime) > regenDelayInSec && currentEnergy < maxEnergy)
         {
-            currentEnergy += regenEnergyRate;
+            currentEnergy += (energyRegenPerSecond * Time.deltaTime);
             if (currentEnergy > maxEnergy)
             {
                 currentEnergy = maxEnergy;
