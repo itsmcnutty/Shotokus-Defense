@@ -1364,7 +1364,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 4375
+    m_Bits: 37143
   destinationReticleTransform: {fileID: 747466420}
   invalidReticleTransform: {fileID: 747466419}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -2603,7 +2603,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 4375
+    m_Bits: 37143
   destinationReticleTransform: {fileID: 1526576291}
   invalidReticleTransform: {fileID: 1526576290}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -3820,20 +3820,6 @@ MonoBehaviour:
     needsReinit: 0
   hand: {fileID: 2115013155}
   energyCost: 20
---- !u!114 &2115013159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2115013150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4a03a51c550b92478a559cf694ce118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hand: {fileID: 2115013155}
-  prefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17, type: 3}
 --- !u!54 &2115013160
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3878,6 +3864,8 @@ MonoBehaviour:
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
+    type: 3}
+  rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
     type: 3}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
@@ -3933,6 +3921,8 @@ MonoBehaviour:
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
+  rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
+    type: 3}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
@@ -3942,20 +3932,6 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   surface: {fileID: 140734091}
---- !u!114 &2115013164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2115013153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4a03a51c550b92478a559cf694ce118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hand: {fileID: 2115013156}
-  prefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17, type: 3}
 --- !u!114 &2115013165
 MonoBehaviour:
   m_ObjectHideFlags: 0
