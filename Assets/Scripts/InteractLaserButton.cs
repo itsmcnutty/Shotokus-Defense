@@ -54,9 +54,9 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerOut += PointerOutside;
         laserPointerL.PointerClick += OnPointerClick;
 
-        isEnabled = false;
-        laserPointerL.enabled = false;
-        laserPointerR.enabled = false;
+//        isEnabled = false;
+//        laserPointerL.enabled = false;
+//        laserPointerR.enabled = false;
         selected = false;
     }
 
@@ -112,10 +112,10 @@ public class InteractLaserButton : MonoBehaviour
         {
             Debug.Log("disabling");
             isEnabled = false;
-            laserPointerL.enabled = false;
-            laserPointerL.active = false;
-            laserPointerR.enabled = false;
-            laserPointerR.active = false;
+//            laserPointerL.enabled = false;
+//            laserPointerL.active = false;
+//            laserPointerR.enabled = false;
+//            laserPointerR.active = false;
             rightArc.enabled = true;
             leftArc.enabled = true;
 
@@ -124,11 +124,11 @@ public class InteractLaserButton : MonoBehaviour
         {
             Debug.Log("enabling");
             // laser is not enabled, so enable it
-            isEnabled = true;
-            laserPointerL.enabled = true;
-            laserPointerL.active = true;
-            laserPointerR.enabled = true;
-            laserPointerR.active = true;
+//            isEnabled = true;
+//            laserPointerL.enabled = true;
+//            laserPointerL.active = true;
+//            laserPointerR.enabled = true;
+//            laserPointerR.active = true;
             rightArc.enabled = false;
             leftArc.enabled = false;
 

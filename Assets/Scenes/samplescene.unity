@@ -3169,6 +3169,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameController
       objectReference: {fileID: 0}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: enemyProducer
+      value: 
+      objectReference: {fileID: 1447894952}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: initialNumOfEnemies
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1512379628719005127, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3223,16 +3233,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
-        type: 3}
-      propertyPath: enemyProducer
-      value: 
-      objectReference: {fileID: 1447894952}
-    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
-        type: 3}
-      propertyPath: initialNumOfEnemies
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1dc17f4976431549a284f73babe35ae, type: 3}

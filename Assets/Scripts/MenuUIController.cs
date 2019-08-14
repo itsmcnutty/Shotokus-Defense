@@ -84,18 +84,10 @@ public class MenuUIController : MonoBehaviour
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
-//        spawnPosition = new Vector3(playerPos.x+6,(float)1.9,playerPos.z+6);
-//        spawnPosition.y =  (float)0;
-//        pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
-//        Vector3 targetPosition =  new Vector3(playerPos.x, transform.position.y, playerPos.z);
-//        pauseMenu.transform.LookAt(targetPosition);
-//        spawnPosition.y =  (float)1.9407;
-
-
-//        pauseMenu = Instantiate(menuPrefab);
-
+        
         pauseMenu = Instantiate(menuPrefab);
-        spawnPosition = new Vector3(playerPos.x+6,(float)1.9,playerPos.z+6);
+
+        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
         pauseMenu.transform.position = spawnPosition;
         Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
         pauseMenu.transform.LookAt(targetPosition);
