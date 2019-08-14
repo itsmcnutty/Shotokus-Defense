@@ -47,10 +47,7 @@ public class PlayerAbility : MonoBehaviour
     private static List<Vector2> spikeLocations;
     private HashSet<Vector3> allSpikes;
 
-    private static Hand handWithRock;
-
     private const float ROCK_CREATE_DIST = 3f;
-    private const float ROCK_SIZE_INCREASE_RATE = 0.01f;
     private const float SPIKE_SPEED_REDUCTION = 10f;
     private const float SPIKE_BASE_SPEED = .05f;
     private const float WALL_SIZE_MULTIPLIER = 200f;
@@ -199,18 +196,13 @@ public class PlayerAbility : MonoBehaviour
                 if (hand.currentAttachedObject != otherHand.currentAttachedObject)
                 {
                     rock = hand.currentAttachedObject;
-                    if (otherHand.currentAttachedObject == null)
-                    {
-                        handWithRock = hand;
-                    }
                 }
             }
             else if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
             {
                 rock = Instantiate (rockPrefab) as GameObject;
-                rock.transform.position = arc.GetEndPosition ();
+                rock.transform.position = new Vector3(arc.GetEndPosition ().x, arc.GetEndPosition ().y - 0.25f, arc.GetEndPosition ().z);
                 hand.AttachObject (rock, GrabTypes.Scripted);
-                handWithRock = hand;
             }
             else if (hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold (100f))
             {
@@ -268,7 +260,6 @@ public class PlayerAbility : MonoBehaviour
                 rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
                 playerEnergy.SetTempEnergy (hand, rockSize);
                 playerEnergy.TransferHandEnergy (hand, otherHand);
-                handWithRock = otherHand;
                 otherHand.GetComponent<PlayerAbility> ().rock = rock;
             }
             else
@@ -471,7 +462,7 @@ public class PlayerAbility : MonoBehaviour
 
     private bool RockIsActive ()
     {
-        return rock != null && handWithRock == hand;
+        return rock != null;
     }
 
     private bool SpikeQuicksandIsActive ()
