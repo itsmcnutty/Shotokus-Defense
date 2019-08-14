@@ -4,15 +4,23 @@ public class RockProperties : MonoBehaviour
 {
     private float rockLifetime = 5.0f;
     // Start is called before the first frame update
-    void Start()
+    void Start ()
     {
-        
+        Invoke ("DestroyRock", 5.0f);
     }
 
     // Update is called once per frame
-    void Update()
+    void Update ()
+    { }
+
+    private void OnDestroy ()
     {
-        Destroy(gameObject, rockLifetime);
+        CancelInvoke ("DestroyRock");
+    }
+
+    public void DestroyRock ()
+    {
+        Destroy (gameObject);
     }
 
 }

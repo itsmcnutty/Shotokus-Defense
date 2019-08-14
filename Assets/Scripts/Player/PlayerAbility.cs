@@ -196,6 +196,7 @@ public class PlayerAbility : MonoBehaviour
                 if (hand.currentAttachedObject != otherHand.currentAttachedObject)
                 {
                     rock = hand.currentAttachedObject;
+                    Destroy(rock.GetComponent<RockProperties>());
                 }
             }
             else if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
