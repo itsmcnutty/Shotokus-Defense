@@ -118,7 +118,7 @@ public class PlayerAbility : MonoBehaviour
             if (WallOutlineIsActive () && !WallIsActive ())
             {
                 SetWallLocation ();
-                SetOutlineMaterial(wallOutline, WallIsValid());
+                SetOutlineMaterial (wallOutline, WallIsValid ());
             }
         }
         else if (DrawRelease ())
@@ -206,6 +206,7 @@ public class PlayerAbility : MonoBehaviour
                 rock = allObjects[allObjects.Length - 1];
                 rockRigidbody = rock.GetComponent<Rigidbody> ();
                 hand.TriggerHapticPulse (800);
+                hand.SetAllowResize (true);
             }
             else if (playerEnergy.EnergyAboveThreshold (100f))
             {
@@ -219,13 +220,19 @@ public class PlayerAbility : MonoBehaviour
     private void UpdateAbility ()
     {
 
-        if (RockIsActive () && playerEnergy.EnergyIsNotZero ())
+        if (RockIsActive ())
         {
-            rockSize += (ROCK_SIZE_INCREASE_RATE * Time.deltaTime);
-            rock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-            rockRigidbody.mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
-            playerEnergy.DrainTempEnergy (hand, energyCost);
-            hand.TriggerHapticPulse (800);
+            if (playerEnergy.EnergyIsNotZero ())
+            {
+                rockSize = (float) Math.Pow (Math.Floor (rock.transform.localScale.x * rock.transform.localScale.y * rock.transform.localScale.z), 3);
+                rockRigidbody.mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
+                playerEnergy.SetTempEnergy (hand, rockSize);
+                hand.TriggerHapticPulse (800);
+            }
+            else
+            {
+                hand.SetAllowResize (false);
+            }
         }
         else if (SpikeQuicksandIsActive ())
         {
@@ -234,7 +241,7 @@ public class PlayerAbility : MonoBehaviour
             spikeQuicksandOutline.transform.localScale = new Vector3 (size, 1f, size);
             float energyCost = (float) Math.Round (Math.Pow (spikeQuicksandOutline.transform.localScale.x, 2), 2) * 50f;
             playerEnergy.SetTempEnergy (hand, energyCost);
-            SetOutlineMaterial(spikeQuicksandOutline, SpikeQuicksandIsValid());
+            SetOutlineMaterial (spikeQuicksandOutline, SpikeQuicksandIsValid ());
         }
         else if (WallIsActive () && playerEnergy.EnergyIsNotZero ())
         {
@@ -263,7 +270,7 @@ public class PlayerAbility : MonoBehaviour
         {
             float controllerVelocity = controllerPose.GetVelocity ().y;
             float handPos = (hand.transform.position.y - startingSpikeWidth);
-            if (handPos < 0 && SpikeQuicksandIsValid())
+            if (handPos < 0 && SpikeQuicksandIsValid ())
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
@@ -272,7 +279,7 @@ public class PlayerAbility : MonoBehaviour
                 Destroy (spikeQuicksandOutline);
                 playerEnergy.UseEnergy (hand);
             }
-            else if (handPos > 0 && controllerVelocity > 0 && SpikeQuicksandIsValid())
+            else if (handPos > 0 && controllerVelocity > 0 && SpikeQuicksandIsValid ())
             {
                 float height = (float) Math.Sqrt (3) * baseSpikeRadius;
                 float size = spikeQuicksandOutline.transform.localScale.x / 2;
