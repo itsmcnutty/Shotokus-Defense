@@ -13,13 +13,12 @@ public class PlayerAbility : MonoBehaviour
     public SteamVR_Action_Boolean gripAction;
     public SteamVR_Action_Boolean drawAction;
     public Hand otherHand;
-    public float rockStartSize;
-    public float energyCost;
     public float baseSpikeRadius = 0.5f;
 
     [Header ("Prefabs")]
     public GameObject actionPlaceholderPrefab;
     public GameObject wallOutlinePrefab;
+    public GameObject rockPrefab;
     public GameObject spikePrefab;
     public GameObject quicksandPrefab;
     public GameObject wallPrefab;
@@ -32,13 +31,10 @@ public class PlayerAbility : MonoBehaviour
     private PlayerEnergy playerEnergy;
     private ControllerArc arc;
     private ControllerArc otherArc;
-    private float rockSize = 0;
     private GameObject player;
     private GameObject rock;
     private GameObject spikeQuicksandOutline;
-    private Rigidbody rockRigidbody;
-    private float startingSpikeWidth;
-    private Vector3 spikeEndPosition;
+    private float startingSpikeHandHeight;
 
     private static GameObject wallOutline;
     private static GameObject wall;
@@ -49,9 +45,9 @@ public class PlayerAbility : MonoBehaviour
 
     private static List<Vector2> spikeLocations;
     private HashSet<Vector3> allSpikes;
+    private static List<GameObject> availableSpikes = new List<GameObject>();
 
     private const float ROCK_CREATE_DIST = 3f;
-    private const float ROCK_SIZE_INCREASE_RATE = 0.01f;
     private const float SPIKE_SPEED_REDUCTION = 10f;
     private const float SPIKE_BASE_SPEED = .05f;
     private const float WALL_SIZE_MULTIPLIER = 200f;
@@ -70,8 +66,6 @@ public class PlayerAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start ()
     {
-        rockSize = rockStartSize;
-
         arc = GetComponentInChildren<ControllerArc> ();
         otherArc = otherHand.GetComponentInChildren<ControllerArc> ();
         hand = GetComponent<Hand> ();
@@ -85,6 +79,17 @@ public class PlayerAbility : MonoBehaviour
         spikeLocations.Add (new Vector2 (-2, 0));
         spikeLocations.Add (new Vector2 (-1, -1));
         spikeLocations.Add (new Vector2 (1, -1));
+
+        float maxRadius = (float) Math.Sqrt (playerEnergy.maxEnergy / 50);
+        int numLayers = (int) Math.Floor ((maxRadius - baseSpikeRadius) / (baseSpikeRadius * 2));
+        int numSpikes = numLayers * spikeLocations.Count + 1;
+
+        for (int i = 0; i < numSpikes; i++)
+        {
+            GameObject spike = Instantiate (spikePrefab) as GameObject;
+            spike.transform.position = new Vector3(0, -10, 0);
+            MakeSpikeAvailable(spike);
+        }
     }
 
     // Update is called once per frame
@@ -118,7 +123,7 @@ public class PlayerAbility : MonoBehaviour
             if (WallOutlineIsActive () && !WallIsActive ())
             {
                 SetWallLocation ();
-                SetOutlineMaterial(wallOutline, WallIsValid());
+                SetOutlineMaterial (wallOutline, WallIsValid ());
             }
         }
         else if (DrawRelease ())
@@ -174,7 +179,6 @@ public class PlayerAbility : MonoBehaviour
                 OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
                 if (WallIsValid ())
                 {
-                    playerEnergy.AddHandToActive (firstHandHeld);
                     wall = Instantiate (wallPrefab) as GameObject;
                     wall.transform.position = wallOutline.transform.position;
                     wall.transform.localScale = wallOutline.transform.localScale;
@@ -198,20 +202,25 @@ public class PlayerAbility : MonoBehaviour
         else if (!WallIsActive () && arc.CanUseAbility ())
         {
             firstHandHeld = null;
-            playerEnergy.AddHandToActive (hand);
-            if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
+            if (hand.currentAttachedObject != null)
             {
-                GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
-                GameObject[] allObjects = GameObject.FindGameObjectsWithTag ("Rock");
-                rock = allObjects[allObjects.Length - 1];
-                rockRigidbody = rock.GetComponent<Rigidbody> ();
-                hand.TriggerHapticPulse (800);
+                if (hand.currentAttachedObject != otherHand.currentAttachedObject)
+                {
+                    rock = hand.currentAttachedObject;
+                    Destroy (rock.GetComponent<RockProperties> ());
+                }
             }
-            else if (playerEnergy.EnergyAboveThreshold (100f))
+            else if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
+            {
+                rock = Instantiate (rockPrefab) as GameObject;
+                rock.transform.position = new Vector3 (arc.GetEndPosition ().x, arc.GetEndPosition ().y - 0.25f, arc.GetEndPosition ().z);
+                hand.AttachObject (rock, GrabTypes.Scripted);
+            }
+            else if (hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold (100f))
             {
                 spikeQuicksandOutline = Instantiate (actionPlaceholderPrefab) as GameObject;
                 spikeQuicksandOutline.transform.position = arc.GetEndPosition ();
-                startingSpikeWidth = hand.transform.position.y;
+                startingSpikeHandHeight = hand.transform.position.y;
             }
         }
     }
@@ -219,22 +228,24 @@ public class PlayerAbility : MonoBehaviour
     private void UpdateAbility ()
     {
 
-        if (RockIsActive () && playerEnergy.EnergyIsNotZero ())
+        if (RockIsActive ())
         {
-            rockSize += (ROCK_SIZE_INCREASE_RATE * Time.deltaTime);
-            rock.transform.localScale = new Vector3 (rockSize, rockSize, rockSize);
-            rockRigidbody.mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
-            playerEnergy.DrainTempEnergy (hand, energyCost);
-            hand.TriggerHapticPulse (800);
+            float rockSize = (float) Math.Pow (Math.Floor (rock.transform.localScale.x * rock.transform.localScale.y * rock.transform.localScale.z), 3);
+            rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
+            playerEnergy.SetTempEnergy (hand, rockSize);
+            hand.SetAllowResize (playerEnergy.EnergyIsNotZero ());
         }
         else if (SpikeQuicksandIsActive ())
         {
-            allSpikes.Clear ();
-            float size = (float) Math.Pow ((Math.Abs (hand.transform.position.y - startingSpikeWidth)) + (baseSpikeRadius * 2), 3);
-            spikeQuicksandOutline.transform.localScale = new Vector3 (size, 1f, size);
+            float size = (float) Math.Pow ((Math.Abs (hand.transform.position.y - startingSpikeHandHeight)) + (baseSpikeRadius * 2), 3);
+            Vector3 newSize = new Vector3 (size, 1f, size);
+            if (playerEnergy.EnergyIsNotZero () || newSize.x < spikeQuicksandOutline.transform.localScale.x)
+            {
+                spikeQuicksandOutline.transform.localScale = newSize;
+            }
             float energyCost = (float) Math.Round (Math.Pow (spikeQuicksandOutline.transform.localScale.x, 2), 2) * 50f;
             playerEnergy.SetTempEnergy (hand, energyCost);
-            SetOutlineMaterial(spikeQuicksandOutline, SpikeQuicksandIsValid());
+            SetOutlineMaterial (spikeQuicksandOutline, SpikeQuicksandIsValid ());
         }
         else if (WallIsActive () && playerEnergy.EnergyIsNotZero ())
         {
@@ -256,14 +267,28 @@ public class PlayerAbility : MonoBehaviour
     {
         if (RockIsActive ())
         {
-            playerEnergy.UseEnergy (hand);
-            RemoveRockFromHand ();
+            hand.DetachObject (rock);
+            hand.SetAllowResize (true);
+            if (otherHand.currentAttachedObject == rock)
+            {
+                float rockSize = (float) Math.Pow (Math.Floor (rock.transform.localScale.x * rock.transform.localScale.y * rock.transform.localScale.z), 3);
+                rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
+                playerEnergy.SetTempEnergy (hand, rockSize);
+                playerEnergy.TransferHandEnergy (hand, otherHand);
+                otherHand.GetComponent<PlayerAbility> ().rock = rock;
+            }
+            else
+            {
+                rock.AddComponent<RockProperties> ();
+                playerEnergy.UseEnergy (hand);
+            }
+            rock = null;
         }
         else if (SpikeQuicksandIsActive ())
         {
             float controllerVelocity = controllerPose.GetVelocity ().y;
-            float handPos = (hand.transform.position.y - startingSpikeWidth);
-            if (handPos < 0 && SpikeQuicksandIsValid())
+            float handPos = (hand.transform.position.y - startingSpikeHandHeight);
+            if (handPos < 0 && SpikeQuicksandIsValid ())
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
@@ -272,7 +297,7 @@ public class PlayerAbility : MonoBehaviour
                 Destroy (spikeQuicksandOutline);
                 playerEnergy.UseEnergy (hand);
             }
-            else if (handPos > 0 && controllerVelocity > 0 && SpikeQuicksandIsValid())
+            else if (handPos > 0 && controllerVelocity > 0 && SpikeQuicksandIsValid ())
             {
                 float height = (float) Math.Sqrt (3) * baseSpikeRadius;
                 float size = spikeQuicksandOutline.transform.localScale.x / 2;
@@ -287,20 +312,29 @@ public class PlayerAbility : MonoBehaviour
 
                 foreach (Vector3 spikePos in allSpikes)
                 {
-                    GameObject spike = Instantiate (spikePrefab) as GameObject;
+                    GameObject spike;
+                    if(availableSpikes.Count != 0)
+                    {
+                        spike = availableSpikes[0];
+                        availableSpikes.Remove(spike);
+                    }
+                    else
+                    {
+                        spike = Instantiate(spikePrefab) as GameObject;
+                    }
                     Vector3 spikeCorrection = (spikePos - centerLoc) / 2;
                     Vector3 radiusCorrection = new Vector3 (Math.Sign (spikeCorrection.x) * radiusIncrease, 0, Math.Sign (spikeCorrection.z) * radiusIncrease);
                     spike.transform.position = (spikePos - spikeCorrection) + radiusCorrection;
                     spike.transform.localScale = new Vector3 (finalSpikeRadius, finalSpikeRadius, finalSpikeRadius);
 
                     float spikeVelocity = (controllerVelocity / SPIKE_SPEED_REDUCTION) + SPIKE_BASE_SPEED;
-                    spike.GetComponent<SpikeMovement> ().SetSpeed (spikeVelocity);
-
-                    spikeEndPosition = spike.transform.position;
+                    Vector3 spikeEndPosition = spike.transform.position;
                     spikeEndPosition.y += spikePos.y + (2f * finalSpikeRadius);
-                    spike.GetComponent<SpikeMovement> ().SetEndPosition (spikeEndPosition);
+                    
+                    SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
                 }
                 surface.BuildNavMesh ();
+                allSpikes.Clear();
             }
             else
             {
@@ -353,11 +387,7 @@ public class PlayerAbility : MonoBehaviour
         else
         {
             playerEnergy.CancelEnergyUsage (hand);
-            if (RockIsActive ())
-            {
-                RemoveRockFromHand ();
-            }
-            else if (SpikeQuicksandIsActive ())
+            if (SpikeQuicksandIsActive ())
             {
                 Destroy (spikeQuicksandOutline);
                 spikeQuicksandOutline = null;
@@ -382,13 +412,6 @@ public class PlayerAbility : MonoBehaviour
         {
             firstHandHeld = hand;
         }
-    }
-
-    private void RemoveRockFromHand ()
-    {
-        GetComponent<SpawnAndAttachToHand> ().hand.DetachObject (rock);
-        rockSize = rockStartSize;
-        rock = null;
     }
 
     private void ResetWallInfo ()
@@ -489,5 +512,10 @@ public class PlayerAbility : MonoBehaviour
         {
             outlineObject.GetComponentInChildren<SkinnedMeshRenderer> ().material = invalidOutlineMat;
         }
+    }
+
+    public static void MakeSpikeAvailable(GameObject spike)
+    {
+        availableSpikes.Add(spike);
     }
 }

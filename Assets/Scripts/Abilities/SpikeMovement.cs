@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class SpikeMovement : MonoBehaviour
 {
     private float speed;
-    private Vector3 endPosition = new Vector3(1,1,1);
+    private Vector3 endPosition = new Vector3 ();
     // Start is called before the first frame update
     void Start ()
     {
@@ -17,22 +17,20 @@ public class SpikeMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards (transform.position, endPosition, speed);
         if (transform.position == endPosition)
         {
-            Destroy (gameObject, 5.0f);
+            Destroy (this, 5.0f);
         }
     }
 
-    public void SetSpeed(float speed)
+    public static void CreateComponent (GameObject spike, float speed, Vector3 endPosition)
     {
-        this.speed = speed;
-    }
-    
-    public void SetEndPosition(Vector3 endPosition)
-    {
-        this.endPosition = endPosition;
+        SpikeMovement spikeMovement = spike.AddComponent<SpikeMovement> ();
+        spikeMovement.speed = speed;
+        spikeMovement.endPosition = endPosition;
     }
 
-    void OnDestroy()
+    private void OnDestroy ()
     {
-        GameObject.FindWithTag("NavMesh").GetComponent<NavMeshSurface>().BuildNavMesh();
+        gameObject.transform.position = new Vector3 (0, -10, 0);
+        PlayerAbility.MakeSpikeAvailable (gameObject);
     }
 }
