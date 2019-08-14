@@ -578,7 +578,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 1.3
   m_Speed: 6
-  m_Acceleration: 4
+  m_Acceleration: 6
   avoidancePriority: 50
   m_AngularSpeed: 6000
   m_StoppingDistance: 0
@@ -588,7 +588,7 @@ NavMeshAgent:
   m_Height: 2.6
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 3
+  m_ObstacleAvoidanceType: 1
 --- !u!208 &5508671993429460530
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -599,10 +599,10 @@ NavMeshObstacle:
   m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 1.3, y: 3.5, z: 1.3}
-  m_MoveThreshold: 0.1
+  m_Extents: {x: 2.6, y: 3.5, z: 2.6}
+  m_MoveThreshold: 0.3
   m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0
 --- !u!1 &1228796166418253041
