@@ -86,6 +86,13 @@ public class RagdollController : MonoBehaviour
         transform.position = rigidbodies[0].transform.position;
         agent.enabled = true;
         
+        // If not on navmesh or flying in air, try again later
+        if (!agent.isOnNavMesh)
+        {
+            StartRagdoll();
+            return;
+        }
+        
         // Restart animation in Walking state
         animator.SetTrigger("Reset");
         animator.Update(0f);
