@@ -6,7 +6,7 @@ public class RockProperties : MonoBehaviour
     // Start is called before the first frame update
     void Start ()
     {
-        Invoke ("DestroyRock", 5.0f);
+        Invoke ("DestroyRock", rockLifetime);
     }
 
     // Update is called once per frame

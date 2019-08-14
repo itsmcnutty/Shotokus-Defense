@@ -35,7 +35,6 @@ public class PlayerAbility : MonoBehaviour
     private GameObject rock;
     private GameObject spikeQuicksandOutline;
     private float startingSpikeWidth;
-    private Vector3 spikeEndPosition;
 
     private static GameObject wallOutline;
     private static GameObject wall;
@@ -46,6 +45,7 @@ public class PlayerAbility : MonoBehaviour
 
     private static List<Vector2> spikeLocations;
     private HashSet<Vector3> allSpikes;
+    private static List<GameObject> availableSpikes = new List<GameObject>();
 
     private const float ROCK_CREATE_DIST = 3f;
     private const float SPIKE_SPEED_REDUCTION = 10f;
@@ -79,6 +79,17 @@ public class PlayerAbility : MonoBehaviour
         spikeLocations.Add (new Vector2 (-2, 0));
         spikeLocations.Add (new Vector2 (-1, -1));
         spikeLocations.Add (new Vector2 (1, -1));
+
+        float maxRadius = (float) Math.Sqrt (playerEnergy.maxEnergy / 50);
+        int numLayers = (int) Math.Floor ((maxRadius - baseSpikeRadius) / (baseSpikeRadius * 2));
+        int numSpikes = numLayers * spikeLocations.Count + 1;
+
+        for (int i = 0; i < numSpikes; i++)
+        {
+            GameObject spike = Instantiate (spikePrefab) as GameObject;
+            spike.transform.position = new Vector3(0, -10, 0);
+            MakeSpikeAvailable(spike);
+        }
     }
 
     // Update is called once per frame
@@ -196,13 +207,13 @@ public class PlayerAbility : MonoBehaviour
                 if (hand.currentAttachedObject != otherHand.currentAttachedObject)
                 {
                     rock = hand.currentAttachedObject;
-                    Destroy(rock.GetComponent<RockProperties>());
+                    Destroy (rock.GetComponent<RockProperties> ());
                 }
             }
             else if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
             {
                 rock = Instantiate (rockPrefab) as GameObject;
-                rock.transform.position = new Vector3(arc.GetEndPosition ().x, arc.GetEndPosition ().y - 0.25f, arc.GetEndPosition ().z);
+                rock.transform.position = new Vector3 (arc.GetEndPosition ().x, arc.GetEndPosition ().y - 0.25f, arc.GetEndPosition ().z);
                 hand.AttachObject (rock, GrabTypes.Scripted);
             }
             else if (hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold (100f))
@@ -226,9 +237,12 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (SpikeQuicksandIsActive ())
         {
-            allSpikes.Clear ();
             float size = (float) Math.Pow ((Math.Abs (hand.transform.position.y - startingSpikeWidth)) + (baseSpikeRadius * 2), 3);
-            spikeQuicksandOutline.transform.localScale = new Vector3 (size, 1f, size);
+            Vector3 newSize = new Vector3 (size, 1f, size);
+            if (playerEnergy.EnergyIsNotZero () || newSize.x < spikeQuicksandOutline.transform.localScale.x)
+            {
+                spikeQuicksandOutline.transform.localScale = newSize;
+            }
             float energyCost = (float) Math.Round (Math.Pow (spikeQuicksandOutline.transform.localScale.x, 2), 2) * 50f;
             playerEnergy.SetTempEnergy (hand, energyCost);
             SetOutlineMaterial (spikeQuicksandOutline, SpikeQuicksandIsValid ());
@@ -298,20 +312,31 @@ public class PlayerAbility : MonoBehaviour
 
                 foreach (Vector3 spikePos in allSpikes)
                 {
-                    GameObject spike = Instantiate (spikePrefab) as GameObject;
+                    GameObject spike;
+                    if(availableSpikes.Count != 0)
+                    {
+                        Debug.Log("Spikes remaining: " + availableSpikes.Count);
+                        spike = availableSpikes[0];
+                        availableSpikes.Remove(spike);
+                    }
+                    else
+                    {
+                        Debug.Log("Added a new spike...");
+                        spike = Instantiate(spikePrefab) as GameObject;
+                    }
                     Vector3 spikeCorrection = (spikePos - centerLoc) / 2;
                     Vector3 radiusCorrection = new Vector3 (Math.Sign (spikeCorrection.x) * radiusIncrease, 0, Math.Sign (spikeCorrection.z) * radiusIncrease);
                     spike.transform.position = (spikePos - spikeCorrection) + radiusCorrection;
                     spike.transform.localScale = new Vector3 (finalSpikeRadius, finalSpikeRadius, finalSpikeRadius);
 
                     float spikeVelocity = (controllerVelocity / SPIKE_SPEED_REDUCTION) + SPIKE_BASE_SPEED;
-                    spike.GetComponent<SpikeMovement> ().SetSpeed (spikeVelocity);
-
-                    spikeEndPosition = spike.transform.position;
+                    Vector3 spikeEndPosition = spike.transform.position;
                     spikeEndPosition.y += spikePos.y + (2f * finalSpikeRadius);
-                    spike.GetComponent<SpikeMovement> ().SetEndPosition (spikeEndPosition);
+                    
+                    SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
                 }
                 surface.BuildNavMesh ();
+                allSpikes.Clear();
             }
             else
             {
@@ -491,5 +516,10 @@ public class PlayerAbility : MonoBehaviour
         {
             outlineObject.GetComponentInChildren<SkinnedMeshRenderer> ().material = invalidOutlineMat;
         }
+    }
+
+    public static void MakeSpikeAvailable(GameObject spike)
+    {
+        availableSpikes.Add(spike);
     }
 }
