@@ -14,7 +14,7 @@ public class HeavyEnemyController : MonoBehaviour
     // Radius for attacking
     public float ATTACK_RADIUS;
 
-    private float ATTACK_MARGIN = 0.2f;
+    private float ATTACK_MARGIN = 1f;
     
     // Squared attack radius (for optimized calculations)
     private float sqrAttackRadius;
