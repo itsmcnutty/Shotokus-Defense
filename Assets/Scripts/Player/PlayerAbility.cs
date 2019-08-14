@@ -18,6 +18,7 @@ public class PlayerAbility : MonoBehaviour
     [Header ("Prefabs")]
     public GameObject actionPlaceholderPrefab;
     public GameObject wallOutlinePrefab;
+    public GameObject rockPrefab;
     public GameObject spikePrefab;
     public GameObject quicksandPrefab;
     public GameObject wallPrefab;
@@ -193,18 +194,22 @@ public class PlayerAbility : MonoBehaviour
         else if (!WallIsActive () && arc.CanUseAbility ())
         {
             firstHandHeld = null;
-            if (hand.currentAttachedObject != null && hand.currentAttachedObject != otherHand.currentAttachedObject)
+            if (hand.currentAttachedObject != null)
             {
-                rock = hand.currentAttachedObject;
-                if(otherHand.currentAttachedObject == null)
+                if (hand.currentAttachedObject != otherHand.currentAttachedObject)
                 {
-                    handWithRock = hand;
+                    rock = hand.currentAttachedObject;
+                    if (otherHand.currentAttachedObject == null)
+                    {
+                        handWithRock = hand;
+                    }
                 }
             }
             else if (arc.GetDistanceFromPlayer () <= ROCK_CREATE_DIST)
             {
-                GetComponent<SpawnAndAttachToHand> ().SpawnAndAttach (null);
-                rock = hand.currentAttachedObject;
+                rock = Instantiate (rockPrefab) as GameObject;
+                rock.transform.position = arc.GetEndPosition ();
+                hand.AttachObject (rock, GrabTypes.Scripted);
                 handWithRock = hand;
             }
             else if (hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold (100f))
@@ -222,7 +227,7 @@ public class PlayerAbility : MonoBehaviour
         if (RockIsActive ())
         {
             float rockSize = (float) Math.Pow (Math.Floor (rock.transform.localScale.x * rock.transform.localScale.y * rock.transform.localScale.z), 3);
-            rock.GetComponent<Rigidbody>().mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
+            rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
             playerEnergy.SetTempEnergy (hand, rockSize);
             hand.SetAllowResize (playerEnergy.EnergyIsNotZero ());
         }
@@ -264,10 +269,11 @@ public class PlayerAbility : MonoBehaviour
                 playerEnergy.SetTempEnergy (hand, rockSize);
                 playerEnergy.TransferHandEnergy (hand, otherHand);
                 handWithRock = otherHand;
-                otherHand.GetComponent<PlayerAbility>().rock = rock;
+                otherHand.GetComponent<PlayerAbility> ().rock = rock;
             }
             else
             {
+                rock.AddComponent<RockProperties> ();
                 playerEnergy.UseEnergy (hand);
             }
             rock = null;
