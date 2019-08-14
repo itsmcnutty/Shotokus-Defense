@@ -3591,6 +3591,10 @@ PrefabInstance:
       propertyPath: grabGripAction.actionPath
       value: /actions/default/in/Grip
       objectReference: {fileID: 0}
+    - target: {fileID: 11401046, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: trackedObject
+      value: 
+      objectReference: {fileID: 2115013151}
     - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: grabPinchAction.actionPath
       value: /actions/default/in/Trigger
@@ -3599,6 +3603,10 @@ PrefabInstance:
       propertyPath: grabGripAction.actionPath
       value: /actions/default/in/Grip
       objectReference: {fileID: 0}
+    - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: trackedObject
+      value: 
+      objectReference: {fileID: 2115013154}
     - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: grabPinchAction.actionPath
       value: /actions/default/in/Trigger
@@ -3842,8 +3850,6 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 2115013156}
-  rockStartSize: 0.3
-  energyCost: 1
   baseSpikeRadius: 0.5
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
@@ -3898,8 +3904,6 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 2115013155}
-  rockStartSize: 0.3
-  energyCost: 1
   baseSpikeRadius: 0.5
   actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}

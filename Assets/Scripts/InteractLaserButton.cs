@@ -56,14 +56,14 @@ public class InteractLaserButton : MonoBehaviour
         
         if (e.target.gameObject.GetComponent<Button>() != null && button == null)
         {
-            Debug.Log("Inside the button");
+            //Debug.Log("Inside the button");
             button = e.target.gameObject.GetComponent<Button>();
 //            button.Select();
             selected = true;
         }
         else
         {
-            Debug.Log("THis is not a button");
+            //Debug.Log("THis is not a button");
         }
     }
     
