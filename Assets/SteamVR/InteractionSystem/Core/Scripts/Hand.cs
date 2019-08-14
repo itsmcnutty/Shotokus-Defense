@@ -139,7 +139,7 @@ namespace Valve.VR.InteractionSystem
         Vector3 initialObjectDirection; // direction of object to midpoint of both hands
         public bool twoHandGrab = false; // bool, so you know when grabbed with 2 hands
 
-        private bool allowResize;
+        private static bool allowSizeUp = true;
 
         public bool isActive
         {
@@ -1667,9 +1667,8 @@ namespace Valve.VR.InteractionSystem
 
             GameObject attachedObject = currentAttachedObject;
 
-            if (attachedObject != null && twoHandGrab && allowResize)
+            if (attachedObject != null && twoHandGrab)
             {
-
                 Vector3 currentHandPosition1 = trackedObject.transform.position; // current first hand position
                 Vector3 currentHandPosition2 = otherHand.trackedObject.transform.position; // current second hand position
 
@@ -1684,7 +1683,12 @@ namespace Valve.VR.InteractionSystem
 
                 Vector3 newScale = new Vector3 (p * initialObjectScale.x, p * initialObjectScale.y, p * initialObjectScale.z); // calculate new object scale with p
 
-                attachedObject.transform.localScale = newScale; // set new scale
+                if (allowSizeUp || newScale.x < attachedObject.transform.localScale.x)
+                {
+                    TriggerHapticPulse (800);
+                    otherHand.TriggerHapticPulse (800);
+                    attachedObject.transform.localScale = newScale; // set new scale
+                }
                 // set the position of the object to the center of both hands based on the original object direction relative to the new scale and rotation
                 attachedObject.transform.position = (0.5f * (currentHandPosition1 + currentHandPosition2)) + (handRot * (initialObjectDirection * p));
 
@@ -1711,9 +1715,9 @@ namespace Valve.VR.InteractionSystem
             }
         }
 
-        public void SetAllowResize(bool isAllowed)
+        public void SetAllowResize (bool isAllowed)
         {
-            allowResize = isAllowed;
+            allowSizeUp = isAllowed;
         }
     }
 
