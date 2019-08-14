@@ -135,6 +135,7 @@ namespace Valve.VR.InteractionSystem
 
         Vector3 initialHandPosition1; // first hand position
         Vector3 initialHandPosition2; // second hand position
+        Quaternion initialObjectRotation; // grabbed object rotation
         Vector3 initialObjectScale; // grabbed object scale
         Vector3 initialObjectDirection; // direction of object to midpoint of both hands
         public bool twoHandGrab = false; // bool, so you know when grabbed with 2 hands
@@ -358,9 +359,9 @@ namespace Valve.VR.InteractionSystem
 
             if (otherHand.ObjectIsAttached (objectToAttach))
             {
-
                 initialHandPosition1 = trackedObject.transform.position;
                 initialHandPosition2 = otherHand.trackedObject.transform.position;
+                initialObjectRotation = objectToAttach.transform.rotation;
                 initialObjectScale = objectToAttach.transform.localScale;
                 initialObjectDirection = objectToAttach.transform.position - (initialHandPosition1 + initialHandPosition2) * 0.5f;
 
@@ -1690,6 +1691,7 @@ namespace Valve.VR.InteractionSystem
                     attachedObject.transform.localScale = newScale; // set new scale
                 }
                 // set the position of the object to the center of both hands based on the original object direction relative to the new scale and rotation
+                attachedObject.transform.rotation = handRot * initialObjectRotation; // add rotation
                 attachedObject.transform.position = (0.5f * (currentHandPosition1 + currentHandPosition2)) + (handRot * (initialObjectDirection * p));
 
             }
