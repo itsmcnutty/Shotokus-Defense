@@ -76,19 +76,15 @@ public class HeavyEnemyController : MonoBehaviour
             agent.enabled = false;
             obstacle.enabled = false;
         }
-        // If not ragdolling, check if enemy is in attack range and done walking
-        else if (Math.Abs(sqrDist - sqrAttackRadius) <= ATTACK_MARGIN)
+        // If not ragdolling, check if enemy is in attack range or performing attack
+        else if (Math.Abs(sqrDist - sqrAttackRadius) <= ATTACK_MARGIN ||
+                 !animator.GetCurrentAnimatorStateInfo(0).IsTag("Movement"))
         {
             // Can't walk, acts as an obstacle
             agent.enabled = false;
             obstacle.enabled = true;
-            
-            // Turn to face player
-            Vector3 vectorToPlayer = playerPos - gameObjPos;
-            transform.rotation = Quaternion.Euler(
-                0f,
-                (float)(180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)), 
-                0f);
+
+            TurnToPlayer();
 
             // When attackTimer is lower than 0, it allows the enemy to attack again
             if (attackTimer <= 0f)
@@ -98,8 +94,7 @@ public class HeavyEnemyController : MonoBehaviour
             }
         }
         // Not attacking or ragdolling
-        else if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Melee") &&
-                 !animator.GetCurrentAnimatorStateInfo(0).IsName("BeginAttack"))
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Movement"))
         {
             // Walks and is not an obstacle
             obstacle.enabled = false;
@@ -112,13 +107,8 @@ public class HeavyEnemyController : MonoBehaviour
                 Vector3 backUpVector = gameObjPos - playerPos;
                 backUpVector.Normalize();
                 agent.SetDestination(playerPos + 1.5f * ATTACK_RADIUS * backUpVector);
-            
-                // Turn to face player
-                Vector3 vectorToPlayer = playerPos - gameObjPos;
-                transform.rotation = Quaternion.Euler(
-                    0f,
-                    (float)(180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)), 
-                    0f);
+
+                TurnToPlayer();
                 
                 // Don't decelerate
                 agent.stoppingDistance = 0f;
@@ -146,6 +136,17 @@ public class HeavyEnemyController : MonoBehaviour
         Vector2 rndPos = UnityEngine.Random.insideUnitCircle * (maxRadius - minRadius);
         rndPos += rndPos.normalized * minRadius;
         return new Vector3(playerPos.x + rndPos.x, playerPos.y, playerPos.z + rndPos.y);
+    }
+
+    private void TurnToPlayer()
+    {
+        Vector3 vectorToPlayer = playerPos - transform.position;
+        
+        // Set Y-rotation to be the same as the Y-rotation of the vector to the player
+        transform.rotation = Quaternion.Euler(
+            0f,
+            (float)(180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)), 
+            0f);
     }
     
 }
