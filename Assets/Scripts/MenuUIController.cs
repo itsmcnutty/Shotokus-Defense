@@ -42,7 +42,7 @@ public class MenuUIController : MonoBehaviour
         // todo - otherwise, close it
         if (PausePress())
         {
-            laserPointer.toggleLaser();
+//            laserPointer.toggleLaser();
             if (!isPauseMenuActive)
             {
                 // menu is not active, so open it
@@ -84,13 +84,18 @@ public class MenuUIController : MonoBehaviour
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
+        spawnPosition.y = (float) 1.9;
         
-        pauseMenu = Instantiate(menuPrefab);
-
-        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
-        pauseMenu.transform.position = spawnPosition;
-        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
-        pauseMenu.transform.LookAt(targetPosition);
+//        pauseMenu = Instantiate(menuPrefab);
+//
+//        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
+//        pauseMenu.transform.position = spawnPosition;
+//        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
+//        pauseMenu.transform.LookAt(targetPosition);
+        
+        
+        pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
+        pauseMenu.transform.LookAt(player.transform.position);
     }
     
     
