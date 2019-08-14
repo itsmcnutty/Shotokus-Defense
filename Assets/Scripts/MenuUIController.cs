@@ -21,10 +21,13 @@ public class MenuUIController : MonoBehaviour
     private Quaternion playerRot; // player transform rotation
     private Vector3 playerFor; // player transform forward
 
+    private InteractLaserButton laserPointer;
+
 
     private void Awake()
     {
         player = GameObject.FindWithTag("MainCamera");
+        laserPointer = this.GetComponent<InteractLaserButton>();
         isPauseMenuActive = false;
     }
 
@@ -40,11 +43,11 @@ public class MenuUIController : MonoBehaviour
         // todo - otherwise, close it
         if (PausePress())
         {
+            laserPointer.toggleLaser();
             if (!isPauseMenuActive)
             {
                 // menu is not active, so open it
                 isPauseMenuActive = true;
-                Debug.Log("I want to be PaUsEd");
                 PauseGame();
                 Time.timeScale = 0;
             }
@@ -56,6 +59,7 @@ public class MenuUIController : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
+        
     }
 
     public bool PausePress()
@@ -81,12 +85,11 @@ public class MenuUIController : MonoBehaviour
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
-       spawnPosition.y =  (float)1.9407;
-        // new Vector3(playerPos.x+5, playerPos.y, playerPos.z+5)
-        
+//        spawnPosition = new Vector3(playerPos.x+6,(float)1.9,playerPos.z+6);
+        spawnPosition.y =  (float)1.9407;
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
-        pauseMenu.transform.LookAt(player.transform.position);
-//        pauseMenu.transform.Rotate(0,,);;
+        Vector3 targetPosition =  new Vector3(playerPos.x, transform.position.y, playerPos.z);
+        pauseMenu.transform.LookAt(targetPosition);
     }
     
     

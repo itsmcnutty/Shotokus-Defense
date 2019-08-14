@@ -17,12 +17,29 @@ public class InteractLaserButton : MonoBehaviour
     private SteamVR_LaserPointer laserPointerL; // Laser pointer for Left hand
     private Button button; // this will be the button that the laser points to
     
+    private bool isEnabled; // true if lasers are enable, false otherwise
+
+    private ControllerArc rightArc;
+    private ControllerArc leftArc;
 
     private void Awake()
     {
         laserPointerR = rightHand.GetComponent<SteamVR_LaserPointer>();
         laserPointerL = leftHand.GetComponent<SteamVR_LaserPointer>();
         button = null;
+
+        rightArc = rightHand.GetComponentInChildren<ControllerArc>();
+        leftArc = leftHand.GetComponentInChildren<ControllerArc>();
+
+        if (rightArc != null)
+        {
+            Debug.Log("we found the ARC!!");
+        }
+        else
+        {
+            Debug.Log("EERRORRR NO ARRRC");
+        }
+
     }
 
 
@@ -36,7 +53,10 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerIn += PointerInside;
         laserPointerL.PointerOut += PointerOutside;
         laserPointerL.PointerClick += OnPointerClick;
-        
+
+        isEnabled = false;
+        laserPointerL.enabled = false;
+        laserPointerR.enabled = false;
         selected = false;
     }
 
@@ -48,17 +68,11 @@ public class InteractLaserButton : MonoBehaviour
     
     public void PointerInside(object sender, PointerEventArgs e)
     {
-//        if (e.target.name == this.gameObject.name && selected==false)
-//        {
-//            selected = true;
-//            Debug.Log("pointer is inside this object" + e.target.name);
-//        }        
-        
         if (e.target.gameObject.GetComponent<Button>() != null && button == null)
         {
             Debug.Log("Inside the button");
             button = e.target.gameObject.GetComponent<Button>();
-//            button.Select();
+            button.Select();
             selected = true;
         }
         else
@@ -70,12 +84,6 @@ public class InteractLaserButton : MonoBehaviour
     
     public void PointerOutside(object sender, PointerEventArgs e)
     {
-//        if (e.target.name == this.gameObject.name && selected == true)
-//        {
-//            selected = false;
-//            Debug.Log("pointer is outside this object" + e.target.name);
-//        }
-        
         if (button != null && selected)
         {
             Debug.Log("Outside the button");
@@ -87,12 +95,7 @@ public class InteractLaserButton : MonoBehaviour
     }
     
     public void OnPointerClick(object sender, PointerEventArgs e)
-    { 
-//        if (e.target.name == "Button")
-//        {
-//            Debug.Log("Button was clicked");
-//            enemyProducer.spawnEnemy(1);
-//        }
+    {
         Debug.Log("Clicking somewhere");
         if (selected && button != null)
         {
@@ -100,6 +103,37 @@ public class InteractLaserButton : MonoBehaviour
             button.onClick.Invoke();
         }
 
+    }
+
+    // This function enables or disables (toggles on or off) the steamVR laser pointer component
+    public void toggleLaser()
+    {
+        if (isEnabled)
+        {
+            Debug.Log("disabling");
+            isEnabled = false;
+            laserPointerL.enabled = false;
+            laserPointerL.active = false;
+            laserPointerR.enabled = false;
+            laserPointerR.active = false;
+            rightArc.enabled = true;
+            leftArc.enabled = true;
+
+        }
+        else
+        {
+            Debug.Log("enabling");
+            // laser is not enabled, so enable it
+            isEnabled = true;
+            laserPointerL.enabled = true;
+            laserPointerL.active = true;
+            laserPointerR.enabled = true;
+            laserPointerR.active = true;
+            rightArc.enabled = false;
+            leftArc.enabled = false;
+
+
+        }
     }
     
     public bool get_selected_value()
