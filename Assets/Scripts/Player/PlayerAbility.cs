@@ -34,7 +34,7 @@ public class PlayerAbility : MonoBehaviour
     private GameObject player;
     private GameObject rock;
     private GameObject spikeQuicksandOutline;
-    private float startingSpikeWidth;
+    private float startingSpikeHandHeight;
 
     private static GameObject wallOutline;
     private static GameObject wall;
@@ -220,7 +220,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 spikeQuicksandOutline = Instantiate (actionPlaceholderPrefab) as GameObject;
                 spikeQuicksandOutline.transform.position = arc.GetEndPosition ();
-                startingSpikeWidth = hand.transform.position.y;
+                startingSpikeHandHeight = hand.transform.position.y;
             }
         }
     }
@@ -237,7 +237,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (SpikeQuicksandIsActive ())
         {
-            float size = (float) Math.Pow ((Math.Abs (hand.transform.position.y - startingSpikeWidth)) + (baseSpikeRadius * 2), 3);
+            float size = (float) Math.Pow ((Math.Abs (hand.transform.position.y - startingSpikeHandHeight)) + (baseSpikeRadius * 2), 3);
             Vector3 newSize = new Vector3 (size, 1f, size);
             if (playerEnergy.EnergyIsNotZero () || newSize.x < spikeQuicksandOutline.transform.localScale.x)
             {
@@ -287,7 +287,7 @@ public class PlayerAbility : MonoBehaviour
         else if (SpikeQuicksandIsActive ())
         {
             float controllerVelocity = controllerPose.GetVelocity ().y;
-            float handPos = (hand.transform.position.y - startingSpikeWidth);
+            float handPos = (hand.transform.position.y - startingSpikeHandHeight);
             if (handPos < 0 && SpikeQuicksandIsValid ())
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
@@ -315,13 +315,11 @@ public class PlayerAbility : MonoBehaviour
                     GameObject spike;
                     if(availableSpikes.Count != 0)
                     {
-                        Debug.Log("Spikes remaining: " + availableSpikes.Count);
                         spike = availableSpikes[0];
                         availableSpikes.Remove(spike);
                     }
                     else
                     {
-                        Debug.Log("Added a new spike...");
                         spike = Instantiate(spikePrefab) as GameObject;
                     }
                     Vector3 spikeCorrection = (spikePos - centerLoc) / 2;
@@ -415,8 +413,6 @@ public class PlayerAbility : MonoBehaviour
             firstHandHeld = hand;
         }
     }
-
-    private void RemoveRockFromHand () { }
 
     private void ResetWallInfo ()
     {
