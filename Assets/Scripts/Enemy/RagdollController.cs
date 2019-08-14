@@ -62,7 +62,7 @@ public class RagdollController : MonoBehaviour
         
         // Disable animation and pathfinding
         animator.enabled = false;
-        agent.isStopped = true;
+        agent.enabled = false;
 
         // Zero velocity of all rigidbodies so they don't maintain this from the animation
         foreach (var rigidbody in rigidbodies)
@@ -84,7 +84,7 @@ public class RagdollController : MonoBehaviour
         
         // Move to position where ragdoll was laying and re-enable pathfinding
         transform.position = rigidbodies[0].transform.position;
-        agent.isStopped = false;
+        agent.enabled = true;
         
         // Restart animation in Walking state
         animator.SetTrigger("Reset");

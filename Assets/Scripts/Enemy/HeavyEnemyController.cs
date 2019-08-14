@@ -14,7 +14,10 @@ public class HeavyEnemyController : MonoBehaviour
     // Radius for attacking
     public float ATTACK_RADIUS;
 
+    // Allowed space around attack radius that enemy's can attack from
     private float ATTACK_MARGIN = 1f;
+    // How fast enemy turns to face player
+    private float TURN_SPEED = 0.03f;
     
     // Squared attack radius (for optimized calculations)
     private float sqrAttackRadius;
@@ -78,7 +81,8 @@ public class HeavyEnemyController : MonoBehaviour
         }
         // If not ragdolling, check if enemy is in attack range or performing attack
         else if (Math.Abs(sqrDist - sqrAttackRadius) <= ATTACK_MARGIN ||
-                 !animator.GetCurrentAnimatorStateInfo(0).IsTag("Movement"))
+                 !animator.GetCurrentAnimatorStateInfo(0).IsTag("Movement") ||
+                 animator.GetCurrentAnimatorStateInfo(0).IsName("BeginAttack"))
         {
             // Can't walk, acts as an obstacle
             agent.enabled = false;
@@ -98,7 +102,10 @@ public class HeavyEnemyController : MonoBehaviour
         {
             // Walks and is not an obstacle
             obstacle.enabled = false;
-            agent.enabled = true;
+            if (!agent.enabled)
+            {
+                StartCoroutine("EnablePathfindAfterFrame");
+            }
 
             // If too close
             if (sqrDist - sqrAttackRadius < 0)
@@ -106,12 +113,17 @@ public class HeavyEnemyController : MonoBehaviour
                 // Back up
                 Vector3 backUpVector = gameObjPos - playerPos;
                 backUpVector.Normalize();
-                agent.SetDestination(playerPos + 1.5f * ATTACK_RADIUS * backUpVector);
+                
+                if (agent.enabled)
+                {
+                    agent.SetDestination(playerPos + 1.5f * ATTACK_RADIUS * backUpVector);
+                    agent.angularSpeed = 0f;
+                
+                    // Don't decelerate
+                    agent.stoppingDistance = 0f;
+                }
 
                 TurnToPlayer();
-                
-                // Don't decelerate
-                agent.stoppingDistance = 0f;
                 
                 // Pass reverse move speed to animator
                 animator.SetFloat("WalkSpeed", -moveSpeed);
@@ -119,10 +131,14 @@ public class HeavyEnemyController : MonoBehaviour
             else
             {
                 // Move to player
-                agent.SetDestination(playerPos);
+                if (agent.enabled)
+                {
+                    agent.SetDestination(playerPos);
+                    agent.angularSpeed = 8000f;
 
-                // Stopping distance will cause enemy to decelerate into attack radius
-                agent.stoppingDistance = ATTACK_RADIUS + moveSpeed * moveSpeed / (2 * agent.acceleration);
+                    // Stopping distance will cause enemy to decelerate into attack radius
+                    agent.stoppingDistance = ATTACK_RADIUS + moveSpeed * moveSpeed / (2 * agent.acceleration);
+                }
             }
         }
     }
@@ -141,12 +157,21 @@ public class HeavyEnemyController : MonoBehaviour
     private void TurnToPlayer()
     {
         Vector3 vectorToPlayer = playerPos - transform.position;
+        Quaternion lookAtPlayer = Quaternion.Euler(
+            0f,
+            (float) (180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)),
+            0f);
         
         // Set Y-rotation to be the same as the Y-rotation of the vector to the player
-        transform.rotation = Quaternion.Euler(
-            0f,
-            (float)(180.0 / Math.PI * Math.Atan2(vectorToPlayer.x, vectorToPlayer.z)), 
-            0f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, lookAtPlayer, TURN_SPEED);
+    }
+
+    private IEnumerator EnablePathfindAfterFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        agent.enabled = true;
     }
     
 }
