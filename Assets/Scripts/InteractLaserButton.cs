@@ -21,6 +21,7 @@ public class InteractLaserButton : MonoBehaviour
 
     private ControllerArc rightArc;
     private ControllerArc leftArc;
+    private GameObject rightArcObject;
 
     private void Awake()
     {
@@ -30,20 +31,11 @@ public class InteractLaserButton : MonoBehaviour
         
         rightArc = rightHand.GetComponentInChildren<ControllerArc>();
         leftArc = leftHand.GetComponentInChildren<ControllerArc>();
-
-        if (rightArc != null)
-        {
-            Debug.Log("we found the ARC!!");
-        }
-        else
-        {
-            Debug.Log("EERRORRR NO ARRRC");
-        }
         
         isEnabled = false;
+        selected = false;
         laserPointerL.active = false;
         laserPointerR.active = false;
-
     }
 
 
@@ -57,14 +49,6 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerIn += PointerInside;
         laserPointerL.PointerOut += PointerOutside;
         laserPointerL.PointerClick += OnPointerClick;
-
-//        isEnabled = false;
-//        laserPointerL.active = false;
-//        laserPointerR.active = false;
-
-//        laserPointerL.enabled = false;
-//        laserPointerR.enabled = false;
-        selected = false;
     }
 
     // Update is called once per frame
@@ -117,36 +101,26 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (isEnabled)
         {
-            Debug.Log("disabling");
+            Debug.Log("disabling menu lasers");
             isEnabled = false;
-//            laserPointerL.enabled = false;
-//            laserPointerR.enabled = false;
             laserPointerL.active = false;
             laserPointerR.active = false;
 
-//            rightArc.enabled = true;
-//            leftArc.enabled = true;
-
-//            rightArc.ShowPointer();
-
-
+            rightArc.enabled = true;
+            leftArc.enabled = true;
         }
         else
         {
-            Debug.Log("enabling");
+            Debug.Log("enabling menu lasers");
             // laser is not enabled, so enable it
             isEnabled = true;
-//            laserPointerL.enabled = true;
-//            laserPointerR.enabled = true;
             laserPointerR.active = true;
             laserPointerL.active = true;
-
-
-//            rightArc.enabled = false;
-//            leftArc.enabled = false;
-
-//            rightArc.HidePointer();;
-
+            
+            rightArc.HidePointer();
+            leftArc.HidePointer();
+            rightArc.enabled = false;
+            leftArc.enabled = false;
 
         }
     }

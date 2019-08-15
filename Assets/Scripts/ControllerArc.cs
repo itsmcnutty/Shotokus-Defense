@@ -17,7 +17,7 @@ public class ControllerArc : MonoBehaviour
 	public Color pointerLockedColor;
 
 	public float arcDistance = 10.0f;
-
+	
 	public Hand hand;
 
 	private LineRenderer pointerLineRenderer;

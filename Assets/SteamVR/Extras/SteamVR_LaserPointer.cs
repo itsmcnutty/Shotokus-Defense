@@ -100,12 +100,6 @@ namespace Valve.VR.Extras
         
         private void Update()
         {
-//            if (!isActive)
-//            {
-//                isActive = true;
-//                this.transform.GetChild(0).gameObject.SetActive(true);
-//            }
-            
             if(active != isActive)
             {
                 isActive = active;
@@ -114,7 +108,6 @@ namespace Valve.VR.Extras
             if(!isActive)
                 return;
             
-
             float dist = 100f;
 
             Ray raycast = new Ray(transform.position, transform.forward);
