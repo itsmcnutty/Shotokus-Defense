@@ -27,7 +27,7 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerR = rightHand.GetComponent<SteamVR_LaserPointer>();
         laserPointerL = leftHand.GetComponent<SteamVR_LaserPointer>();
         button = null;
-
+        
         rightArc = rightHand.GetComponentInChildren<ControllerArc>();
         leftArc = leftHand.GetComponentInChildren<ControllerArc>();
 
@@ -39,6 +39,10 @@ public class InteractLaserButton : MonoBehaviour
         {
             Debug.Log("EERRORRR NO ARRRC");
         }
+        
+        isEnabled = false;
+        laserPointerL.active = false;
+        laserPointerR.active = false;
 
     }
 
@@ -55,6 +59,9 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerClick += OnPointerClick;
 
 //        isEnabled = false;
+//        laserPointerL.active = false;
+//        laserPointerR.active = false;
+
 //        laserPointerL.enabled = false;
 //        laserPointerR.enabled = false;
         selected = false;
@@ -113,24 +120,32 @@ public class InteractLaserButton : MonoBehaviour
             Debug.Log("disabling");
             isEnabled = false;
 //            laserPointerL.enabled = false;
-//            laserPointerL.active = false;
 //            laserPointerR.enabled = false;
-//            laserPointerR.active = false;
-            rightArc.enabled = true;
-            leftArc.enabled = true;
+            laserPointerL.active = false;
+            laserPointerR.active = false;
+
+//            rightArc.enabled = true;
+//            leftArc.enabled = true;
+
+//            rightArc.ShowPointer();
+
 
         }
         else
         {
             Debug.Log("enabling");
             // laser is not enabled, so enable it
-//            isEnabled = true;
+            isEnabled = true;
 //            laserPointerL.enabled = true;
-//            laserPointerL.active = true;
 //            laserPointerR.enabled = true;
-//            laserPointerR.active = true;
-            rightArc.enabled = false;
-            leftArc.enabled = false;
+            laserPointerR.active = true;
+            laserPointerL.active = true;
+
+
+//            rightArc.enabled = false;
+//            leftArc.enabled = false;
+
+//            rightArc.HidePointer();;
 
 
         }

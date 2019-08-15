@@ -12,7 +12,9 @@ public class MenuUIController : MonoBehaviour
 
     public GameObject menuPrefab;
 
-    private GameObject player; // get coordinates of player, to instate menu in front of hem
+    private GameObject player; // get coordinates of player, to instate menu in front of them
+    private Camera vrCamera;
+//    private Canvas canvas;
     private GameObject pauseMenu;
 
     private bool isPauseMenuActive; // true if player is on pause menu, false if not
@@ -27,6 +29,10 @@ public class MenuUIController : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindWithTag("MainCamera");
+        
+        vrCamera = player.GetComponent<Camera>();
+        
+        
         laserPointer = this.GetComponent<InteractLaserButton>();
         isPauseMenuActive = false;
     }
@@ -42,7 +48,7 @@ public class MenuUIController : MonoBehaviour
         // todo - otherwise, close it
         if (PausePress())
         {
-//            laserPointer.toggleLaser();
+            laserPointer.toggleLaser();
             if (!isPauseMenuActive)
             {
                 // menu is not active, so open it
@@ -86,16 +92,19 @@ public class MenuUIController : MonoBehaviour
         Vector3 spawnPosition = playerPos + playerFor*5;
         spawnPosition.y = (float) 1.9;
         
+        pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
+        pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
+        pauseMenu.transform.LookAt(player.transform.position);
+        
+        // todo fixes camera rotation but buttons are not detectable
 //        pauseMenu = Instantiate(menuPrefab);
-//
+//        pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
 //        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
 //        pauseMenu.transform.position = spawnPosition;
 //        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
 //        pauseMenu.transform.LookAt(targetPosition);
+
         
-        
-        pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
-        pauseMenu.transform.LookAt(player.transform.position);
     }
     
     

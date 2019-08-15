@@ -225,7 +225,7 @@ public class ControllerArc : MonoBehaviour
 		pointerLineRenderer.SetPosition (1, pointerEnd);
 	}
 
-	private void HidePointer ()
+	public void HidePointer ()
 	{
 		visible = false;
 
@@ -237,7 +237,7 @@ public class ControllerArc : MonoBehaviour
 		applyPoint = false;
 	}
 
-	private void ShowPointer ()
+	public void ShowPointer ()
 	{
 		if (!visible)
 		{
