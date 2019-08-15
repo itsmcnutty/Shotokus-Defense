@@ -5,6 +5,8 @@ using UnityEngine;
 using Valve.VR.Extras;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Valve.VR.InteractionSystem;
+
 
 
 public class InteractLaserButton : MonoBehaviour
@@ -22,6 +24,9 @@ public class InteractLaserButton : MonoBehaviour
     private ControllerArc rightArc;
     private ControllerArc leftArc;
     private GameObject rightArcObject;
+
+    private GameObject rightHandHeld;
+    private GameObject leftHandHeld;
 
     private void Awake()
     {
@@ -99,6 +104,9 @@ public class InteractLaserButton : MonoBehaviour
     // This function enables or disables (toggles on or off) the steamVR laser pointer component
     public void toggleLaser()
     {
+        Hand rightHandComp = rightHand.GetComponent<Hand>();
+        Hand leftHandComp = leftHand.GetComponent<Hand>();
+        
         if (isEnabled)
         {
             Debug.Log("disabling menu lasers");
@@ -108,6 +116,23 @@ public class InteractLaserButton : MonoBehaviour
 
             rightArc.enabled = true;
             leftArc.enabled = true;
+            
+            
+            if (rightHandHeld != null)
+            {
+                rightHandComp.AttachObject(rightHandHeld, GrabTypes.Scripted);
+                rightHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = true;
+                rightHandHeld.transform.position = rightHandComp.objectAttachmentPoint.position;
+                rightHandHeld = null;
+            }
+            
+            if (leftHandHeld != null)
+            {
+                leftHandComp.AttachObject(leftHandHeld, GrabTypes.Scripted);
+                leftHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = true;
+                leftHandHeld.transform.position = leftHandComp.objectAttachmentPoint.position;
+                leftHandHeld = null;
+            }        
         }
         else
         {
@@ -121,6 +146,21 @@ public class InteractLaserButton : MonoBehaviour
             leftArc.HidePointer();
             rightArc.enabled = false;
             leftArc.enabled = false;
+
+            if (rightHandComp.currentAttachedObject != null)
+            {
+                rightHandHeld = rightHandComp.currentAttachedObject;
+                rightHandComp.DetachObject(rightHandHeld);
+                rightHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            }
+            
+            if (leftHandComp.currentAttachedObject != null)
+            {
+                leftHandHeld = leftHandComp.currentAttachedObject;
+                leftHandComp.DetachObject(leftHandHeld);
+                leftHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            }
+            
 
         }
     }
