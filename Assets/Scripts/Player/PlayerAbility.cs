@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
@@ -22,7 +21,6 @@ public class PlayerAbility : MonoBehaviour
     public GameObject spikePrefab;
     public GameObject quicksandPrefab;
     public GameObject wallPrefab;
-    public NavMeshSurface surface;
 
     [Header ("Outline Materials")]
     public Material validOutlineMat;
@@ -263,7 +261,6 @@ public class PlayerAbility : MonoBehaviour
                 wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 1f);
                 float area = (float) Math.Round (wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * wallSizeMultiplier;
                 playerEnergy.SetTempEnergy (firstHandHeld, area);
-//                surface.BuildNavMesh ();
             }
         }
     }
@@ -317,8 +314,8 @@ public class PlayerAbility : MonoBehaviour
                 {
                     float height = (float) Math.Sqrt (3) * baseSpikeRadius;
                     finalSpikeRadius = GenerateSpikesHex (spikeQuicksandOutline.transform.position, spikeQuicksandOutline.transform.position, height, size);
+                    Debug.Log("count=" + allSpikes.Count);
                 }
-                Debug.Log(finalSpikeRadius);
                 float radiusIncrease = finalSpikeRadius - baseSpikeRadius;
 
                 finalSpikeRadius = (finalSpikeRadius * 2) - 0.05f;
@@ -339,14 +336,20 @@ public class PlayerAbility : MonoBehaviour
                     {
                         spike = Instantiate (spikePrefab) as GameObject;
                     }
+
                     Vector3 spikeCorrection = (spikePos - centerLoc) * 0.33f;
                     Vector3 radiusCorrection = new Vector3 (Math.Sign (spikeCorrection.x) * radiusIncrease, 0, Math.Sign (spikeCorrection.z) * radiusIncrease);
                     spike.transform.position = (spikePos - spikeCorrection) + radiusCorrection;
-                    spike.transform.localScale = new Vector3 (finalSpikeRadius, finalSpikeRadius * 0.75f, finalSpikeRadius);
+                    
+                    float layerNum = (float) Math.Floor (Vector3.Distance(spikePos, centerLoc) / (baseSpikeRadius * 2));
+                    float heightScale = 0.75f;
+                    float layerScale = (float) Math.Pow(.8, layerNum);
+                    float finalSpikeHeight = finalSpikeRadius * heightScale * layerScale;
+                    spike.transform.localScale = new Vector3 (finalSpikeRadius, finalSpikeHeight, finalSpikeRadius);
 
                     float spikeVelocity = (controllerVelocity / spikeSpeedReduction) + spikeMinSpeed;
                     Vector3 spikeEndPosition = spike.transform.position;
-                    spikeEndPosition.y += spikePos.y + (1.5f * finalSpikeRadius);
+                    spikeEndPosition.y += spikePos.y + (finalSpikeHeight * 2);
 
                     SpikeMovement.CreateComponent (spike, spikeVelocity, spikeEndPosition);
                     hand.TriggerHapticPulse (1500);
@@ -389,7 +392,7 @@ public class PlayerAbility : MonoBehaviour
             float newZ = position.z + (height * locationOffset.y);
             float newY = position.y; // TODO implement height checks
             Vector3 newPos = new Vector3 (newX, newY, newZ);
-            if (!allSpikes.Contains (newPos))
+            if (!SpikeApproximatelyEqual (newPos))
             {
                 float currentDistance = Vector3.Distance (newPos, centerLoc) + baseSpikeRadius;
                 if (currentDistance > areaRadius)
@@ -404,6 +407,18 @@ public class PlayerAbility : MonoBehaviour
             }
         }
         return radius;
+    }
+
+    private bool SpikeApproximatelyEqual(Vector3 newPos)
+    {
+        foreach(Vector3 spike in allSpikes)
+        {
+            if(Vector3.SqrMagnitude(spike - newPos) < 0.0001)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void CancelAbility ()
