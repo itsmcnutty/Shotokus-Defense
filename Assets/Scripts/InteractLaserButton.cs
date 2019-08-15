@@ -11,7 +11,6 @@ using Valve.VR.InteractionSystem;
 
 public class InteractLaserButton : MonoBehaviour
 {
-
     public GameObject rightHand; // right hand VR
     public GameObject leftHand; // right hand VR
     private bool selected; 
@@ -82,7 +81,6 @@ public class InteractLaserButton : MonoBehaviour
         }
     }
     
-    
     public void PointerOutside(object sender, PointerEventArgs e)
     {
         if (button != null && selected)
@@ -112,14 +110,13 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (isEnabled)
         {
-            Debug.Log("disabling menu lasers");
             isEnabled = false;
             laserPointerL.active = false;
             laserPointerR.active = false;
 
             // enable abilities & controller arc
-            rightArc.canUseAbility = true;
-            leftArc.canUseAbility = true;
+            rightArc.setCanUseAbility(true);
+            leftArc.setCanUseAbility(true);
             rightArc.enabled = true;
             leftArc.enabled = true;
             
@@ -141,15 +138,14 @@ public class InteractLaserButton : MonoBehaviour
         }
         else
         {
-            Debug.Log("enabling menu lasers");
             // laser is not enabled, so enable it
             isEnabled = true;
             laserPointerR.active = true;
             laserPointerL.active = true;
             
             // disable abilities & controller arc
-            rightArc.canUseAbility = false;
-            leftArc.canUseAbility = false;
+            rightArc.setCanUseAbility(false);
+            leftArc.setCanUseAbility(false);
             rightArc.HidePointer();
             leftArc.HidePointer();
             rightArc.enabled = false;

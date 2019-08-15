@@ -34,7 +34,7 @@ public class ControllerArc : MonoBehaviour
 	private Vector3 reticleScale = Vector3.one;
 	private Quaternion reticleTargetRotation = Quaternion.identity;
 
-	public bool canUseAbility;
+	private bool canUseAbility;
 	private float distanceFromPlayer;
 	private Vector3 pointerEnd;
 
@@ -297,6 +297,11 @@ public class ControllerArc : MonoBehaviour
 	public bool CanUseAbility ()
 	{
 		return canUseAbility;
+	}
+
+	public void setCanUseAbility(bool isAllowed)
+	{
+		canUseAbility = isAllowed;
 	}
 
 	public float GetDistanceFromPlayer()

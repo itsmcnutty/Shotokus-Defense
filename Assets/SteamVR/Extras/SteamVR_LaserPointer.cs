@@ -34,7 +34,6 @@ namespace Valve.VR.Extras
         {
             active = false;
             isActive = active;
-//            pointer.SetActive(isActive);
         }
 
 
@@ -79,6 +78,9 @@ namespace Valve.VR.Extras
             Material newMaterial = new Material(Shader.Find("Unlit/Color"));
             newMaterial.SetColor("_Color", color);
             pointer.GetComponent<MeshRenderer>().material = newMaterial;
+            
+            // Start with lasers shut off
+            pointer.SetActive(false);
         }
 
         public virtual void OnPointerIn(PointerEventArgs e)
@@ -102,10 +104,10 @@ namespace Valve.VR.Extras
         
         private void Update()
         {
+            // toggle lasers
             if(active != isActive)
             {
                 isActive = active;
-                Debug.Log("toggling the laser");
                 pointer.SetActive(isActive);
             }
             if(!isActive)
