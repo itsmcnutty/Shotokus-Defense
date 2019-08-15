@@ -305,7 +305,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 float finalSpikeRadius = baseSpikeRadius;
                 float size = spikeQuicksandOutline.transform.localScale.x / 2;
-                float triangleDist = (baseSpikeRadius / (float) Math.Sqrt (3)) + baseSpikeRadius;
+                float triangleDist = (2 * baseSpikeRadius / (float) Math.Sqrt (3)) + baseSpikeRadius;
                 if (size >= triangleDist && size < baseSpikeRadius * 3)
                 {
                     finalSpikeRadius = GenerateSpikesTriangle (spikeQuicksandOutline.transform.position, size, triangleDist);
@@ -314,7 +314,6 @@ public class PlayerAbility : MonoBehaviour
                 {
                     float height = (float) Math.Sqrt (3) * baseSpikeRadius;
                     finalSpikeRadius = GenerateSpikesHex (spikeQuicksandOutline.transform.position, spikeQuicksandOutline.transform.position, height, size);
-                    Debug.Log("count=" + allSpikes.Count);
                 }
                 float radiusIncrease = finalSpikeRadius - baseSpikeRadius;
 
@@ -340,10 +339,10 @@ public class PlayerAbility : MonoBehaviour
                     Vector3 spikeCorrection = (spikePos - centerLoc) * 0.33f;
                     Vector3 radiusCorrection = new Vector3 (Math.Sign (spikeCorrection.x) * radiusIncrease, 0, Math.Sign (spikeCorrection.z) * radiusIncrease);
                     spike.transform.position = (spikePos - spikeCorrection) + radiusCorrection;
-                    
-                    float layerNum = (float) Math.Floor (Vector3.Distance(spikePos, centerLoc) / (baseSpikeRadius * 2));
-                    float heightScale = 0.75f;
-                    float layerScale = (float) Math.Pow(.8, layerNum);
+
+                    float layerNum = (float) Math.Floor (Vector3.Distance (spikePos, centerLoc) / (baseSpikeRadius * 2));
+                    float heightScale = 0.5f;
+                    float layerScale = (float) Math.Pow (.8, layerNum);
                     float finalSpikeHeight = finalSpikeRadius * heightScale * layerScale;
                     spike.transform.localScale = new Vector3 (finalSpikeRadius, finalSpikeHeight, finalSpikeRadius);
 
@@ -354,7 +353,7 @@ public class PlayerAbility : MonoBehaviour
                     SpikeMovement.CreateComponent (spike, spikeVelocity, spikeEndPosition);
                     hand.TriggerHapticPulse (1500);
                 }
-                allSpikes.Clear();
+                allSpikes.Clear ();
             }
             else
             {
@@ -379,7 +378,7 @@ public class PlayerAbility : MonoBehaviour
         allSpikes.Add (vertex1);
         allSpikes.Add (vertex2);
         allSpikes.Add (vertex3);
-        return (areaRadius - triangleDist) + baseSpikeRadius;
+        return ((areaRadius - triangleDist) / 2) + baseSpikeRadius;
     }
 
     private float GenerateSpikesHex (Vector3 position, Vector3 centerLoc, float height, float areaRadius)
@@ -409,11 +408,11 @@ public class PlayerAbility : MonoBehaviour
         return radius;
     }
 
-    private bool SpikeApproximatelyEqual(Vector3 newPos)
+    private bool SpikeApproximatelyEqual (Vector3 newPos)
     {
-        foreach(Vector3 spike in allSpikes)
+        foreach (Vector3 spike in allSpikes)
         {
-            if(Vector3.SqrMagnitude(spike - newPos) < 0.0001)
+            if (Vector3.SqrMagnitude (spike - newPos) < 0.0001)
             {
                 return true;
             }
