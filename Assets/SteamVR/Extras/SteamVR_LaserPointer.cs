@@ -1,6 +1,9 @@
 ﻿//======= Copyright (c) Valve Corporation, All rights reserved. ===============
+
+using System;
 using UnityEngine;
 using System.Collections;
+using Object = UnityEngine.Object;
 
 namespace Valve.VR.Extras
 {
@@ -11,7 +14,7 @@ namespace Valve.VR.Extras
         //public SteamVR_Action_Boolean interactWithUI = SteamVR_Input.__actions_default_in_InteractUI;
         public SteamVR_Action_Boolean interactWithUI = SteamVR_Input.GetBooleanAction("InteractUI");
 
-        public bool active = true;
+        public bool active;
         public Color color;
         public float thickness = 0.002f;
         public Color clickColor = Color.green;
@@ -25,6 +28,13 @@ namespace Valve.VR.Extras
         public event PointerEventHandler PointerClick;
 
         Transform previousContact = null;
+
+
+        private void Awake()
+        {
+            active = false;
+            isActive = active;
+        }
 
 
         private void Start()
@@ -68,6 +78,9 @@ namespace Valve.VR.Extras
             Material newMaterial = new Material(Shader.Find("Unlit/Color"));
             newMaterial.SetColor("_Color", color);
             pointer.GetComponent<MeshRenderer>().material = newMaterial;
+            
+            // Start with lasers shut off
+            pointer.SetActive(false);
         }
 
         public virtual void OnPointerIn(PointerEventArgs e)
@@ -91,12 +104,15 @@ namespace Valve.VR.Extras
         
         private void Update()
         {
-            if (!isActive)
+            // toggle lasers
+            if(active != isActive)
             {
-                isActive = true;
-                this.transform.GetChild(0).gameObject.SetActive(true);
+                isActive = active;
+                pointer.SetActive(isActive);
             }
-
+            if(!isActive)
+                return;
+            
             float dist = 100f;
 
             Ray raycast = new Ray(transform.position, transform.forward);

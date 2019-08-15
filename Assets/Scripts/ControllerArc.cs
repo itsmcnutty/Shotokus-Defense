@@ -17,7 +17,7 @@ public class ControllerArc : MonoBehaviour
 	public Color pointerLockedColor;
 
 	public float arcDistance = 10.0f;
-
+	
 	public Hand hand;
 
 	private LineRenderer pointerLineRenderer;
@@ -225,7 +225,7 @@ public class ControllerArc : MonoBehaviour
 		pointerLineRenderer.SetPosition (1, pointerEnd);
 	}
 
-	private void HidePointer ()
+	public void HidePointer ()
 	{
 		visible = false;
 
@@ -237,7 +237,7 @@ public class ControllerArc : MonoBehaviour
 		applyPoint = false;
 	}
 
-	private void ShowPointer ()
+	public void ShowPointer ()
 	{
 		if (!visible)
 		{
@@ -297,6 +297,11 @@ public class ControllerArc : MonoBehaviour
 	public bool CanUseAbility ()
 	{
 		return canUseAbility;
+	}
+
+	public void setCanUseAbility(bool isAllowed)
+	{
+		canUseAbility = isAllowed;
 	}
 
 	public float GetDistanceFromPlayer()
