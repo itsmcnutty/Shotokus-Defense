@@ -18,6 +18,6 @@ public class QuicksandProperties : MonoBehaviour
 
     void OnDestroy()
     {
-        GameObject.FindWithTag("NavMesh").GetComponent<NavMeshSurface>().BuildNavMesh();
+//        GameObject.FindWithTag("NavMesh").GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 }

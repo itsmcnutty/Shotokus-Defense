@@ -5,11 +5,12 @@ using UnityEngine;
 using Valve.VR.Extras;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Valve.VR.InteractionSystem;
+
 
 
 public class InteractLaserButton : MonoBehaviour
 {
-
     public GameObject rightHand; // right hand VR
     public GameObject leftHand; // right hand VR
     private bool selected; 
@@ -17,12 +18,33 @@ public class InteractLaserButton : MonoBehaviour
     private SteamVR_LaserPointer laserPointerL; // Laser pointer for Left hand
     private Button button; // this will be the button that the laser points to
     
+    private bool isEnabled; // true if lasers are enable, false otherwise
+
+    private ControllerArc rightArc;
+    private ControllerArc leftArc;
+    private GameObject rightArcObject;
+    
+    private Hand rightHandComp;
+    private Hand leftHandComp;
+    private GameObject rightHandHeld;
+    private GameObject leftHandHeld;
 
     private void Awake()
     {
         laserPointerR = rightHand.GetComponent<SteamVR_LaserPointer>();
         laserPointerL = leftHand.GetComponent<SteamVR_LaserPointer>();
         button = null;
+        
+        rightArc = rightHand.GetComponentInChildren<ControllerArc>();
+        leftArc = leftHand.GetComponentInChildren<ControllerArc>();
+        
+        rightHandComp = rightHand.GetComponent<Hand>();
+        leftHandComp = leftHand.GetComponent<Hand>();
+        
+        isEnabled = false;
+        selected = false;
+        laserPointerL.active = false;
+        laserPointerR.active = false;
     }
 
 
@@ -36,8 +58,6 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerIn += PointerInside;
         laserPointerL.PointerOut += PointerOutside;
         laserPointerL.PointerClick += OnPointerClick;
-        
-        selected = false;
     }
 
     // Update is called once per frame
@@ -48,17 +68,11 @@ public class InteractLaserButton : MonoBehaviour
     
     public void PointerInside(object sender, PointerEventArgs e)
     {
-//        if (e.target.name == this.gameObject.name && selected==false)
-//        {
-//            selected = true;
-//            Debug.Log("pointer is inside this object" + e.target.name);
-//        }        
-        
         if (e.target.gameObject.GetComponent<Button>() != null && button == null)
         {
             //Debug.Log("Inside the button");
             button = e.target.gameObject.GetComponent<Button>();
-//            button.Select();
+            button.Select();
             selected = true;
         }
         else
@@ -67,15 +81,8 @@ public class InteractLaserButton : MonoBehaviour
         }
     }
     
-    
     public void PointerOutside(object sender, PointerEventArgs e)
     {
-//        if (e.target.name == this.gameObject.name && selected == true)
-//        {
-//            selected = false;
-//            Debug.Log("pointer is outside this object" + e.target.name);
-//        }
-        
         if (button != null && selected)
         {
             Debug.Log("Outside the button");
@@ -87,12 +94,7 @@ public class InteractLaserButton : MonoBehaviour
     }
     
     public void OnPointerClick(object sender, PointerEventArgs e)
-    { 
-//        if (e.target.name == "Button")
-//        {
-//            Debug.Log("Button was clicked");
-//            enemyProducer.spawnEnemy(1);
-//        }
+    {
         Debug.Log("Clicking somewhere");
         if (selected && button != null)
         {
@@ -101,10 +103,69 @@ public class InteractLaserButton : MonoBehaviour
         }
 
     }
-    
-    public bool get_selected_value()
+
+    // This function enables or disables (toggles on or off) the steamVR laser pointer component
+    // if rock is being held, it disappears and appears again when menu is unpaused if trigger is still hold
+    public void toggleLaser()
     {
-        return selected;
+        if (isEnabled)
+        {
+            isEnabled = false;
+            laserPointerL.active = false;
+            laserPointerR.active = false;
+
+            // enable abilities & controller arc
+            rightArc.setCanUseAbility(true);
+            leftArc.setCanUseAbility(true);
+            rightArc.enabled = true;
+            leftArc.enabled = true;
+            
+            // make rocks appear in player's hand if they hold a rock
+            if (rightHandHeld != null)
+            {
+                rightHandComp.AttachObject(rightHandHeld, GrabTypes.Scripted);
+                rightHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = true;
+                rightHandHeld.transform.position = rightHandComp.objectAttachmentPoint.position;
+                rightHandHeld = null;
+            }
+            if (leftHandHeld != null)
+            {
+                leftHandComp.AttachObject(leftHandHeld, GrabTypes.Scripted);
+                leftHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = true;
+                leftHandHeld.transform.position = leftHandComp.objectAttachmentPoint.position;
+                leftHandHeld = null;
+            }        
+        }
+        else
+        {
+            // laser is not enabled, so enable it
+            isEnabled = true;
+            laserPointerR.active = true;
+            laserPointerL.active = true;
+            
+            // disable abilities & controller arc
+            rightArc.setCanUseAbility(false);
+            leftArc.setCanUseAbility(false);
+            rightArc.HidePointer();
+            leftArc.HidePointer();
+            rightArc.enabled = false;
+            leftArc.enabled = false;
+
+            // make rocks disappear from player's hand if they pause the game
+            if (rightHandComp.currentAttachedObject != null)
+            {
+                rightHandHeld = rightHandComp.currentAttachedObject;
+                rightHandComp.DetachObject(rightHandHeld);
+                rightHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            }
+            if (leftHandComp.currentAttachedObject != null)
+            {
+                leftHandHeld = leftHandComp.currentAttachedObject;
+                leftHandComp.DetachObject(leftHandHeld);
+                leftHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = false;
+            }
+        }
     }
     
+
 }
