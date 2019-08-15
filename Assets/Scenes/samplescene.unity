@@ -1001,7 +1001,7 @@ Transform:
   - {fileID: 766333379}
   - {fileID: 1427210627}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &678908166
 GameObject:
@@ -2465,7 +2465,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1525299457 stripped
 MonoBehaviour:
@@ -2826,7 +2826,7 @@ PrefabInstance:
     - target: {fileID: 7508365555978717288, guid: 921980b4835e024468909be45ce775d7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7508365555978717288, guid: 921980b4835e024468909be45ce775d7,
         type: 3}
@@ -2909,7 +2909,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1744709982
 PrefabInstance:
@@ -2931,7 +2931,7 @@ PrefabInstance:
     - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
       propertyPath: initialNumOfEnemies
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1512379628719005127, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
@@ -3449,7 +3449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.19
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3473,7 +3473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4148,18 +4148,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 0a803bac5b3797446b51c2b1329fd4ee,
+      objectReference: {fileID: 23800000, guid: 756e60634f0b3444998d1d941b4e6ab3,
         type: 2}
-    - target: {fileID: 8618336351119341840, guid: f432ca6eb057f7148bc3fec9a3a8567d,
-        type: 3}
-      propertyPath: m_AgentTypeID
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8618336351119341840, guid: f432ca6eb057f7148bc3fec9a3a8567d,
-        type: 3}
-      propertyPath: m_VoxelSize
-      value: 0.16666667
-      objectReference: {fileID: 0}
     - target: {fileID: 8618336351119341847, guid: f432ca6eb057f7148bc3fec9a3a8567d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4198,7 +4188,7 @@ PrefabInstance:
     - target: {fileID: 8618336351119341847, guid: f432ca6eb057f7148bc3fec9a3a8567d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8618336351119341847, guid: f432ca6eb057f7148bc3fec9a3a8567d,
         type: 3}
