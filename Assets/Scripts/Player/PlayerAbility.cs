@@ -392,7 +392,7 @@ public class PlayerAbility : MonoBehaviour
             float newZ = position.z + (height * locationOffset.y);
             float newY = position.y; // TODO implement height checks
             Vector3 newPos = new Vector3 (newX, newY, newZ);
-            if (!allSpikes.Contains (newPos))
+            if (!SpikeApproximatelyEqual (newPos))
             {
                 float currentDistance = Vector3.Distance (newPos, centerLoc) + baseSpikeRadius;
                 if (currentDistance > areaRadius)
@@ -402,13 +402,23 @@ public class PlayerAbility : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("NewPos=" + newPos);
-                    Debug.Log("NewPosDist=" + Vector3.Distance(newPos, centerLoc));
                     radius = GenerateSpikesHex (newPos, centerLoc, height, areaRadius);
                 }
             }
         }
         return radius;
+    }
+
+    private bool SpikeApproximatelyEqual(Vector3 newPos)
+    {
+        foreach(Vector3 spike in allSpikes)
+        {
+            if(Vector3.SqrMagnitude(spike - newPos) < 0.0001)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void CancelAbility ()
