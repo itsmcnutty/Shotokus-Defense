@@ -1245,7 +1245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Arc
       objectReference: {fileID: 0}
     - target: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4009,7 +4009,7 @@ MonoBehaviour:
   interactWithUI:
     actionPath: /actions/default/in/InteractUI
     needsReinit: 0
-  active: 0
+  active: 1
   color: {r: 0, g: 0, b: 0, a: 0}
   thickness: 0.002
   clickColor: {r: 0, g: 1, b: 0, a: 1}
@@ -4033,7 +4033,7 @@ MonoBehaviour:
   interactWithUI:
     actionPath: /actions/default/in/InteractUI
     needsReinit: 0
-  active: 0
+  active: 1
   color: {r: 0, g: 0, b: 0, a: 0}
   thickness: 0.002
   clickColor: {r: 0, g: 1, b: 0, a: 1}
