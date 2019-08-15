@@ -24,7 +24,9 @@ public class InteractLaserButton : MonoBehaviour
     private ControllerArc rightArc;
     private ControllerArc leftArc;
     private GameObject rightArcObject;
-
+    
+    private Hand rightHandComp;
+    private Hand leftHandComp;
     private GameObject rightHandHeld;
     private GameObject leftHandHeld;
 
@@ -36,6 +38,9 @@ public class InteractLaserButton : MonoBehaviour
         
         rightArc = rightHand.GetComponentInChildren<ControllerArc>();
         leftArc = leftHand.GetComponentInChildren<ControllerArc>();
+        
+        rightHandComp = rightHand.GetComponent<Hand>();
+        leftHandComp = leftHand.GetComponent<Hand>();
         
         isEnabled = false;
         selected = false;
@@ -102,11 +107,9 @@ public class InteractLaserButton : MonoBehaviour
     }
 
     // This function enables or disables (toggles on or off) the steamVR laser pointer component
+    // if rock is being held, it disappears and appears again when menu is unpaused if trigger is still hold
     public void toggleLaser()
     {
-        Hand rightHandComp = rightHand.GetComponent<Hand>();
-        Hand leftHandComp = leftHand.GetComponent<Hand>();
-        
         if (isEnabled)
         {
             Debug.Log("disabling menu lasers");
@@ -114,10 +117,13 @@ public class InteractLaserButton : MonoBehaviour
             laserPointerL.active = false;
             laserPointerR.active = false;
 
+            // enable abilities & controller arc
+            rightArc.canUseAbility = true;
+            leftArc.canUseAbility = true;
             rightArc.enabled = true;
             leftArc.enabled = true;
             
-            
+            // make rocks appear in player's hand if they hold a rock
             if (rightHandHeld != null)
             {
                 rightHandComp.AttachObject(rightHandHeld, GrabTypes.Scripted);
@@ -125,7 +131,6 @@ public class InteractLaserButton : MonoBehaviour
                 rightHandHeld.transform.position = rightHandComp.objectAttachmentPoint.position;
                 rightHandHeld = null;
             }
-            
             if (leftHandHeld != null)
             {
                 leftHandComp.AttachObject(leftHandHeld, GrabTypes.Scripted);
@@ -142,32 +147,29 @@ public class InteractLaserButton : MonoBehaviour
             laserPointerR.active = true;
             laserPointerL.active = true;
             
+            // disable abilities & controller arc
+            rightArc.canUseAbility = false;
+            leftArc.canUseAbility = false;
             rightArc.HidePointer();
             leftArc.HidePointer();
             rightArc.enabled = false;
             leftArc.enabled = false;
 
+            // make rocks disappear from player's hand if they pause the game
             if (rightHandComp.currentAttachedObject != null)
             {
                 rightHandHeld = rightHandComp.currentAttachedObject;
                 rightHandComp.DetachObject(rightHandHeld);
                 rightHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = false;
             }
-            
             if (leftHandComp.currentAttachedObject != null)
             {
                 leftHandHeld = leftHandComp.currentAttachedObject;
                 leftHandComp.DetachObject(leftHandHeld);
                 leftHandHeld.GetComponent<SkinnedMeshRenderer>().enabled = false;
             }
-            
-
         }
     }
     
-    public bool get_selected_value()
-    {
-        return selected;
-    }
     
 }

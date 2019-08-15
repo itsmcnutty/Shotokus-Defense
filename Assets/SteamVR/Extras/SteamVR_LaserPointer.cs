@@ -33,6 +33,8 @@ namespace Valve.VR.Extras
         private void Awake()
         {
             active = false;
+            isActive = active;
+//            pointer.SetActive(isActive);
         }
 
 
@@ -103,6 +105,7 @@ namespace Valve.VR.Extras
             if(active != isActive)
             {
                 isActive = active;
+                Debug.Log("toggling the laser");
                 pointer.SetActive(isActive);
             }
             if(!isActive)
