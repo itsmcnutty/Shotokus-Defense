@@ -264,7 +264,7 @@ public class PlayerAbility : MonoBehaviour
                 wall.transform.position = Vector3.MoveTowards (wall.transform.position, newPos, 1f);
                 float area = (float) Math.Round (wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * wallSizeMultiplier;
                 playerEnergy.SetTempEnergy (firstHandHeld, area);
-                surface.BuildNavMesh ();
+//                surface.BuildNavMesh ();
             }
         }
     }
@@ -342,7 +342,7 @@ public class PlayerAbility : MonoBehaviour
                     SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
                     hand.TriggerHapticPulse (1500);
                 }
-                surface.BuildNavMesh ();
+//                surface.BuildNavMesh ();
                 allSpikes.Clear();
             }
             else
