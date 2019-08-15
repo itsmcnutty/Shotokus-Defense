@@ -28,7 +28,6 @@ public class PlayerAbility : MonoBehaviour
     public Material validOutlineMat;
     public Material invalidOutlineMat;
 
-    
     [Header ("Ability Values")]
     public float rockCreationDistance = 3f;
     public float minRockDiameter = 0.25f;
@@ -56,7 +55,7 @@ public class PlayerAbility : MonoBehaviour
 
     private static List<Vector2> spikeLocations;
     private HashSet<Vector3> allSpikes;
-    private static List<GameObject> availableSpikes = new List<GameObject>();
+    private static List<GameObject> availableSpikes = new List<GameObject> ();
 
     private void Awake ()
     {
@@ -91,8 +90,8 @@ public class PlayerAbility : MonoBehaviour
         for (int i = 0; i < numSpikes; i++)
         {
             GameObject spike = Instantiate (spikePrefab) as GameObject;
-            spike.transform.position = new Vector3(0, -10, 0);
-            MakeSpikeAvailable(spike);
+            spike.transform.position = new Vector3 (0, -10, 0);
+            MakeSpikeAvailable (spike);
         }
     }
 
@@ -220,7 +219,7 @@ public class PlayerAbility : MonoBehaviour
                 rock.transform.position = new Vector3 (arc.GetEndPosition ().x, arc.GetEndPosition ().y - 0.25f, arc.GetEndPosition ().z);
                 hand.AttachObject (rock, GrabTypes.Scripted);
             }
-            else if (hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold (100f))
+            else if (hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold (200f))
             {
                 spikeQuicksandOutline = Instantiate (actionPlaceholderPrefab) as GameObject;
                 spikeQuicksandOutline.transform.position = arc.GetEndPosition ();
@@ -307,12 +306,22 @@ public class PlayerAbility : MonoBehaviour
             }
             else if (handPos > 0 && controllerVelocity > 0 && SpikeQuicksandIsValid ())
             {
-                float height = (float) Math.Sqrt (3) * baseSpikeRadius;
+                float finalSpikeRadius = baseSpikeRadius;
                 float size = spikeQuicksandOutline.transform.localScale.x / 2;
-                float finalSpikeRadius = GenerateSpikes (spikeQuicksandOutline.transform.position, spikeQuicksandOutline.transform.position, height, baseSpikeRadius, size);
+                float triangleDist = (baseSpikeRadius / (float) Math.Sqrt (3)) + baseSpikeRadius;
+                if (size >= triangleDist && size < baseSpikeRadius * 3)
+                {
+                    finalSpikeRadius = GenerateSpikesTriangle (spikeQuicksandOutline.transform.position, size, triangleDist);
+                }
+                else
+                {
+                    float height = (float) Math.Sqrt (3) * baseSpikeRadius;
+                    finalSpikeRadius = GenerateSpikesHex (spikeQuicksandOutline.transform.position, spikeQuicksandOutline.transform.position, height, size);
+                }
+                Debug.Log(finalSpikeRadius);
                 float radiusIncrease = finalSpikeRadius - baseSpikeRadius;
 
-                finalSpikeRadius *= 2;
+                finalSpikeRadius = (finalSpikeRadius * 2) - 0.05f;
                 Vector3 centerLoc = spikeQuicksandOutline.transform.position;
 
                 Destroy (spikeQuicksandOutline);
@@ -321,29 +330,29 @@ public class PlayerAbility : MonoBehaviour
                 foreach (Vector3 spikePos in allSpikes)
                 {
                     GameObject spike;
-                    if(availableSpikes.Count != 0)
+                    if (availableSpikes.Count != 0)
                     {
                         spike = availableSpikes[0];
-                        availableSpikes.Remove(spike);
+                        availableSpikes.Remove (spike);
                     }
                     else
                     {
-                        spike = Instantiate(spikePrefab) as GameObject;
+                        spike = Instantiate (spikePrefab) as GameObject;
                     }
-                    Vector3 spikeCorrection = (spikePos - centerLoc) / 2;
+                    Vector3 spikeCorrection = (spikePos - centerLoc) * 0.33f;
                     Vector3 radiusCorrection = new Vector3 (Math.Sign (spikeCorrection.x) * radiusIncrease, 0, Math.Sign (spikeCorrection.z) * radiusIncrease);
                     spike.transform.position = (spikePos - spikeCorrection) + radiusCorrection;
-                    spike.transform.localScale = new Vector3 (finalSpikeRadius, finalSpikeRadius, finalSpikeRadius);
+                    spike.transform.localScale = new Vector3 (finalSpikeRadius, finalSpikeRadius * 0.75f, finalSpikeRadius);
 
                     float spikeVelocity = (controllerVelocity / spikeSpeedReduction) + spikeMinSpeed;
                     Vector3 spikeEndPosition = spike.transform.position;
-                    spikeEndPosition.y += spikePos.y + (2f * finalSpikeRadius);
-                    
-                    SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
+                    spikeEndPosition.y += spikePos.y + (1.5f * finalSpikeRadius);
+
+                    SpikeMovement.CreateComponent (spike, spikeVelocity, spikeEndPosition);
                     hand.TriggerHapticPulse (1500);
                 }
                 surface.BuildNavMesh ();
-                allSpikes.Clear();
+                allSpikes.Clear ();
             }
             else
             {
@@ -359,27 +368,39 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    private float GenerateSpikes (Vector3 position, Vector3 centerLoc, float height, float spikeRadius, float areaRadius)
+    private float GenerateSpikesTriangle (Vector3 centerLoc, float areaRadius, float triangleDist)
+    {
+        Vector3 vertex1 = new Vector3 (centerLoc.x, centerLoc.y, centerLoc.z + ((float) Math.Sqrt (3) * baseSpikeRadius / 3));
+        Vector3 vertex2 = new Vector3 (centerLoc.x - (baseSpikeRadius / 2), centerLoc.y, centerLoc.z - ((float) Math.Sqrt (3) * baseSpikeRadius / 6));
+        Vector3 vertex3 = new Vector3 (centerLoc.x + (baseSpikeRadius / 2), centerLoc.y, centerLoc.z - ((float) Math.Sqrt (3) * baseSpikeRadius / 6));
+
+        allSpikes.Add (vertex1);
+        allSpikes.Add (vertex2);
+        allSpikes.Add (vertex3);
+        return (areaRadius - triangleDist) + baseSpikeRadius;
+    }
+
+    private float GenerateSpikesHex (Vector3 position, Vector3 centerLoc, float height, float areaRadius)
     {
         float radius = areaRadius;
         allSpikes.Add (position);
         foreach (Vector2 locationOffset in spikeLocations)
         {
-            float newX = position.x + (spikeRadius * locationOffset.x);
+            float newX = position.x + (baseSpikeRadius * locationOffset.x);
             float newZ = position.z + (height * locationOffset.y);
             float newY = position.y; // TODO implement height checks
             Vector3 newPos = new Vector3 (newX, newY, newZ);
             if (!allSpikes.Contains (newPos))
             {
-                float currentDistance = Vector3.Distance (newPos, centerLoc) + spikeRadius;
+                float currentDistance = Vector3.Distance (newPos, centerLoc) + baseSpikeRadius;
                 if (currentDistance > areaRadius)
                 {
-                    float layerNum = (float) Math.Floor ((areaRadius - spikeRadius) / (spikeRadius * 2));
-                    return (layerNum != 0) ? (areaRadius - spikeRadius) / (2 * layerNum) : areaRadius;
+                    float layerNum = (float) Math.Floor ((areaRadius - baseSpikeRadius) / (baseSpikeRadius * 2));
+                    return (layerNum != 0) ? (areaRadius - baseSpikeRadius) / (2 * layerNum) : areaRadius;
                 }
                 else
                 {
-                    radius = GenerateSpikes (newPos, centerLoc, height, spikeRadius, areaRadius);
+                    radius = GenerateSpikesHex (newPos, centerLoc, height, areaRadius);
                 }
             }
         }
@@ -523,8 +544,8 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    public static void MakeSpikeAvailable(GameObject spike)
+    public static void MakeSpikeAvailable (GameObject spike)
     {
-        availableSpikes.Add(spike);
+        availableSpikes.Add (spike);
     }
 }
