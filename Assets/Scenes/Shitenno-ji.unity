@@ -1904,7 +1904,13 @@ MonoBehaviour:
     type: 3}
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
-  surface: {fileID: 1889527517}
+  rockCreationDistance: 3
+  minRockDiameter: 0.25
+  maxRockDimater: 1.5
+  spikeSpeedReduction: 10
+  spikeMinSpeed: 0.05
+  maxSpikeDiameter: 5
+  wallSizeMultiplier: 200
 --- !u!195 &1041051942
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2061,7 +2067,13 @@ MonoBehaviour:
     type: 3}
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
-  surface: {fileID: 1889527517}
+  rockCreationDistance: 3
+  minRockDiameter: 0.25
+  maxRockDimater: 1.5
+  spikeSpeedReduction: 10
+  spikeMinSpeed: 0.05
+  maxSpikeDiameter: 5
+  wallSizeMultiplier: 200
 --- !u!114 &1041051949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2646,18 +2658,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f432ca6eb057f7148bc3fec9a3a8567d, type: 3}
---- !u!114 &1889527517 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8618336351119341840, guid: f432ca6eb057f7148bc3fec9a3a8567d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1889527516}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1891072177
 GameObject:
   m_ObjectHideFlags: 0
