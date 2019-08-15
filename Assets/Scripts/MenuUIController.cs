@@ -96,7 +96,7 @@ public class MenuUIController : MonoBehaviour
         pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
         pauseMenu.transform.LookAt(player.transform.position);
         
-        // todo fixes camera rotation but buttons are not detectable
+        // todo fixes camera rotation but buttons are not detectable - do not delete
 //        pauseMenu = Instantiate(menuPrefab);
 //        pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
 //        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
