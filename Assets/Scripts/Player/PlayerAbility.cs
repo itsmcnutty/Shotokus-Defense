@@ -274,7 +274,6 @@ public class PlayerAbility : MonoBehaviour
             if (otherHand.currentAttachedObject == rock)
             {
                 float rockSize = (float) Math.Pow (Math.Floor (rock.transform.localScale.x * rock.transform.localScale.y * rock.transform.localScale.z), 3);
-                rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockSize / 2.0, 3.0);
                 playerEnergy.SetTempEnergy (hand, rockSize);
                 playerEnergy.TransferHandEnergy (hand, otherHand);
                 otherHand.GetComponent<PlayerAbility> ().rock = rock;
@@ -282,6 +281,7 @@ public class PlayerAbility : MonoBehaviour
             else
             {
                 rock.AddComponent<RockProperties> ();
+                rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rock.transform.localScale.x / 2.0, 3.0);
                 playerEnergy.UseEnergy (hand);
                 hand.TriggerHapticPulse (500);
             }

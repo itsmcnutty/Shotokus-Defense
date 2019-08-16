@@ -10,6 +10,8 @@ public class RagdollController : MonoBehaviour
 
     // Physics material for all of the enemy's colliders
     public PhysicMaterial PHYSIC_MATERIAL;
+    // Return to position from start of ragdoll or not
+    public bool resetPosition;
     
     // All Rigidbodies of the enemy's ragdoll
     private Rigidbody[] rigidbodies;
@@ -83,7 +85,10 @@ public class RagdollController : MonoBehaviour
         animator.enabled = true;
         
         // Move to position where ragdoll was laying and re-enable pathfinding
-        transform.position = rigidbodies[0].transform.position;
+        if (!resetPosition)
+        {
+            transform.position = rigidbodies[0].transform.position;
+        }
         agent.enabled = true;
         
         // If not on navmesh or flying in air, try again later
