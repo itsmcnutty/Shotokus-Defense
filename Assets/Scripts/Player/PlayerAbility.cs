@@ -348,7 +348,7 @@ public class PlayerAbility : MonoBehaviour
 
                     float spikeVelocity = (controllerVelocity / spikeSpeedReduction) + spikeMinSpeed;
                     Vector3 spikeEndPosition = spike.transform.position;
-                    spikeEndPosition.y += spikePos.y + (finalSpikeHeight * 2);
+                    spikeEndPosition.y += (finalSpikeHeight * 2);
 
                     SpikeMovement.CreateComponent (spike, spikeVelocity, spikeEndPosition);
                     hand.TriggerHapticPulse (1500);
