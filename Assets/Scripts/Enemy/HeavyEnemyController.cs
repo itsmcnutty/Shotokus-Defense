@@ -28,6 +28,7 @@ public class HeavyEnemyController : MonoBehaviour
     public NavMeshAgent agent;
     // The NavMeshObstacle used to block enemies pathfinding when not moving
     public NavMeshObstacle obstacle;
+    public bool debugNoWalk = false;
     
     private RagdollController ragdollController;
     private Animator animator;
@@ -114,7 +115,7 @@ public class HeavyEnemyController : MonoBehaviour
                 Vector3 backUpVector = gameObjPos - playerPos;
                 backUpVector.Normalize();
                 
-                if (agent.enabled)
+                if (agent.enabled && !debugNoWalk)
                 {
                     agent.SetDestination(playerPos + 1.5f * ATTACK_RADIUS * backUpVector);
                     agent.angularSpeed = 0f;
@@ -131,7 +132,7 @@ public class HeavyEnemyController : MonoBehaviour
             else
             {
                 // Move to player
-                if (agent.enabled)
+                if (agent.enabled && !debugNoWalk)
                 {
                     agent.SetDestination(playerPos);
                     agent.angularSpeed = 8000f;
