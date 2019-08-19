@@ -31,6 +31,7 @@ public class SpikeMovement : MonoBehaviour
     private void OnDestroy ()
     {
         gameObject.transform.position = new Vector3 (0, -10, 0);
+        gameObject.SetActive(false);
         PlayerAbility.MakeSpikeAvailable (gameObject);
     }
 }

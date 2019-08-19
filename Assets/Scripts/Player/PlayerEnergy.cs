@@ -17,6 +17,7 @@ public class PlayerEnergy : MonoBehaviour
     private float currentEnergy;
     private float lastAbilityUsedTime;
     private Dictionary<Hand, float> activeAbilityEnergyCost;
+    private bool infiniteEnergyDisabled = true;
 
     // Start is called before the first frame update
     void Start ()
@@ -38,53 +39,65 @@ public class PlayerEnergy : MonoBehaviour
 
     public void SetTempEnergy (Hand activeHand, float energy)
     {
-        float lastEnergyVal;
-        if (!activeAbilityEnergyCost.TryGetValue (activeHand, out lastEnergyVal))
+        if (infiniteEnergyDisabled)
         {
-            activeAbilityEnergyCost.Add (activeHand, energy);
+            float lastEnergyVal;
+            if (!activeAbilityEnergyCost.TryGetValue (activeHand, out lastEnergyVal))
+            {
+                activeAbilityEnergyCost.Add (activeHand, energy);
+            }
+            else
+            {
+                activeAbilityEnergyCost[activeHand] = energy;
+            }
+            float afterAbilityEnergy = GetTotalEnergyUsage ();
+            if (afterAbilityEnergy > currentEnergy)
+            {
+                activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
+                afterAbilityEnergy = currentEnergy;
+            }
+            energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         }
-        else
-        {
-            activeAbilityEnergyCost[activeHand] = energy;
-        }
-        float afterAbilityEnergy = GetTotalEnergyUsage ();
-        if (afterAbilityEnergy > currentEnergy)
-        {
-            activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
-            afterAbilityEnergy = currentEnergy;
-        }
-        energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         UpdateAbilityUseTime ();
     }
 
     public void DrainRealEnergy (float energy)
     {
-        if (currentEnergy > 0)
+        if (infiniteEnergyDisabled)
         {
-            currentEnergy -= energy;
-            if (currentEnergy < 0)
+            if (currentEnergy > 0)
             {
-                currentEnergy = 0;
+                currentEnergy -= energy;
+                if (currentEnergy < 0)
+                {
+                    currentEnergy = 0;
+                }
+                energyBarBefore.value = currentEnergy;
+                energyBarAfter.value = currentEnergy;
             }
-            energyBarBefore.value = currentEnergy;
-            energyBarAfter.value = currentEnergy;
         }
         UpdateAbilityUseTime ();
     }
 
     public void UseEnergy (Hand activeHand)
     {
-        currentEnergy -= activeAbilityEnergyCost[activeHand];
-        energyBarBefore.value = currentEnergy;
-        activeAbilityEnergyCost[activeHand] = 0;
-        RemoveHandFromActive (activeHand);
+        if (infiniteEnergyDisabled)
+        {
+            currentEnergy -= activeAbilityEnergyCost[activeHand];
+            energyBarBefore.value = currentEnergy;
+            activeAbilityEnergyCost[activeHand] = 0;
+            RemoveHandFromActive (activeHand);
+        }
     }
 
     public void CancelEnergyUsage (Hand activeHand)
     {
-        energyBarAfter.value = currentEnergy;
-        activeAbilityEnergyCost[activeHand] = 0;
-        RemoveHandFromActive (activeHand);
+        if (infiniteEnergyDisabled)
+        {
+            energyBarAfter.value = currentEnergy;
+            activeAbilityEnergyCost[activeHand] = 0;
+            RemoveHandFromActive (activeHand);
+        }
     }
 
     public bool EnergyIsNotZero ()
@@ -97,7 +110,6 @@ public class PlayerEnergy : MonoBehaviour
         return (currentEnergy - GetTotalEnergyUsage ()) > threshold;
     }
 
-    
     public void UpdateAbilityUseTime ()
     {
         lastAbilityUsedTime = Time.time;
@@ -110,13 +122,16 @@ public class PlayerEnergy : MonoBehaviour
 
     public void TransferHandEnergy (Hand activeHand, Hand newHand)
     {
-        float value = RemoveHandFromActive(activeHand);
-        SetTempEnergy (newHand, value);
+        if (infiniteEnergyDisabled)
+        {
+            float value = RemoveHandFromActive (activeHand);
+            SetTempEnergy (newHand, value);
+        }
     }
 
     private void SetEnergyBarText ()
     {
-        energyBarText.text = Math.Floor(currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+        energyBarText.text = Math.Floor (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
     }
 
     private void RegenEnergy ()
