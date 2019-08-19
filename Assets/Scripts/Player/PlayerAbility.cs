@@ -57,7 +57,7 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableSpikes = new List<GameObject> ();
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
-    private static bool clusterRockEnabled = true;
+    private static bool clusterRockEnabled = false;
 
     private void Awake ()
     {
