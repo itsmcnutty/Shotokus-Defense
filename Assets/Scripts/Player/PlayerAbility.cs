@@ -236,18 +236,18 @@ public class PlayerAbility : MonoBehaviour
             rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
             rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockEnergyCost / 2.0, 3.0);
             playerEnergy.SetTempEnergy (hand, rockEnergyCost);
-            hand.SetAllowResize (playerEnergy.EnergyIsNotZero ());
+            hand.SetAllowResize (rockEnergyCost <= playerEnergy.maxEnergy);
         }
         else if (SpikeQuicksandIsActive ())
         {
             float size = (float) Math.Pow ((Math.Abs (hand.transform.position.y - startingSpikeHandHeight)) + (baseSpikeRadius * 2), 3);
             Vector3 newSize = new Vector3 (size, 1f, size);
-            if (playerEnergy.EnergyIsNotZero () || newSize.x < spikeQuicksandOutline.transform.localScale.x)
+            float energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
+            playerEnergy.SetTempEnergy (hand, energyCost);
+            if ((playerEnergy.EnergyIsNotZero () && energyCost <= playerEnergy.maxEnergy) || newSize.x < spikeQuicksandOutline.transform.localScale.x)
             {
                 spikeQuicksandOutline.transform.localScale = newSize;
             }
-            float energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
-            playerEnergy.SetTempEnergy (hand, energyCost);
             SetOutlineMaterial (spikeQuicksandOutline, SpikeQuicksandIsValid ());
         }
         else if (WallIsActive () && playerEnergy.EnergyIsNotZero ())
