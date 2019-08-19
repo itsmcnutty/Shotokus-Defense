@@ -28,6 +28,7 @@ public class PlayerAbility : MonoBehaviour
 
     [Header ("Ability Values")]
     public float rockCreationDistance = 3f;
+    public float numberOfRocksInCluster = 4;
     public float minRockDiameter = 0.25f;
     public float maxRockDimater = 1.5f;
     public float spikeSpeedReduction = 10f;
@@ -54,6 +55,10 @@ public class PlayerAbility : MonoBehaviour
     private static List<Vector2> spikeLocations;
     private HashSet<Vector3> allSpikes;
     private static List<GameObject> availableSpikes = new List<GameObject> ();
+    private static List<GameObject> availableRocks = new List<GameObject> ();
+
+    private static bool clusterRockEnabled = false;
+    private static bool movingWallsEnabled = false;
 
     private void Awake ()
     {
@@ -89,7 +94,18 @@ public class PlayerAbility : MonoBehaviour
         {
             GameObject spike = Instantiate (spikePrefab) as GameObject;
             spike.transform.position = new Vector3 (0, -10, 0);
+            spike.SetActive (false);
             MakeSpikeAvailable (spike);
+        }
+
+        float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime () * 25;
+
+        for (int i = 0; i < numRocks; i++)
+        {
+            GameObject rock = Instantiate (rockPrefab) as GameObject;
+            rock.transform.position = new Vector3 (0, -10, 0);
+            rock.SetActive (false);
+            MakeRockAvailable (rock);
         }
     }
 
@@ -213,7 +229,7 @@ public class PlayerAbility : MonoBehaviour
             }
             else if (arc.GetDistanceFromPlayer () <= rockCreationDistance)
             {
-                rock = Instantiate (rockPrefab) as GameObject;
+                rock = GetNewRock ();
                 rock.transform.position = new Vector3 (arc.GetEndPosition ().x, arc.GetEndPosition ().y - 0.25f, arc.GetEndPosition ().z);
                 hand.AttachObject (rock, GrabTypes.Scripted);
             }
@@ -236,18 +252,18 @@ public class PlayerAbility : MonoBehaviour
             rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
             rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockEnergyCost / 2.0, 3.0);
             playerEnergy.SetTempEnergy (hand, rockEnergyCost);
-            hand.SetAllowResize (playerEnergy.EnergyIsNotZero ());
+            hand.SetAllowResize (rockEnergyCost <= playerEnergy.maxEnergy);
         }
         else if (SpikeQuicksandIsActive ())
         {
             float size = (float) Math.Pow ((Math.Abs (hand.transform.position.y - startingSpikeHandHeight)) + (baseSpikeRadius * 2), 3);
             Vector3 newSize = new Vector3 (size, 1f, size);
-            if (playerEnergy.EnergyIsNotZero () || newSize.x < spikeQuicksandOutline.transform.localScale.x)
+            float energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
+            playerEnergy.SetTempEnergy (hand, energyCost);
+            if ((playerEnergy.EnergyIsNotZero () && energyCost <= playerEnergy.maxEnergy) || newSize.x < spikeQuicksandOutline.transform.localScale.x)
             {
                 spikeQuicksandOutline.transform.localScale = newSize;
             }
-            float energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
-            playerEnergy.SetTempEnergy (hand, energyCost);
             SetOutlineMaterial (spikeQuicksandOutline, SpikeQuicksandIsValid ());
         }
         else if (WallIsActive () && playerEnergy.EnergyIsNotZero ())
@@ -284,6 +300,23 @@ public class PlayerAbility : MonoBehaviour
                 rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rock.transform.localScale.x / 2.0, 3.0);
                 playerEnergy.UseEnergy (hand);
                 hand.TriggerHapticPulse (500);
+
+                if (clusterRockEnabled)
+                {
+                    for (int i = 0; i < numberOfRocksInCluster; i++)
+                    {
+                        GameObject newRock = GetNewRock ();
+                        newRock.AddComponent<RockProperties> ();
+                        Vector3 velocity, angularVelocity;
+                        rock.GetComponent<Throwable> ().GetReleaseVelocities (hand, out velocity, out angularVelocity);
+
+                        newRock.transform.position = rock.transform.position;
+                        newRock.transform.localScale = rock.transform.localScale;
+                        newRock.GetComponent<Rigidbody> ().velocity = velocity;
+                        newRock.GetComponent<Rigidbody> ().velocity = Vector3.ProjectOnPlane (UnityEngine.Random.insideUnitSphere, velocity) * (.75f + rock.transform.localScale.x) + velocity;
+                        newRock.GetComponent<Rigidbody> ().angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
+                    }
+                }
             }
             rock = null;
         }
@@ -295,7 +328,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
-                quicksand.transform.localScale = new Vector3 (spikeQuicksandOutline.transform.localScale.x, .01f, spikeQuicksandOutline.transform.localScale.z);
+                quicksand.transform.localScale = new Vector3 (spikeQuicksandOutline.transform.localScale.x, 1f, spikeQuicksandOutline.transform.localScale.z);
                 quicksand.AddComponent<QuicksandProperties> ();
                 Destroy (spikeQuicksandOutline);
                 playerEnergy.UseEnergy (hand);
@@ -329,6 +362,7 @@ public class PlayerAbility : MonoBehaviour
                     if (availableSpikes.Count != 0)
                     {
                         spike = availableSpikes[0];
+                        spike.SetActive (true);
                         availableSpikes.Remove (spike);
                     }
                     else
@@ -365,6 +399,17 @@ public class PlayerAbility : MonoBehaviour
         {
             wall.AddComponent<WallProperties> ();
             playerEnergy.UseEnergy (firstHandHeld);
+            if (movingWallsEnabled)
+            {
+                Vector3 heading = wall.transform.position - player.transform.position;
+
+                float distance = heading.magnitude;
+                Vector3 velocity = (heading / distance) * 5f;
+                velocity = new Vector3(velocity.x, 0, velocity.z);
+
+                wall.GetComponent<WallProperties> ().direction = velocity.normalized;
+                wall.GetComponent<WallProperties> ().wallMoveSpeed = 0.05f;
+            }
             ResetWallInfo ();
         }
     }
@@ -557,8 +602,29 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
+    private GameObject GetNewRock ()
+    {
+        GameObject newRock;
+        if (availableRocks.Count != 0)
+        {
+            newRock = availableRocks[0];
+            newRock.SetActive (true);
+            availableRocks.Remove (newRock);
+        }
+        else
+        {
+            newRock = Instantiate (rockPrefab) as GameObject;
+        }
+        return newRock;
+    }
+
     public static void MakeSpikeAvailable (GameObject spike)
     {
         availableSpikes.Add (spike);
+    }
+
+    public static void MakeRockAvailable (GameObject spike)
+    {
+        availableRocks.Add (spike);
     }
 }

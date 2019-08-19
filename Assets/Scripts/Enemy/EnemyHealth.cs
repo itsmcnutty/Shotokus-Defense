@@ -133,7 +133,7 @@ public class EnemyHealth : CallParentCollision
 	// Returns true if the specified GameObject can damage the enemy
 	private bool IsWeapon(GameObject obj)
 	{
-		return obj.CompareTag("Rock") || obj.CompareTag("Spike");
+		return obj.CompareTag("Rock") || obj.CompareTag("Spike") || obj.CompareTag("Wall");
 	}
 	
 	// Updates the text above the health bar based on the enemy's current heatlh
