@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public Text healthPointText;
     public float maxHealth = 100;
     public float regenHealthRate;
+    public bool debugShowHealthText = false;
     private float currentHealth;
 
     // Start is called before the first frame update
@@ -68,7 +69,14 @@ public class PlayerHealth : MonoBehaviour
     }
 
     public void SetHealthBarText() {
-        healthPointText.text = currentHealth + " / " + maxHealth;
+        if(debugShowHealthText)
+        {
+            healthPointText.text = currentHealth + " / " + maxHealth;
+        }
+        else
+        {
+            healthPointText.text = "Health Points";
+        }
     }
 
 }
