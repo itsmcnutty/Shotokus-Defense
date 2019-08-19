@@ -352,7 +352,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &150743468
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -699,7 +699,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &387317436
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4135,6 +4135,7 @@ MonoBehaviour:
   maxEnergy: 1000
   energyRegenPerSecond: 500
   regenDelayInSec: 1
+  debugShowEnergyText: 0
 --- !u!114 &2115013167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4151,6 +4152,7 @@ MonoBehaviour:
   healthPointText: {fileID: 150743467}
   maxHealth: 1000
   regenHealthRate: 5
+  debugHealth: 0
 --- !u!4 &2115013168 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 429506, guid: dc06161b6d97feb419f45f03b62e14b9,

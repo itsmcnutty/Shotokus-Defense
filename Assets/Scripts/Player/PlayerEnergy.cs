@@ -13,6 +13,7 @@ public class PlayerEnergy : MonoBehaviour
     public float maxEnergy;
     public float energyRegenPerSecond;
     public float regenDelayInSec;
+    public bool debugShowEnergyText = false;
 
     private float currentEnergy;
     private float lastAbilityUsedTime;
@@ -131,7 +132,14 @@ public class PlayerEnergy : MonoBehaviour
 
     private void SetEnergyBarText ()
     {
-        energyBarText.text = Math.Floor (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+        if(debugShowEnergyText)
+        {
+            energyBarText.text = Math.Floor (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+        }
+        else
+        {
+            energyBarText.text = "Energy Level";
+        }
     }
 
     private void RegenEnergy ()
