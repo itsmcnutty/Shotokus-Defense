@@ -58,6 +58,7 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
     private static bool clusterRockEnabled = false;
+    private static bool movingWallsEnabled = false;
 
     private void Awake ()
     {
@@ -304,13 +305,13 @@ public class PlayerAbility : MonoBehaviour
                 {
                     for (int i = 0; i < numberOfRocksInCluster; i++)
                     {
-                        GameObject newRock = GetNewRock();
-                        newRock.AddComponent<RockProperties>();
+                        GameObject newRock = GetNewRock ();
+                        newRock.AddComponent<RockProperties> ();
                         Vector3 velocity, angularVelocity;
                         rock.GetComponent<Throwable> ().GetReleaseVelocities (hand, out velocity, out angularVelocity);
 
                         newRock.transform.position = rock.transform.position;
-                        newRock.transform.localScale = rock.transform.localScale; 
+                        newRock.transform.localScale = rock.transform.localScale;
                         newRock.GetComponent<Rigidbody> ().velocity = velocity;
                         newRock.GetComponent<Rigidbody> ().velocity = Vector3.ProjectOnPlane (UnityEngine.Random.insideUnitSphere, velocity) * (.75f + rock.transform.localScale.x) + velocity;
                         newRock.GetComponent<Rigidbody> ().angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
@@ -398,6 +399,17 @@ public class PlayerAbility : MonoBehaviour
         {
             wall.AddComponent<WallProperties> ();
             playerEnergy.UseEnergy (firstHandHeld);
+            if (movingWallsEnabled)
+            {
+                Vector3 heading = wall.transform.position - player.transform.position;
+
+                float distance = heading.magnitude;
+                Vector3 velocity = (heading / distance) * 5f;
+                velocity = new Vector3(velocity.x, 0, velocity.z);
+
+                wall.GetComponent<WallProperties> ().direction = velocity.normalized;
+                wall.GetComponent<WallProperties> ().wallMoveSpeed = 0.05f;
+            }
             ResetWallInfo ();
         }
     }
