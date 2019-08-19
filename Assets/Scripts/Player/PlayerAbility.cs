@@ -28,7 +28,7 @@ public class PlayerAbility : MonoBehaviour
 
     [Header ("Ability Values")]
     public float rockCreationDistance = 3f;
-    public float numberOfRocksInCluster =  4;
+    public float numberOfRocksInCluster = 4;
     public float minRockDiameter = 0.25f;
     public float maxRockDimater = 1.5f;
     public float spikeSpeedReduction = 10f;
@@ -55,6 +55,7 @@ public class PlayerAbility : MonoBehaviour
     private static List<Vector2> spikeLocations;
     private HashSet<Vector3> allSpikes;
     private static List<GameObject> availableSpikes = new List<GameObject> ();
+    private static List<GameObject> availableRocks = new List<GameObject> ();
 
     private static bool clusterRockEnabled = true;
 
@@ -92,7 +93,18 @@ public class PlayerAbility : MonoBehaviour
         {
             GameObject spike = Instantiate (spikePrefab) as GameObject;
             spike.transform.position = new Vector3 (0, -10, 0);
+            spike.SetActive (false);
             MakeSpikeAvailable (spike);
+        }
+
+        float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime () * 25;
+
+        for (int i = 0; i < numRocks; i++)
+        {
+            GameObject rock = Instantiate (rockPrefab) as GameObject;
+            rock.transform.position = new Vector3 (0, -10, 0);
+            rock.SetActive (false);
+            MakeRockAvailable (rock);
         }
     }
 
@@ -216,7 +228,7 @@ public class PlayerAbility : MonoBehaviour
             }
             else if (arc.GetDistanceFromPlayer () <= rockCreationDistance)
             {
-                rock = Instantiate (rockPrefab) as GameObject;
+                rock = GetNewRock ();
                 rock.transform.position = new Vector3 (arc.GetEndPosition ().x, arc.GetEndPosition ().y - 0.25f, arc.GetEndPosition ().z);
                 hand.AttachObject (rock, GrabTypes.Scripted);
             }
@@ -292,11 +304,13 @@ public class PlayerAbility : MonoBehaviour
                 {
                     for (int i = 0; i < numberOfRocksInCluster; i++)
                     {
-                        GameObject newRock = Instantiate (rock) as GameObject;
-
+                        GameObject newRock = GetNewRock();
+                        newRock.AddComponent<RockProperties>();
                         Vector3 velocity, angularVelocity;
                         rock.GetComponent<Throwable> ().GetReleaseVelocities (hand, out velocity, out angularVelocity);
 
+                        newRock.transform.position = rock.transform.position;
+                        newRock.transform.localScale = rock.transform.localScale; 
                         newRock.GetComponent<Rigidbody> ().velocity = velocity;
                         newRock.GetComponent<Rigidbody> ().velocity = Vector3.ProjectOnPlane (UnityEngine.Random.insideUnitSphere, velocity) * (.75f + rock.transform.localScale.x) + velocity;
                         newRock.GetComponent<Rigidbody> ().angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
@@ -347,6 +361,7 @@ public class PlayerAbility : MonoBehaviour
                     if (availableSpikes.Count != 0)
                     {
                         spike = availableSpikes[0];
+                        spike.SetActive (true);
                         availableSpikes.Remove (spike);
                     }
                     else
@@ -575,8 +590,29 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
+    private GameObject GetNewRock ()
+    {
+        GameObject newRock;
+        if (availableRocks.Count != 0)
+        {
+            newRock = availableRocks[0];
+            newRock.SetActive (true);
+            availableRocks.Remove (newRock);
+        }
+        else
+        {
+            newRock = Instantiate (rockPrefab) as GameObject;
+        }
+        return newRock;
+    }
+
     public static void MakeSpikeAvailable (GameObject spike)
     {
         availableSpikes.Add (spike);
+    }
+
+    public static void MakeRockAvailable (GameObject spike)
+    {
+        availableRocks.Add (spike);
     }
 }
