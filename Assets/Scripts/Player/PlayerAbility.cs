@@ -28,6 +28,7 @@ public class PlayerAbility : MonoBehaviour
 
     [Header ("Ability Values")]
     public float rockCreationDistance = 3f;
+    public float numberOfRocksInCluster =  4;
     public float minRockDiameter = 0.25f;
     public float maxRockDimater = 1.5f;
     public float spikeSpeedReduction = 10f;
@@ -54,6 +55,8 @@ public class PlayerAbility : MonoBehaviour
     private static List<Vector2> spikeLocations;
     private HashSet<Vector3> allSpikes;
     private static List<GameObject> availableSpikes = new List<GameObject> ();
+
+    private static bool clusterRockEnabled = true;
 
     private void Awake ()
     {
@@ -284,6 +287,21 @@ public class PlayerAbility : MonoBehaviour
                 rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rock.transform.localScale.x / 2.0, 3.0);
                 playerEnergy.UseEnergy (hand);
                 hand.TriggerHapticPulse (500);
+
+                if (clusterRockEnabled)
+                {
+                    for (int i = 0; i < numberOfRocksInCluster; i++)
+                    {
+                        GameObject newRock = Instantiate (rock) as GameObject;
+
+                        Vector3 velocity, angularVelocity;
+                        rock.GetComponent<Throwable> ().GetReleaseVelocities (hand, out velocity, out angularVelocity);
+
+                        newRock.GetComponent<Rigidbody> ().velocity = velocity;
+                        newRock.GetComponent<Rigidbody> ().velocity = Vector3.ProjectOnPlane (UnityEngine.Random.insideUnitSphere, velocity) * (.75f + rock.transform.localScale.x) + velocity;
+                        newRock.GetComponent<Rigidbody> ().angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
+                    }
+                }
             }
             rock = null;
         }
@@ -295,7 +313,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 GameObject quicksand = Instantiate (quicksandPrefab) as GameObject;
                 quicksand.transform.position = spikeQuicksandOutline.transform.position;
-                quicksand.transform.localScale = new Vector3 (spikeQuicksandOutline.transform.localScale.x, .01f, spikeQuicksandOutline.transform.localScale.z);
+                quicksand.transform.localScale = new Vector3 (spikeQuicksandOutline.transform.localScale.x, 1f, spikeQuicksandOutline.transform.localScale.z);
                 quicksand.AddComponent<QuicksandProperties> ();
                 Destroy (spikeQuicksandOutline);
                 playerEnergy.UseEnergy (hand);
