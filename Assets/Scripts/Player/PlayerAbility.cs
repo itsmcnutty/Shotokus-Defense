@@ -81,7 +81,8 @@ public class PlayerAbility : MonoBehaviour
         hand = GetComponent<Hand> ();
 
         abilityRing = Instantiate(areaOutlinePrefab);
-        abilityRing.transform.localScale = new Vector3(rockCreationDistance * 3f, 0.01f, rockCreationDistance * 3f);
+        SkinnedMeshRenderer mesh = abilityRing.GetComponentInChildren<SkinnedMeshRenderer>();
+        abilityRing.transform.localScale = new Vector3(rockCreationDistance * 2f * (1 / mesh.bounds.size.x), 0.01f, rockCreationDistance * 2f * ( 1 /mesh.bounds.size.x));
 
         allSpikes = new HashSet<Vector3> ();
         spikeQuicksandOutlines = new List<GameObject> ();
