@@ -17,7 +17,11 @@ public class EnemyHealth : CallParentCollision
 	public float ARMOR_CUTOFF;
 	// How effective armor is when hit by something below cutoff
 	public float ARMOR_PROFICIENCY;
+	// How much damage a hit must deal to send the enemy ragdolling
+	public float RAGDOLL_DMG_THRESHOLD;
 	
+	// Show health value for debugging
+	public bool debugShowHealthText = false;
 	// UI canvas containing healthbar elements
 	public Canvas healthBarCanvas;
 	// Text that displays the enemy's health
@@ -66,7 +70,7 @@ public class EnemyHealth : CallParentCollision
 	protected override void OnCollisionEnterChild(GameObject child, Collision other)
 	{
 		// Do nothing if enemy hit was not hit with a weapon
-		if (!IsWeapon(other.gameObject))
+		if (!IsRockWeapon(other.gameObject))
 		{
 			return;
 		}
@@ -85,16 +89,19 @@ public class EnemyHealth : CallParentCollision
 		// Reset damage timer
 		timeSinceDamage = 0f;
 
+		// Calculate damage received
+		float damage = CalculateDamage(other);
+		
 		// Update health and health bar
-		health -= CalculateDamage(other);
+		health -= damage;
 		healthBarActual.SetValueWithoutNotify(health);
 		UpdateHealthString();
 		
 		// Get linear rate of decrease for ghost damage
 		healthBarBeforeDecRate = (health - healthBeforeDamage) / REMOVE_DAMAGE_DURATION;
 
-		// Begin ragdolling if not already ragdolling
-		if (!GetComponent<RagdollController>().IsRagdolling())
+		// Begin ragdolling if taken enough damage and not already ragdolling
+		if (damage >= RAGDOLL_DMG_THRESHOLD && !GetComponent<RagdollController>().IsRagdolling())
 		{
 			GetComponent<RagdollController>().StartRagdoll();
 		}
@@ -109,11 +116,9 @@ public class EnemyHealth : CallParentCollision
 		}
 	}
 
-	private float CalculateDamage(Collision collision)
+	private float CalculateDamage(Collision other)
 	{
-		Rigidbody otherBody = collision.rigidbody;
-
-		float momentum = (otherBody.mass * otherBody.velocity - collision.impulse).magnitude;
+		float momentum  = other.gameObject.GetComponent<RockCollide>().GetMomentum();
 		
 		// Raw incoming damage
 		float damage = IMPULSE_MULTIPLIER * momentum;
@@ -131,7 +136,7 @@ public class EnemyHealth : CallParentCollision
 	}
 
 	// Returns true if the specified GameObject can damage the enemy
-	private bool IsWeapon(GameObject obj)
+	private bool IsRockWeapon(GameObject obj)
 	{
 		return obj.CompareTag("Rock") || obj.CompareTag("Spike") || obj.CompareTag("Wall");
 	}
@@ -139,7 +144,14 @@ public class EnemyHealth : CallParentCollision
 	// Updates the text above the health bar based on the enemy's current heatlh
 	private void UpdateHealthString()
 	{
-		healthBarText.text = String.Format("{0} / {1}", Math.Ceiling(health), Math.Ceiling(MAX_HEALTH));
+		if (debugShowHealthText)
+		{
+			healthBarText.text = String.Format("{0} / {1}", Math.Ceiling(health), Math.Ceiling(MAX_HEALTH));
+		}
+		else
+		{
+			healthBarText.text = "";
+		}
 	}
 
 	// For controlling the animation of the "before" health bar

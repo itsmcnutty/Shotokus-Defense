@@ -486,6 +486,7 @@ MonoBehaviour:
   ATTACK_RADIUS: 2.6
   agent: {fileID: 324325786130137908}
   obstacle: {fileID: 5508671993429460530}
+  debugNoWalk: 0
 --- !u!114 &-5905606208446284247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,6 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PHYSIC_MATERIAL: {fileID: 13400000, guid: 81b937e17b207d747916c4de1da2d0c0, type: 2}
+  resetPosition: 0
 --- !u!114 &-7680530928621544869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,9 +513,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd923125896806243808fdc885c49fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 100
-  ARMOR_CUTOFF: 100
+  MAX_HEALTH: 1000
+  ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 10
+  RAGDOLL_DMG_THRESHOLD: 8
+  debugShowHealthText: 0
   healthBarCanvas: {fileID: 9121232944689274987}
   healthBarText: {fileID: 1445011927171812118}
   healthBarActual: {fileID: 4515350828251530292}
