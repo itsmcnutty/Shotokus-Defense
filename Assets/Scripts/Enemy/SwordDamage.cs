@@ -31,21 +31,20 @@ public class SwordDamage : MonoBehaviour
         if (otherTopParent.Equals(player) &&
             parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsTag("Melee"))
         {
-            otherTopParent.GetComponentInChildren<PlayerHealth>().TakeDamage(DAMAGE);
+            player.GetComponentInChildren<PlayerHealth>().TakeDamage(DAMAGE);
         }
     }
 
     // Get parent object at top of hierarchy by stepping trough parents until none exist
     private GameObject GetTopParent(GameObject obj)
     {
-        
         Transform parentTransform = obj.transform;
         
-        while (parentTransform.parent != null)
+        while (parentTransform.parent)
         {
             parentTransform = parentTransform.parent.transform;
         }
-
+        
         return parentTransform.gameObject;
     }
 }
