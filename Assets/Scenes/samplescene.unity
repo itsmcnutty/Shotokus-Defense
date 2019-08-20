@@ -352,7 +352,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &150743468
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -699,7 +699,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &387317436
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1794,6 +1794,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 665423900}
     m_Modifications:
+    - target: {fileID: 1593707594805610, guid: a87f0180d46fd334b9025d0314a0dc70, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 4896299854906514, guid: a87f0180d46fd334b9025d0314a0dc70, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4022,6 +4026,7 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
+  numberOfRocksInCluster: 4
   minRockDiameter: 0.25
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
@@ -4084,6 +4089,7 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
+  numberOfRocksInCluster: 4
   minRockDiameter: 0.25
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
@@ -4129,6 +4135,7 @@ MonoBehaviour:
   maxEnergy: 1000
   energyRegenPerSecond: 500
   regenDelayInSec: 1
+  debugShowEnergyText: 0
 --- !u!114 &2115013167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4145,6 +4152,7 @@ MonoBehaviour:
   healthPointText: {fileID: 150743467}
   maxHealth: 1000
   regenHealthRate: 5
+  debugHealth: 0
 --- !u!4 &2115013168 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 429506, guid: dc06161b6d97feb419f45f03b62e14b9,

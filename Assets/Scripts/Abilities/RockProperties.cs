@@ -2,7 +2,7 @@
 
 public class RockProperties : MonoBehaviour
 {
-    private float rockLifetime = 5.0f;
+    private static float rockLifetime = 5.0f;
     // Start is called before the first frame update
     void Start ()
     {
@@ -20,7 +20,15 @@ public class RockProperties : MonoBehaviour
 
     public void DestroyRock ()
     {
-        Destroy (gameObject);
+        gameObject.transform.position = new Vector3 (0, -10, 0);
+        gameObject.SetActive(false);
+        PlayerAbility.MakeRockAvailable (gameObject);
+        Destroy(this);
+    }
+
+    public static float GetRockLifetime()
+    {
+        return rockLifetime;
     }
 
 }
