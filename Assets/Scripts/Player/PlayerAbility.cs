@@ -16,7 +16,7 @@ public class PlayerAbility : MonoBehaviour
     public float baseSpikeRadius = 0.5f;
 
     [Header ("Prefabs")]
-    public GameObject actionPlaceholderPrefab;
+    public GameObject areaOutlinePrefab;
     public GameObject wallOutlinePrefab;
     public GameObject rockPrefab;
     public GameObject spikePrefab;
@@ -46,6 +46,7 @@ public class PlayerAbility : MonoBehaviour
     private GameObject rock;
     private List<GameObject> spikeQuicksandOutlines;
     private float startingSpikeHandHeight;
+    private GameObject abilityRing;
 
     private static GameObject wallOutline;
     private static GameObject wall;
@@ -78,6 +79,9 @@ public class PlayerAbility : MonoBehaviour
         arc = GetComponentInChildren<ControllerArc> ();
         otherArc = otherHand.GetComponentInChildren<ControllerArc> ();
         hand = GetComponent<Hand> ();
+
+        abilityRing = Instantiate(areaOutlinePrefab);
+        abilityRing.transform.localScale = new Vector3(rockCreationDistance * 3f, 0.01f, rockCreationDistance * 3f);
 
         allSpikes = new HashSet<Vector3> ();
         spikeQuicksandOutlines = new List<GameObject> ();
@@ -116,6 +120,8 @@ public class PlayerAbility : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        abilityRing.transform.position = new Vector3(player.transform.position.x, 0, player.transform.position.z);
+
         if (GripPress ())
         {
             CancelAbility ();
@@ -239,7 +245,7 @@ public class PlayerAbility : MonoBehaviour
             }
             else if (hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold (200f))
             {
-                spikeQuicksandOutlines.Add (Instantiate (actionPlaceholderPrefab));
+                spikeQuicksandOutlines.Add (Instantiate (areaOutlinePrefab));
                 spikeQuicksandOutlines[0].transform.position = arc.GetEndPosition ();
                 startingSpikeHandHeight = hand.transform.position.y;
             }
@@ -303,7 +309,7 @@ public class PlayerAbility : MonoBehaviour
                     energyCost += energyPerSpikeInChain;
                     if (numOutlines > spikeQuicksandOutlines.Count && playerEnergy.EnergyIsNotZero () && energyCost <= playerEnergy.maxEnergy)
                     {
-                        GameObject newOutline = Instantiate (actionPlaceholderPrefab) as GameObject;
+                        GameObject newOutline = Instantiate (areaOutlinePrefab) as GameObject;
 
                         float posX = outlinePos.x + (i * velocity.x);
                         float posZ = outlinePos.z + (i * velocity.z);
@@ -655,7 +661,6 @@ public class PlayerAbility : MonoBehaviour
     private bool SpikeQuicksandIsValid (GameObject spikeQuicksandOutline)
     {
         OutlineProperties properties = spikeQuicksandOutline.GetComponentInChildren<OutlineProperties> ();
-        Debug.Log("CAN CONFIRM COLLIDE "+properties.CollisionDetected ());
         return (arc.CanUseAbility () &&
             !properties.CollisionDetected ());
     }
