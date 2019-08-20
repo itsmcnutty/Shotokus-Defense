@@ -1871,6 +1871,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.actionPath
+      value: /actions/default/in/Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.actionPath
+      value: /actions/default/in/Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: otherHand
+      value: 
+      objectReference: {fileID: 1014902126}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: handType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: trackedObject
+      value: 
+      objectReference: {fileID: 1014902130}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2047,26 +2067,6 @@ PrefabInstance:
       propertyPath: trackedObject
       value: 
       objectReference: {fileID: 1014902131}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabPinchAction.actionPath
-      value: /actions/default/in/Trigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabGripAction.actionPath
-      value: /actions/default/in/Grip
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: otherHand
-      value: 
-      objectReference: {fileID: 1014902126}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: handType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: trackedObject
-      value: 
-      objectReference: {fileID: 1014902130}
     - target: {fileID: 490018, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.9772663
@@ -2321,7 +2321,7 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 1014902124}
   baseSpikeRadius: 0.5
-  actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
+  areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
@@ -2336,10 +2336,12 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
+  numberOfRocksInCluster: 4
   minRockDiameter: 0.25
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
+  energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
 --- !u!195 &1014902138
@@ -2380,6 +2382,7 @@ MonoBehaviour:
   healthPointText: {fileID: 306130906}
   maxHealth: 1000
   regenHealthRate: 5
+  debugShowHealthText: 0
 --- !u!114 &1014902140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2398,6 +2401,7 @@ MonoBehaviour:
   maxEnergy: 1000
   energyRegenPerSecond: 500
   regenDelayInSec: 1
+  debugShowEnergyText: 0
 --- !u!54 &1014902141
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2463,7 +2467,7 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 1014902132}
   baseSpikeRadius: 0.5
-  actionPlaceholderPrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
+  areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
@@ -2478,10 +2482,12 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
+  numberOfRocksInCluster: 4
   minRockDiameter: 0.25
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
+  energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
 --- !u!114 &1014902144
