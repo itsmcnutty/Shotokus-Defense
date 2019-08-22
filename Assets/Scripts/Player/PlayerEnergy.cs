@@ -82,7 +82,7 @@ public class PlayerEnergy : MonoBehaviour
 
     public void UseEnergy (Hand activeHand)
     {
-        if (infiniteEnergyDisabled)
+        if (infiniteEnergyDisabled && activeHand != null)
         {
             currentEnergy -= activeAbilityEnergyCost[activeHand];
             energyBarBefore.value = currentEnergy;
@@ -93,7 +93,7 @@ public class PlayerEnergy : MonoBehaviour
 
     public void CancelEnergyUsage (Hand activeHand)
     {
-        if (infiniteEnergyDisabled)
+        if (infiniteEnergyDisabled && activeHand != null)
         {
             energyBarAfter.value = currentEnergy;
             activeAbilityEnergyCost[activeHand] = 0;
