@@ -141,7 +141,7 @@ public class PlayerAbility : MonoBehaviour
             EndAbility ();
         }
 
-        if (DrawPress () && playerEnergy.EnergyAboveThreshold (100f))
+        if (DrawPress () && playerEnergy.EnergyAboveThreshold (100f) && !RockIsActive() && !SpikeQuicksandIsActive())
         {
             EnterDrawMode ();
         }
