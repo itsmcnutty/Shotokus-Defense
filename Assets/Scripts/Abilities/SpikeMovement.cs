@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 
 public class SpikeMovement : MonoBehaviour
 {
@@ -17,7 +16,7 @@ public class SpikeMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards (transform.position, endPosition, speed);
         if (transform.position == endPosition)
         {
-            Destroy (this, 5.0f);
+            Destroy (this, 2.0f);
         }
     }
 
