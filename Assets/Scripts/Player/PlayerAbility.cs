@@ -70,8 +70,8 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
     private static bool clusterRockEnabled = false;
-    private static bool movingWallsEnabled = true;
-    private static bool spikeChainEnabled = true;
+    private static bool movingWallsEnabled = false;
+    private static bool spikeChainEnabled = false;
 
     private void Awake ()
     {
