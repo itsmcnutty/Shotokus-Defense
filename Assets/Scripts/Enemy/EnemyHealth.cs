@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EnemyHealth : CallParentCollision
 {
 	// Scalar value to compute damage from impulse
-	private static float IMPULSE_MULTIPLIER = 0.05f;
+	private static float IMPULSE_MULTIPLIER = 0.034f;
 	// A quaternion that rotates 180 degrees when multiplied
 	private static Quaternion QUIATERNION_180 = Quaternion.Euler(180 * Vector3.up);
 
