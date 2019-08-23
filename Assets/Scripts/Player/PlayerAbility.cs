@@ -130,6 +130,7 @@ public class PlayerAbility : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        //TODO: don't show up at y=0
         abilityRing.transform.position = new Vector3 (player.transform.position.x, 0, player.transform.position.z);
 
         if (GripPress ())
