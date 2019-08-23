@@ -998,13 +998,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 657241173}
-    characterCount: 8
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -1820,13 +1820,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1209280380}
-    characterCount: 8
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -3242,13 +3242,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1724807868}
-    characterCount: 8
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -3446,13 +3446,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1839890342}
-    characterCount: 8
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -4880,6 +4880,8 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 2115013156}
   baseSpikeRadius: 0.5
+  playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
+    type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
@@ -4904,6 +4906,7 @@ MonoBehaviour:
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
+  wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
 --- !u!54 &2115013162
 Rigidbody:
@@ -4946,6 +4949,8 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 2115013155}
   baseSpikeRadius: 0.5
+  playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
+    type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
@@ -4970,6 +4975,7 @@ MonoBehaviour:
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
+  wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
 --- !u!114 &2115013165
 MonoBehaviour:

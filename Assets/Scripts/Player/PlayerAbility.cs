@@ -16,6 +16,7 @@ public class PlayerAbility : MonoBehaviour
     public float baseSpikeRadius = 0.5f;
 
     [Header ("Prefabs")]
+    public GameObject playerAbilityAreaPrefab;
     public GameObject areaOutlinePrefab;
     public GameObject wallOutlinePrefab;
     public GameObject rockPrefab;
@@ -38,6 +39,7 @@ public class PlayerAbility : MonoBehaviour
     public float energyPerSpikeInChain = 50;
     public float maxSpikeDiameter = 5f;
     public float wallSizeMultiplier = 200f;
+    public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
     private Hand hand;
@@ -65,7 +67,7 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
     private static bool clusterRockEnabled = false;
-    private static bool movingWallsEnabled = false;
+    private static bool movingWallsEnabled = true;
     private static bool spikeChainEnabled = true;
 
     private void Awake ()
@@ -84,7 +86,7 @@ public class PlayerAbility : MonoBehaviour
         otherArc = otherHand.GetComponentInChildren<ControllerArc> ();
         hand = GetComponent<Hand> ();
 
-        abilityRing = Instantiate (areaOutlinePrefab);
+        abilityRing = Instantiate (playerAbilityAreaPrefab);
         SkinnedMeshRenderer mesh = abilityRing.GetComponentInChildren<SkinnedMeshRenderer> ();
         abilityRing.transform.localScale = new Vector3 (rockCreationDistance * 2f * (1 / mesh.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / mesh.bounds.size.x));
 
@@ -499,14 +501,10 @@ public class PlayerAbility : MonoBehaviour
             playerEnergy.UseEnergy (firstHandHeld);
             if (movingWallsEnabled)
             {
-                Vector3 heading = wall.transform.position - player.transform.position;
-
-                float distance = heading.magnitude;
-                Vector3 velocity = (heading / distance) * 5f;
-                velocity = new Vector3 (velocity.x, 0, velocity.z);
+                Vector3 velocity = new Vector3 (controllerPose.GetVelocity ().x, 0, controllerPose.GetVelocity ().z);
 
                 wall.GetComponent<WallProperties> ().direction = velocity.normalized;
-                wall.GetComponent<WallProperties> ().wallMoveSpeed = 0.05f;
+                wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
             }
             ResetWallInfo ();
         }

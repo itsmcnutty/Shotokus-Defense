@@ -35,5 +35,10 @@ public class WallProperties : MonoBehaviour
         {
             CancelInvoke("MoveWall");
         }
+
+        if(other.gameObject.name == "Player Ability Area")
+        {
+            Destroy(gameObject);
+        }
     }
 }
