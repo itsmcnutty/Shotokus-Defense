@@ -21,7 +21,10 @@ public class OutlineProperties : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        collisionDetected = true;
+        if(other.tag != "Ground")
+        {
+            collisionDetected = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)

@@ -16,6 +16,7 @@ public class PlayerAbility : MonoBehaviour
     public float baseSpikeRadius = 0.5f;
 
     [Header ("Prefabs")]
+    public GameObject playerAbilityAreaPrefab;
     public GameObject areaOutlinePrefab;
     public GameObject wallOutlinePrefab;
     public GameObject rockPrefab;
@@ -36,9 +37,13 @@ public class PlayerAbility : MonoBehaviour
     public float spikeSpeedReduction = 10f;
     public float spikeMinSpeed = .05f;
     public float spikeMaxHeight = 1.75f;
+    public LayerMask spikeLayerMask;
     public float energyPerSpikeInChain = 50;
+    public float maxSpikesInChain = 50;
     public float maxSpikeDiameter = 5f;
-    public float wallSizeMultiplier = 200f;
+    public float wallMaxHeight = 2f;
+    public float wallSizeMultiplier = 120f;
+    public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
     private Hand hand;
@@ -85,7 +90,7 @@ public class PlayerAbility : MonoBehaviour
         otherArc = otherHand.GetComponentInChildren<ControllerArc> ();
         hand = GetComponent<Hand> ();
 
-        abilityRing = Instantiate (areaOutlinePrefab);
+        abilityRing = Instantiate (playerAbilityAreaPrefab);
         SkinnedMeshRenderer mesh = abilityRing.GetComponentInChildren<SkinnedMeshRenderer> ();
         abilityRing.transform.localScale = new Vector3 (rockCreationDistance * 2f * (1 / mesh.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / mesh.bounds.size.x));
 
@@ -200,7 +205,6 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
                 OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
                 if (WallIsValid ())
                 {
@@ -209,11 +213,11 @@ public class PlayerAbility : MonoBehaviour
                     wall.transform.localScale = wallOutline.transform.localScale;
                     wall.transform.rotation = wallOutline.transform.rotation;
                     startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
+                    playerEnergy.SetTempEnergy (firstHandHeld, 0);
                     Destroy (wallOutline);
                 }
                 else
                 {
-                    playerEnergy.CancelEnergyUsage (firstHandHeld);
                     Destroy (wallOutline);
                     ResetWallInfo ();
                 }
@@ -222,7 +226,6 @@ public class PlayerAbility : MonoBehaviour
             else
             {
                 firstHandHeld = hand;
-                Invoke ("WallButtonsNotSimultaneous", wallButtonClickDelay);
             }
         }
         else if (!WallIsActive () && arc.CanUseAbility ())
@@ -314,19 +317,18 @@ public class PlayerAbility : MonoBehaviour
                     energyCost += energyPerSpikeInChain;
                     if (numOutlines > spikeQuicksandOutlines.Count && playerEnergy.EnergyIsNotZero () && energyCost <= playerEnergy.maxEnergy)
                     {
-                        foreach (GameObject outline in spikeQuicksandOutlines)
-                        {
-                            Vector3 outlinePos = outline.transform.position;
-                            float correctionX = spikeChainOffset.x / 2;
-                            float correctionZ = spikeChainOffset.y / 2;
-                            outline.transform.position = new Vector3 (outlinePos.x - correctionX, outlinePos.y, outlinePos.z - correctionZ);
-                        }
+                        CorrectSpikeChainOutline (spikeChainOffset, true);
 
                         GameObject newOutline = Instantiate (areaOutlinePrefab) as GameObject;
 
                         float posX = arcPos.x + (i * spikeChainOffset.x) - (spikeChainOffset.x * spikeQuicksandOutlines.Count) / 2;
                         float posZ = arcPos.z + (i * spikeChainOffset.y) - (spikeChainOffset.y * spikeQuicksandOutlines.Count) / 2;
-                        newOutline.transform.position = new Vector3 (posX, 0, posZ);
+                        GameObject lastOutlinePlaced = spikeQuicksandOutlines[spikeQuicksandOutlines.Count - 1];
+
+                        newOutline.transform.position = new Vector3 (posX, lastOutlinePlaced.transform.position.y, posZ);
+                        float verticleCorrection = CalculateSpikeVerticleCorrection (newOutline, out bool outOfBounds);
+                        newOutline.transform.position += new Vector3 (0, verticleCorrection, 0);
+
                         spikeQuicksandOutlines.Add (newOutline);
                         playerEnergy.SetTempEnergy (hand, energyCost);
                     }
@@ -337,16 +339,10 @@ public class PlayerAbility : MonoBehaviour
                     GameObject removedOutline = spikeQuicksandOutlines[numOutlines];
                     Destroy (removedOutline);
                     spikeQuicksandOutlines.Remove (removedOutline);
-                    energyCost -= 50;
+                    energyCost -= energyPerSpikeInChain;
                     playerEnergy.SetTempEnergy (hand, energyCost);
 
-                    foreach (GameObject outline in spikeQuicksandOutlines)
-                    {
-                        Vector3 outlinePos = outline.transform.position;
-                        float correctionX = spikeChainOffset.x / 2;
-                        float correctionZ = spikeChainOffset.y / 2;
-                        outline.transform.position = new Vector3 (outlinePos.x + correctionX, outlinePos.y, outlinePos.z + correctionZ);
-                    }
+                    CorrectSpikeChainOutline (spikeChainOffset, false);
                 }
             }
         }
@@ -362,6 +358,23 @@ public class PlayerAbility : MonoBehaviour
                 float area = (float) Math.Round (wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * wallSizeMultiplier;
                 playerEnergy.SetTempEnergy (firstHandHeld, area);
             }
+        }
+    }
+
+    private void CorrectSpikeChainOutline (Vector3 spikeChainOffset, bool addSpike)
+    {
+        if (addSpike)
+        {
+            spikeChainOffset *= -1;
+        }
+        foreach (GameObject outline in spikeQuicksandOutlines)
+        {
+            Vector3 outlinePos = outline.transform.position;
+            float correctionX = spikeChainOffset.x / 2;
+            float correctionZ = spikeChainOffset.y / 2;
+            outline.transform.position = new Vector3 (outlinePos.x + correctionX, outlinePos.y, outlinePos.z + correctionZ);
+            float verticleCorrection = CalculateSpikeVerticleCorrection (outline, out bool outOfBounds);
+            outline.transform.position += new Vector3 (0, verticleCorrection, 0);
         }
     }
 
@@ -496,18 +509,24 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (WallIsActive ())
         {
-            wall.AddComponent<WallProperties> ();
-            playerEnergy.UseEnergy (firstHandHeld);
-            if (movingWallsEnabled)
+            float finalHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+            if (finalHandHeight < 0.01f)
             {
-                Vector3 heading = wall.transform.position - player.transform.position;
+                Destroy(wall);
+                playerEnergy.CancelEnergyUsage(firstHandHeld);
+            }
+            else
+            {
+                wall.AddComponent<WallProperties> ();
+                playerEnergy.UseEnergy (firstHandHeld);
+                if (movingWallsEnabled)
+                {
+                    Vector3 velocity = new Vector3 (controllerPose.GetVelocity ().x, 0, controllerPose.GetVelocity ().z);
 
-                float distance = heading.magnitude;
-                Vector3 velocity = (heading / distance) * 5f;
-                velocity = new Vector3 (velocity.x, 0, velocity.z);
+                    wall.GetComponent<WallProperties> ().direction = velocity.normalized;
+                    wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
+                }
 
-                wall.GetComponent<WallProperties> ().direction = velocity.normalized;
-                wall.GetComponent<WallProperties> ().wallMoveSpeed = 0.05f;
             }
             ResetWallInfo ();
         }
@@ -515,16 +534,14 @@ public class PlayerAbility : MonoBehaviour
 
     private IEnumerator CreateChainSpike (GameObject outline, Vector2 spikeMoveDirection, float spikeVelocity)
     {
-        SkinnedMeshRenderer mesh = outline.GetComponentInChildren<SkinnedMeshRenderer> ();
+        int numSpikes = 0;
+        float verticleCorrection = 0;
         while (true)
         {
-            if (!SpikeChainIsValid (outline))
-            {
-                Destroy (outline);
-                break;
-            }
+            verticleCorrection = 0;
             GameObject spike = GetNewSpike ();
             spike.transform.position = outline.transform.position;
+            numSpikes++;
 
             float finalSpikeHeight = spikeMaxHeight * UnityEngine.Random.Range (0.9f, 1f);
             spike.transform.localScale = new Vector3 (baseSpikeRadius * 2, finalSpikeHeight, baseSpikeRadius * 2);
@@ -534,9 +551,39 @@ public class PlayerAbility : MonoBehaviour
 
             SpikeMovement.CreateComponent (spike, spikeVelocity, spikeEndPosition);
             hand.TriggerHapticPulse (1500);
+
             outline.transform.position += new Vector3 (spikeMoveDirection.x, 0, spikeMoveDirection.y);
+
+            bool outOfBounds;
+            verticleCorrection = CalculateSpikeVerticleCorrection (outline, out outOfBounds);
+            outline.transform.position += new Vector3 (0, verticleCorrection, 0);
+            if (!SpikeChainIsValid (outline) || numSpikes > maxSpikesInChain || outOfBounds)
+            {
+                Destroy (outline);
+                break;
+            }
             yield return new WaitForSeconds (0.1f);
         }
+    }
+
+    private float CalculateSpikeVerticleCorrection (GameObject outline, out bool outOfBounds)
+    {
+        float verticleCorrection = 0;
+        RaycastHit hit;
+        if (Physics.Raycast (outline.transform.position + Vector3.up, Vector3.down, out hit, 1f, spikeLayerMask) ||
+            Physics.Raycast (outline.transform.position, Vector3.down, out hit, 1f, spikeLayerMask))
+        {
+            if (hit.collider.tag == "Ground")
+            {
+                verticleCorrection = hit.point.y - outline.transform.position.y;
+            }
+            outOfBounds = false;
+        }
+        else
+        {
+            outOfBounds = true;
+        }
+        return verticleCorrection;
     }
 
     private float GenerateSpikesTriangle (Vector3 centerLoc, float areaRadius, float triangleDist)
@@ -632,7 +679,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandHeld != null && firstHandHeld != hand)
         {
-            firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
+            firstHandHeld.GetComponent<PlayerAbility> ().CancelInvoke ("WallButtonsNotSimultaneous");
             wallOutline = Instantiate (wallOutlinePrefab) as GameObject;
             SetWallLocation ();
             firstHandHeld = null;
@@ -648,7 +695,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandReleased != null && firstHandReleased != hand)
         {
-            firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
+            firstHandReleased.GetComponent<PlayerAbility> ().CancelInvoke ("WallButtonsNotSimultaneous");
             Destroy (wallOutline);
             ResetWallInfo ();
             firstHandReleased = null;
@@ -685,21 +732,12 @@ public class PlayerAbility : MonoBehaviour
         wallOutline.transform.position = new Vector3 (wallPosition.x, wallPosition.y, wallPosition.z);
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy ();
-        float maxHeight = remainingEnergy / (arc.GetEndPointsDistance (otherArc) * wallSizeMultiplier);
-        float area = arc.GetEndPointsDistance (otherArc) * maxHeight;
+        float maxWallWidth = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
+        float wallWidth = (arc.GetEndPointsDistance (otherArc) < maxWallWidth) ? arc.GetEndPointsDistance (otherArc) : maxWallWidth;
+
+        float area = wallWidth * wallMaxHeight;
         area = (float) Math.Round (area, 2) * wallSizeMultiplier;
-        if (maxHeight <= 1f)
-        {
-            wallOutline.transform.localScale = new Vector3 (remainingEnergy / wallSizeMultiplier, 1f, 0.1f);
-        }
-        else if (arc.GetEndPointsDistance (otherArc) <= 1f)
-        {
-            wallOutline.transform.localScale = new Vector3 (1f, remainingEnergy / wallSizeMultiplier, 0.1f);
-        }
-        else
-        {
-            wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
-        }
+        wallOutline.transform.localScale = new Vector3 (wallWidth, wallMaxHeight, 0.1f);
 
         float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wallOutline.transform.position, new Vector3 (0, -1, 0));
         angle += Vector3.SignedAngle (wallOutline.transform.position, new Vector3 (1, 0, 0), new Vector3 (0, -1, 0));

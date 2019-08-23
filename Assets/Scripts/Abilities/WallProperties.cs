@@ -2,6 +2,7 @@
 
 public class WallProperties : MonoBehaviour
 {
+    public float wallHeightPercent;
     public float wallMoveSpeed = 0f;
     public Vector3 direction = new Vector3();
     private float wallLifetime = 30.0f;
@@ -34,6 +35,11 @@ public class WallProperties : MonoBehaviour
         if(other.tag != "Ground" && other.gameObject.layer != 9 && other.gameObject.layer != 11)
         {
             CancelInvoke("MoveWall");
+        }
+
+        if(other.gameObject.name == "Player Ability Area")
+        {
+            Destroy(gameObject);
         }
     }
 }
