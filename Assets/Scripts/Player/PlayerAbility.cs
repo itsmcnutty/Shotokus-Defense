@@ -69,12 +69,11 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
     private static bool clusterRockEnabled = false;
-    private static bool movingWallsEnabled = true;
-    private static bool spikeChainEnabled = true;
-    
+    private static bool movingWallsEnabled = false;
+    private static bool spikeChainEnabled = false;
+
     private NavMeshSurface surface;
     private NavMeshSurface surfaceLight;
-    
 
     private void Awake ()
     {
@@ -514,8 +513,10 @@ public class PlayerAbility : MonoBehaviour
                 wall.GetComponent<WallProperties> ().direction = velocity.normalized;
                 wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
             }
+            wall.GetComponent<CreateNavLink>().createLinks();
             surface.BuildNavMesh();
             surfaceLight.BuildNavMesh();
+            
             ResetWallInfo ();
         }
     }
