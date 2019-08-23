@@ -2,6 +2,7 @@
 
 public class WallProperties : MonoBehaviour
 {
+    public float wallHeightPercent;
     public float wallMoveSpeed = 0f;
     public Vector3 direction = new Vector3();
     private float wallLifetime = 30.0f;
