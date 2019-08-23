@@ -52,6 +52,7 @@ public class PlayerAbility : MonoBehaviour
     private static GameObject wallOutline;
     private static GameObject wall;
     private static Hand firstHandHeld;
+    private static Hand firstHandReleased;
     private static float lastAngle;
     private static float startingHandHeight;
     private static float currentWallHeight;
@@ -146,26 +147,23 @@ public class PlayerAbility : MonoBehaviour
         {
             EndAbility ();
         }
-
-        if (DrawPress () && playerEnergy.EnergyAboveThreshold (100f) && !RockIsActive () && !SpikeQuicksandIsActive ())
+        
+        if (DrawRelease () && playerEnergy.EnergyAboveThreshold (100f) && !RockIsActive () && !SpikeQuicksandIsActive () && !WallIsActive())
         {
-            EnterDrawMode ();
+            if (!WallOutlineIsActive ())
+            {
+                EnterDrawMode ();
+            }
+            else
+            {
+                ExitDrawMode();
+            }
         }
-        else if (DrawHold ())
+        else if (WallOutlineIsActive ())
         {
             playerEnergy.UpdateAbilityUseTime ();
-            if (WallOutlineIsActive () && !WallIsActive ())
-            {
-                SetWallLocation ();
-                SetOutlineMaterial (wallOutline, WallIsValid ());
-            }
-        }
-        else if (DrawRelease ())
-        {
-            if (WallOutlineIsActive () && !WallIsActive ())
-            {
-                CancelAbility ();
-            }
+            SetWallLocation ();
+            SetOutlineMaterial (wallOutline, WallIsValid ());
         }
     }
 
@@ -226,7 +224,7 @@ public class PlayerAbility : MonoBehaviour
                     Destroy (wallOutline);
                     ResetWallInfo ();
                 }
-
+                firstHandReleased = null;
             }
             else
             {
@@ -640,6 +638,20 @@ public class PlayerAbility : MonoBehaviour
         else
         {
             firstHandHeld = hand;
+        }
+    }
+
+    private void ExitDrawMode ()
+    {
+        if (firstHandReleased != null && firstHandReleased != hand)
+        {
+            Destroy(wallOutline);
+            ResetWallInfo ();
+            firstHandReleased = null;
+        }
+        else
+        {
+            firstHandReleased = hand;
         }
     }
 
