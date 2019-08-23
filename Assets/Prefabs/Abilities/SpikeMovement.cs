@@ -1,23 +1,48 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class SpikeMovement : MonoBehaviour
 {
     private float speed;
-    private Vector3 endPosition = new Vector3 ();
+    private Vector3 endPosition;
+    private NavMeshObstacle obstacle;
+    private bool colliding = false;
+    
     // Start is called before the first frame update
     void Start ()
     {
-
+        obstacle = GetComponent<NavMeshObstacle>();
     }
 
     // Update is called once per frame
     void Update ()
     {
-        transform.position = Vector3.MoveTowards (transform.position, endPosition, speed);
+        Vector3 nextPos = Vector3.MoveTowards (transform.position, endPosition, speed);
+        if (!colliding)
+        {
+            transform.position = nextPos;
+        }
+        
         if (transform.position == endPosition)
         {
+            obstacle.enabled = true;
             Destroy (this, 2.0f);
         }
+    }
+
+    private void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            colliding = true;
+            other.rigidbody.velocity =  speed / Time.deltaTime * Vector3.Normalize(endPosition - transform.position);
+        }
+    }
+
+    private void OnCollisionExit()
+    {
+        colliding = false;
     }
 
     public static void CreateComponent (GameObject spike, float speed, Vector3 endPosition)
