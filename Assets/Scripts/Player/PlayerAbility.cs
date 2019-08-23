@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
+using UnityEngine.AI;
 
 public class PlayerAbility : MonoBehaviour
 {
@@ -70,9 +71,15 @@ public class PlayerAbility : MonoBehaviour
     private static bool clusterRockEnabled = false;
     private static bool movingWallsEnabled = true;
     private static bool spikeChainEnabled = true;
+    
+    private NavMeshSurface surface;
+    private NavMeshSurface surfaceLight;
+    
 
     private void Awake ()
     {
+        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
+        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
         player = GameObject.FindWithTag ("MainCamera");
         if (player != null)
         {
@@ -507,6 +514,8 @@ public class PlayerAbility : MonoBehaviour
                 wall.GetComponent<WallProperties> ().direction = velocity.normalized;
                 wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
             }
+            surface.BuildNavMesh();
+            surfaceLight.BuildNavMesh();
             ResetWallInfo ();
         }
     }

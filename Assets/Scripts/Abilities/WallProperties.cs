@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class WallProperties : MonoBehaviour
 {
@@ -6,9 +7,15 @@ public class WallProperties : MonoBehaviour
     public float wallMoveSpeed = 0f;
     public Vector3 direction = new Vector3();
     private float wallLifetime = 30.0f;
+
+    private NavMeshSurface surface;
+    private NavMeshSurface surfaceLight;
+
     // Start is called before the first frame update
     void Start()
     {
+        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
+        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
         InvokeRepeating ("MoveWall", 0, 0.01f);
     }
 
@@ -20,6 +27,8 @@ public class WallProperties : MonoBehaviour
 
     void OnDestroy()
     {
+        surface.BuildNavMesh();
+        surfaceLight.BuildNavMesh();
     }
 
     private void MoveWall()
