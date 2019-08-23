@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EnemyHealth : CallParentCollision
 {
 	// Scalar value to compute damage from impulse
-	private static float IMPULSE_MULTIPLIER = 0.4f;
+	private static float IMPULSE_MULTIPLIER = 0.05f;
 	// A quaternion that rotates 180 degrees when multiplied
 	private static Quaternion QUIATERNION_180 = Quaternion.Euler(180 * Vector3.up);
 
@@ -138,7 +138,7 @@ public class EnemyHealth : CallParentCollision
 	// Returns true if the specified GameObject can damage the enemy
 	private bool IsRockWeapon(GameObject obj)
 	{
-		return obj.CompareTag("Rock") || obj.CompareTag("Spike") || obj.CompareTag("Wall");
+		return obj.GetComponent<RockCollide>() != null;
 	}
 	
 	// Updates the text above the health bar based on the enemy's current heatlh

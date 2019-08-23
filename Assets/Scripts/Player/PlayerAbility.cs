@@ -277,7 +277,7 @@ public class PlayerAbility : MonoBehaviour
             float range = maxRockDimater - minRockDiameter;
             float rockEnergyCost = (rock.transform.localScale.x - minRockDiameter) * playerEnergy.maxEnergy / range;
             rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
-            rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockEnergyCost / 2.0, 3.0);
+            rock.GetComponent<Rigidbody> ().mass = 3200f * rock.transform.localScale.x;
             playerEnergy.SetTempEnergy (hand, rockEnergyCost);
             hand.SetAllowResize (rockEnergyCost <= playerEnergy.maxEnergy);
         }
@@ -389,7 +389,7 @@ public class PlayerAbility : MonoBehaviour
             else
             {
                 rock.AddComponent<RockProperties> ();
-                rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rock.transform.localScale.x / 2.0, 3.0);
+                rock.GetComponent<Rigidbody> ().mass = 3200f * rock.transform.localScale.x;
                 playerEnergy.UseEnergy (hand);
                 hand.TriggerHapticPulse (500);
 
