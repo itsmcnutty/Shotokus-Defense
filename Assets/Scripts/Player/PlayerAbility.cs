@@ -38,7 +38,8 @@ public class PlayerAbility : MonoBehaviour
     public float spikeMaxHeight = 1.75f;
     public float energyPerSpikeInChain = 50;
     public float maxSpikeDiameter = 5f;
-    public float wallSizeMultiplier = 200f;
+    public float wallMaxHeight = 2f;
+    public float wallSizeMultiplier = 120f;
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
@@ -682,21 +683,12 @@ public class PlayerAbility : MonoBehaviour
         wallOutline.transform.position = new Vector3 (wallPosition.x, wallPosition.y, wallPosition.z);
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy ();
-        float maxHeight = remainingEnergy / (arc.GetEndPointsDistance (otherArc) * wallSizeMultiplier);
-        float area = arc.GetEndPointsDistance (otherArc) * maxHeight;
+        float maxWallWidth = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
+        float wallWidth = (arc.GetEndPointsDistance (otherArc) < maxWallWidth) ? arc.GetEndPointsDistance(otherArc) : maxWallWidth;
+        
+        float area = wallWidth * wallMaxHeight;
         area = (float) Math.Round (area, 2) * wallSizeMultiplier;
-        if (maxHeight <= 1f)
-        {
-            wallOutline.transform.localScale = new Vector3 (remainingEnergy / wallSizeMultiplier, 1f, 0.1f);
-        }
-        else if (arc.GetEndPointsDistance (otherArc) <= 1f)
-        {
-            wallOutline.transform.localScale = new Vector3 (1f, remainingEnergy / wallSizeMultiplier, 0.1f);
-        }
-        else
-        {
-            wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
-        }
+        wallOutline.transform.localScale = new Vector3 (wallWidth, wallMaxHeight, 0.1f);
 
         float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wallOutline.transform.position, new Vector3 (0, -1, 0));
         angle += Vector3.SignedAngle (wallOutline.transform.position, new Vector3 (1, 0, 0), new Vector3 (0, -1, 0));
