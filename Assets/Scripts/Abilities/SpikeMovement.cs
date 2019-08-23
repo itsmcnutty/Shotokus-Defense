@@ -23,6 +23,10 @@ public class SpikeMovement : MonoBehaviour
         {
             transform.position = nextPos;
         }
+        else
+        {
+            colliding = false;
+        }
         
         if (transform.position == endPosition)
         {
@@ -31,7 +35,7 @@ public class SpikeMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision other)
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
@@ -42,7 +46,7 @@ public class SpikeMovement : MonoBehaviour
 
     private void OnCollisionExit()
     {
-        colliding = false;
+        //colliding = false;
     }
 
     public static void CreateComponent (GameObject spike, float speed, Vector3 endPosition)
