@@ -4011,6 +4011,7 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 2115013156}
   baseSpikeRadius: 0.5
+  playerAbilityAreaPrefab: {fileID: 0}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
@@ -4031,9 +4032,13 @@ MonoBehaviour:
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
+  spikeMaxHeight: 1.75
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
+  wallMaxHeight: 2
   wallSizeMultiplier: 200
+  wallSpeedReduction: 50
+  wallButtonClickDelay: 0.05
 --- !u!54 &2115013162
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4075,6 +4080,7 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 2115013155}
   baseSpikeRadius: 0.5
+  playerAbilityAreaPrefab: {fileID: 0}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
@@ -4095,9 +4101,13 @@ MonoBehaviour:
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
+  spikeMaxHeight: 1.75
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
+  wallMaxHeight: 2
   wallSizeMultiplier: 200
+  wallSpeedReduction: 50
+  wallButtonClickDelay: 0.05
 --- !u!114 &2115013165
 MonoBehaviour:
   m_ObjectHideFlags: 0
