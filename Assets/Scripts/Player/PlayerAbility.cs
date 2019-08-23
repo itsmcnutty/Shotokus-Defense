@@ -204,7 +204,6 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                firstHandHeld.GetComponent<PlayerAbility> ().CancelInvoke ("WallButtonsNotSimultaneous");
                 OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
                 if (WallIsValid ())
                 {
@@ -213,11 +212,11 @@ public class PlayerAbility : MonoBehaviour
                     wall.transform.localScale = wallOutline.transform.localScale;
                     wall.transform.rotation = wallOutline.transform.rotation;
                     startingHandHeight = Math.Min (hand.transform.position.y, otherHand.transform.position.y);
+                    playerEnergy.SetTempEnergy (firstHandHeld, 0);
                     Destroy (wallOutline);
                 }
                 else
                 {
-                    playerEnergy.CancelEnergyUsage (firstHandHeld);
                     Destroy (wallOutline);
                     ResetWallInfo ();
                 }
@@ -226,7 +225,6 @@ public class PlayerAbility : MonoBehaviour
             else
             {
                 firstHandHeld = hand;
-                Invoke ("WallButtonsNotSimultaneous", wallButtonClickDelay);
             }
         }
         else if (!WallIsActive () && arc.CanUseAbility ())
@@ -318,7 +316,7 @@ public class PlayerAbility : MonoBehaviour
                     energyCost += energyPerSpikeInChain;
                     if (numOutlines > spikeQuicksandOutlines.Count && playerEnergy.EnergyIsNotZero () && energyCost <= playerEnergy.maxEnergy)
                     {
-                        CorrectSpikeChainOutline(spikeChainOffset, true);
+                        CorrectSpikeChainOutline (spikeChainOffset, true);
 
                         GameObject newOutline = Instantiate (areaOutlinePrefab) as GameObject;
 
@@ -364,7 +362,7 @@ public class PlayerAbility : MonoBehaviour
 
     private void CorrectSpikeChainOutline (Vector3 spikeChainOffset, bool addSpike)
     {
-        if(addSpike)
+        if (addSpike)
         {
             spikeChainOffset *= -1;
         }
@@ -510,14 +508,24 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (WallIsActive ())
         {
-            wall.AddComponent<WallProperties> ();
-            playerEnergy.UseEnergy (firstHandHeld);
-            if (movingWallsEnabled)
+            float finalHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+            if (finalHandHeight < 0.01f)
             {
-                Vector3 velocity = new Vector3 (controllerPose.GetVelocity ().x, 0, controllerPose.GetVelocity ().z);
+                Destroy(wall);
+                playerEnergy.CancelEnergyUsage(firstHandHeld);
+            }
+            else
+            {
+                wall.AddComponent<WallProperties> ();
+                playerEnergy.UseEnergy (firstHandHeld);
+                if (movingWallsEnabled)
+                {
+                    Vector3 velocity = new Vector3 (controllerPose.GetVelocity ().x, 0, controllerPose.GetVelocity ().z);
 
-                wall.GetComponent<WallProperties> ().direction = velocity.normalized;
-                wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
+                    wall.GetComponent<WallProperties> ().direction = velocity.normalized;
+                    wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
+                }
+
             }
             ResetWallInfo ();
         }
