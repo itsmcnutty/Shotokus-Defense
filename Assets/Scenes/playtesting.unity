@@ -4900,9 +4900,11 @@ MonoBehaviour:
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
+  spikeMaxHeight: 1.75
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
+  wallButtonClickDelay: 0.05
 --- !u!54 &2115013162
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4964,9 +4966,11 @@ MonoBehaviour:
   maxRockDimater: 1.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
+  spikeMaxHeight: 1.75
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
+  wallButtonClickDelay: 0.05
 --- !u!114 &2115013165
 MonoBehaviour:
   m_ObjectHideFlags: 0

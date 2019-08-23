@@ -38,6 +38,7 @@ public class PlayerAbility : MonoBehaviour
     public float energyPerSpikeInChain = 50;
     public float maxSpikeDiameter = 5f;
     public float wallSizeMultiplier = 200f;
+    public float wallButtonClickDelay = 0.05f;
 
     private Hand hand;
     private PlayerEnergy playerEnergy;
@@ -158,7 +159,6 @@ public class PlayerAbility : MonoBehaviour
             {
                 ExitDrawMode ();
             }
-            Invoke ("DrawButtonsNotSimultaneous", .05f);
         }
         else if (WallOutlineIsActive ())
         {
@@ -199,6 +199,7 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
+                firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
                 OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
                 if (WallIsValid ())
                 {
@@ -220,6 +221,7 @@ public class PlayerAbility : MonoBehaviour
             else
             {
                 firstHandHeld = hand;
+                Invoke ("WallButtonsNotSimultaneous", wallButtonClickDelay);
             }
         }
         else if (!WallIsActive () && arc.CanUseAbility ())
@@ -619,7 +621,7 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    private void DrawButtonsNotSimultaneous ()
+    private void WallButtonsNotSimultaneous ()
     {
         firstHandHeld = null;
         firstHandReleased = null;
@@ -629,7 +631,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandHeld != null && firstHandHeld != hand)
         {
-            CancelInvoke("DrawButtonsNotSimultaneous");
+            firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
             wallOutline = Instantiate (wallOutlinePrefab) as GameObject;
             SetWallLocation ();
             firstHandHeld = null;
@@ -637,6 +639,7 @@ public class PlayerAbility : MonoBehaviour
         else
         {
             firstHandHeld = hand;
+            Invoke ("WallButtonsNotSimultaneous", wallButtonClickDelay);
         }
     }
 
@@ -644,7 +647,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandReleased != null && firstHandReleased != hand)
         {
-            CancelInvoke("DrawButtonsNotSimultaneous");
+            firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
             Destroy (wallOutline);
             ResetWallInfo ();
             firstHandReleased = null;
@@ -652,6 +655,7 @@ public class PlayerAbility : MonoBehaviour
         else
         {
             firstHandReleased = hand;
+            Invoke ("WallButtonsNotSimultaneous", wallButtonClickDelay);
         }
     }
 
