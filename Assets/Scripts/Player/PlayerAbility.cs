@@ -327,7 +327,7 @@ public class PlayerAbility : MonoBehaviour
                         GameObject lastOutlinePlaced = spikeQuicksandOutlines[spikeQuicksandOutlines.Count - 1];
 
                         newOutline.transform.position = new Vector3 (posX, lastOutlinePlaced.transform.position.y, posZ);
-                        float verticleCorrection = CalculateSpikeVerticleCorrection (newOutline);
+                        float verticleCorrection = CalculateSpikeVerticleCorrection (newOutline, out bool outOfBounds);
                         newOutline.transform.position += new Vector3 (0, verticleCorrection, 0);
 
                         spikeQuicksandOutlines.Add (newOutline);
@@ -374,7 +374,7 @@ public class PlayerAbility : MonoBehaviour
             float correctionX = spikeChainOffset.x / 2;
             float correctionZ = spikeChainOffset.y / 2;
             outline.transform.position = new Vector3 (outlinePos.x + correctionX, outlinePos.y, outlinePos.z + correctionZ);
-            float verticleCorrection = CalculateSpikeVerticleCorrection (outline);
+            float verticleCorrection = CalculateSpikeVerticleCorrection (outline, out bool outOfBounds);
             outline.transform.position += new Vector3 (0, verticleCorrection, 0);
         }
     }
@@ -544,9 +544,11 @@ public class PlayerAbility : MonoBehaviour
             hand.TriggerHapticPulse (1500);
 
             outline.transform.position += new Vector3 (spikeMoveDirection.x, 0, spikeMoveDirection.y);
-            verticleCorrection = CalculateSpikeVerticleCorrection (outline);
+
+            bool outOfBounds;
+            verticleCorrection = CalculateSpikeVerticleCorrection (outline, out outOfBounds);
             outline.transform.position += new Vector3 (0, verticleCorrection, 0);
-            if (!SpikeChainIsValid (outline) || numSpikes > maxSpikesInChain)
+            if (!SpikeChainIsValid (outline) || numSpikes > maxSpikesInChain || outOfBounds)
             {
                 Destroy (outline);
                 break;
@@ -555,7 +557,7 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    private float CalculateSpikeVerticleCorrection (GameObject outline)
+    private float CalculateSpikeVerticleCorrection (GameObject outline, out bool outOfBounds)
     {
         float verticleCorrection = 0;
         RaycastHit hit;
@@ -566,6 +568,11 @@ public class PlayerAbility : MonoBehaviour
             {
                 verticleCorrection = hit.point.y - outline.transform.position.y;
             }
+            outOfBounds = false;
+        }
+        else
+        {
+            outOfBounds = true;
         }
         return verticleCorrection;
     }
