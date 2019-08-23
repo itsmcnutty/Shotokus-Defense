@@ -67,7 +67,7 @@ public class PlayerAbility : MonoBehaviour
 
     private static bool clusterRockEnabled = false;
     private static bool movingWallsEnabled = false;
-    private static bool spikeChainEnabled = true;
+    private static bool spikeChainEnabled = false;
 
     private void Awake ()
     {

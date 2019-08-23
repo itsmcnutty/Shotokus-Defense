@@ -2158,7 +2158,8 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 327026033}
   baseSpikeRadius: 0.5
-  areaOutlinePrefab: {fileID: 0}
+  areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
+    type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
   rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
@@ -2182,6 +2183,7 @@ MonoBehaviour:
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
+  wallButtonClickDelay: 0.05
 --- !u!195 &327026047
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2305,7 +2307,8 @@ MonoBehaviour:
     needsReinit: 0
   otherHand: {fileID: 327026041}
   baseSpikeRadius: 0.5
-  areaOutlinePrefab: {fileID: 0}
+  areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
+    type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
   rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
@@ -2329,6 +2332,7 @@ MonoBehaviour:
   energyPerSpikeInChain: 50
   maxSpikeDiameter: 5
   wallSizeMultiplier: 200
+  wallButtonClickDelay: 0.05
 --- !u!114 &327026053
 MonoBehaviour:
   m_ObjectHideFlags: 0
