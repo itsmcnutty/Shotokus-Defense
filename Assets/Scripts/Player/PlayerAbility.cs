@@ -147,8 +147,8 @@ public class PlayerAbility : MonoBehaviour
         {
             EndAbility ();
         }
-        
-        if (DrawRelease () && playerEnergy.EnergyAboveThreshold (100f) && !RockIsActive () && !SpikeQuicksandIsActive () && !WallIsActive())
+
+        if (DrawRelease () && playerEnergy.EnergyAboveThreshold (100f) && !RockIsActive () && !SpikeQuicksandIsActive () && !WallIsActive ())
         {
             if (!WallOutlineIsActive ())
             {
@@ -156,8 +156,9 @@ public class PlayerAbility : MonoBehaviour
             }
             else
             {
-                ExitDrawMode();
+                ExitDrawMode ();
             }
+            Invoke ("DrawButtonsNotSimultaneous", .05f);
         }
         else if (WallOutlineIsActive ())
         {
@@ -180,16 +181,6 @@ public class PlayerAbility : MonoBehaviour
     private bool GrabRelease ()
     {
         return grabAction.GetStateUp (handType);
-    }
-
-    public bool DrawHold ()
-    {
-        return drawAction.GetState (handType);
-    }
-
-    private bool DrawPress ()
-    {
-        return drawAction.GetStateDown (handType);
     }
 
     private bool DrawRelease ()
@@ -627,10 +618,18 @@ public class PlayerAbility : MonoBehaviour
             Destroy (hitObject);
         }
     }
+
+    private void DrawButtonsNotSimultaneous ()
+    {
+        firstHandHeld = null;
+        firstHandReleased = null;
+    }
+
     private void EnterDrawMode ()
     {
         if (firstHandHeld != null && firstHandHeld != hand)
         {
+            CancelInvoke("DrawButtonsNotSimultaneous");
             wallOutline = Instantiate (wallOutlinePrefab) as GameObject;
             SetWallLocation ();
             firstHandHeld = null;
@@ -645,7 +644,8 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandReleased != null && firstHandReleased != hand)
         {
-            Destroy(wallOutline);
+            CancelInvoke("DrawButtonsNotSimultaneous");
+            Destroy (wallOutline);
             ResetWallInfo ();
             firstHandReleased = null;
         }
