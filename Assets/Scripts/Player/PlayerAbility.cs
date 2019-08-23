@@ -16,6 +16,7 @@ public class PlayerAbility : MonoBehaviour
     public float baseSpikeRadius = 0.5f;
 
     [Header ("Prefabs")]
+    public GameObject playerAbilityAreaPrefab;
     public GameObject areaOutlinePrefab;
     public GameObject wallOutlinePrefab;
     public GameObject rockPrefab;
@@ -37,7 +38,9 @@ public class PlayerAbility : MonoBehaviour
     public float spikeMaxHeight = 1.75f;
     public float energyPerSpikeInChain = 50;
     public float maxSpikeDiameter = 5f;
-    public float wallSizeMultiplier = 200f;
+    public float wallMaxHeight = 2f;
+    public float wallSizeMultiplier = 120f;
+    public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
     private Hand hand;
@@ -65,7 +68,7 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
     private static bool clusterRockEnabled = false;
-    private static bool movingWallsEnabled = false;
+    private static bool movingWallsEnabled = true;
     private static bool spikeChainEnabled = true;
 
     private void Awake ()
@@ -84,7 +87,7 @@ public class PlayerAbility : MonoBehaviour
         otherArc = otherHand.GetComponentInChildren<ControllerArc> ();
         hand = GetComponent<Hand> ();
 
-        abilityRing = Instantiate (areaOutlinePrefab);
+        abilityRing = Instantiate (playerAbilityAreaPrefab);
         SkinnedMeshRenderer mesh = abilityRing.GetComponentInChildren<SkinnedMeshRenderer> ();
         abilityRing.transform.localScale = new Vector3 (rockCreationDistance * 2f * (1 / mesh.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / mesh.bounds.size.x));
 
@@ -499,14 +502,10 @@ public class PlayerAbility : MonoBehaviour
             playerEnergy.UseEnergy (firstHandHeld);
             if (movingWallsEnabled)
             {
-                Vector3 heading = wall.transform.position - player.transform.position;
-
-                float distance = heading.magnitude;
-                Vector3 velocity = (heading / distance) * 5f;
-                velocity = new Vector3 (velocity.x, 0, velocity.z);
+                Vector3 velocity = new Vector3 (controllerPose.GetVelocity ().x, 0, controllerPose.GetVelocity ().z);
 
                 wall.GetComponent<WallProperties> ().direction = velocity.normalized;
-                wall.GetComponent<WallProperties> ().wallMoveSpeed = 0.05f;
+                wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
             }
             ResetWallInfo ();
         }
@@ -647,7 +646,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandReleased != null && firstHandReleased != hand)
         {
-            firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
+            firstHandReleased.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
             Destroy (wallOutline);
             ResetWallInfo ();
             firstHandReleased = null;
@@ -684,21 +683,12 @@ public class PlayerAbility : MonoBehaviour
         wallOutline.transform.position = new Vector3 (wallPosition.x, wallPosition.y, wallPosition.z);
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy ();
-        float maxHeight = remainingEnergy / (arc.GetEndPointsDistance (otherArc) * wallSizeMultiplier);
-        float area = arc.GetEndPointsDistance (otherArc) * maxHeight;
+        float maxWallWidth = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
+        float wallWidth = (arc.GetEndPointsDistance (otherArc) < maxWallWidth) ? arc.GetEndPointsDistance(otherArc) : maxWallWidth;
+        
+        float area = wallWidth * wallMaxHeight;
         area = (float) Math.Round (area, 2) * wallSizeMultiplier;
-        if (maxHeight <= 1f)
-        {
-            wallOutline.transform.localScale = new Vector3 (remainingEnergy / wallSizeMultiplier, 1f, 0.1f);
-        }
-        else if (arc.GetEndPointsDistance (otherArc) <= 1f)
-        {
-            wallOutline.transform.localScale = new Vector3 (1f, remainingEnergy / wallSizeMultiplier, 0.1f);
-        }
-        else
-        {
-            wallOutline.transform.localScale = new Vector3 (arc.GetEndPointsDistance (otherArc), maxHeight, 0.1f);
-        }
+        wallOutline.transform.localScale = new Vector3 (wallWidth, wallMaxHeight, 0.1f);
 
         float angle = Vector3.SignedAngle (arc.GetEndPosition () - otherArc.GetEndPosition (), wallOutline.transform.position, new Vector3 (0, -1, 0));
         angle += Vector3.SignedAngle (wallOutline.transform.position, new Vector3 (1, 0, 0), new Vector3 (0, -1, 0));
