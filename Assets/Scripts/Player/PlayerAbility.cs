@@ -36,7 +36,9 @@ public class PlayerAbility : MonoBehaviour
     public float spikeSpeedReduction = 10f;
     public float spikeMinSpeed = .05f;
     public float spikeMaxHeight = 1.75f;
+    public LayerMask spikeLayerMask;
     public float energyPerSpikeInChain = 50;
+    public float maxSpikesInChain = 50;
     public float maxSpikeDiameter = 5f;
     public float wallMaxHeight = 2f;
     public float wallSizeMultiplier = 120f;
@@ -68,8 +70,8 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
     private static bool clusterRockEnabled = false;
-    private static bool movingWallsEnabled = true;
-    private static bool spikeChainEnabled = true;
+    private static bool movingWallsEnabled = false;
+    private static bool spikeChainEnabled = false;
 
     private void Awake ()
     {
@@ -202,7 +204,7 @@ public class PlayerAbility : MonoBehaviour
         {
             if (firstHandHeld != null && firstHandHeld != hand)
             {
-                firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
+                firstHandHeld.GetComponent<PlayerAbility> ().CancelInvoke ("WallButtonsNotSimultaneous");
                 OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties> ();
                 if (WallIsValid ())
                 {
@@ -316,19 +318,18 @@ public class PlayerAbility : MonoBehaviour
                     energyCost += energyPerSpikeInChain;
                     if (numOutlines > spikeQuicksandOutlines.Count && playerEnergy.EnergyIsNotZero () && energyCost <= playerEnergy.maxEnergy)
                     {
-                        foreach (GameObject outline in spikeQuicksandOutlines)
-                        {
-                            Vector3 outlinePos = outline.transform.position;
-                            float correctionX = spikeChainOffset.x / 2;
-                            float correctionZ = spikeChainOffset.y / 2;
-                            outline.transform.position = new Vector3 (outlinePos.x - correctionX, outlinePos.y, outlinePos.z - correctionZ);
-                        }
+                        CorrectSpikeChainOutline(spikeChainOffset, true);
 
                         GameObject newOutline = Instantiate (areaOutlinePrefab) as GameObject;
 
                         float posX = arcPos.x + (i * spikeChainOffset.x) - (spikeChainOffset.x * spikeQuicksandOutlines.Count) / 2;
                         float posZ = arcPos.z + (i * spikeChainOffset.y) - (spikeChainOffset.y * spikeQuicksandOutlines.Count) / 2;
-                        newOutline.transform.position = new Vector3 (posX, 0, posZ);
+                        GameObject lastOutlinePlaced = spikeQuicksandOutlines[spikeQuicksandOutlines.Count - 1];
+
+                        newOutline.transform.position = new Vector3 (posX, lastOutlinePlaced.transform.position.y, posZ);
+                        float verticleCorrection = CalculateSpikeVerticleCorrection (newOutline, out bool outOfBounds);
+                        newOutline.transform.position += new Vector3 (0, verticleCorrection, 0);
+
                         spikeQuicksandOutlines.Add (newOutline);
                         playerEnergy.SetTempEnergy (hand, energyCost);
                     }
@@ -339,16 +340,10 @@ public class PlayerAbility : MonoBehaviour
                     GameObject removedOutline = spikeQuicksandOutlines[numOutlines];
                     Destroy (removedOutline);
                     spikeQuicksandOutlines.Remove (removedOutline);
-                    energyCost -= 50;
+                    energyCost -= energyPerSpikeInChain;
                     playerEnergy.SetTempEnergy (hand, energyCost);
 
-                    foreach (GameObject outline in spikeQuicksandOutlines)
-                    {
-                        Vector3 outlinePos = outline.transform.position;
-                        float correctionX = spikeChainOffset.x / 2;
-                        float correctionZ = spikeChainOffset.y / 2;
-                        outline.transform.position = new Vector3 (outlinePos.x + correctionX, outlinePos.y, outlinePos.z + correctionZ);
-                    }
+                    CorrectSpikeChainOutline (spikeChainOffset, false);
                 }
             }
         }
@@ -364,6 +359,23 @@ public class PlayerAbility : MonoBehaviour
                 float area = (float) Math.Round (wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * wallSizeMultiplier;
                 playerEnergy.SetTempEnergy (firstHandHeld, area);
             }
+        }
+    }
+
+    private void CorrectSpikeChainOutline (Vector3 spikeChainOffset, bool addSpike)
+    {
+        if(addSpike)
+        {
+            spikeChainOffset *= -1;
+        }
+        foreach (GameObject outline in spikeQuicksandOutlines)
+        {
+            Vector3 outlinePos = outline.transform.position;
+            float correctionX = spikeChainOffset.x / 2;
+            float correctionZ = spikeChainOffset.y / 2;
+            outline.transform.position = new Vector3 (outlinePos.x + correctionX, outlinePos.y, outlinePos.z + correctionZ);
+            float verticleCorrection = CalculateSpikeVerticleCorrection (outline, out bool outOfBounds);
+            outline.transform.position += new Vector3 (0, verticleCorrection, 0);
         }
     }
 
@@ -513,16 +525,14 @@ public class PlayerAbility : MonoBehaviour
 
     private IEnumerator CreateChainSpike (GameObject outline, Vector2 spikeMoveDirection, float spikeVelocity)
     {
-        SkinnedMeshRenderer mesh = outline.GetComponentInChildren<SkinnedMeshRenderer> ();
+        int numSpikes = 0;
+        float verticleCorrection = 0;
         while (true)
         {
-            if (!SpikeChainIsValid (outline))
-            {
-                Destroy (outline);
-                break;
-            }
+            verticleCorrection = 0;
             GameObject spike = GetNewSpike ();
             spike.transform.position = outline.transform.position;
+            numSpikes++;
 
             float finalSpikeHeight = spikeMaxHeight * UnityEngine.Random.Range (0.9f, 1f);
             spike.transform.localScale = new Vector3 (baseSpikeRadius * 2, finalSpikeHeight, baseSpikeRadius * 2);
@@ -532,9 +542,39 @@ public class PlayerAbility : MonoBehaviour
 
             SpikeMovement.CreateComponent (spike, spikeVelocity, spikeEndPosition);
             hand.TriggerHapticPulse (1500);
+
             outline.transform.position += new Vector3 (spikeMoveDirection.x, 0, spikeMoveDirection.y);
+
+            bool outOfBounds;
+            verticleCorrection = CalculateSpikeVerticleCorrection (outline, out outOfBounds);
+            outline.transform.position += new Vector3 (0, verticleCorrection, 0);
+            if (!SpikeChainIsValid (outline) || numSpikes > maxSpikesInChain || outOfBounds)
+            {
+                Destroy (outline);
+                break;
+            }
             yield return new WaitForSeconds (0.1f);
         }
+    }
+
+    private float CalculateSpikeVerticleCorrection (GameObject outline, out bool outOfBounds)
+    {
+        float verticleCorrection = 0;
+        RaycastHit hit;
+        if (Physics.Raycast (outline.transform.position + Vector3.up, Vector3.down, out hit, 1f, spikeLayerMask) ||
+            Physics.Raycast (outline.transform.position, Vector3.down, out hit, 1f, spikeLayerMask))
+        {
+            if (hit.collider.tag == "Ground")
+            {
+                verticleCorrection = hit.point.y - outline.transform.position.y;
+            }
+            outOfBounds = false;
+        }
+        else
+        {
+            outOfBounds = true;
+        }
+        return verticleCorrection;
     }
 
     private float GenerateSpikesTriangle (Vector3 centerLoc, float areaRadius, float triangleDist)
@@ -630,7 +670,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandHeld != null && firstHandHeld != hand)
         {
-            firstHandHeld.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
+            firstHandHeld.GetComponent<PlayerAbility> ().CancelInvoke ("WallButtonsNotSimultaneous");
             wallOutline = Instantiate (wallOutlinePrefab) as GameObject;
             SetWallLocation ();
             firstHandHeld = null;
@@ -646,7 +686,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (firstHandReleased != null && firstHandReleased != hand)
         {
-            firstHandReleased.GetComponent<PlayerAbility>().CancelInvoke("WallButtonsNotSimultaneous");
+            firstHandReleased.GetComponent<PlayerAbility> ().CancelInvoke ("WallButtonsNotSimultaneous");
             Destroy (wallOutline);
             ResetWallInfo ();
             firstHandReleased = null;
@@ -684,8 +724,8 @@ public class PlayerAbility : MonoBehaviour
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy ();
         float maxWallWidth = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
-        float wallWidth = (arc.GetEndPointsDistance (otherArc) < maxWallWidth) ? arc.GetEndPointsDistance(otherArc) : maxWallWidth;
-        
+        float wallWidth = (arc.GetEndPointsDistance (otherArc) < maxWallWidth) ? arc.GetEndPointsDistance (otherArc) : maxWallWidth;
+
         float area = wallWidth * wallMaxHeight;
         area = (float) Math.Round (area, 2) * wallSizeMultiplier;
         wallOutline.transform.localScale = new Vector3 (wallWidth, wallMaxHeight, 0.1f);
