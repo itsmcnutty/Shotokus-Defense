@@ -35,6 +35,10 @@ public class RagdollController : MonoBehaviour
         // Set physics material
         for (int i = 0; i < rigidbodies.Length; i++)
         {
+            if (rigidbodies[i].gameObject.layer == 16)
+            {
+                continue;
+            }
             rigidbodies[i].gameObject.GetComponent<Collider>().material = PHYSIC_MATERIAL;
         }
     }
