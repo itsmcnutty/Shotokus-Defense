@@ -131,6 +131,7 @@ public class PlayerAbility : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
+        //TODO: don't show up at y=0
         abilityRing.transform.position = new Vector3 (player.transform.position.x, 0, player.transform.position.z);
 
         if (GripPress ())
@@ -233,10 +234,19 @@ public class PlayerAbility : MonoBehaviour
             firstHandHeld = null;
             if (hand.currentAttachedObject != null)
             {
-                if (hand.currentAttachedObject != otherHand.currentAttachedObject)
+                if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost (hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy ())
                 {
                     rock = hand.currentAttachedObject;
                     Destroy (rock.GetComponent<RockProperties> ());
+                }
+            }
+            else if (arc.GetPointerHitObject ().tag == "Rock")
+            {
+                if (GetRockEnergyCost (arc.GetPointerHitObject ()) < playerEnergy.GetRemainingEnergy ())
+                {
+                    rock = arc.GetPointerHitObject ();
+                    Destroy (rock.GetComponent<RockProperties> ());
+                    hand.AttachObject (rock, GrabTypes.Scripted);
                 }
             }
             else if (arc.GetDistanceFromPlayer () <= rockCreationDistance)
@@ -269,12 +279,11 @@ public class PlayerAbility : MonoBehaviour
 
         if (RockIsActive ())
         {
-            float range = maxRockDimater - minRockDiameter;
-            float rockEnergyCost = (rock.transform.localScale.x - minRockDiameter) * playerEnergy.maxEnergy / range;
+            float rockEnergyCost = GetRockEnergyCost (rock);
             rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
             rock.GetComponent<Rigidbody> ().mass = rockMassScale * rock.transform.localScale.x;
             playerEnergy.SetTempEnergy (hand, rockEnergyCost);
-            hand.SetAllowResize (rockEnergyCost <= playerEnergy.maxEnergy);
+            hand.SetAllowResize (playerEnergy.GetRemainingEnergy () > 0);
         }
         else if (SpikeQuicksandIsActive ())
         {
@@ -326,7 +335,7 @@ public class PlayerAbility : MonoBehaviour
                         GameObject lastOutlinePlaced = spikeQuicksandOutlines[spikeQuicksandOutlines.Count - 1];
 
                         newOutline.transform.position = new Vector3 (posX, lastOutlinePlaced.transform.position.y, posZ);
-                        float verticleCorrection = CalculateSpikeVerticleCorrection (newOutline, out bool outOfBounds);
+                        float verticleCorrection = CalculateOutlineVerticleCorrection (newOutline, out bool outOfBounds);
                         newOutline.transform.position += new Vector3 (0, verticleCorrection, 0);
 
                         spikeQuicksandOutlines.Add (newOutline);
@@ -373,7 +382,7 @@ public class PlayerAbility : MonoBehaviour
             float correctionX = spikeChainOffset.x / 2;
             float correctionZ = spikeChainOffset.y / 2;
             outline.transform.position = new Vector3 (outlinePos.x + correctionX, outlinePos.y, outlinePos.z + correctionZ);
-            float verticleCorrection = CalculateSpikeVerticleCorrection (outline, out bool outOfBounds);
+            float verticleCorrection = CalculateOutlineVerticleCorrection (outline, out bool outOfBounds);
             outline.transform.position += new Vector3 (0, verticleCorrection, 0);
         }
     }
@@ -512,8 +521,8 @@ public class PlayerAbility : MonoBehaviour
             float finalHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             if (finalHandHeight < 0.01f)
             {
-                Destroy(wall);
-                playerEnergy.CancelEnergyUsage(firstHandHeld);
+                Destroy (wall);
+                playerEnergy.CancelEnergyUsage (firstHandHeld);
             }
             else
             {
@@ -555,7 +564,7 @@ public class PlayerAbility : MonoBehaviour
             outline.transform.position += new Vector3 (spikeMoveDirection.x, 0, spikeMoveDirection.y);
 
             bool outOfBounds;
-            verticleCorrection = CalculateSpikeVerticleCorrection (outline, out outOfBounds);
+            verticleCorrection = CalculateOutlineVerticleCorrection (outline, out outOfBounds);
             outline.transform.position += new Vector3 (0, verticleCorrection, 0);
             if (!SpikeChainIsValid (outline) || numSpikes > maxSpikesInChain || outOfBounds)
             {
@@ -566,7 +575,7 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    private float CalculateSpikeVerticleCorrection (GameObject outline, out bool outOfBounds)
+    private float CalculateOutlineVerticleCorrection (GameObject outline, out bool outOfBounds)
     {
         float verticleCorrection = 0;
         RaycastHit hit;
@@ -606,7 +615,7 @@ public class PlayerAbility : MonoBehaviour
         {
             float newX = position.x + (baseSpikeRadius * locationOffset.x);
             float newZ = position.z + (height * locationOffset.y);
-            float newY = position.y; // TODO implement height checks
+            float newY = position.y;
             Vector3 newPos = new Vector3 (newX, newY, newZ);
             if (!SpikeApproximatelyEqual (newPos))
             {
@@ -716,20 +725,23 @@ public class PlayerAbility : MonoBehaviour
         currentWallHeight = 0;
     }
 
-    private Vector3 GetWallPosition ()
+    private void SetWallPosition ()
     {
         Vector3 thisArcPos = arc.GetEndPosition ();
         Vector3 otherArcPos = otherArc.GetEndPosition ();
+
         float wallPosX = (thisArcPos.x + otherArcPos.x) / 2;
         float wallPosY = Math.Min (thisArcPos.y, otherArcPos.y);
         float wallPosZ = (thisArcPos.z + otherArcPos.z) / 2;
-        return new Vector3 (wallPosX, wallPosY, wallPosZ);
+        wallOutline.transform.position = new Vector3 (wallPosX, wallPosY, wallPosZ);
+
+        float verticleCorrection = CalculateOutlineVerticleCorrection (wallOutline, out bool outOfBounds);
+        wallOutline.transform.position += new Vector3 (0, verticleCorrection, 0);
     }
 
     private void SetWallLocation ()
     {
-        Vector3 wallPosition = GetWallPosition ();
-        wallOutline.transform.position = new Vector3 (wallPosition.x, wallPosition.y, wallPosition.z);
+        SetWallPosition ();
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy ();
         float maxWallWidth = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
@@ -843,6 +855,12 @@ public class PlayerAbility : MonoBehaviour
             Destroy (outline);
         }
         spikeQuicksandOutlines.Clear ();
+    }
+
+    private float GetRockEnergyCost (GameObject rock)
+    {
+        float range = maxRockDimater - minRockDiameter;
+        return (rock.transform.localScale.x - minRockDiameter) * playerEnergy.maxEnergy / range;
     }
 
     public static void MakeSpikeAvailable (GameObject spike)
