@@ -232,10 +232,19 @@ public class PlayerAbility : MonoBehaviour
             firstHandHeld = null;
             if (hand.currentAttachedObject != null)
             {
-                if (hand.currentAttachedObject != otherHand.currentAttachedObject)
+                if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost (hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy ())
                 {
                     rock = hand.currentAttachedObject;
                     Destroy (rock.GetComponent<RockProperties> ());
+                }
+            }
+            else if (arc.GetPointerHitObject ().tag == "Rock")
+            {
+                if (GetRockEnergyCost (arc.GetPointerHitObject ()) < playerEnergy.GetRemainingEnergy ())
+                {
+                    rock = arc.GetPointerHitObject ();
+                    Destroy (rock.GetComponent<RockProperties> ());
+                    hand.AttachObject (rock, GrabTypes.Scripted);
                 }
             }
             else if (arc.GetDistanceFromPlayer () <= rockCreationDistance)
@@ -268,12 +277,11 @@ public class PlayerAbility : MonoBehaviour
 
         if (RockIsActive ())
         {
-            float range = maxRockDimater - minRockDiameter;
-            float rockEnergyCost = (rock.transform.localScale.x - minRockDiameter) * playerEnergy.maxEnergy / range;
+            float rockEnergyCost = GetRockEnergyCost (rock);
             rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
             rock.GetComponent<Rigidbody> ().mass = 3200f * (float) Math.Pow (rockEnergyCost / 2.0, 3.0);
             playerEnergy.SetTempEnergy (hand, rockEnergyCost);
-            hand.SetAllowResize (rockEnergyCost <= playerEnergy.maxEnergy);
+            hand.SetAllowResize (playerEnergy.GetRemainingEnergy () > 0);
         }
         else if (SpikeQuicksandIsActive ())
         {
@@ -511,8 +519,8 @@ public class PlayerAbility : MonoBehaviour
             float finalHandHeight = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             if (finalHandHeight < 0.01f)
             {
-                Destroy(wall);
-                playerEnergy.CancelEnergyUsage(firstHandHeld);
+                Destroy (wall);
+                playerEnergy.CancelEnergyUsage (firstHandHeld);
             }
             else
             {
@@ -726,7 +734,7 @@ public class PlayerAbility : MonoBehaviour
         wallOutline.transform.position = new Vector3 (wallPosX, wallPosY, wallPosZ);
 
         float verticleCorrection = CalculateOutlineVerticleCorrection (wallOutline, out bool outOfBounds);
-        wallOutline.transform.position += new Vector3(0, verticleCorrection ,0);
+        wallOutline.transform.position += new Vector3 (0, verticleCorrection, 0);
     }
 
     private void SetWallLocation ()
@@ -845,6 +853,12 @@ public class PlayerAbility : MonoBehaviour
             Destroy (outline);
         }
         spikeQuicksandOutlines.Clear ();
+    }
+
+    private float GetRockEnergyCost (GameObject rock)
+    {
+        float range = maxRockDimater - minRockDiameter;
+        return (rock.transform.localScale.x - minRockDiameter) * playerEnergy.maxEnergy / range;
     }
 
     public static void MakeSpikeAvailable (GameObject spike)
