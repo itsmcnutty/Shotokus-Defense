@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
+using UnityEngine.AI;
 
 public class PlayerAbility : MonoBehaviour
 {
@@ -74,8 +75,13 @@ public class PlayerAbility : MonoBehaviour
     private static bool wallPushEnabled = false;
     private static bool spikeChainEnabled = false;
 
+    private NavMeshSurface surface;
+    private NavMeshSurface surfaceLight;
+
     private void Awake()
     {
+        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
+        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
         player = GameObject.FindWithTag("MainCamera");
         if (player != null)
         {
@@ -544,6 +550,7 @@ public class PlayerAbility : MonoBehaviour
             else
             {
                 wall.AddComponent<WallProperties>();
+                wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
                 playerEnergy.UseEnergy(firstHandHeld);
                 if (wallPushEnabled)
                 {
@@ -558,6 +565,9 @@ public class PlayerAbility : MonoBehaviour
                 }
 
             }
+            wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
+            surface.BuildNavMesh();
+            surfaceLight.BuildNavMesh();
             ResetWallInfo();
         }
     }
@@ -672,6 +682,7 @@ public class PlayerAbility : MonoBehaviour
         if (WallIsActive())
         {
             wall.AddComponent<WallProperties>();
+            wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             playerEnergy.UseEnergy(firstHandHeld);
             ResetWallInfo();
         }

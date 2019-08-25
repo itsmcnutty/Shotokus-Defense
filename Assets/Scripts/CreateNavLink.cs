@@ -37,7 +37,7 @@ public class CreateNavLink : MonoBehaviour
         
     }
 
-    public void createLinks()
+    public void createLinks(float wallMaxHeight)
     {
         // get position of wall
         Vector3 wallPos = transform.position;
@@ -69,7 +69,7 @@ public class CreateNavLink : MonoBehaviour
         }
         
         float height = wallProperties.wallHeightPercent;
-        float wallHeightaboveGround = height * meshY / 3f;
+        float wallHeightaboveGround = height * wallMaxHeight;
         float floorHeight = transform.position.y - wallHeightaboveGround;
         startPosB.y = floorHeight;
         startPosF.y = floorHeight;
