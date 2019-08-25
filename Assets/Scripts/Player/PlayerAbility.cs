@@ -422,6 +422,10 @@ public class PlayerAbility : MonoBehaviour
                         newRock.GetComponent<Rigidbody> ().angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
                     }
                 }
+                else
+                {
+                    PowerupController.IncrementRockClusterCounter();
+                }
             }
             rock = null;
         }
@@ -464,6 +468,7 @@ public class PlayerAbility : MonoBehaviour
                 }
                 else
                 {
+                    PowerupController.IncrementSpikeChainCounter();
                     GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
                     float finalSpikeRadius = baseSpikeRadius;
                     float size = spikeQuicksandOutline.transform.localScale.x / 2;
@@ -533,6 +538,10 @@ public class PlayerAbility : MonoBehaviour
 
                     wall.GetComponent<WallProperties> ().direction = velocity.normalized;
                     wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
+                }
+                else
+                {
+                    PowerupController.IncrementWallPushCounter();
                 }
 
             }
@@ -870,5 +879,20 @@ public class PlayerAbility : MonoBehaviour
     public static void MakeRockAvailable (GameObject spike)
     {
         availableRocks.Add (spike);
+    }
+
+    public static void ToggleRockCluster()
+    {
+        clusterRockEnabled = !clusterRockEnabled;
+    }
+
+    public static void ToggleSpikeChain()
+    {
+        spikeChainEnabled = !spikeChainEnabled;
+    }
+
+    public static void ToggleWallPush()
+    {
+        movingWallsEnabled = !movingWallsEnabled;
     }
 }

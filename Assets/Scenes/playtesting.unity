@@ -998,13 +998,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 657241173}
-    characterCount: 0
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -1820,13 +1820,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1209280380}
-    characterCount: 0
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -3242,13 +3242,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1724807868}
-    characterCount: 0
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -3446,13 +3446,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1839890342}
-    characterCount: 0
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -4839,6 +4839,26 @@ MonoBehaviour:
     needsReinit: 0
   hand: {fileID: 2115013155}
   energyCost: 20
+--- !u!114 &2115013159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115013157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d73994f92dfdf446bcf3b9752b56ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointsForRockCluster: 10
+  pointsForSpikeChain: 10
+  pointsForEarthquake: 10
+  pointsForWallPush: 10
+  rockClusterTime: 30
+  spikeChainTime: 30
+  earthquakeTime: 30
+  wallPushTime: 30
 --- !u!54 &2115013160
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4903,8 +4923,13 @@ MonoBehaviour:
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
+  spikeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   energyPerSpikeInChain: 50
+  maxSpikesInChain: 50
   maxSpikeDiameter: 5
+  wallMaxHeight: 2
   wallSizeMultiplier: 120
   wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
@@ -4972,8 +4997,13 @@ MonoBehaviour:
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
+  spikeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   energyPerSpikeInChain: 50
+  maxSpikesInChain: 50
   maxSpikeDiameter: 5
+  wallMaxHeight: 2
   wallSizeMultiplier: 120
   wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
