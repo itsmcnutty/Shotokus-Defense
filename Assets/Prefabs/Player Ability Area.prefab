@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 367148323377574360}
+  - component: {fileID: 6194197290194793475}
+  - component: {fileID: 762616269877962714}
   - component: {fileID: 3670716342327469223}
-  - component: {fileID: 3561581681913366204}
   - component: {fileID: 4509894534342066887}
   m_Layer: 13
   m_Name: Player Ability Area
@@ -33,20 +34,16 @@ Transform:
   m_Father: {fileID: 234748704737093354}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3670716342327469223
-MonoBehaviour:
+--- !u!33 &6194197290194793475
+MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 833319690966242852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6751cd8dfa08aa44db4dfd801c91d082, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!137 &3561581681913366204
-SkinnedMeshRenderer:
+  m_Mesh: {fileID: 4300000, guid: 0e96081d793e1994086123e2505bcc0e, type: 3}
+--- !u!23 &762616269877962714
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -82,18 +79,18 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 0e96081d793e1994086123e2505bcc0e, type: 3}
-  m_Bones: []
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 0}
-  m_AABB:
-    m_Center: {x: 0, y: 0.48375, z: 0}
-    m_Extent: {x: 0.30655554, y: 0.47625, z: 0.30655554}
-  m_DirtyAABB: 0
+--- !u!114 &3670716342327469223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 833319690966242852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6751cd8dfa08aa44db4dfd801c91d082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &4509894534342066887
 MeshCollider:
   m_ObjectHideFlags: 0
