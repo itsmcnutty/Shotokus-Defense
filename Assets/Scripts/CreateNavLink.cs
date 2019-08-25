@@ -76,7 +76,7 @@ public class CreateNavLink : MonoBehaviour
         // todo THIS SHOULD NOT BE HARD CODED
         // TODO BUG : wall properties are found but the heigh percent returned is 0
         float height = wallProperties.wallHeightPercent;
-        float wallHeightaboveGround = height * meshY;
+        float wallHeightaboveGround = height * meshY / 3f;
         float floorHeight = transform.position.y - wallHeightaboveGround;
         startPosB.y = floorHeight;
         startPosF.y = floorHeight;
