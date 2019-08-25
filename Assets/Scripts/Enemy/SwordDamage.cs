@@ -19,26 +19,32 @@ public class SwordDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("PlayerCollider");
-        parentEnemy = transform.parent.transform.parent.gameObject;
+        player = GameObject.FindGameObjectWithTag("Player");
+        parentEnemy = GetTopParent(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.gameObject.Equals(player));
-        //Debug.Log(parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Slashing"));
+        GameObject otherTopParent = GetTopParent(other.gameObject);
         
-        // Deal damage if colliding with player's body and enemy is in "Slashing" animation
-        if (other.gameObject.Equals(player) &&
-            parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Slashing"))
+        // Deal damage if colliding with one of player's colliders and enemy is in "Attacking" animation
+        if (otherTopParent.Equals(player) &&
+            parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsTag("Melee"))
         {
-            Debug.Log("Hit!");
-//            other.gameObject.GetComponent<PlayerHealth>().TakeDamage(DAMAGE);
-            other.gameObject.transform.parent.GetComponentInChildren<PlayerHealth>().TakeDamage(DAMAGE);
+            player.GetComponentInChildren<PlayerHealth>().TakeDamage(DAMAGE);
         }
-        else
+    }
+
+    // Get parent object at top of hierarchy by stepping trough parents until none exist
+    private GameObject GetTopParent(GameObject obj)
+    {
+        Transform parentTransform = obj.transform;
+        
+        while (parentTransform.parent)
         {
-            //Debug.Log("No hit!");
+            parentTransform = parentTransform.parent.transform;
         }
+        
+        return parentTransform.gameObject;
     }
 }
