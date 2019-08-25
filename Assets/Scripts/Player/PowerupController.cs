@@ -50,7 +50,7 @@ public class PowerupController : MonoBehaviour
             rockClusterBarCounter = 0;
             StartCoroutine (EndRockCluster ());
         }
-        else
+        else if (!PlayerAbility.RockClusterEnabled ())
         {
             rockClusterBar.value = rockClusterBarCounter;
         }
@@ -61,7 +61,7 @@ public class PowerupController : MonoBehaviour
             spikeChainBarCounter = 0;
             StartCoroutine (EndSpikeChain ());
         }
-        else
+        else if (!PlayerAbility.SpikeChainEnabled ())
         {
             spikeChainBar.value = spikeChainBarCounter;
         }
@@ -83,7 +83,7 @@ public class PowerupController : MonoBehaviour
             wallPushBarCounter = 0;
             StartCoroutine (EndWallPush ());
         }
-        else
+        else if (!PlayerAbility.WallPushEnabled ())
         {
             wallPushBar.value = wallPushBarCounter;
         }
@@ -91,26 +91,53 @@ public class PowerupController : MonoBehaviour
 
     private IEnumerator EndRockCluster ()
     {
-        yield return new WaitForSeconds (rockClusterTime);
+        float startTime = Time.time;
+        while (Time.time - startTime < rockClusterTime)
+        {
+            yield return DrainAbilityBar (startTime, rockClusterTime, rockClusterBar);
+        }
+        rockClusterBar.value = 0;
         PlayerAbility.ToggleRockCluster ();
     }
 
     private IEnumerator EndSpikeChain ()
     {
-        yield return new WaitForSeconds (spikeChainTime);
+        float startTime = Time.time;
+        while (Time.time - startTime < spikeChainTime)
+        {
+            yield return DrainAbilityBar (startTime, spikeChainTime, spikeChainBar);
+        }
+        spikeChainBar.value = 0;
         PlayerAbility.ToggleSpikeChain ();
     }
 
     private IEnumerator EndEarthquake ()
     {
-        yield return new WaitForSeconds (earthquakeTime);
+        float startTime = Time.time;
+        while (Time.time - startTime < earthquakeTime)
+        {
+            yield return DrainAbilityBar (startTime, earthquakeTime, earthquakeBar);
+        }
+        earthquakeBar.value = 0;
         // TODO added earthquake functionality
     }
 
     private IEnumerator EndWallPush ()
     {
-        yield return new WaitForSeconds (wallPushTime);
+        float startTime = Time.time;
+        while (Time.time - startTime < wallPushTime)
+        {
+            yield return DrainAbilityBar (startTime, wallPushTime, wallPushBar);
+        }
+        wallPushBar.value = 0;
         PlayerAbility.ToggleWallPush ();
+    }
+
+    private IEnumerator DrainAbilityBar (float startTime, float abilityTime, Slider bar)
+    {
+        float barValuePercent = (abilityTime - (Time.time - startTime)) / abilityTime;
+        bar.value = barValuePercent * bar.maxValue;
+        yield return new WaitForEndOfFrame ();
     }
 
     public static void IncrementRockClusterCounter ()
