@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7521853020276943173}
-  - component: {fileID: 3144676400267748032}
+  - component: {fileID: 2739717763262827811}
+  - component: {fileID: 7929185292363993123}
   - component: {fileID: 2436744385535517530}
   - component: {fileID: 2143223544295282997}
   - component: {fileID: 3806514238949926746}
@@ -27,22 +28,30 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383354479478694716}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0.0000011324881, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1702220870442628939}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!137 &3144676400267748032
-SkinnedMeshRenderer:
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2739717763262827811
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383354479478694716}
+  m_Mesh: {fileID: 8733429697405204941, guid: 85ffa9c774230cd4ca8a61952f3a93bd, type: 3}
+--- !u!23 &7929185292363993123
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383354479478694716}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -71,18 +80,6 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -5485461366360626707, guid: 18878c55112388649892b8201f135741, type: 3}
-  m_Bones: []
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 0}
-  m_AABB:
-    m_Center: {x: -0.025326967, y: -1.5557106, z: 0.0074656606}
-    m_Extent: {x: 3.5134244, y: 1.5527546, z: 0.6006053}
-  m_DirtyAABB: 0
 --- !u!64 &2436744385535517530
 MeshCollider:
   m_ObjectHideFlags: 0
