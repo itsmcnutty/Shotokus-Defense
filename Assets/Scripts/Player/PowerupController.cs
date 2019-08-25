@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PowerupController : MonoBehaviour
 {
 
-    //[Header ("Powerup Bars")]
-    // public GameObject rockClusterBar;
-    // public GameObject spikeChainBar;
-    // public GameObject earthquakeBar;
-    // public GameObject wallPushBar;
+    [Header ("Powerup Bars")]
+    public Slider rockClusterBar;
+    public Slider spikeChainBar;
+    public Slider earthquakeBar;
+    public Slider wallPushBar;
 
     [Header ("Points Required")]
-    public int pointsForRockCluster = 1;
-    public int pointsForSpikeChain = 1;
-    public int pointsForEarthquake = 1;
-    public int pointsForWallPush = 1;
+    public int pointsForRockCluster = 10;
+    public int pointsForSpikeChain = 10;
+    public int pointsForEarthquake = 10;
+    public int pointsForWallPush = 10;
 
     [Header ("Powerup Timer (In Seconds)")]
     public int rockClusterTime = 30;
@@ -29,7 +30,10 @@ public class PowerupController : MonoBehaviour
     // Start is called before the first frame update
     void Start ()
     {
-
+        rockClusterBar.maxValue = pointsForRockCluster;
+        spikeChainBar.maxValue = pointsForSpikeChain;
+        earthquakeBar.maxValue = pointsForEarthquake;
+        wallPushBar.maxValue = pointsForWallPush;
     }
 
     // Update is called once per frame
@@ -46,12 +50,20 @@ public class PowerupController : MonoBehaviour
             rockClusterBarCounter = 0;
             StartCoroutine (EndRockCluster ());
         }
+        else
+        {
+            rockClusterBar.value = rockClusterBarCounter;
+        }
 
         if (spikeChainBarCounter >= pointsForSpikeChain)
         {
             PlayerAbility.ToggleSpikeChain ();
             spikeChainBarCounter = 0;
             StartCoroutine (EndSpikeChain ());
+        }
+        else
+        {
+            spikeChainBar.value = spikeChainBarCounter;
         }
 
         if (earthquakeBarCounter >= pointsForEarthquake)
@@ -60,12 +72,20 @@ public class PowerupController : MonoBehaviour
             earthquakeBarCounter = 0;
             StartCoroutine (EndEarthquake ());
         }
+        else
+        {
+            earthquakeBar.value = earthquakeBarCounter;
+        }
 
         if (wallPushBarCounter >= pointsForWallPush)
         {
             PlayerAbility.ToggleWallPush ();
             wallPushBarCounter = 0;
             StartCoroutine (EndWallPush ());
+        }
+        else
+        {
+            wallPushBar.value = wallPushBarCounter;
         }
     }
 
