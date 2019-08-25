@@ -42,8 +42,7 @@ public class CreateNavLink : MonoBehaviour
         // get position of wall
         Vector3 wallPos = transform.position;
         // get size of wall mesh
-        SkinnedMeshRenderer mesh = this.GetComponentInChildren<SkinnedMeshRenderer> ();
-        float meshY= mesh.bounds.size.y;
+        MeshRenderer mesh = this.GetComponentInChildren<MeshRenderer> ();
         float meshX = mesh.bounds.size.x;
         
         // Set transform and rotation to 0 for navmesh link
