@@ -505,7 +505,15 @@ public class PlayerAbility : MonoBehaviour
         else if (WallIsActive ())
         {
             wall.AddComponent<WallProperties> ();
+            var height = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+            Debug.Log(height);
+            
+            SkinnedMeshRenderer mesh = wall.GetComponentInChildren<SkinnedMeshRenderer> ();
+            var y= mesh.bounds.size.y;
+            float  x=mesh.bounds.size.x; // this seems to be the correct width but substract a bit of it
+            float z =mesh.bounds.size.z;
+            
 
             playerEnergy.UseEnergy (firstHandHeld);
             if (movingWallsEnabled)
@@ -515,7 +523,7 @@ public class PlayerAbility : MonoBehaviour
                 wall.GetComponent<WallProperties> ().direction = velocity.normalized;
                 wall.GetComponent<WallProperties> ().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
             }
-            wall.GetComponent<CreateNavLink>().createLinks();
+            wall.GetComponent<CreateNavLink>().createLinks(x);
             surface.BuildNavMesh();
             surfaceLight.BuildNavMesh();
             

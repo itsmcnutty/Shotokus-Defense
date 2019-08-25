@@ -42,7 +42,7 @@ public class CreateNavLink : MonoBehaviour
         
     }
 
-    public void createLinks()
+    public void createLinks(float width)
     {
                 // get position of wall
         Vector3 wallPos = transform.position;
@@ -69,9 +69,14 @@ public class CreateNavLink : MonoBehaviour
             
         }
         
+        SkinnedMeshRenderer mesh = this.GetComponentInChildren<SkinnedMeshRenderer> ();
+        var meshY= mesh.bounds.size.y;
+        
+        
         // todo THIS SHOULD NOT BE HARD CODED
         // TODO BUG : wall properties are found but the heigh percent returned is 0
-        float wallHeightaboveGround = wallProperties.wallHeightPercent * 0.01f * transform.position.y;
+        float height = wallProperties.wallHeightPercent;
+        float wallHeightaboveGround = height * meshY;
         float floorHeight = transform.position.y - wallHeightaboveGround;
         startPosB.y = floorHeight;
         startPosF.y = floorHeight;
@@ -87,8 +92,10 @@ public class CreateNavLink : MonoBehaviour
         // todo THIS SHOULD NOT BE HARD CODED
 //        navMeshLinkB.width = transform.localScale.z;
 //        navMeshLinkF.width = transform.localScale.z;
-        navMeshLinkB.width = 1;
-        navMeshLinkF.width = 1;
+//        navMeshLinkB.width = 1;
+//        navMeshLinkF.width = 1;
+        navMeshLinkB.width = width;
+        navMeshLinkF.width = width;
         
         navMeshLinkB.UpdateLink();
         navMeshLinkF.UpdateLink();

@@ -3214,17 +3214,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyProducer
       objectReference: {fileID: 0}
-    - target: {fileID: 7508365555978717287, guid: 921980b4835e024468909be45ce775d7,
-        type: 3}
-      propertyPath: shouldSpawn
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7508365555978717287, guid: 921980b4835e024468909be45ce775d7,
-        type: 3}
-      propertyPath: prefab.Array.data[0]
-      value: 
-      objectReference: {fileID: 7570988895621427575, guid: 946daaf7a714d8b4d944174d499e90c8,
-        type: 3}
     - target: {fileID: 7508365555978717288, guid: 921980b4835e024468909be45ce775d7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3280,6 +3269,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7508365555978717287, guid: 921980b4835e024468909be45ce775d7,
+        type: 3}
+      propertyPath: shouldSpawn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508365555978717287, guid: 921980b4835e024468909be45ce775d7,
+        type: 3}
+      propertyPath: prefab.Array.data[0]
+      value: 
+      objectReference: {fileID: 7570988895621427575, guid: 946daaf7a714d8b4d944174d499e90c8,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 921980b4835e024468909be45ce775d7, type: 3}
 --- !u!1 &1662777983
@@ -4227,26 +4227,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabPinchAction.actionPath
-      value: /actions/default/in/Trigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabGripAction.actionPath
-      value: /actions/default/in/Grip
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: otherHand
-      value: 
-      objectReference: {fileID: 1525299457}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: handType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: trackedObject
-      value: 
-      objectReference: {fileID: 2115013151}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4423,6 +4403,26 @@ PrefabInstance:
       propertyPath: trackedObject
       value: 
       objectReference: {fileID: 2115013154}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.actionPath
+      value: /actions/default/in/Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.actionPath
+      value: /actions/default/in/Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: otherHand
+      value: 
+      objectReference: {fileID: 1525299457}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: handType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: trackedObject
+      value: 
+      objectReference: {fileID: 2115013151}
     - target: {fileID: 490018, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.9772663
