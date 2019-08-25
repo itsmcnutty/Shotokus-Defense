@@ -505,6 +505,8 @@ public class PlayerAbility : MonoBehaviour
         else if (WallIsActive ())
         {
             wall.AddComponent<WallProperties> ();
+            wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+
             playerEnergy.UseEnergy (firstHandHeld);
             if (movingWallsEnabled)
             {
@@ -602,7 +604,8 @@ public class PlayerAbility : MonoBehaviour
     {
         if (WallIsActive ())
         {
-            wall.AddComponent<WallProperties> ();
+            wall.AddComponent<WallProperties> (); 
+            wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             playerEnergy.UseEnergy (firstHandHeld);
             ResetWallInfo ();
         }
