@@ -91,8 +91,8 @@ public class PlayerAbility : MonoBehaviour
         hand = GetComponent<Hand>();
 
         abilityRing = Instantiate(playerAbilityAreaPrefab);
-        SkinnedMeshRenderer mesh = abilityRing.GetComponentInChildren<SkinnedMeshRenderer>();
-        abilityRing.transform.localScale = new Vector3(rockCreationDistance * 2f * (1 / mesh.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / mesh.bounds.size.x));
+        MeshRenderer meshRenderer = abilityRing.GetComponentInChildren<MeshRenderer>();
+        abilityRing.transform.localScale = new Vector3(rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x));
         abilityRing.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
 
         RaycastHit hit;
@@ -372,10 +372,11 @@ public class PlayerAbility : MonoBehaviour
             float newHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
             if (newHandHeight < 1 && currentWallHeight < newHandHeight)
             {
+                MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
                 currentWallHeight = newHandHeight;
-                Vector3 newPos = new Vector3(wall.transform.position.x, wall.transform.localScale.y * newHandHeight, wall.transform.position.z);
+                Vector3 newPos = new Vector3(wall.transform.position.x, wallMaxHeight * newHandHeight, wall.transform.position.z);
                 wall.transform.position = Vector3.MoveTowards(wall.transform.position, newPos, 1f);
-                float area = (float) Math.Round(wall.transform.localScale.x * wall.transform.localScale.y * newHandHeight, 2) * wallSizeMultiplier;
+                float area = (float) Math.Round(wall.transform.localScale.x * meshRenderer.bounds.size.x * wallMaxHeight * newHandHeight, 2) * wallSizeMultiplier;
                 playerEnergy.SetTempEnergy(firstHandHeld, area);
             }
         }
@@ -762,14 +763,17 @@ public class PlayerAbility : MonoBehaviour
     private void SetWallLocation()
     {
         SetWallPosition();
+        
+        MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy();
-        float maxWallWidth = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
-        float wallWidth = (arc.GetEndPointsDistance(otherArc) < maxWallWidth) ? arc.GetEndPointsDistance(otherArc) : maxWallWidth;
-
-        float area = wallWidth * wallMaxHeight;
-        area = (float) Math.Round(area, 2) * wallSizeMultiplier;
-        wallOutline.transform.localScale = new Vector3(wallWidth, wallMaxHeight, 0.1f);
+        float maxHandDist = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
+        float handDistance = (arc.GetEndPointsDistance(otherArc) < maxHandDist)
+            ? arc.GetEndPointsDistance(otherArc)
+            : maxHandDist;
+        float wallWidth = ((handDistance - meshRenderer.bounds.size.x) / meshRenderer.bounds.size.x) + 1;
+;
+        wallOutline.transform.localScale = new Vector3(wallWidth, wallOutline.transform.localScale.y, wallOutline.transform.localScale.z);
 
         float angle = Vector3.SignedAngle(arc.GetEndPosition() - otherArc.GetEndPosition(), wallOutline.transform.position, new Vector3(0, -1, 0));
         angle += Vector3.SignedAngle(wallOutline.transform.position, new Vector3(1, 0, 0), new Vector3(0, -1, 0));
@@ -828,11 +832,11 @@ public class PlayerAbility : MonoBehaviour
     {
         if (valid)
         {
-            outlineObject.GetComponentInChildren<SkinnedMeshRenderer>().material = validOutlineMat;
+            outlineObject.GetComponentInChildren<MeshRenderer>().material = validOutlineMat;
         }
         else
         {
-            outlineObject.GetComponentInChildren<SkinnedMeshRenderer>().material = invalidOutlineMat;
+            outlineObject.GetComponentInChildren<MeshRenderer>().material = invalidOutlineMat;
         }
     }
 
