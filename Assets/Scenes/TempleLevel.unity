@@ -2364,7 +2364,7 @@ MonoBehaviour:
   spikeMaxHeight: 1.75
   spikeLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 36865
   energyPerSpikeInChain: 50
   maxSpikesInChain: 50
   maxSpikeDiameter: 5
@@ -2521,7 +2521,7 @@ MonoBehaviour:
   spikeMaxHeight: 1.75
   spikeLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 36865
   energyPerSpikeInChain: 50
   maxSpikesInChain: 50
   maxSpikeDiameter: 5
@@ -7745,9 +7745,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 10
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 4.56
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
