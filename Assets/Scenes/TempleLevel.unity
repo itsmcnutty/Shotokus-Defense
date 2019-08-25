@@ -608,7 +608,7 @@ Light:
   m_InnerSpotAngle: 21.802082
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -1888,26 +1888,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabPinchAction.actionPath
-      value: /actions/default/in/Trigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabGripAction.actionPath
-      value: /actions/default/in/Grip
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: otherHand
-      value: 
-      objectReference: {fileID: 327026035}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: handType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: trackedObject
-      value: 
-      objectReference: {fileID: 327026039}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9
@@ -2084,6 +2064,26 @@ PrefabInstance:
       propertyPath: trackedObject
       value: 
       objectReference: {fileID: 327026040}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.actionPath
+      value: /actions/default/in/Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.actionPath
+      value: /actions/default/in/Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: otherHand
+      value: 
+      objectReference: {fileID: 327026035}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: handType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: trackedObject
+      value: 
+      objectReference: {fileID: 327026039}
     - target: {fileID: 490018, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.9772663
@@ -4430,7 +4430,7 @@ PrefabInstance:
     - target: {fileID: 3454722942143526677, guid: 322075a80750f8445a4ce388d6fa2932,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.66
+      value: -13.17
       objectReference: {fileID: 0}
     - target: {fileID: 3454722942143526677, guid: 322075a80750f8445a4ce388d6fa2932,
         type: 3}
