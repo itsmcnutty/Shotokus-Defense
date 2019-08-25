@@ -70,8 +70,8 @@ public class PlayerAbility : MonoBehaviour
     private static List<GameObject> availableSpikes = new List<GameObject> ();
     private static List<GameObject> availableRocks = new List<GameObject> ();
 
-    private static bool clusterRockEnabled = false;
-    private static bool movingWallsEnabled = false;
+    private static bool rockClusterEnabled = false;
+    private static bool wallPushEnabled = false;
     private static bool spikeChainEnabled = false;
 
     private void Awake ()
@@ -407,7 +407,7 @@ public class PlayerAbility : MonoBehaviour
                 playerEnergy.UseEnergy (hand);
                 hand.TriggerHapticPulse (500);
 
-                if (clusterRockEnabled)
+                if (rockClusterEnabled)
                 {
                     for (int i = 0; i < numberOfRocksInCluster; i++)
                     {
@@ -533,7 +533,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 wall.AddComponent<WallProperties> ();
                 playerEnergy.UseEnergy (firstHandHeld);
-                if (movingWallsEnabled)
+                if (wallPushEnabled)
                 {
                     Vector3 velocity = new Vector3 (controllerPose.GetVelocity ().x, 0, controllerPose.GetVelocity ().z);
 
@@ -884,7 +884,7 @@ public class PlayerAbility : MonoBehaviour
 
     public static void ToggleRockCluster()
     {
-        clusterRockEnabled = !clusterRockEnabled;
+        rockClusterEnabled = !rockClusterEnabled;
     }
 
     public static void ToggleSpikeChain()
@@ -894,6 +894,21 @@ public class PlayerAbility : MonoBehaviour
 
     public static void ToggleWallPush()
     {
-        movingWallsEnabled = !movingWallsEnabled;
+        wallPushEnabled = !wallPushEnabled;
+    }
+
+    public static bool RockClusterEnabled()
+    {
+        return rockClusterEnabled;
+    }
+
+    public static bool SpikeChainEnabled()
+    {
+        return spikeChainEnabled;
+    }
+
+    public static bool WallPushEnabled()
+    {
+        return wallPushEnabled;
     }
 }
