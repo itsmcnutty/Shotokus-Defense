@@ -60,6 +60,6 @@ public class SpikeMovement : MonoBehaviour
     {
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
-        PlayerAbility.MakeSpikeAvailable (gameObject);
+        SpikeQuicksand.MakeSpikeAvailable (gameObject);
     }
 }
