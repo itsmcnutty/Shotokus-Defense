@@ -2317,7 +2317,7 @@ MonoBehaviour:
   spikeSpeedReduction: 15
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
-  spikeLayerMask:
+  outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
   energyPerSpikeInChain: 50
@@ -2474,7 +2474,7 @@ MonoBehaviour:
   spikeSpeedReduction: 15
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
-  spikeLayerMask:
+  outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
   energyPerSpikeInChain: 50
@@ -2759,7 +2759,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 39191
+    m_Bits: 170263
   destinationReticleTransform: {fileID: 362655286}
   invalidReticleTransform: {fileID: 362655285}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -4052,7 +4052,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 39191
+    m_Bits: 170263
   destinationReticleTransform: {fileID: 581805065}
   invalidReticleTransform: {fileID: 581805064}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
