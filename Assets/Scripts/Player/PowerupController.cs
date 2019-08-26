@@ -68,11 +68,11 @@ public class PowerupController : MonoBehaviour
 
         if (earthquakeBarCounter >= pointsForEarthquake)
         {
-            // TODO add earthquake functionality
+            PlayerAbility.ToggleEarthquake();
             earthquakeBarCounter = 0;
             StartCoroutine (EndEarthquake ());
         }
-        else
+        else if(!PlayerAbility.EarthquakeEnabled())
         {
             earthquakeBar.value = earthquakeBarCounter;
         }
@@ -119,7 +119,7 @@ public class PowerupController : MonoBehaviour
             yield return DrainAbilityBar (startTime, earthquakeTime, earthquakeBar);
         }
         earthquakeBar.value = 0;
-        // TODO added earthquake functionality
+        PlayerAbility.ToggleEarthquake();
     }
 
     private IEnumerator EndWallPush ()
