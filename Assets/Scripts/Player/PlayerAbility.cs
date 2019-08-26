@@ -38,6 +38,7 @@ public class PlayerAbility : MonoBehaviour
     public float energyPerSpikeInChain = 50;
     public float maxSpikesInChain = 50;
     public float maxSpikeDiameter = 5f;
+    public float quicksandSizeMultiplier = 2f;
     public float wallMaxHeight = 2f;
     public float wallSizeMultiplier = 120f;
     public float wallSpeedReduction = 50f;
@@ -73,7 +74,7 @@ public class PlayerAbility : MonoBehaviour
         rocks = Rocks.CreateComponent(gameObject, rockPrefab, playerEnergy, rockCreationDistance, rockMassScale, minRockDiameter, maxRockDimater, numberOfRocksInCluster);
         spikeQuicksand = SpikeQuicksand.CreateComponent(gameObject, spikePrefab, quicksandPrefab, areaOutlinePrefab, playerEnergy, validOutlineMat,
             invalidOutlineMat, baseSpikeRadius, spikeSpeedReduction, spikeMinSpeed, spikeMaxHeight, outlineLayerMask, energyPerSpikeInChain,
-            maxSpikesInChain, maxSpikeDiameter);
+            maxSpikesInChain, maxSpikeDiameter, quicksandSizeMultiplier);
         walls = Walls.CreateComponent(gameObject, wallPrefab, wallOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, rockCreationDistance,
             wallMaxHeight, wallSizeMultiplier, wallSpeedReduction, wallButtonClickDelay, outlineLayerMask, player);
 
