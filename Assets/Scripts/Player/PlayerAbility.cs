@@ -105,7 +105,6 @@ public class PlayerAbility : MonoBehaviour
             abilityRing.transform.position += new Vector3(0, -abilityRing.transform.position.y, 0);
         }
 
-
         allSpikes = new HashSet<Vector3>();
         spikeQuicksandOutlines = new List<GameObject>();
 
@@ -419,20 +418,24 @@ public class PlayerAbility : MonoBehaviour
                 playerEnergy.UseEnergy(hand);
                 hand.TriggerHapticPulse(500);
 
-                if (rockClusterEnabled)
+                
+                Vector3 velocity, angularVelocity;
+                rock.GetComponent<Throwable>().GetReleaseVelocities(hand, out velocity, out angularVelocity);
+
+                if (rockClusterEnabled && (velocity != Vector3.zero || angularVelocity != Vector3.zero))
                 {
                     for (int i = 0; i < numberOfRocksInCluster; i++)
                     {
                         GameObject newRock = GetNewRock();
                         newRock.AddComponent<RockProperties>();
-                        Vector3 velocity, angularVelocity;
-                        rock.GetComponent<Throwable>().GetReleaseVelocities(hand, out velocity, out angularVelocity);
+                        Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
 
                         newRock.transform.position = rock.transform.position;
                         newRock.transform.localScale = rock.transform.localScale;
-                        newRock.GetComponent<Rigidbody>().velocity = velocity;
-                        newRock.GetComponent<Rigidbody>().velocity = Vector3.ProjectOnPlane(UnityEngine.Random.insideUnitSphere, velocity) * (.75f + rock.transform.localScale.x) + velocity;
-                        newRock.GetComponent<Rigidbody>().angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
+
+                        newRockRigidbody.velocity = velocity;
+                        newRockRigidbody.velocity = Vector3.ProjectOnPlane(UnityEngine.Random.insideUnitSphere, velocity) * (.75f + rock.transform.localScale.x) + velocity;
+                        newRockRigidbody.angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
                     }
                 }
                 else
@@ -756,23 +759,24 @@ public class PlayerAbility : MonoBehaviour
         float wallPosZ = (thisArcPos.z + otherArcPos.z) / 2;
         wallOutline.transform.position = new Vector3(wallPosX, wallPosY, wallPosZ);
 
+        MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
         float verticleCorrection = CalculateOutlineVerticleCorrection(wallOutline, out bool outOfBounds);
+        verticleCorrection += wallMaxHeight - meshRenderer.bounds.size.y;
         wallOutline.transform.position += new Vector3(0, verticleCorrection, 0);
     }
 
     private void SetWallLocation()
     {
         SetWallPosition();
-        
+
         MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
 
         float remainingEnergy = playerEnergy.GetRemainingEnergy();
         float maxHandDist = remainingEnergy / (wallSizeMultiplier * wallMaxHeight);
-        float handDistance = (arc.GetEndPointsDistance(otherArc) < maxHandDist)
-            ? arc.GetEndPointsDistance(otherArc)
-            : maxHandDist;
-        float wallWidth = ((handDistance - meshRenderer.bounds.size.x) / meshRenderer.bounds.size.x) + 1;
-;
+        float handDistance = (arc.GetEndPointsDistance(otherArc) < maxHandDist) ?
+            arc.GetEndPointsDistance(otherArc) :
+            maxHandDist;
+        float wallWidth = ((handDistance - meshRenderer.bounds.size.x) / meshRenderer.bounds.size.x) + 1;;
         wallOutline.transform.localScale = new Vector3(wallWidth, wallOutline.transform.localScale.y, wallOutline.transform.localScale.z);
 
         float angle = Vector3.SignedAngle(arc.GetEndPosition() - otherArc.GetEndPosition(), wallOutline.transform.position, new Vector3(0, -1, 0));
