@@ -9,7 +9,7 @@ public class DebugFunctionality : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     // Update is called once per frame
@@ -19,7 +19,7 @@ public class DebugFunctionality : MonoBehaviour
 
     public void takeDamage()
     {
-        player.GetComponentInChildren<PlayerHealth>().TakeDamage(100);
+        player.GetComponent<PlayerHealth>().TakeDamage(100);
     }
 
     public void togglePowerUps()
