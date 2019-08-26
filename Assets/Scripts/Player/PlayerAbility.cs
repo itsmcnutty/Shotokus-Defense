@@ -759,7 +759,9 @@ public class PlayerAbility : MonoBehaviour
         float wallPosZ = (thisArcPos.z + otherArcPos.z) / 2;
         wallOutline.transform.position = new Vector3(wallPosX, wallPosY, wallPosZ);
 
+        MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
         float verticleCorrection = CalculateOutlineVerticleCorrection(wallOutline, out bool outOfBounds);
+        verticleCorrection += wallMaxHeight - meshRenderer.bounds.size.y;
         wallOutline.transform.position += new Vector3(0, verticleCorrection, 0);
     }
 
