@@ -219,7 +219,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (walls.WallIsActive())
         {
-            walls.CancelWall();
+            walls.CancelWall(hand, otherHand);
         }
         else
         {

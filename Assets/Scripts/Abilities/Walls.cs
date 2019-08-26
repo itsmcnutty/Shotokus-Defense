@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
@@ -14,7 +13,6 @@ public class Walls : MonoBehaviour
     private Material invalidOutlineMat;
     private LayerMask outlineLayerMask;
     private GameObject player;
-
 
     private float rockCreationDistance;
     private float wallMaxHeight;
@@ -29,6 +27,10 @@ public class Walls : MonoBehaviour
     private static float lastAngle;
     private static float startingHandHeight;
     private static float currentWallHeight;
+
+    private NavMeshSurface surface;
+    private NavMeshSurface surfaceLight;
+    private NavMeshSurface surfaceWalls;
 
     public static Walls CreateComponent(GameObject gameObjectToAdd, GameObject wallPrefab, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy,
         Material validOutlineMat, Material invalidOutlineMat, float rockCreationDistance, float wallMaxHeight, float wallSizeMultiplier,
@@ -48,6 +50,10 @@ public class Walls : MonoBehaviour
         walls.wallButtonClickDelay = wallButtonClickDelay;
         walls.outlineLayerMask = outlineLayerMask;
         walls.player = player;
+
+        //        walls.surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
+        //        walls.surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
+        walls.surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
 
         return walls;
     }
@@ -120,12 +126,18 @@ public class Walls : MonoBehaviour
                 PowerupController.IncrementWallPushCounter();
             }
         }
+        wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
+        //            surface.BuildNavMesh();
+        //            surfaceLight.BuildNavMesh();
+        Debug.Log("BUILDING THE NAVMESH");
+        surfaceWalls.BuildNavMesh();
         ResetWallInfo();
     }
 
-    public void CancelWall()
+    public void CancelWall(Hand hand, Hand otherHand)
     {
         wall.AddComponent<WallProperties>();
+        wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
         playerEnergy.UseEnergy(firstHandHeld);
         ResetWallInfo();
     }
