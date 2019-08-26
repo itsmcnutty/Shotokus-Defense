@@ -1888,6 +1888,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.actionPath
+      value: /actions/default/in/Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.actionPath
+      value: /actions/default/in/Grip
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: otherHand
+      value: 
+      objectReference: {fileID: 327026035}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: handType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: trackedObject
+      value: 
+      objectReference: {fileID: 327026039}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9
@@ -2064,26 +2084,6 @@ PrefabInstance:
       propertyPath: trackedObject
       value: 
       objectReference: {fileID: 327026040}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabPinchAction.actionPath
-      value: /actions/default/in/Trigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: grabGripAction.actionPath
-      value: /actions/default/in/Grip
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: otherHand
-      value: 
-      objectReference: {fileID: 327026035}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: handType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497470, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: trackedObject
-      value: 
-      objectReference: {fileID: 327026039}
     - target: {fileID: 490018, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.9772663
@@ -2362,7 +2362,7 @@ MonoBehaviour:
   spikeSpeedReduction: 15
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
-  spikeLayerMask:
+  outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
   energyPerSpikeInChain: 50
@@ -2519,7 +2519,7 @@ MonoBehaviour:
   spikeSpeedReduction: 15
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
-  spikeLayerMask:
+  outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
   energyPerSpikeInChain: 50
@@ -2804,7 +2804,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 39191
+    m_Bits: 170263
   destinationReticleTransform: {fileID: 362655286}
   invalidReticleTransform: {fileID: 362655285}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -4091,7 +4091,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 39191
+    m_Bits: 170263
   destinationReticleTransform: {fileID: 581805065}
   invalidReticleTransform: {fileID: 581805064}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
