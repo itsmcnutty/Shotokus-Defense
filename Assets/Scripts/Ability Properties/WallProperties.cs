@@ -32,7 +32,7 @@ public class WallProperties : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag != "Ground" && other.gameObject.layer != 9 && other.gameObject.layer != 11)
+        if(other.tag != "Ground" && other.gameObject.layer != 9 && other.gameObject.layer != 11 && other.gameObject.layer != 17)
         {
             CancelInvoke("MoveWall");
         }
