@@ -8,14 +8,17 @@ public class WallProperties : MonoBehaviour
     public Vector3 direction = new Vector3();
     private float wallLifetime = 30.0f;
 
-    private NavMeshSurface surface;
-    private NavMeshSurface surfaceLight;
+//    private NavMeshSurface surface;
+//    private NavMeshSurface surfaceLight;
+    private NavMeshSurface surfaceWalls;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
-        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
+//        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
+//        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
+        surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
         InvokeRepeating ("MoveWall", 0, 0.01f);
     }
 
@@ -27,8 +30,9 @@ public class WallProperties : MonoBehaviour
 
     void OnDestroy()
     {
-        surface.BuildNavMesh();
-        surfaceLight.BuildNavMesh();
+//        surface.BuildNavMesh();
+//        surfaceLight.BuildNavMesh();
+        surfaceWalls.BuildNavMesh();
     }
 
     private void MoveWall()

@@ -77,11 +77,13 @@ public class PlayerAbility : MonoBehaviour
 
     private NavMeshSurface surface;
     private NavMeshSurface surfaceLight;
+    private NavMeshSurface surfaceWalls;
 
     private void Awake()
     {
-        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
-        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
+//        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
+//        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
+        surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
         player = GameObject.FindWithTag("MainCamera");
         if (player != null)
         {
@@ -566,8 +568,10 @@ public class PlayerAbility : MonoBehaviour
 
             }
             wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
-            surface.BuildNavMesh();
-            surfaceLight.BuildNavMesh();
+//            surface.BuildNavMesh();
+//            surfaceLight.BuildNavMesh();
+            Debug.Log("BUILDING THE NAVMESH");
+            surfaceWalls.BuildNavMesh();
             ResetWallInfo();
         }
     }

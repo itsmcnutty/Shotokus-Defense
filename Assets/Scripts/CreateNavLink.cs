@@ -56,8 +56,8 @@ public class CreateNavLink : MonoBehaviour
         navMeshLinkF = navMeshLinkObjF.GetComponent<NavMeshLink>();
 
         // Calculate positions for nav mesh links
-        Vector3 startPosB = wallPos + transform.forward * 2; // position for navmesh link start point
-        Vector3 startPosF = wallPos - transform.forward * 2; // position for navmesh link start point
+        Vector3 startPosB = wallPos + transform.forward * 1.5f; // position for navmesh link start point
+        Vector3 startPosF = wallPos - transform.forward * 1.5f; // position for navmesh link start point
 
         // todo uncomment later
         wallProperties = GetComponent<WallProperties>();

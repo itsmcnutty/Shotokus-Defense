@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using UnityEngine.AI;
 
 public class MenuUIController : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class MenuUIController : MonoBehaviour
 
     private GameObject player; // get coordinates of player, to instate menu in front of them
     private Camera vrCamera;
-//    private Canvas canvas;
     private GameObject pauseMenu;
 
     private bool isPauseMenuActive; // true if player is on pause menu, false if not
@@ -24,8 +24,8 @@ public class MenuUIController : MonoBehaviour
     private Vector3 playerFor; // player transform forward
 
     private InteractLaserButton laserPointer;
-
-
+    
+    
     private void Awake()
     {
         player = GameObject.FindWithTag("MainCamera");
