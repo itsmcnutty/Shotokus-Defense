@@ -101,20 +101,23 @@ public class Rocks : MonoBehaviour
             Vector3 velocity, angularVelocity;
             activeRock.GetComponent<Throwable>().GetReleaseVelocities(hand, out velocity, out angularVelocity);
 
-            if (PlayerAbility.RockClusterEnabled() && (velocity != Vector3.zero || angularVelocity != Vector3.zero))
+            if (PlayerAbility.RockClusterEnabled())
             {
-                for (int i = 0; i < numberOfRocksInCluster; i++)
+                if(velocity != Vector3.zero || angularVelocity != Vector3.zero)
                 {
-                    GameObject newRock = GetNewRock();
-                    newRock.AddComponent<RockProperties>();
-                    Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
+                    for (int i = 0; i < numberOfRocksInCluster; i++)
+                    {
+                        GameObject newRock = GetNewRock();
+                        newRock.AddComponent<RockProperties>();
+                        Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
 
-                    newRock.transform.position = activeRock.transform.position;
-                    newRock.transform.localScale = activeRock.transform.localScale;
+                        newRock.transform.position = activeRock.transform.position;
+                        newRock.transform.localScale = activeRock.transform.localScale;
 
-                    newRockRigidbody.velocity = velocity;
-                    newRockRigidbody.velocity = Vector3.ProjectOnPlane(UnityEngine.Random.insideUnitSphere, velocity) * (.75f + activeRock.transform.localScale.x) + velocity;
-                    newRockRigidbody.angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
+                        newRockRigidbody.velocity = velocity;
+                        newRockRigidbody.velocity = Vector3.ProjectOnPlane(UnityEngine.Random.insideUnitSphere, velocity) * (.75f + activeRock.transform.localScale.x) + velocity;
+                        newRockRigidbody.angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
+                    }
                 }
             }
             else
