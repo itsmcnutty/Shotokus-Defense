@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using Valve.VR.InteractionSystem;
 
 public class WallProperties : MonoBehaviour
 {
