@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +33,7 @@ public class SpikeQuicksand : MonoBehaviour
     private static List<Vector2> spikeLocations = new List<Vector2>();
     private HashSet<Vector3> allSpikes = new HashSet<Vector3>();
     private static List<GameObject> availableSpikes = new List<GameObject>();
+    private Queue<float> previousVelocities = new Queue<float>();
 
     public static SpikeQuicksand CreateComponent(GameObject gameObjectToAdd, GameObject spikePrefab, GameObject quicksandPrefab, GameObject areaOutlinePrefab,
         PlayerEnergy playerEnergy, Material validOutlineMat, Material invalidOutlineMat, float baseSpikeRadius, float spikeSpeedReduction, float spikeMinSpeed,
@@ -105,11 +107,17 @@ public class SpikeQuicksand : MonoBehaviour
         return spikeQuicksandOutlines;
     }
 
-    public List<GameObject> UpdateOutline(Hand hand)
+    public List<GameObject> UpdateOutline(Hand hand, SteamVR_Behaviour_Pose controllerPose)
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         float handDistance = hand.transform.position.y - startingSpikeHandHeight;
         float size = (float) Math.Pow((Math.Abs(handDistance)) + (baseSpikeRadius * 2), 3);
+        previousVelocities.Enqueue(controllerPose.GetVelocity().y);
+        if(previousVelocities.Count > 10)
+        {
+            previousVelocities.Dequeue();
+        }
+
         if (handDistance < 0 || !PlayerAbility.SpikeChainEnabled())
         {
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
@@ -209,7 +217,7 @@ public class SpikeQuicksand : MonoBehaviour
     public void TryCreateSpikesOrQuicksand(Hand hand, SteamVR_Behaviour_Pose controllerPose)
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
-        float controllerVelocity = controllerPose.GetVelocity().y;
+        float controllerVelocity = previousVelocities.Average();
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
         bool allOutlinesValid = true;
         foreach (GameObject outline in spikeQuicksandOutlines)
