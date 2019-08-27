@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
@@ -21,6 +22,9 @@ public class SpikeQuicksand : MonoBehaviour
     private float energyPerSpikeInChain;
     private float maxSpikesInChain;
     private float maxSpikeDiameter;
+    private float quicksandSizeMultiplier;
+    private float maxEarthquakeDistance;
+    private float earthquakeDuration;
 
     private float startingSpikeHandHeight;
     private Vector2 horizontalSpikeChainVelocity;
@@ -30,8 +34,9 @@ public class SpikeQuicksand : MonoBehaviour
     private static List<GameObject> availableSpikes = new List<GameObject>();
 
     public static SpikeQuicksand CreateComponent(GameObject gameObjectToAdd, GameObject spikePrefab, GameObject quicksandPrefab, GameObject areaOutlinePrefab,
-        PlayerEnergy playerEnergy, Material validOutlineMat, Material invalidOutlineMat, float baseSpikeRadius, float spikeSpeedReduction,
-        float spikeMinSpeed, float spikeMaxHeight, LayerMask outlineLayerMask, float energyPerSpikeInChain, float maxSpikesInChain, float maxSpikeDiameter)
+        PlayerEnergy playerEnergy, Material validOutlineMat, Material invalidOutlineMat, float baseSpikeRadius, float spikeSpeedReduction, float spikeMinSpeed,
+        float spikeMaxHeight, LayerMask outlineLayerMask, float energyPerSpikeInChain, float maxSpikesInChain, float maxSpikeDiameter, float quicksandSizeMultiplier,
+        float earthquakeDuration, float maxEarthquakeDistance)
     {
         SpikeQuicksand spikes = gameObjectToAdd.AddComponent<SpikeQuicksand>();
 
@@ -49,6 +54,9 @@ public class SpikeQuicksand : MonoBehaviour
         spikes.energyPerSpikeInChain = energyPerSpikeInChain;
         spikes.maxSpikesInChain = maxSpikesInChain;
         spikes.maxSpikeDiameter = maxSpikeDiameter;
+        spikes.quicksandSizeMultiplier = quicksandSizeMultiplier;
+        spikes.earthquakeDuration = earthquakeDuration;
+        spikes.maxEarthquakeDistance = maxEarthquakeDistance;
 
         spikeLocations.Add(new Vector2(2, 0));
         spikeLocations.Add(new Vector2(1, 1));
@@ -105,8 +113,19 @@ public class SpikeQuicksand : MonoBehaviour
                 Destroy(outline);
                 spikeQuicksandOutlines.Remove(outline);
             }
-            Vector3 newSize = new Vector3(size, 1f, size);
-            float energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
+
+            Vector3 newSize;
+            float energyCost;
+            if (handDistance < 0)
+            {
+                newSize = new Vector3(size * quicksandSizeMultiplier, 1f, size * quicksandSizeMultiplier);
+                energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / (maxSpikeDiameter * quicksandSizeMultiplier);
+            }
+            else
+            {
+                newSize = new Vector3(size, 1f, size);
+                energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
+            }
             playerEnergy.SetTempEnergy(hand, energyCost);
             if ((playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy) || newSize.x < spikeQuicksandOutline.transform.localScale.x)
             {
@@ -199,12 +218,38 @@ public class SpikeQuicksand : MonoBehaviour
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
             GameObject quicksand = Instantiate(quicksandPrefab) as GameObject;
             quicksand.transform.position = spikeQuicksandOutline.transform.position;
-            quicksand.transform.localScale = new Vector3(spikeQuicksandOutline.transform.localScale.x, 1f, spikeQuicksandOutline.transform.localScale.z);
+
+            MeshRenderer outlineMeshRenderer = spikeQuicksandOutline.GetComponentInChildren<MeshRenderer>();
+            MeshRenderer quicksandMeshRenderer = quicksandPrefab.GetComponentInChildren<MeshRenderer>();
+            float quicksandSize = outlineMeshRenderer.bounds.size.x / quicksandMeshRenderer.bounds.size.x;
+            quicksand.transform.localScale = new Vector3(quicksandSize, 1f, quicksandSize);
+
             quicksand.AddComponent<QuicksandProperties>();
             Destroy(spikeQuicksandOutline);
             spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
             playerEnergy.UseEnergy(hand);
-            hand.TriggerHapticPulse(800);
+            if (PlayerAbility.EarthquakeEnabled())
+            {
+                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+                foreach (GameObject enemy in enemies)
+                {
+                    NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+                    if(agent != null)
+                    {
+                        float distanceToEarthquake = (enemy.transform.position - quicksand.transform.position).magnitude;
+                        if (distanceToEarthquake < maxEarthquakeDistance)
+                        {
+                            float slowRate = 1 - (distanceToEarthquake / maxEarthquakeDistance);
+                            StartCoroutine(SlowEnemyForTime(agent, slowRate, earthquakeDuration));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                PowerupController.IncrementEarthquakeCounter();
+                hand.TriggerHapticPulse(800);
+            }
         }
         else if (handPos > 0 && controllerVelocity > 0 && allOutlinesValid)
         {
@@ -215,6 +260,13 @@ public class SpikeQuicksand : MonoBehaviour
             CancelSpikes();
             playerEnergy.CancelEnergyUsage(hand);
         }
+    }
+
+    private IEnumerator SlowEnemyForTime(NavMeshAgent agent, float slowRate, float duration)
+    {
+        agent.speed *= slowRate;
+        yield return new WaitForSeconds(duration);
+        agent.speed /= slowRate;
     }
 
     public void CreateSpikes(Hand hand, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity)

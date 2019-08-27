@@ -38,10 +38,13 @@ public class PlayerAbility : MonoBehaviour
     public float energyPerSpikeInChain = 50;
     public float maxSpikesInChain = 50;
     public float maxSpikeDiameter = 5f;
+    public float quicksandSizeMultiplier = 2f;
     public float wallMaxHeight = 2f;
     public float wallSizeMultiplier = 120f;
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
+    public float maxEarthquakeDistance = 3f;
+    public float earthquakeDuration = 1f;
 
     private Hand hand;
     private PlayerEnergy playerEnergy;
@@ -53,6 +56,7 @@ public class PlayerAbility : MonoBehaviour
     private static bool rockClusterEnabled = false;
     private static bool wallPushEnabled = false;
     private static bool spikeChainEnabled = false;
+    private static bool earthquakeEnabled = false;
 
     private Rocks rocks;
     private SpikeQuicksand spikeQuicksand;
@@ -73,7 +77,7 @@ public class PlayerAbility : MonoBehaviour
         rocks = Rocks.CreateComponent(gameObject, rockPrefab, playerEnergy, rockCreationDistance, rockMassScale, minRockDiameter, maxRockDimater, numberOfRocksInCluster);
         spikeQuicksand = SpikeQuicksand.CreateComponent(gameObject, spikePrefab, quicksandPrefab, areaOutlinePrefab, playerEnergy, validOutlineMat,
             invalidOutlineMat, baseSpikeRadius, spikeSpeedReduction, spikeMinSpeed, spikeMaxHeight, outlineLayerMask, energyPerSpikeInChain,
-            maxSpikesInChain, maxSpikeDiameter);
+            maxSpikesInChain, maxSpikeDiameter, quicksandSizeMultiplier, earthquakeDuration, maxEarthquakeDistance);
         walls = Walls.CreateComponent(gameObject, wallPrefab, wallOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, rockCreationDistance,
             wallMaxHeight, wallSizeMultiplier, wallSpeedReduction, wallButtonClickDelay, outlineLayerMask, player);
 
@@ -259,6 +263,11 @@ public class PlayerAbility : MonoBehaviour
         wallPushEnabled = !wallPushEnabled;
     }
 
+    public static void ToggleEarthquake()
+    {
+        earthquakeEnabled = !earthquakeEnabled;
+    }
+
     public static bool RockClusterEnabled()
     {
         return rockClusterEnabled;
@@ -272,5 +281,10 @@ public class PlayerAbility : MonoBehaviour
     public static bool WallPushEnabled()
     {
         return wallPushEnabled;
+    }
+
+    public static bool EarthquakeEnabled()
+    {
+        return earthquakeEnabled;
     }
 }
