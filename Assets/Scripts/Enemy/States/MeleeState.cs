@@ -42,20 +42,21 @@ public class MeleeState : StateMachineBehaviour
 		
 		// Can't walk, acts as an obstacle
 		agent.enabled = false;
-		obstacle.enabled = true;
+		obstacle.enabled = false;
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
 		base.OnStateExit(animator, stateInfo, layerIndex);
 
+		// No longer obstacle
 		obstacle.enabled = false;
 	}
 
 	public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
 		base.OnStateUpdate(animator, stateInfo, layerIndex);
-		
+
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
 		gameObjTransform = animator.gameObject.transform;

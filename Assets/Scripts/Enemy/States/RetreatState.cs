@@ -30,12 +30,18 @@ public class RetreatState : StateMachineBehaviour
 	{
 		base.OnStateEnter(animator, stateInfo, layerIndex);
 
-		agent.enabled = true;
+		sqrRetreatRadius = retreatRadius * retreatRadius;
 	}
 
 	public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
 		base.OnStateUpdate(animator, stateInfo, layerIndex);
+
+		if (!agent.enabled)
+		{
+			agent.enabled = true;
+			return;
+		}
 		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
@@ -46,7 +52,7 @@ public class RetreatState : StateMachineBehaviour
 		Vector3 backUpVector = gameObjPos - playerPos;
 		backUpVector.Normalize();
                 
-		if (!debugNoWalk)
+		if (agent.enabled && !debugNoWalk)
 		{
 			agent.SetDestination(playerPos + 1.5f * retreatRadius * backUpVector);
 			agent.angularSpeed = 0f;

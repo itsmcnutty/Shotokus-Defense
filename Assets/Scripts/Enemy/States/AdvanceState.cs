@@ -28,17 +28,23 @@ public class AdvanceState : StateMachineBehaviour
 	
 	public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
+		base.OnStateEnter(animator, stateInfo, layerIndex);
+		
 		agent.stoppingDistance = attackRadius;
 		sqrAttackRadius = attackRadius * attackRadius;
 
 		playerPos = player.transform.position;
-
-		agent.enabled = true;
 	}
 
 	public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
 		base.OnStateUpdate(animator, stateInfo, layerIndex);
+
+		if (!agent.enabled)
+		{
+			agent.enabled = true;
+			return;
+		}
 		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
@@ -53,7 +59,7 @@ public class AdvanceState : StateMachineBehaviour
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 		
 		// Move to player if outside attack range, otherwise transition
-		if (!debugNoWalk)
+		if (agent.enabled && !debugNoWalk)
 		{
 			// Too far, walk closer
 			agent.SetDestination(playerPos);
