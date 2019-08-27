@@ -8,6 +8,10 @@ public class SwingState : IState
 	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
+	
+	// Flags for tracking progression through swinging animations
+	private bool startedSwinging;
+	private bool finishedSwinging;
 
 	// States to transition to
 	private MeleeState meleeState;
@@ -21,22 +25,39 @@ public class SwingState : IState
 		ragdollState = enemyProps.ragdollState;
 	}
 	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		meleeState = enemyProps.meleeState;
+		ragdollState = enemyProps.ragdollState;
+	}
+	
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
-		throw new System.NotImplementedException();
+		startedSwinging = false;
+		finishedSwinging = false;
+		animator.SetTrigger("Continue");
 	}
 
 	// Called upon exiting this state
-	public void Exit()
-	{
-		throw new System.NotImplementedException();
-	}
+	public void Exit() {}
 
 	// Called during Update while currently in this state
 	public void Action()
 	{
-		throw new System.NotImplementedException();
+		// When reaching the swing animation
+		if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Swinging"))
+		{
+			startedSwinging = true;
+		}
+
+		// When reaching the melee animation after already going through the swing animation
+		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Meleeing") && startedSwinging)
+		{
+			finishedSwinging = true;
+		}
 	}
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -46,16 +67,22 @@ public class SwingState : IState
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
+			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}
-		
+
 		// Transition back to melee state if done animating swing
-		if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Swinging"))
+		if (finishedSwinging)
 		{
 			return meleeState;
 		}
 		
 		// Continue swinging
 		return null;
+	}
+
+	public override string ToString()
+	{
+		return "Swing";
 	}
 }

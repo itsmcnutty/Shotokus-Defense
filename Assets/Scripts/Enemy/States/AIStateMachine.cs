@@ -22,6 +22,7 @@ public class AIStateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         // Perform whatever actions the state has
         currentState.Action();
         

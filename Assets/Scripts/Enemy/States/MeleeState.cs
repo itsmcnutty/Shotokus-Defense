@@ -23,8 +23,6 @@ public class MeleeState : IState
 	
 	// Allowed space around attack radius that enemy's can attack from
 	private float ATTACK_MARGIN = 1f;
-	// How fast enemy turns to face player
-	private float TURN_SPEED = 0.03f;
 	// Squared attack radius (for optimized calculations)
 	private float sqrAttackRadius;
 	
@@ -39,9 +37,13 @@ public class MeleeState : IState
 	// The enemy properties component
 	private EnemyHeavyProperties enemyProps;
 
+	// True when enemy has begun swinging and should transition to swing state
+	private bool swinging;
+
 	// States to transition to
 	private AdvanceState advanceState;
 	private RetreatState retreatState;
+	private SwingState swingState;
 	private RagdollState ragdollState;
 
 	public MeleeState(EnemyHeavyProperties enemyProps)
@@ -57,14 +59,26 @@ public class MeleeState : IState
 		gameObj = enemyProps.gameObject;
 		advanceState = enemyProps.advanceState;
 		retreatState = enemyProps.retreatState;
+		swingState = enemyProps.swingState;
 		ragdollState = enemyProps.ragdollState;
 		this.enemyProps = enemyProps;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		advanceState = enemyProps.advanceState;
+		retreatState = enemyProps.retreatState;
+		swingState = enemyProps.swingState;
+		ragdollState = enemyProps.ragdollState;
 	}
 
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
-		playerPos = player.transform.position;
+		// Not swinging yet
+		swinging = false;
 		
 		// Can't walk, acts as an obstacle
 		agent.enabled = false;
@@ -72,12 +86,7 @@ public class MeleeState : IState
 	}
 
 	// Called upon exiting this state
-	public void Exit()
-	{
-		// No longer obstacle
-		obstacle.enabled = false;
-		enemyProps.EnablePathfind();
-	}
+	public void Exit() {}
 
 	// Called during Update while currently in this state
 	public void Action()
@@ -94,7 +103,7 @@ public class MeleeState : IState
 		if (attackTimer <= 0f)
 		{
 			animator.SetInteger("AttackNum", Random.Range(0, 2));
-			animator.SetTrigger("Swing");
+			swinging = true;
 			attackTimer = attackDelay;
 		}
 	}
@@ -106,7 +115,14 @@ public class MeleeState : IState
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
+			animator.SetTrigger("Ragdoll");
 			return ragdollState;
+		}
+		
+		// Transition to swinging if enemy can attack
+		if (swinging)
+		{
+			return swingState;
 		}
 		
 		// Calculate enemy distance
@@ -118,15 +134,24 @@ public class MeleeState : IState
 		if (sqrDist - sqrAttackRadius > ATTACK_MARGIN)
 		{
 			// Too far, advance
+			animator.SetTrigger("Advance");
+			attackTimer = 0f;
 			return advanceState;
 		}
 		if (sqrDist - sqrAttackRadius < -ATTACK_MARGIN)
 		{
 			// Too close, retreat
+			animator.SetTrigger("Retreat");
+			attackTimer = 0f;
 			return retreatState;
 		}
 		
 		// Continue attacking
 		return null;
+	}
+
+	public override string ToString()
+	{
+		return "Melee";
 	}
 }

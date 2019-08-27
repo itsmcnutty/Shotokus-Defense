@@ -15,18 +15,22 @@ public class RetreatState : IState
 	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
-	// The player's head
-	public GameObject player;
+	// The NavMeshObstacle used to block enemies pathfinding when not moving
+	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
 	public bool debugNoWalk = false;
 	
 	// Squared retreat radius (for optimized calculations)
 	private float sqrRetreatRadius;
     
+	// The player's head
+	public GameObject player;
 	// The player's head's world location
 	private Vector3 playerPos;
 	// This enemy's GameObject
 	private GameObject gameObj;
+	//This enemy's world location
+	private Vector3 gameObjPos;
 	// The enemy properties component
 	private EnemyHeavyProperties enemyProps;
 
@@ -40,6 +44,7 @@ public class RetreatState : IState
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
+		obstacle = enemyProps.obstacle;
 		player = enemyProps.player;
 		debugNoWalk = enemyProps.debugNoWalk;
 		sqrRetreatRadius = enemyProps.sqrAttackRadius;
@@ -49,20 +54,29 @@ public class RetreatState : IState
 		ragdollState = enemyProps.ragdollState;
 		this.enemyProps = enemyProps;
 	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		meleeState = enemyProps.meleeState;
+		ragdollState = enemyProps.ragdollState;
+	}
 
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
+		// No longer obstacle
+		obstacle.enabled = false;
+		enemyProps.EnablePathfind();
+		
 		// Don't automatically decelerate or rotate
 		agent.stoppingDistance = 0f;
 		agent.angularSpeed = 0f;
 	}
 
 	// Called upon exiting this state
-	public void Exit()
-	{
-		throw new System.NotImplementedException();
-	}
+	public void Exit() {}
 
 	// Called during Update while currently in this state
 	public void Action()
@@ -75,7 +89,7 @@ public class RetreatState : IState
 		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
-		Vector3 gameObjPos = gameObj.transform.position;
+		gameObjPos = gameObj.transform.position;
 		
 		// Back up
 		Vector3 backUpVector = gameObjPos - playerPos;
@@ -99,11 +113,13 @@ public class RetreatState : IState
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
+			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}
 		
-		// Store enemy position
-		Vector3 gameObjPos = gameObj.transform.position;
+		// Store positions
+		playerPos = player.transform.position;
+		gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
 		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
@@ -112,10 +128,16 @@ public class RetreatState : IState
 		if (sqrDist - sqrRetreatRadius > 0f)
 		{
 			// Done retreating, attack
+			animator.SetTrigger("Continue");
 			return meleeState;
 		}
 		
 		// Continue retreating
 		return null;
+	}
+
+	public override string ToString()
+	{
+		return "Retreat";
 	}
 }

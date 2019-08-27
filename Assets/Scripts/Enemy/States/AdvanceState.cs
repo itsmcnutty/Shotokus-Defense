@@ -15,6 +15,8 @@ public class AdvanceState : IState
 	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
+	// The NavMeshObstacle used to block enemies pathfinding when not moving
+	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
 	private bool debugNoWalk;
 
@@ -30,6 +32,8 @@ public class AdvanceState : IState
 	private Vector3 playerPos;
 	// This enemy GameObject
 	private GameObject gameObj;
+	// The enemy properties component
+	private EnemyHeavyProperties enemyProps;
 	
 	// States to transition to
 	private MeleeState meleeState;
@@ -41,12 +45,20 @@ public class AdvanceState : IState
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
+		obstacle = enemyProps.obstacle;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
 		sqrAttackRadius = enemyProps.sqrAttackRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
+		this.enemyProps = enemyProps;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
 	}
@@ -54,16 +66,17 @@ public class AdvanceState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
+		// No longer obstacle
+		obstacle.enabled = false;
+		enemyProps.EnablePathfind();
+		
 		// Settings for agent
 		agent.stoppingDistance = attackRadius;
 		agent.angularSpeed = 8000f;
 	}
 
 	// Called upon exiting this state
-	void IState.Exit()
-	{
-		throw new System.NotImplementedException();
-	}
+	void IState.Exit() {}
 
 	// Called during Update while currently in this state
 	void IState.Action()
@@ -93,6 +106,7 @@ public class AdvanceState : IState
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
+			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}
 		
@@ -106,10 +120,16 @@ public class AdvanceState : IState
 		// If within melee range, transition to melee state
 		if (sqrDist - sqrAttackRadius < attackMargin)
 		{
+			animator.SetTrigger("Continue");
 			return meleeState;
 		}
 		
 		// Otherwise, don't transition
 		return null;
+	}
+
+	public override string ToString()
+	{
+		return "Advance";
 	}
 }

@@ -28,6 +28,13 @@ public class RagdollState : IState
 		advanceState = enemyProps.advanceState;
 	}
 	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		advanceState = enemyProps.advanceState;
+	}
+	
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
@@ -47,10 +54,7 @@ public class RagdollState : IState
 	}
 
 	// Called during Update while currently in this state
-	public void Action()
-	{
-		throw new System.NotImplementedException();
-	}
+	public void Action() {}
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
 	// is possible
@@ -75,5 +79,10 @@ public class RagdollState : IState
 
 		// If spine rigidbody is moving very slowly, enemy can recover
 		return spine.velocity.magnitude < 0.001f;
+	}
+
+	public override string ToString()
+	{
+		return "Ragdoll";
 	}
 }

@@ -29,8 +29,6 @@ public class EnemyHeavyProperties : MonoBehaviour
     
 	// Squared attack radius (for optimized calculations)
 	[NonSerialized] public float sqrAttackRadius;
-	// Timer for attack delay
-	private float attackTimer = 0f;
     
 	// Player GameObject
 	[NonSerialized] public GameObject player;
@@ -60,9 +58,16 @@ public class EnemyHeavyProperties : MonoBehaviour
 		// Instantiate states with the properties above
 		advanceState = new AdvanceState(this);
 		meleeState = new MeleeState(this);
-		advanceState = new AdvanceState(this);
-		advanceState = new AdvanceState(this);
-		advanceState = new AdvanceState(this);
+		retreatState = new RetreatState(this);
+		swingState = new SwingState(this);
+		ragdollState = new RagdollState(this);
+		
+		// Initialize states within these state objects
+		advanceState.InitializeStates(this);
+		meleeState.InitializeStates(this);
+		retreatState.InitializeStates(this);
+		swingState.InitializeStates(this);
+		ragdollState.InitializeStates(this);
 		
 		// Create finite state machine
 		stateMachine = gameObject.AddComponent<AIStateMachine>();
@@ -72,6 +77,8 @@ public class EnemyHeavyProperties : MonoBehaviour
 	// Smoothly turn enemy to face player
 	public void TurnToPlayer()
 	{
+		playerPos = player.transform.position;
+		
 		// Get vector to look straight at player
 		Vector3 vectorToPlayer = playerPos - transform.position;
 		Quaternion lookAtPlayer = Quaternion.Euler(
