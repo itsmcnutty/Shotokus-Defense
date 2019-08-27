@@ -36,8 +36,16 @@ public class AIStateMachine : MonoBehaviour
 
 public interface IState
 {
+    // Called upon entering this state from anywhere
     void Enter();
+    
+    // Called upon exiting this state
     void Exit();
+
+    // Called during Update while currently in this state
     void Action();
+    
+    // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
+    // is possible
     IState Transition();
 }
