@@ -216,6 +216,10 @@ public class ControllerArc : MonoBehaviour
 			{
 				pointerEnd = hitInfo.point;
 				pointerHitObject = hitInfo.collider.gameObject;
+				if(hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
+				{
+					hand.hoveringInteractable = hitInfo.collider.gameObject.GetComponent<Interactable>();
+				}
 			}
 			else
 			{

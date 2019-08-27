@@ -109,10 +109,6 @@ public class PlayerAbility : MonoBehaviour
         if (GripPress())
         {
             CancelAbility();
-            if (arc.GetPointerHitObject() != null)
-            {
-                DestroyPointerHitObject();
-            }
         }
 
         if (GrabPress())
@@ -232,17 +228,19 @@ public class PlayerAbility : MonoBehaviour
         {
             walls.CancelWall(hand, otherHand);
         }
-        else
+        else if (spikeQuicksand.SpikeQuicksandIsActive())
         {
             playerEnergy.CancelEnergyUsage(hand);
-            if (spikeQuicksand.SpikeQuicksandIsActive())
-            {
-                spikeQuicksand.CancelSpikes();
-            }
-            else if (walls.WallOutlineIsActive())
-            {
-                walls.CancelWallOutline();
-            }
+            spikeQuicksand.CancelSpikes();
+        }
+        else if (walls.WallOutlineIsActive())
+        {
+            playerEnergy.CancelEnergyUsage(hand);
+            walls.CancelWallOutline();
+        }
+        else if (arc.GetPointerHitObject() != null)
+        {
+            DestroyPointerHitObject();
         }
     }
 

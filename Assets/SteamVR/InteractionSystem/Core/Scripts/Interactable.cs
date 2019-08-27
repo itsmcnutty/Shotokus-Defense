@@ -122,6 +122,7 @@ namespace Valve.VR.InteractionSystem
         protected virtual void CreateHighlightRenderers()
         {
             existingSkinnedRenderers = this.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            Destroy(highlightHolder);
             highlightHolder = new GameObject("Highlighter");
             highlightSkinnedRenderers = new SkinnedMeshRenderer[existingSkinnedRenderers.Length];
 
