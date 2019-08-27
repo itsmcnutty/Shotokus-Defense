@@ -195,7 +195,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (spikeQuicksand.SpikeQuicksandIsActive())
         {
-            spikeQuicksand.UpdateOutline(hand);
+            spikeQuicksand.UpdateOutline(hand, controllerPose);
         }
         else if (walls.WallIsActive() && playerEnergy.EnergyIsNotZero())
         {

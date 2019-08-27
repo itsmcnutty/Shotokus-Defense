@@ -30,7 +30,6 @@ public class QuicksandProperties : MonoBehaviour
                 NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
                 if (agent != null)
                 {
-                    Debug.Log(agent.name);
                     float distanceToEarthquake = (enemy.transform.position - gameObject.transform.position).magnitude;
                     if (distanceToEarthquake < maxEarthquakeDistance && !slowedEnemies.Contains(agent))
                     {
@@ -77,26 +76,25 @@ public class QuicksandProperties : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
-        if (agent != null && slowedEnemies.Contains(agent))
+        if (agent != null)
         {
             agent.speed *= quicksandSpeedReduction;
+        }
+
+        if(slowedEnemies.Contains(agent))
+        {
             slowedEnemies.Remove(agent);
         }
     }
 
     private IEnumerator SlowEnemyForTime(NavMeshAgent agent, float slowRate, float duration)
     {
-
-        Debug.Log("Before slow: " + agent.speed);
         agent.speed *= slowRate;
-        Debug.Log("After slow: " + agent.speed);
         yield return new WaitForSeconds(duration);
         if (agent != null)
         {
             agent.speed /= slowRate;
-            Debug.Log("Finished slow: " + agent.speed);
         }
         slowedEnemies.Remove(agent);
-        Debug.Log("NumSlowed=" + slowedEnemies.Count);
     }
 }
