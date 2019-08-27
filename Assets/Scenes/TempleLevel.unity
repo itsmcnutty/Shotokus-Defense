@@ -2030,7 +2030,15 @@ PrefabInstance:
     - target: {fileID: 11401046, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: noSteamVRFallbackCamera
       value: 
-      objectReference: {fileID: 851461536}
+      objectReference: {fileID: 0}
+    - target: {fileID: 11401046, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.needsReinit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11401046, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.needsReinit
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: grabPinchAction.actionPath
       value: /actions/default/in/Trigger
@@ -2046,7 +2054,15 @@ PrefabInstance:
     - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: noSteamVRFallbackCamera
       value: 
-      objectReference: {fileID: 851461536}
+      objectReference: {fileID: 0}
+    - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabPinchAction.needsReinit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: grabGripAction.needsReinit
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 490018, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.9772663
@@ -5070,12 +5086,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3454722942143526677, guid: 322075a80750f8445a4ce388d6fa2932,
     type: 3}
   m_PrefabInstance: {fileID: 829113737}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &851461536 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 2083460, guid: dc06161b6d97feb419f45f03b62e14b9,
-    type: 3}
-  m_PrefabInstance: {fileID: 327026031}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &858887715
 PrefabInstance:
