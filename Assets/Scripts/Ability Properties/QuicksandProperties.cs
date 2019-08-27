@@ -38,6 +38,11 @@ public class QuicksandProperties : MonoBehaviour
                         float slowRate = distanceToEarthquake / maxEarthquakeDistance;
                         slowRate = (slowRate != 0) ? (float) Math.Pow(slowRate, 1) : float.MinValue;
                         StartCoroutine(SlowEnemyForTime(agent, slowRate, earthquakeDuration));
+                        if(distanceToEarthquake < gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x)
+                        {
+                            RagdollController ragdollController = enemy.GetComponent<RagdollController>();
+                            ragdollController.StartRagdoll();
+                        }
                     }
                 }
             }
