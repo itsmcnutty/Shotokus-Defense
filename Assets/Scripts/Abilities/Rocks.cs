@@ -42,33 +42,32 @@ public class Rocks : MonoBehaviour
         return rocks;
     }
 
-    public void TryCreateRock(Hand hand, Hand otherHand)
+    public void PickupRock(Hand hand, Hand otherHand)
     {
-        ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
-        activeRock = null;
-        if (hand.currentAttachedObject != null)
+        if (otherHand.currentAttachedObject == null)
         {
-            if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+            if (GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
             {
                 activeRock = hand.currentAttachedObject;
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
-        }
-        else if (arc.GetPointerHitObject().tag == "Rock")
-        {
-            if (GetRockEnergyCost(arc.GetPointerHitObject()) < playerEnergy.GetRemainingEnergy())
+            else
             {
-                activeRock = arc.GetPointerHitObject();
-                Destroy(activeRock.GetComponent<RockProperties>());
-                hand.AttachObject(activeRock, GrabTypes.Scripted);
+                hand.DetachObject(hand.currentAttachedObject);
             }
         }
-        else if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+        else if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
         {
-            activeRock = GetNewRock();
-            activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
-            hand.AttachObject(activeRock, GrabTypes.Scripted);
+            activeRock = hand.currentAttachedObject;
+            Destroy(activeRock.GetComponent<RockProperties>());
         }
+    }
+
+    public void CreateNewRock(Hand hand, ControllerArc arc)
+    {
+        activeRock = GetNewRock();
+        activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
+        hand.AttachObject(activeRock, GrabTypes.Scripted);
     }
 
     public void UpdateRock(Hand hand)
@@ -103,7 +102,7 @@ public class Rocks : MonoBehaviour
 
             if (PlayerAbility.RockClusterEnabled())
             {
-                if(velocity != Vector3.zero || angularVelocity != Vector3.zero)
+                if (velocity != Vector3.zero || angularVelocity != Vector3.zero)
                 {
                     for (int i = 0; i < numberOfRocksInCluster; i++)
                     {

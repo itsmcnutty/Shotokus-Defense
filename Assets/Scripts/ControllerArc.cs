@@ -175,10 +175,10 @@ public class ControllerArc : MonoBehaviour
 				destinationReticleTransform.rotation = Quaternion.Slerp (destinationReticleTransform.rotation, reticleTargetRotation, 0.1f);
 
 				canUseAbility = true;
-				// if(hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
-				// {
-				// 	hand.hoveringInteractable = hitInfo.collider.gameObject.GetComponent<Interactable>();
-				// }
+				if(hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
+				{
+					hand.hoveringInteractable = hitInfo.collider.gameObject.GetComponent<Interactable>();
+				}
 			}
 
 			invalidReticleTransform.gameObject.SetActive (false);
