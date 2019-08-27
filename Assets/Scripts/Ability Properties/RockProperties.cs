@@ -22,7 +22,7 @@ public class RockProperties : MonoBehaviour
     {
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
-        PlayerAbility.MakeRockAvailable (gameObject);
+        Rocks.MakeRockAvailable (gameObject);
         Destroy(this);
     }
 
