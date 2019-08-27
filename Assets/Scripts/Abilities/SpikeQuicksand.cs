@@ -84,6 +84,7 @@ public class SpikeQuicksand : MonoBehaviour
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         spikeQuicksandOutlines.Add(Instantiate(areaOutlinePrefab));
+        
         spikeQuicksandOutlines[0].transform.position = arc.GetEndPosition();
         startingSpikeHandHeight = hand.transform.position.y;
 
@@ -93,7 +94,12 @@ public class SpikeQuicksand : MonoBehaviour
 
             float distance = heading.magnitude;
             Vector3 velocity = (heading / distance);
+
+            MeshRenderer meshRenderer = spikeQuicksandOutlines[0].GetComponentInChildren<MeshRenderer>();
+            float distanceRatio = meshRenderer.bounds.size.x / 1;
             horizontalSpikeChainVelocity = new Vector2(velocity.x, velocity.z).normalized;
+            horizontalSpikeChainVelocity *= distanceRatio;
+
             playerEnergy.SetTempEnergy(hand, baseSpikeRadius * 2 * playerEnergy.maxEnergy / maxSpikeDiameter);
         }
         return spikeQuicksandOutlines;
