@@ -74,7 +74,7 @@ public class PlayerAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rocks = Rocks.CreateComponent(gameObject, rockPrefab, playerEnergy, rockCreationDistance, rockMassScale, minRockDiameter, maxRockDimater, numberOfRocksInCluster);
+        rocks = Rocks.CreateComponent(rockPrefab, playerEnergy, rockCreationDistance, rockMassScale, minRockDiameter, maxRockDimater, numberOfRocksInCluster);
         spikeQuicksand = SpikeQuicksand.CreateComponent(gameObject, spikePrefab, quicksandPrefab, areaOutlinePrefab, playerEnergy, validOutlineMat,
             invalidOutlineMat, baseSpikeRadius, spikeSpeedReduction, spikeMinSpeed, spikeMaxHeight, outlineLayerMask, energyPerSpikeInChain,
             maxSpikesInChain, maxSpikeDiameter, quicksandSizeMultiplier, earthquakeDuration, maxEarthquakeDistance);

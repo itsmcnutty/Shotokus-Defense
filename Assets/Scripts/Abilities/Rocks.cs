@@ -5,6 +5,9 @@ using Valve.VR.InteractionSystem;
 
 public class Rocks : MonoBehaviour
 {
+    public AudioSource rockThrow;
+    public AudioSource rockHit;
+
     private GameObject rockPrefab;
     private PlayerEnergy playerEnergy;
     private float rockCreationDistance;
@@ -16,10 +19,10 @@ public class Rocks : MonoBehaviour
     private GameObject activeRock;
     private static List<GameObject> availableRocks = new List<GameObject>();
 
-    public static Rocks CreateComponent(GameObject gameObjectToAdd, GameObject rockPrefab, PlayerEnergy playerEnergy, float rockCreationDistance,
+    public static Rocks CreateComponent(GameObject rockPrefab, PlayerEnergy playerEnergy, float rockCreationDistance,
         float rockMassScale, float minRockDiameter, float maxRockDimater, float numberOfRocksInCluster)
     {
-        Rocks rocks = gameObjectToAdd.AddComponent<Rocks>();
+        Rocks rocks = rockPrefab.GetComponent<Rocks>();
 
         rocks.rockPrefab = rockPrefab;
         rocks.playerEnergy = playerEnergy;
@@ -100,6 +103,8 @@ public class Rocks : MonoBehaviour
             Vector3 velocity, angularVelocity;
             activeRock.GetComponent<Throwable>().GetReleaseVelocities(hand, out velocity, out angularVelocity);
 
+            rockThrow.PlayOneShot(rockThrow.clip);
+
             if (PlayerAbility.RockClusterEnabled())
             {
                 if (velocity != Vector3.zero || angularVelocity != Vector3.zero)
@@ -116,6 +121,8 @@ public class Rocks : MonoBehaviour
                         newRockRigidbody.velocity = velocity;
                         newRockRigidbody.velocity = Vector3.ProjectOnPlane(UnityEngine.Random.insideUnitSphere, velocity) * (.75f + activeRock.transform.localScale.x) + velocity;
                         newRockRigidbody.angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
+                        
+                        rockThrow.PlayOneShot(rockThrow.clip);
                     }
                 }
             }

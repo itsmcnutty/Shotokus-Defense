@@ -4,31 +4,36 @@ public class RockProperties : MonoBehaviour
 {
     private static float rockLifetime = 5.0f;
     // Start is called before the first frame update
-    void Start ()
+    void Start()
     {
-        Invoke ("DestroyRock", rockLifetime);
+        Invoke("DestroyRock", rockLifetime);
     }
 
     // Update is called once per frame
-    void Update ()
-    { }
+    void Update() { }
 
-    private void OnDestroy ()
+    private void OnDestroy()
     {
-        CancelInvoke ("DestroyRock");
+        CancelInvoke("DestroyRock");
     }
 
-    public void DestroyRock ()
+    public void DestroyRock()
     {
-        gameObject.transform.position = new Vector3 (0, -10, 0);
+        gameObject.transform.position = new Vector3(0, -10, 0);
         gameObject.SetActive(false);
-        Rocks.MakeRockAvailable (gameObject);
+        Rocks.MakeRockAvailable(gameObject);
         Destroy(this);
     }
 
     public static float GetRockLifetime()
     {
         return rockLifetime;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        AudioSource rockHit = gameObject.GetComponent<Rocks>().rockHit;
+        rockHit.PlayOneShot(rockHit.clip);
     }
 
 }
