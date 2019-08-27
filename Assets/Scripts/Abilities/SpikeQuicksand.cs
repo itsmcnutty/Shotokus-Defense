@@ -224,28 +224,11 @@ public class SpikeQuicksand : MonoBehaviour
             float quicksandSize = outlineMeshRenderer.bounds.size.x / quicksandMeshRenderer.bounds.size.x;
             quicksand.transform.localScale = new Vector3(quicksandSize, 1f, quicksandSize);
 
-            quicksand.AddComponent<QuicksandProperties>();
+            QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration);
             Destroy(spikeQuicksandOutline);
             spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
             playerEnergy.UseEnergy(hand);
-            if (PlayerAbility.EarthquakeEnabled())
-            {
-                GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-                foreach (GameObject enemy in enemies)
-                {
-                    NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
-                    if(agent != null)
-                    {
-                        float distanceToEarthquake = (enemy.transform.position - quicksand.transform.position).magnitude;
-                        if (distanceToEarthquake < maxEarthquakeDistance)
-                        {
-                            float slowRate = 1 - (distanceToEarthquake / maxEarthquakeDistance);
-                            StartCoroutine(SlowEnemyForTime(agent, slowRate, earthquakeDuration));
-                        }
-                    }
-                }
-            }
-            else
+            if (!PlayerAbility.EarthquakeEnabled())
             {
                 PowerupController.IncrementEarthquakeCounter();
                 hand.TriggerHapticPulse(800);
@@ -260,13 +243,6 @@ public class SpikeQuicksand : MonoBehaviour
             CancelSpikes();
             playerEnergy.CancelEnergyUsage(hand);
         }
-    }
-
-    private IEnumerator SlowEnemyForTime(NavMeshAgent agent, float slowRate, float duration)
-    {
-        agent.speed *= slowRate;
-        yield return new WaitForSeconds(duration);
-        agent.speed /= slowRate;
     }
 
     public void CreateSpikes(Hand hand, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity)
