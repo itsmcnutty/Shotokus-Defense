@@ -52,10 +52,8 @@ public class AdvanceState : StateMachineBehaviour
 		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 		
-		///// Transition /////
-		
 		// Move to player if outside attack range, otherwise transition
-		if (!debugNoWalk && sqrDist - sqrAttackRadius > ATTACK_MARGIN)
+		if (!debugNoWalk)
 		{
 			// Too far, walk closer
 			agent.SetDestination(playerPos);
@@ -64,12 +62,10 @@ public class AdvanceState : StateMachineBehaviour
 			// Stopping distance will cause enemy to decelerate into attack radius
 			agent.stoppingDistance = attackRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
 		}
-		else if (!debugNoWalk && sqrDist - sqrAttackRadius < ATTACK_MARGIN)
-		{
-			// Too close, retreat
-			animator.SetTrigger("Retreat");
-		}
-		else
+		
+		///// Transition /////
+		
+		if (sqrDist - sqrAttackRadius < ATTACK_MARGIN)
 		{
 			// In range, attack
 			animator.SetTrigger("Melee");

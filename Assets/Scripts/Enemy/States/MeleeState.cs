@@ -86,7 +86,7 @@ public class MeleeState : StateMachineBehaviour
 			// Too far, advance
 			animator.SetTrigger("Advance");
 		}
-		else if (sqrDist - sqrAttackRadius < ATTACK_MARGIN)
+		else if (sqrDist - sqrAttackRadius < -ATTACK_MARGIN)
 		{
 			// Too close, retreat
 			animator.SetTrigger("Retreat");
