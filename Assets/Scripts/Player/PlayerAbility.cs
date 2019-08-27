@@ -178,8 +178,15 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (!walls.WallIsActive() && arc.CanUseAbility())
         {
-            rocks.TryCreateRock(hand, otherHand);
-            if (!rocks.RockIsActive() && hand.hoveringInteractable == null && playerEnergy.EnergyAboveThreshold(200f))
+            if (hand.currentAttachedObject != null)
+            {
+                rocks.PickupRock(hand, otherHand);
+            }
+            else if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+            {
+                rocks.CreateNewRock(hand, arc);
+            }
+            else if (playerEnergy.EnergyAboveThreshold(200f))
             {
                 spikeQuicksand.IntializeOutline(hand, player);
             }
