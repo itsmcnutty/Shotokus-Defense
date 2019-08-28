@@ -76,8 +76,6 @@ public class RagdollController : MonoBehaviour
             rigidbody.velocity = Vector3.zero;
             rigidbody.angularVelocity = Vector3.zero;
         }
-
-        StartCoroutine("WaitAndStop");
     }
 
     // Re-enables the Animator to regain control of Rigidbodies
@@ -95,21 +93,13 @@ public class RagdollController : MonoBehaviour
         }
         agent.enabled = true;
         
+        /*
         // If not on navmesh or flying in air, try again later
         if (!agent.isOnNavMesh)
         {
             StartRagdoll();
             return;
         }
-        
-        // Restart animation in Walking state
-        animator.SetTrigger("Reset");
-        animator.Update(0f);
-    }
-
-    IEnumerator WaitAndStop()
-    {
-        yield return new WaitForSeconds(4f);
-        StopRagdoll();
+        */
     }
 }

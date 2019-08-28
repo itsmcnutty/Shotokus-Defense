@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class RagdollState : IState
 {
 
-	// This is the agent to move around by NavMesh
-	private NavMeshAgent agent;
+	// The enemy's animator component
+	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
@@ -21,7 +21,7 @@ public class RagdollState : IState
 
 	public RagdollState(EnemyHeavyProperties enemyProps)
 	{
-		agent = enemyProps.agent;
+		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		gameObj = enemyProps.gameObject;
@@ -38,8 +38,7 @@ public class RagdollState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
-		// Can't walk, not an obstacle
-		agent.enabled = false;
+		// Not an obstacle
 		obstacle.enabled = false;
 	}
 
@@ -48,9 +47,9 @@ public class RagdollState : IState
 	{
 		// Stop ragdolling
 		ragdollController.StopRagdoll();
-		
-		// Re-enable pathfinding immediately
-		agent.enabled = true;
+        
+		// Restart animation in Walking state
+		animator.SetTrigger("Ragdoll");
 	}
 
 	// Called during Update while currently in this state
@@ -78,7 +77,7 @@ public class RagdollState : IState
 		Rigidbody spine = gameObj.GetComponentInChildren<Rigidbody>();
 
 		// If spine rigidbody is moving very slowly, enemy can recover
-		return spine.velocity.magnitude < 0.001f;
+		return spine.velocity.magnitude < 0.015f;
 	}
 
 	public override string ToString()
