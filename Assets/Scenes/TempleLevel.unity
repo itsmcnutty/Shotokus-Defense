@@ -4910,6 +4910,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5697528617253961025, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: rockClusterBar
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5697528617107044784, guid: c4b40cb2a53b607439da31578005b9cd,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -6647,6 +6652,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1930274777}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1931967546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 612244714953033358, guid: 2eac681e2e27b4f428ff1ea09b55a44c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2118028848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1931967547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931967546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb5713b5a2f78b4d91bfe558fde05b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameoverMenuPrefab: {fileID: 4037016777891229806, guid: 8f16c1fa097b66747ba5fb9febd46ba8,
+    type: 3}
 --- !u!1 &1968417984
 GameObject:
   m_ObjectHideFlags: 0
