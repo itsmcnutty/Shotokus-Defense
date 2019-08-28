@@ -1184,16 +1184,19 @@ MonoBehaviour:
   spikeSpeedReduction: 15
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
-  spikeLayerMask:
+  outlineLayerMask:
     serializedVersion: 2
-    m_Bits: 36865
+    m_Bits: 0
   energyPerSpikeInChain: 50
   maxSpikesInChain: 50
   maxSpikeDiameter: 5
+  quicksandSizeMultiplier: 2
   wallMaxHeight: 2
   wallSizeMultiplier: 200
   wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
+  maxEarthquakeDistance: 3
+  earthquakeDuration: 1
 --- !u!114 &5697528617253961032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1460,16 +1463,19 @@ MonoBehaviour:
   spikeSpeedReduction: 15
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
-  spikeLayerMask:
+  outlineLayerMask:
     serializedVersion: 2
-    m_Bits: 36865
+    m_Bits: 0
   energyPerSpikeInChain: 50
   maxSpikesInChain: 50
   maxSpikeDiameter: 5
+  quicksandSizeMultiplier: 2
   wallMaxHeight: 2
   wallSizeMultiplier: 200
   wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
+  maxEarthquakeDistance: 3
+  earthquakeDuration: 1
 --- !u!1 &5697528617253825732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,10 +2186,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d73994f92dfdf446bcf3b9752b56ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockClusterBar: {fileID: 5697528618398230938}
-  spikeChainBar: {fileID: 5697528617791401690}
-  earthquakeBar: {fileID: 5697528616498936773}
-  wallPushBar: {fileID: 5697528617703573078}
+  rockClusterBar: {fileID: 0}
+  spikeChainBar: {fileID: 0}
+  earthquakeBar: {fileID: 0}
+  wallPushBar: {fileID: 0}
   pointsForRockCluster: 10
   pointsForSpikeChain: 10
   pointsForEarthquake: 10
@@ -2264,7 +2270,7 @@ GameObject:
   - component: {fileID: 5697528617254057940}
   m_Layer: 10
   m_Name: SteamVRObjects
-  m_TagString: Untagged
+  m_TagString: CameraRig
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2468,7 +2474,7 @@ GameObject:
   - component: {fileID: 5697528617264056700}
   m_Layer: 10
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
