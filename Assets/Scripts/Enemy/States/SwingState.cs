@@ -9,6 +9,9 @@ public class SwingState : IState
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
 	
+	// The enemy properties component
+	private EnemyHeavyProperties enemyProps;
+	
 	// Flags for tracking progression through swinging animations
 	private bool startedSwinging;
 	private bool finishedSwinging;
@@ -23,6 +26,7 @@ public class SwingState : IState
 		ragdollController = enemyProps.ragdollController;
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
+		this.enemyProps = enemyProps;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -38,7 +42,6 @@ public class SwingState : IState
 	{
 		startedSwinging = false;
 		finishedSwinging = false;
-		animator.SetTrigger("Continue");
 	}
 
 	// Called upon exiting this state
@@ -47,6 +50,8 @@ public class SwingState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
+		enemyProps.TurnToPlayer();
+		
 		// When reaching the swing animation
 		if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Swinging"))
 		{

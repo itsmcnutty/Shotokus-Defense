@@ -122,6 +122,7 @@ public class MeleeState : IState
 		// Transition to swinging if enemy can attack
 		if (swinging)
 		{
+			animator.SetTrigger("Swing");
 			return swingState;
 		}
 		

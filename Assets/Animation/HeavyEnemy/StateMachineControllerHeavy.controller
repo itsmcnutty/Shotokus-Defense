@@ -126,7 +126,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.3190145
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!206 &-7545570135691245146
@@ -709,6 +709,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: Swing
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -819,7 +825,7 @@ AnimatorStateTransition:
   m_ExitTime: 0.9013158
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &1794843663145779951
@@ -909,7 +915,7 @@ AnimatorStateTransition:
     m_ConditionEvent: AttackNum
     m_EventTreshold: 1
   - m_ConditionMode: 1
-    m_ConditionEvent: Continue
+    m_ConditionEvent: Swing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5854829712047576709}
@@ -1181,7 +1187,7 @@ AnimatorStateTransition:
     m_ConditionEvent: AttackNum
     m_EventTreshold: 0
   - m_ConditionMode: 1
-    m_ConditionEvent: Continue
+    m_ConditionEvent: Swing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2936814560255975802}

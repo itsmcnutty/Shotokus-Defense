@@ -25,7 +25,7 @@ public class EnemyHeavyProperties : MonoBehaviour
 	// Allowed space around attack radius that enemy's can attack from
 	[NonSerialized] public float ATTACK_MARGIN = 1f;
 	// How fast enemy turns to face player
-	private float TURN_SPEED = 0.03f;
+	private float TURN_SPEED = 0.05f;
     
 	// Squared attack radius (for optimized calculations)
 	[NonSerialized] public float sqrAttackRadius;
