@@ -54,6 +54,8 @@ public class EnemyHeavyProperties : MonoBehaviour
         
 		agent.stoppingDistance = ATTACK_RADIUS;
 		sqrAttackRadius = ATTACK_RADIUS * ATTACK_RADIUS;
+
+		animator.keepAnimatorControllerStateOnDisable = false;
         
 		// Instantiate states with the properties above
 		advanceState = new AdvanceState(this);
@@ -103,7 +105,14 @@ public class EnemyHeavyProperties : MonoBehaviour
 		yield return new WaitForEndOfFrame();
 		yield return new WaitForEndOfFrame();
 
-		agent.enabled = true;
+		if (!obstacle.enabled)
+		{
+			agent.enabled = true;
+		}
+		else
+		{
+			EnablePathfind();
+		}
 	}
 
 }

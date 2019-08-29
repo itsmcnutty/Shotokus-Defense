@@ -5,7 +5,9 @@ using UnityEngine.AI;
 
 public class RagdollState : IState
 {
-
+	// Minimum time to stay in ragdoll (seconds)
+	private float MINIMUM_DURATION = 1.5f;
+	
 	// The enemy's animator component
 	private Animator animator;
 	// The enemy's ragdoll controller
@@ -15,6 +17,9 @@ public class RagdollState : IState
 	
 	// This enemy's GameObject
 	private GameObject gameObj;
+	
+	// Total time spent in animation (seconds)
+	private float timeRagdolling = 0f;
 	
 	// States to transition to
 	private AdvanceState advanceState;
@@ -38,6 +43,7 @@ public class RagdollState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
+		Debug.Log(ToString());
 		// Not an obstacle
 		obstacle.enabled = false;
 	}
@@ -53,16 +59,18 @@ public class RagdollState : IState
 	}
 
 	// Called during Update while currently in this state
-	public void Action() {}
+	public void Action()
+	{
+		timeRagdolling += Time.deltaTime;
+	}
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
 	// is possible
 	public IState Transition()
 	{
-		// TODO: determine if enemy should recover from ragdoll
-		
+		Debug.Log(timeRagdolling);
 		// If the enemy can recover from ragdolling, transition to advanceState
-		if (CanRecover())
+		if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
 		{
 			return advanceState;
 		}
@@ -76,8 +84,9 @@ public class RagdollState : IState
 	{
 		Rigidbody spine = gameObj.GetComponentInChildren<Rigidbody>();
 
+		Debug.Log(spine.velocity.magnitude);
 		// If spine rigidbody is moving very slowly, enemy can recover
-		return spine.velocity.magnitude < 0.015f;
+		return spine.velocity.magnitude < 0.13f;
 	}
 
 	public override string ToString()

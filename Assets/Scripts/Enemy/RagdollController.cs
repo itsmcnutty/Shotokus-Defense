@@ -86,20 +86,20 @@ public class RagdollController : MonoBehaviour
         // Re-enable animation
         animator.enabled = true;
         
+        // Reset all animator triggers
+        foreach (AnimatorControllerParameter trigger in animator.parameters)
+        {
+            if (trigger.type == AnimatorControllerParameterType.Trigger)
+            {
+                animator.ResetTrigger(trigger.name);
+            }
+        }
+        
         // Move to position where ragdoll was laying and re-enable pathfinding
         if (!resetPosition)
         {
             transform.position = rigidbodies[0].transform.position;
         }
         agent.enabled = true;
-        
-        /*
-        // If not on navmesh or flying in air, try again later
-        if (!agent.isOnNavMesh)
-        {
-            StartRagdoll();
-            return;
-        }
-        */
     }
 }

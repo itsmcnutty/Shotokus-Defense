@@ -66,6 +66,7 @@ public class AdvanceState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
+		Debug.Log(ToString());
 		// No longer obstacle
 		obstacle.enabled = false;
 		enemyProps.EnablePathfind();
@@ -118,9 +119,9 @@ public class AdvanceState : IState
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
 		// If within melee range, transition to melee state
-		if (sqrDist - sqrAttackRadius < attackMargin)
+		if (sqrDist - sqrAttackRadius < 0.1 * attackMargin)
 		{
-			animator.SetTrigger("Continue");
+			animator.SetTrigger("Melee");
 			return meleeState;
 		}
 		

@@ -128,7 +128,7 @@ public class RetreatState : IState
 		if (sqrDist - sqrRetreatRadius > 0f)
 		{
 			// Done retreating, attack
-			animator.SetTrigger("Continue");
+			animator.SetTrigger("Melee");
 			return meleeState;
 		}
 		

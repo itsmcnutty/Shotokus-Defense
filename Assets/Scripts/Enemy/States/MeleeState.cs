@@ -118,8 +118,8 @@ public class MeleeState : IState
 			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}
-		
-		// Transition to swinging if enemy can attack
+
+		// When enemy attack cooldown has ended and enemy is in Meleeing animation, enemy can attack
 		if (swinging)
 		{
 			animator.SetTrigger("Swing");
@@ -136,14 +136,12 @@ public class MeleeState : IState
 		{
 			// Too far, advance
 			animator.SetTrigger("Advance");
-			attackTimer = 0f;
 			return advanceState;
 		}
 		if (sqrDist - sqrAttackRadius < -ATTACK_MARGIN)
 		{
 			// Too close, retreat
 			animator.SetTrigger("Retreat");
-			attackTimer = 0f;
 			return retreatState;
 		}
 		

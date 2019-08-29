@@ -9,10 +9,7 @@ public class AIStateMachine : MonoBehaviour
     public void ChangeState(IState newState)
     {
         // Call Exit on last state
-        if (currentState != null)
-        {
-            currentState.Exit();
-        }
+        currentState?.Exit();
 
         // Transition to new state
         currentState = newState;
