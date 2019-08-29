@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Valve.VR;
@@ -28,6 +30,7 @@ public class Walls : MonoBehaviour
     private static float lastAngle;
     private static float startingHandHeight;
     private static float currentWallHeight;
+    private Queue<Vector3> previousVelocities = new Queue<Vector3>();
 
     private NavMeshSurface surface;
     private NavMeshSurface surfaceLight;
@@ -46,9 +49,6 @@ public class Walls : MonoBehaviour
         walls.rockCreationDistance = rockCreationDistance;
         walls.outlineLayerMask = outlineLayerMask;
         walls.player = player;
-
-        //        walls.surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
-        //        walls.surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
         walls.surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
 
         return walls;
@@ -82,10 +82,11 @@ public class Walls : MonoBehaviour
         }
     }
 
-    public void UpdateWallHeight(Hand hand, Hand otherHand)
+    public void UpdateWallHeight(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
         hand.TriggerHapticPulse(1500);
         float newHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+
         if (newHandHeight < 1 && currentWallHeight < newHandHeight)
         {
             MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
@@ -94,6 +95,12 @@ public class Walls : MonoBehaviour
             wall.transform.position = Vector3.MoveTowards(wall.transform.position, newPos, 1f);
             float area = (float) Math.Round(wall.transform.localScale.x * meshRenderer.bounds.size.x * wallMaxHeight * newHandHeight, 2) * wallSizeMultiplier;
             playerEnergy.SetTempEnergy(firstHandHeld, area);
+        }
+
+        previousVelocities.Enqueue(new Vector3(controllerPose.GetVelocity().x, 0, controllerPose.GetVelocity().z));
+        if (previousVelocities.Count > 5)
+        {
+            previousVelocities.Dequeue();
         }
     }
 
@@ -115,19 +122,21 @@ public class Walls : MonoBehaviour
             playerEnergy.UseEnergy(firstHandHeld);
             if (PlayerAbility.WallPushEnabled())
             {
-                Vector3 velocity = new Vector3(controllerPose.GetVelocity().x, 0, controllerPose.GetVelocity().z);
+                Vector3 finalVelocity = Vector3.zero;
+                foreach(Vector3 velocity in previousVelocities)
+                {
+                    finalVelocity += velocity;
+                }
+                finalVelocity /= previousVelocities.Count;
 
-                wall.GetComponent<WallProperties>().direction = velocity.normalized;
-                wall.GetComponent<WallProperties>().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
+                wall.GetComponent<WallProperties>().direction = finalVelocity.normalized;
+                wall.GetComponent<WallProperties>().wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
             }
             else
             {
                 PowerupController.IncrementWallPushCounter();
             }
             wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
-            //            surface.BuildNavMesh();
-            //            surfaceLight.BuildNavMesh();
-            Debug.Log("BUILDING THE NAVMESH");
             surfaceWalls.BuildNavMesh();
         }
         ResetWallInfo();

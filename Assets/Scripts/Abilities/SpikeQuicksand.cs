@@ -105,7 +105,7 @@ public class SpikeQuicksand : MonoBehaviour
         float handDistance = hand.transform.position.y - startingSpikeHandHeight;
         float size = (float) Math.Pow((Math.Abs(handDistance)) + (baseSpikeRadius * 2), 3);
         previousVelocities.Enqueue(controllerPose.GetVelocity().y);
-        if (previousVelocities.Count > 10)
+        if (previousVelocities.Count > 5)
         {
             previousVelocities.Dequeue();
         }
