@@ -10,7 +10,7 @@ public class QuicksandProperties : MonoBehaviour
     private float quicksandSpeedReduction = 3f;
     private float maxEarthquakeDistance;
     private float earthquakeDuration;
-    private static List<NavMeshAgent> slowedEnemies = new List<NavMeshAgent>();
+    private static Dictionary<NavMeshAgent, float> slowedEnemies = new Dictionary<NavMeshAgent, float>();
 
     public static void CreateComponent(GameObject quicksand, float maxEarthquakeDistance, float earthquakeDuration)
     {
@@ -31,9 +31,9 @@ public class QuicksandProperties : MonoBehaviour
                 if (agent != null)
                 {
                     float distanceToEarthquake = (enemy.transform.position - gameObject.transform.position).magnitude;
-                    if (distanceToEarthquake < maxEarthquakeDistance && !slowedEnemies.Contains(agent))
+                    if (distanceToEarthquake < maxEarthquakeDistance && !slowedEnemies.TryGetValue(agent, out float speed))
                     {
-                        slowedEnemies.Add(agent);
+                        slowedEnemies.Add(agent, agent.speed);
                         float slowRate = distanceToEarthquake / maxEarthquakeDistance;
                         slowRate = (slowRate != 0) ? (float) Math.Pow(slowRate, 1) : float.MinValue;
                         StartCoroutine(SlowEnemyForTime(agent, slowRate, earthquakeDuration));
@@ -62,10 +62,10 @@ public class QuicksandProperties : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
-        if (agent != null && !slowedEnemies.Contains(agent))
+        if (agent != null && !slowedEnemies.TryGetValue(agent, out float speed))
         {
             agent.speed /= quicksandSpeedReduction;
-            slowedEnemies.Add(agent);
+            slowedEnemies.Add(agent, agent.speed);
         }
         else if (other.attachedRigidbody != null)
         {
@@ -78,11 +78,15 @@ public class QuicksandProperties : MonoBehaviour
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
         if (agent != null)
         {
-            agent.speed *= quicksandSpeedReduction;
+            agent.speed = quicksandSpeedReduction;
         }
 
-        if(slowedEnemies.Contains(agent))
+        if(slowedEnemies.TryGetValue(agent, out float speed))
         {
+            if(agent != null)
+            {
+                agent.speed = speed;
+            }
             slowedEnemies.Remove(agent);
         }
     }
@@ -91,9 +95,9 @@ public class QuicksandProperties : MonoBehaviour
     {
         agent.speed *= slowRate;
         yield return new WaitForSeconds(duration);
-        if (agent != null)
+        if (agent != null && slowedEnemies.TryGetValue(agent, out float speed))
         {
-            agent.speed /= slowRate;
+            agent.speed = speed;
         }
         slowedEnemies.Remove(agent);
     }
