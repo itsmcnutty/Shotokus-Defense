@@ -7,31 +7,24 @@ public class Rocks : MonoBehaviour
 {
     public AudioSource rockThrow;
     public AudioSource rockHit;
+    public GameObject rockPrefab;
+    public float numberOfRocksInCluster = 4;
+    public float minRockDiameter = 0.25f;
+    public float maxRockDimater = 1.5f;
+    public float rockMassScale = 100f;
 
-    private GameObject rockPrefab;
     private PlayerEnergy playerEnergy;
-    private float rockCreationDistance;
-    private float rockMassScale;
-    private float minRockDiameter;
-    private float maxRockDimater;
-    private float numberOfRocksInCluster;
-
-    private GameObject activeRock;
     private static List<GameObject> availableRocks = new List<GameObject>();
 
-    public static Rocks CreateComponent(GameObject rockPrefab, PlayerEnergy playerEnergy, float rockCreationDistance,
-        float rockMassScale, float minRockDiameter, float maxRockDimater, float numberOfRocksInCluster)
+    public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
-        Rocks rocks = rockPrefab.GetComponent<Rocks>();
-
-        rocks.rockPrefab = rockPrefab;
+        Rocks rocks = player.GetComponent<Rocks>();
         rocks.playerEnergy = playerEnergy;
-        rocks.rockCreationDistance = rockCreationDistance;
-        rocks.rockMassScale = rockMassScale;
-        rocks.minRockDiameter = minRockDiameter;
-        rocks.maxRockDimater = maxRockDimater;
-        rocks.numberOfRocksInCluster = numberOfRocksInCluster;
+        return rocks;
+    }
 
+    public void InitRocks()
+    {
         float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime() * 25;
 
         for (int i = 0; i < numRocks; i++)
@@ -41,39 +34,40 @@ public class Rocks : MonoBehaviour
             rock.SetActive(false);
             MakeRockAvailable(rock);
         }
-
-        return rocks;
     }
 
-    public void PickupRock(Hand hand, Hand otherHand)
+    public GameObject PickupRock(Hand hand, Hand otherHand)
     {
+        GameObject activeRock = null;
         if (otherHand.currentAttachedObject == null)
         {
-            if (GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+            if (GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
             {
-                activeRock = hand.currentAttachedObject;
+                activeRock = hand.hoveringInteractable.gameObject;
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
             else
             {
-                hand.DetachObject(hand.currentAttachedObject);
+                hand.hoveringInteractable = null;
             }
         }
-        else if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+        else if (hand.hoveringInteractable.gameObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
         {
-            activeRock = hand.currentAttachedObject;
+            activeRock = hand.hoveringInteractable.gameObject;
             Destroy(activeRock.GetComponent<RockProperties>());
         }
+        return activeRock;
     }
 
-    public void CreateNewRock(Hand hand, ControllerArc arc)
+    public GameObject CreateNewRock(Hand hand, ControllerArc arc)
     {
-        activeRock = GetNewRock();
+        GameObject activeRock = GetNewRock();
         activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
         hand.AttachObject(activeRock, GrabTypes.Scripted);
+        return activeRock;
     }
 
-    public void UpdateRock(Hand hand)
+    public void UpdateRock(GameObject activeRock, Hand hand)
     {
         float rockEnergyCost = GetRockEnergyCost(activeRock);
         rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
@@ -82,7 +76,7 @@ public class Rocks : MonoBehaviour
         hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0);
     }
 
-    public void ThrowRock(Hand hand, Hand otherHand)
+    public void ThrowRock(GameObject activeRock, Hand hand, Hand otherHand)
     {
         hand.DetachObject(activeRock);
         hand.SetAllowResize(true);
@@ -91,7 +85,7 @@ public class Rocks : MonoBehaviour
             float rockSize = (float) Math.Pow(Math.Floor(activeRock.transform.localScale.x * activeRock.transform.localScale.y * activeRock.transform.localScale.z), 3);
             playerEnergy.SetTempEnergy(hand, rockSize);
             playerEnergy.TransferHandEnergy(hand, otherHand);
-            otherHand.GetComponent<Rocks>().activeRock = activeRock;
+            otherHand.GetComponent<PlayerAbility>().activeRock = activeRock;
         }
         else
         {
@@ -131,7 +125,6 @@ public class Rocks : MonoBehaviour
                 PowerupController.IncrementRockClusterCounter();
             }
         }
-        activeRock = null;
     }
 
     private float GetRockEnergyCost(GameObject rock)
@@ -156,13 +149,8 @@ public class Rocks : MonoBehaviour
         return newRock;
     }
 
-    public static void MakeRockAvailable(GameObject spike)
+    public static void MakeRockAvailable(GameObject rock)
     {
-        availableRocks.Add(spike);
-    }
-
-    public bool RockIsActive()
-    {
-        return activeRock != null;
+        availableRocks.Add(rock);
     }
 }

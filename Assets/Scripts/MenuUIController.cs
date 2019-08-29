@@ -32,7 +32,6 @@ public class MenuUIController : MonoBehaviour
         
         vrCamera = player.GetComponent<Camera>();
         
-        
         laserPointer = this.GetComponent<InteractLaserButton>();
         isPauseMenuActive = false;
     }
@@ -48,21 +47,7 @@ public class MenuUIController : MonoBehaviour
         // todo - otherwise, close it
         if (PausePress())
         {
-            laserPointer.toggleLaser();
-            if (!isPauseMenuActive)
-            {
-                // menu is not active, so open it
-                isPauseMenuActive = true;
-                PauseGame();
-                Time.timeScale = 0;
-            }
-            else
-            {
-                // menu is active, so close it
-                isPauseMenuActive = false;
-                Destroy(pauseMenu);
-                Time.timeScale = 1;
-            }
+            pauseToggle();
         }
         
     }
@@ -81,16 +66,16 @@ public class MenuUIController : MonoBehaviour
     {
         return pauseAction.GetStateDown(leftHandInput);
     }
-
-    // todo make this toggleable, so if not in menu access it
-    // freezes the game, and instantiates the menu
+    
+    // Instantiates pause menu in the direction the player looks at
     public void PauseGame()
     {
+        // calculate location in which player looks at, to instantiate menu
         playerPos = player.transform.position;
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
-        spawnPosition.y = (float) 1.9;
+        spawnPosition.y = (float) 3; // todo test this out
         
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
         pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
@@ -103,10 +88,28 @@ public class MenuUIController : MonoBehaviour
 //        pauseMenu.transform.position = spawnPosition;
 //        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
 //        pauseMenu.transform.LookAt(targetPosition);
-
-        
     }
-    
+
+    // if pause menu is not active, instantiate it and pause game
+    // if pause menu active, delete it and unpause game
+    public void pauseToggle()
+    {
+        laserPointer.toggleLaser();
+        if (!isPauseMenuActive)
+        {
+            // menu is not active, so open it
+            isPauseMenuActive = true;
+            PauseGame();
+            Time.timeScale = 0;
+        }
+        else
+        {
+            // menu is active, so close it
+            isPauseMenuActive = false;
+            Destroy(pauseMenu);
+            Time.timeScale = 1;
+        }
+    }
     
     
     

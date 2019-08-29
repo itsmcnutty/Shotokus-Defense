@@ -15,9 +15,20 @@ public class GameController : MonoBehaviour
     private EnemyProducer enemyProducer; // EnemyProducer script functionality
     private PlayerHealth playerHealth; // controller for player health once round ends
 
-    private int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
-    private int enemiesDestroyed; // number of enemies destroyed in current Wave
+    public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
+    public int enemiesDestroyed; // number of enemies destroyed in current Wave
+    
+    private int caseSwitch;
+    private GameObject playerObj; // gameObject that contains cameraRig, vrCamera, hands
+    // todo change the whole code where vrCamera is player
+    private GameObject player; // vrCamera reference, contains all player scripts
+    private GameObject vrCamera; // referenced as our player, contains player scripts
+    private GameObject cameraRig; // this is the steamVRObjects object 
 
+
+    private GameObject UIControllerObj;
+    private GameOverMenuController gameOverController;
+    
 
     // Constructor
     private GameController(){}
@@ -38,7 +49,14 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        GameObject player = GameObject.FindWithTag ("MainCamera");
+        // teleport script
+        caseSwitch = 1;
+        playerObj = GameObject.FindGameObjectWithTag("Player");
+        vrCamera = GameObject.FindGameObjectWithTag("MainCamera");
+        cameraRig = GameObject.FindGameObjectWithTag("CameraRig");
+        
+        
+        player = GameObject.FindWithTag ("MainCamera");
         if (player != null)
         {
             playerHealth = player.GetComponent<PlayerHealth> ();
@@ -46,14 +64,12 @@ public class GameController : MonoBehaviour
 //            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
 
-        // Get enemyProducer functionality
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
-        if (enemyProducer == null)
-        {
-            Debug.Log("ERROR: Couldn't find enemy producer");
-        }
-
+        
+        UIControllerObj = GameObject.FindWithTag("UIController");
+        gameOverController = UIControllerObj.GetComponent<GameOverMenuController>();
+        
         numOfEnemiesPerWave = initialNumOfEnemies;
         StartWave(initialNumOfEnemies);
     }
@@ -95,12 +111,23 @@ public class GameController : MonoBehaviour
     }
 
     // Future: delete all other instances of objects in the scene
+    // delete walls, spikes, rocks
     public void RestartGame()
     {
+        // reactivate pause functionality
+        UIControllerObj.GetComponent<MenuUIController>().enabled = true;
+
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var enemy in enemies)
         {
             Destroy(enemy);
+        }
+        
+        // destroy menu screens and unfreeze game 
+        var menus = GameObject.FindGameObjectsWithTag("Menu");
+        foreach (var menu in menus)
+        {
+            Destroy(menu);
         }
         
         // todo translate player to beginning position
@@ -112,7 +139,12 @@ public class GameController : MonoBehaviour
         StartWave(initialNumOfEnemies);
     }
     
-    // todo make function for losing game
+    // This function is called when player looses
+    // It will instantiate the game over menu and give the option to restart the game
+    public void playerLost()
+    {
+        gameOverController.GameOverScreen();
+    }
 
     // This function keeps track of destroyed enemies by updating enemiesDestroyed variable
     // To be called when an enemey is destroyed
@@ -120,6 +152,65 @@ public class GameController : MonoBehaviour
     {
         enemiesDestroyed += 1;
     }
+    
+    
+    // This function moves the player around the 5 wave zones
+    // todo update player object position too
+        public void teleport()
+    {
+        Vector3 destinationPos;
+        int temp = caseSwitch;
+        caseSwitch += 1;
+        
+        // Get camera rig and head position
+//        Transform cameraRig = SteamVR_Render.Top().origin;
+        Transform cameraRigT = cameraRig.transform;
+//        Vector3 headPosition = SteamVR_Render.Top().head.position;
+        Vector3 headPosition = vrCamera.transform.position;
+        
+
+        Debug.Log("Teleport!");
+        temp = temp % 5;
+        Debug.Log(temp);
+        Debug.Log(caseSwitch);
+        switch (temp)
+        {
+            case 0:
+//                playerObj.transform.position = new Vector3(9,0.25f,33);
+                destinationPos = new Vector3(9,0.25f,33);
+                break;
+            case 1:
+//                playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
+                destinationPos = new Vector3(22.6f,0.5f,18.8f);
+                break;
+            case 2:
+//                playerObj.transform.position = new Vector3(-3f,0.25f,3.1f);
+                destinationPos = new Vector3(-3f,0.75f,3.1f);
+                break;
+            case 3:
+//                playerObj.transform.position = new Vector3(26,0.25f,-22.8f);
+                destinationPos = new Vector3(26,1f,-22.8f);
+                break;           
+            case 4:
+//                playerObj.transform.position = new Vector3(-1.5f,0.25f,-31.5f);
+                destinationPos = new Vector3(-1.5f,0.75f,-31.5f);
+                break;
+            default:
+//                playerObj.transform.position = new Vector3(0,0,0);
+                destinationPos = new Vector3(0,0,0);
+                break;
+        }
+        
+        // Calculate translation
+        Vector3 groundPosition = new Vector3(headPosition.x,cameraRigT.position.y, headPosition.z);
+        Vector3 translateVector = destinationPos - groundPosition;
+
+        // move
+        cameraRigT.position += translateVector;
+//        playerObj.transform.position = destinationPos;
+
+    }
+    
     
     
     

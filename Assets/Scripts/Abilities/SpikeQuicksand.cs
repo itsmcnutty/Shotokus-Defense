@@ -1,64 +1,53 @@
 ﻿using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
 public class SpikeQuicksand : MonoBehaviour
 {
-    private GameObject spikePrefab;
-    private GameObject quicksandPrefab;
+    public GameObject spikePrefab;
+    public GameObject quicksandPrefab;
+    public float baseSpikeRadius = 0.5f;
+    public float spikeSpeedReduction = 10f;
+    public float spikeMinSpeed = .05f;
+    public float spikeMaxHeight = 1.75f;
+    public float energyPerSpikeInChain = 50;
+    public float maxSpikesInChain = 50;
+    public float maxSpikeDiameter = 5f;
+    public float quicksandSizeMultiplier = 2f;
+    public float maxEarthquakeDistance = 3f;
+    public float earthquakeDuration = 1f;
+
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
     private Material validOutlineMat;
     private Material invalidOutlineMat;
-    private float baseSpikeRadius;
-    private float spikeSpeedReduction;
-    private float spikeMinSpeed;
-    private float spikeMaxHeight;
     private LayerMask outlineLayerMask;
-    private float energyPerSpikeInChain;
-    private float maxSpikesInChain;
-    private float maxSpikeDiameter;
-    private float quicksandSizeMultiplier;
-    private float maxEarthquakeDistance;
-    private float earthquakeDuration;
 
-    private float startingSpikeHandHeight;
-    private Vector2 horizontalSpikeChainVelocity;
-    private List<GameObject> spikeQuicksandOutlines = new List<GameObject>();
     private static List<Vector2> spikeLocations = new List<Vector2>();
     private HashSet<Vector3> allSpikes = new HashSet<Vector3>();
-    private static List<GameObject> availableSpikes = new List<GameObject>();
     private Queue<float> previousVelocities = new Queue<float>();
+    private static List<GameObject> availableSpikes = new List<GameObject>();
 
-    public static SpikeQuicksand CreateComponent(GameObject gameObjectToAdd, GameObject spikePrefab, GameObject quicksandPrefab, GameObject areaOutlinePrefab,
-        PlayerEnergy playerEnergy, Material validOutlineMat, Material invalidOutlineMat, float baseSpikeRadius, float spikeSpeedReduction, float spikeMinSpeed,
-        float spikeMaxHeight, LayerMask outlineLayerMask, float energyPerSpikeInChain, float maxSpikesInChain, float maxSpikeDiameter, float quicksandSizeMultiplier,
-        float earthquakeDuration, float maxEarthquakeDistance)
+    public static SpikeQuicksand CreateComponent(GameObject player, GameObject areaOutlinePrefab, PlayerEnergy playerEnergy, Material validOutlineMat,
+    Material invalidOutlineMat, LayerMask outlineLayerMask)
     {
-        SpikeQuicksand spikes = gameObjectToAdd.AddComponent<SpikeQuicksand>();
+        SpikeQuicksand spikes = player.GetComponent<SpikeQuicksand>();
 
-        spikes.spikePrefab = spikePrefab;
-        spikes.quicksandPrefab = quicksandPrefab;
         spikes.areaOutlinePrefab = areaOutlinePrefab;
         spikes.playerEnergy = playerEnergy;
         spikes.validOutlineMat = validOutlineMat;
         spikes.invalidOutlineMat = invalidOutlineMat;
-        spikes.baseSpikeRadius = baseSpikeRadius;
-        spikes.spikeSpeedReduction = spikeSpeedReduction;
-        spikes.spikeMinSpeed = spikeMinSpeed;
-        spikes.spikeMaxHeight = spikeMaxHeight;
         spikes.outlineLayerMask = outlineLayerMask;
-        spikes.energyPerSpikeInChain = energyPerSpikeInChain;
-        spikes.maxSpikesInChain = maxSpikesInChain;
-        spikes.maxSpikeDiameter = maxSpikeDiameter;
-        spikes.quicksandSizeMultiplier = quicksandSizeMultiplier;
-        spikes.earthquakeDuration = earthquakeDuration;
-        spikes.maxEarthquakeDistance = maxEarthquakeDistance;
 
+        return spikes;
+    }
+
+    public void InitSpikes()
+    {
         spikeLocations.Add(new Vector2(2, 0));
         spikeLocations.Add(new Vector2(1, 1));
         spikeLocations.Add(new Vector2(-1, 1));
@@ -77,42 +66,44 @@ public class SpikeQuicksand : MonoBehaviour
             spike.SetActive(false);
             MakeSpikeAvailable(spike);
         }
-
-        return spikes;
     }
 
-    public List<GameObject> IntializeOutline(Hand hand, GameObject player)
+    public GameObject IntializeOutline(Hand hand, GameObject player, out float startingSpikeHandHeight, out Vector2 horizontalSpikeChainVelocity)
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
-        spikeQuicksandOutlines.Add(Instantiate(areaOutlinePrefab));
-        
-        spikeQuicksandOutlines[0].transform.position = arc.GetEndPosition();
+        GameObject spikeQuicksandOutline = Instantiate(areaOutlinePrefab);
+
+        spikeQuicksandOutline.transform.position = arc.GetEndPosition();
         startingSpikeHandHeight = hand.transform.position.y;
 
         if (PlayerAbility.SpikeChainEnabled())
         {
-            Vector3 heading = spikeQuicksandOutlines[0].transform.position - player.transform.position;
+            Vector3 heading = spikeQuicksandOutline.transform.position - player.transform.position;
 
             float distance = heading.magnitude;
             Vector3 velocity = (heading / distance);
 
-            MeshRenderer meshRenderer = spikeQuicksandOutlines[0].GetComponentInChildren<MeshRenderer>();
+            MeshRenderer meshRenderer = spikeQuicksandOutline.GetComponentInChildren<MeshRenderer>();
             float distanceRatio = meshRenderer.bounds.size.x / 1;
             horizontalSpikeChainVelocity = new Vector2(velocity.x, velocity.z).normalized;
             horizontalSpikeChainVelocity *= distanceRatio;
 
             playerEnergy.SetTempEnergy(hand, baseSpikeRadius * 2 * playerEnergy.maxEnergy / maxSpikeDiameter);
         }
-        return spikeQuicksandOutlines;
+        else
+        {
+            horizontalSpikeChainVelocity = Vector2.zero;
+        }
+        return spikeQuicksandOutline;
     }
 
-    public List<GameObject> UpdateOutline(Hand hand, SteamVR_Behaviour_Pose controllerPose)
+    public List<GameObject> UpdateOutline(List<GameObject> spikeQuicksandOutlines, Hand hand, SteamVR_Behaviour_Pose controllerPose, float startingSpikeHandHeight, Vector2 horizontalSpikeChainVelocity)
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         float handDistance = hand.transform.position.y - startingSpikeHandHeight;
         float size = (float) Math.Pow((Math.Abs(handDistance)) + (baseSpikeRadius * 2), 3);
         previousVelocities.Enqueue(controllerPose.GetVelocity().y);
-        if(previousVelocities.Count > 10)
+        if (previousVelocities.Count > 5)
         {
             previousVelocities.Dequeue();
         }
@@ -140,7 +131,20 @@ public class SpikeQuicksand : MonoBehaviour
                 energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
             }
             playerEnergy.SetTempEnergy(hand, energyCost);
-            if ((playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy) || newSize.x < spikeQuicksandOutline.transform.localScale.x)
+
+            MeshRenderer meshRenderer = areaOutlinePrefab.GetComponentInChildren<MeshRenderer>();
+            Collider[] colliders = Physics.OverlapSphere(spikeQuicksandOutline.transform.position, newSize.x * meshRenderer.bounds.size.x / 2, outlineLayerMask);
+            bool collision = false;
+            foreach(Collider collider in colliders)
+            {
+                if(collider.transform.root != spikeQuicksandOutline.transform && collider.tag != "Ground")
+                {
+                    collision = true;
+                    break;
+                }
+            }
+
+            if ((!collision && playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy) || newSize.x < spikeQuicksandOutline.transform.localScale.x)
             {
                 spikeQuicksandOutline.transform.localScale = newSize;
             }
@@ -165,7 +169,7 @@ public class SpikeQuicksand : MonoBehaviour
                 energyCost += energyPerSpikeInChain;
                 if (numOutlines > spikeQuicksandOutlines.Count && playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy)
                 {
-                    CorrectSpikeChainOutline(spikeChainOffset, true);
+                    CorrectSpikeChainOutline(spikeQuicksandOutlines, spikeChainOffset, true);
 
                     GameObject newOutline = Instantiate(areaOutlinePrefab) as GameObject;
 
@@ -190,13 +194,13 @@ public class SpikeQuicksand : MonoBehaviour
                 energyCost -= energyPerSpikeInChain;
                 playerEnergy.SetTempEnergy(hand, energyCost);
 
-                CorrectSpikeChainOutline(spikeChainOffset, false);
+                CorrectSpikeChainOutline(spikeQuicksandOutlines, spikeChainOffset, false);
             }
         }
         return spikeQuicksandOutlines;
     }
 
-    private void CorrectSpikeChainOutline(Vector3 spikeChainOffset, bool addSpike)
+    private void CorrectSpikeChainOutline(List<GameObject> spikeQuicksandOutlines, Vector3 spikeChainOffset, bool addSpike)
     {
         if (addSpike)
         {
@@ -213,20 +217,12 @@ public class SpikeQuicksand : MonoBehaviour
         }
     }
 
-    public void TryCreateSpikesOrQuicksand(Hand hand, SteamVR_Behaviour_Pose controllerPose)
+    public void TryCreateSpikesOrQuicksand(List<GameObject> spikeQuicksandOutlines, Hand hand, SteamVR_Behaviour_Pose controllerPose, float startingSpikeHandHeight, Vector2 horizontalSpikeChainVelocity)
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         float controllerVelocity = previousVelocities.Average();
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
-        bool allOutlinesValid = true;
-        foreach (GameObject outline in spikeQuicksandOutlines)
-        {
-            if (!SpikeQuicksandIsValid(arc, outline))
-            {
-                allOutlinesValid = false;
-            }
-        }
-        if (handPos < 0 && allOutlinesValid)
+        if (handPos < 0 && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
             GameObject quicksand = Instantiate(quicksandPrefab) as GameObject;
@@ -247,18 +243,18 @@ public class SpikeQuicksand : MonoBehaviour
                 hand.TriggerHapticPulse(800);
             }
         }
-        else if (handPos > 0 && controllerVelocity > 0 && allOutlinesValid)
+        else if (handPos > 0 && controllerVelocity > 0)
         {
-            CreateSpikes(hand, controllerPose, controllerVelocity);
+            CreateSpikes(spikeQuicksandOutlines, hand, arc, controllerPose, controllerVelocity, horizontalSpikeChainVelocity);
         }
         else
         {
-            CancelSpikes();
+            CancelSpikes(spikeQuicksandOutlines);
             playerEnergy.CancelEnergyUsage(hand);
         }
     }
 
-    public void CreateSpikes(Hand hand, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity)
+    public void CreateSpikes(List<GameObject> spikeQuicksandOutlines, Hand hand, ControllerArc arc, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity, Vector2 horizontalSpikeChainVelocity)
     {
         if (PlayerAbility.SpikeChainEnabled())
         {
@@ -271,7 +267,7 @@ public class SpikeQuicksand : MonoBehaviour
                 spikeQuicksandOutlines.Remove(outline);
             }
         }
-        else
+        else if(SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
             PowerupController.IncrementSpikeChainCounter();
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
@@ -318,6 +314,11 @@ public class SpikeQuicksand : MonoBehaviour
             }
             allSpikes.Clear();
         }
+        else
+        {
+            CancelSpikes(spikeQuicksandOutlines);
+            playerEnergy.CancelEnergyUsage(hand);
+        }
     }
 
     private IEnumerator CreateChainSpike(Hand hand, GameObject outline, Vector2 spikeMoveDirection, float spikeVelocity)
@@ -326,6 +327,11 @@ public class SpikeQuicksand : MonoBehaviour
         float verticleCorrection = 0;
         while (true)
         {
+            if (!SpikeChainIsValid(outline) || numSpikes > maxSpikesInChain)
+            {
+                Destroy(outline);
+                break;
+            }
             verticleCorrection = 0;
             GameObject spike = GetNewSpike();
             spike.transform.position = outline.transform.position;
@@ -344,12 +350,12 @@ public class SpikeQuicksand : MonoBehaviour
 
             bool outOfBounds;
             verticleCorrection = CalculateOutlineVerticleCorrection(outline, out outOfBounds);
-            outline.transform.position += new Vector3(0, verticleCorrection, 0);
-            if (!SpikeChainIsValid(outline) || numSpikes > maxSpikesInChain || outOfBounds)
+            if (outOfBounds)
             {
                 Destroy(outline);
                 break;
             }
+            outline.transform.position += new Vector3(0, verticleCorrection, 0);
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -358,8 +364,8 @@ public class SpikeQuicksand : MonoBehaviour
     {
         float verticleCorrection = 0;
         RaycastHit hit;
-        if (Physics.Raycast(outline.transform.position + Vector3.up, Vector3.down, out hit, 1f, outlineLayerMask) ||
-            Physics.Raycast(outline.transform.position, Vector3.down, out hit, 1f, outlineLayerMask))
+        if (Physics.Raycast(outline.transform.position + Vector3.up, Vector3.down, out hit, 2f, outlineLayerMask) ||
+            Physics.Raycast(outline.transform.position, Vector3.down, out hit, 2f, outlineLayerMask))
         {
             if (hit.collider.tag == "Ground")
             {
@@ -425,9 +431,9 @@ public class SpikeQuicksand : MonoBehaviour
         return false;
     }
 
-    public void CancelSpikes()
+    public void CancelSpikes(List<GameObject> spikeQuicksandOutlines)
     {
-        ClearSpikeQuicksandOutlines();
+        ClearSpikeQuicksandOutlines(spikeQuicksandOutlines);
     }
 
     private bool SpikeQuicksandIsValid(ControllerArc arc, GameObject spikeQuicksandOutline)
@@ -471,7 +477,7 @@ public class SpikeQuicksand : MonoBehaviour
         return spike;
     }
 
-    private void ClearSpikeQuicksandOutlines()
+    public void ClearSpikeQuicksandOutlines(List<GameObject> spikeQuicksandOutlines)
     {
         foreach (GameObject outline in spikeQuicksandOutlines)
         {
@@ -483,10 +489,5 @@ public class SpikeQuicksand : MonoBehaviour
     public static void MakeSpikeAvailable(GameObject spike)
     {
         availableSpikes.Add(spike);
-    }
-
-    public bool SpikeQuicksandIsActive()
-    {
-        return spikeQuicksandOutlines.Count != 0;
     }
 }
