@@ -211,7 +211,11 @@ public class PlayerAbility : MonoBehaviour
 
     private void CancelAbility()
     {
-        if (walls.WallIsActive())
+        if(hand.hoveringInteractable != null && hand.hoveringInteractable.gameObject.tag == "Rock")
+        {
+            hand.hoveringInteractable = null;
+        }
+        else if (walls.WallIsActive())
         {
             walls.CancelWall(hand, otherHand);
         }

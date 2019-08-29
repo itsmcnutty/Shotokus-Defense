@@ -351,8 +351,8 @@ public class SpikeQuicksand : MonoBehaviour
     {
         float verticleCorrection = 0;
         RaycastHit hit;
-        if (Physics.Raycast(outline.transform.position + Vector3.up, Vector3.down, out hit, 1f, outlineLayerMask) ||
-            Physics.Raycast(outline.transform.position, Vector3.down, out hit, 1f, outlineLayerMask))
+        if (Physics.Raycast(outline.transform.position + Vector3.up, Vector3.down, out hit, 2f, outlineLayerMask) ||
+            Physics.Raycast(outline.transform.position, Vector3.down, out hit, 2f, outlineLayerMask))
         {
             if (hit.collider.tag == "Ground")
             {
