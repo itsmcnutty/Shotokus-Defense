@@ -85,7 +85,7 @@ public class Walls : MonoBehaviour
     public void UpdateWallHeight(Hand hand, Hand otherHand)
     {
         hand.TriggerHapticPulse(1500);
-        float newHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+        float newHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
         if (newHandHeight < 1 && currentWallHeight < newHandHeight)
         {
             MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
@@ -100,8 +100,9 @@ public class Walls : MonoBehaviour
     public void EndCreateWall(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
 
-        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
-        if (finalHandHeight < 0.01f)
+        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+        Debug.Log(finalHandHeight);
+        if (finalHandHeight < 0.18f)
         {
             Destroy(wall);
             playerEnergy.CancelEnergyUsage(firstHandHeld);
@@ -109,7 +110,7 @@ public class Walls : MonoBehaviour
         else
         {
             wall.AddComponent<WallProperties>();
-            wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+            wall.GetComponent<WallProperties>().wallHeightPercent = finalHandHeight;
 
             playerEnergy.UseEnergy(firstHandHeld);
             if (PlayerAbility.WallPushEnabled())
@@ -135,7 +136,7 @@ public class Walls : MonoBehaviour
     public void CancelWall(Hand hand, Hand otherHand)
     {
         wall.AddComponent<WallProperties>();
-        wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+        wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
         playerEnergy.UseEnergy(firstHandHeld);
         ResetWallInfo();
     }
