@@ -40,19 +40,19 @@ public class Rocks : MonoBehaviour
     {
         if (otherHand.currentAttachedObject == null)
         {
-            if (GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+            if (GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
             {
-                activeRock = hand.currentAttachedObject;
+                activeRock = hand.hoveringInteractable.gameObject;
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
             else
             {
-                hand.DetachObject(hand.currentAttachedObject);
+                hand.hoveringInteractable = null;
             }
         }
-        else if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+        else if (hand.hoveringInteractable.gameObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
         {
-            activeRock = hand.currentAttachedObject;
+            activeRock = hand.hoveringInteractable.gameObject;
             Destroy(activeRock.GetComponent<RockProperties>());
         }
     }

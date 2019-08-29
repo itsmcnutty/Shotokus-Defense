@@ -25,7 +25,7 @@ public class PlayerAbility : MonoBehaviour
     public Material invalidOutlineMat;
 
     [Header("Ability Values")]
-    
+
     public float rockCreationDistance = 3f;
     public LayerMask outlineLayerMask;
 
@@ -156,19 +156,22 @@ public class PlayerAbility : MonoBehaviour
         {
             walls.CreateNewWall(hand, otherHand);
         }
-        else if (!walls.WallIsActive() && arc.CanUseAbility())
+        else if (!walls.WallIsActive())
         {
-            if (hand.currentAttachedObject != null)
+            if (hand.hoveringInteractable != null && hand.hoveringInteractable.gameObject.tag == "Rock")
             {
                 rocks.PickupRock(hand, otherHand);
             }
-            else if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+            else if (arc.CanUseAbility())
             {
-                rocks.CreateNewRock(hand, arc);
-            }
-            else if (playerEnergy.EnergyAboveThreshold(200f))
-            {
-                spikeQuicksand.IntializeOutline(hand, player);
+                if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+                {
+                    rocks.CreateNewRock(hand, arc);
+                }
+                else if (playerEnergy.EnergyAboveThreshold(200f))
+                {
+                    spikeQuicksand.IntializeOutline(hand, player);
+                }
             }
         }
     }
