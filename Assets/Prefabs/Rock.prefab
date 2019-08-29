@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: -2513560046980156956}
   - component: {fileID: 1232436743600896166}
   - component: {fileID: 2275461595009873808}
+  - component: {fileID: 5490009313709657393}
   m_Layer: 11
   m_Name: Rock
   m_TagString: Rock
@@ -262,3 +263,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: 0
+--- !u!114 &5490009313709657393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9120694383006430445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43879362bb244b34e80072110bd06122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberOfRocksInCluster: 4
+  minRockDiameter: 0.25
+  maxRockDimater: 1.5
+  rockMassScale: 100
+  rockPrefab: {fileID: 9120694383006430445}
