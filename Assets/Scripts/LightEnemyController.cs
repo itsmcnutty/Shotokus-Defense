@@ -24,5 +24,16 @@ public class LightEnemyController : MonoBehaviour
     {
 //        playerPos = player.transform.position;
         agent.SetDestination(playerPos);
+
+        // check that target is inside range radius
+        if (agent.remainingDistance < 5f)
+        {
+            
+        }
+        
+        // check for visibility to target through ray cast
+        
+        // if visible shoot!! (beware of shooting rate)
+        
     }
 }
