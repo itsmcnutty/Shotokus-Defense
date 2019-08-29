@@ -189,7 +189,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (walls.WallIsActive() && playerEnergy.EnergyIsNotZero())
         {
-            walls.UpdateWallHeight(hand, otherHand);
+            walls.UpdateWallHeight(hand, otherHand, controllerPose);
         }
     }
 
