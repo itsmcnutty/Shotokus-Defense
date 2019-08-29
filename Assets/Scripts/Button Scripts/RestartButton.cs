@@ -6,16 +6,15 @@ public class RestartButton : MonoBehaviour
 {
     private GameObject gameControllerObject;
     private GameController gameController;
+    private MenuUIController menuUiController;
+
 
     // Start is called before the first frame update
     void Start()
     {
         gameControllerObject = GameObject.FindWithTag("GameController");
         gameController = gameControllerObject.GetComponent<GameController>();
-        if (!gameController)
-        {
-            Debug.Log("ERROR: Coundnt find the instance GAMECONTROLLER");
-        }
+        menuUiController = GameObject.FindGameObjectWithTag("UIController").GetComponent<MenuUIController>();
     }
 
     // Update is called once per frame
@@ -27,5 +26,12 @@ public class RestartButton : MonoBehaviour
     public void RestartGame()
     {
         gameController.RestartGame();
+        // if this object contains a gameover component then do not pause toggle
+        if (GetComponentInParent<GameOverProperties>() != null)
+        {
+            return;
+        }
+        menuUiController.pauseToggle();
     }
+    
 }

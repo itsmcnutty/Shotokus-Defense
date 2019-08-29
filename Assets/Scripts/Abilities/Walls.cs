@@ -109,6 +109,8 @@ public class Walls : MonoBehaviour
         else
         {
             wall.AddComponent<WallProperties>();
+            wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+
             playerEnergy.UseEnergy(firstHandHeld);
             if (PlayerAbility.WallPushEnabled())
             {
