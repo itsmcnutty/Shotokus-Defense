@@ -24,6 +24,7 @@ public class LightEnemyController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("MainCamera");
         playerPos = player.transform.position;
+
     }
 
     
@@ -33,7 +34,7 @@ public class LightEnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-//        playerPos = player.transform.position;
+        playerPos = player.transform.position;
         agent.SetDestination(playerPos);
 
         agentHead = transform.position;
@@ -44,10 +45,10 @@ public class LightEnemyController : MonoBehaviour
         var temp = agent.remainingDistance;
         
         // if agent is close enough, do range attack
-//        if (temp < 5f)
-//        {
-//            agent.isStopped = true;
-//        }
+    //        if (temp < 5f)
+    //        {
+    //            agent.isStopped = true;
+    //        }
         
         
         // check that target is inside range radius
@@ -78,8 +79,7 @@ public class LightEnemyController : MonoBehaviour
                 }
             }
 
-
-
+            
         }
         
         
