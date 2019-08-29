@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Experimental.PlayerLoop;
 
-public class HeavyEnemyController : MonoBehaviour
+public class HeavyEnemyControllerOld : MonoBehaviour
 {
     // Time between attacks (seconds)
     public float ATTACK_DELAY = 2f;
