@@ -133,7 +133,20 @@ public class SpikeQuicksand : MonoBehaviour
                 energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
             }
             playerEnergy.SetTempEnergy(hand, energyCost);
-            if ((playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy) || newSize.x < spikeQuicksandOutline.transform.localScale.x)
+
+            MeshRenderer meshRenderer = areaOutlinePrefab.GetComponentInChildren<MeshRenderer>();
+            Collider[] colliders = Physics.OverlapSphere(spikeQuicksandOutline.transform.position, newSize.x * meshRenderer.bounds.size.x / 2, outlineLayerMask);
+            bool collision = false;
+            foreach(Collider collider in colliders)
+            {
+                if(collider.transform.root != spikeQuicksandOutline.transform && collider.tag != "Ground")
+                {
+                    collision = true;
+                    break;
+                }
+            }
+
+            if ((!collision && playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy) || newSize.x < spikeQuicksandOutline.transform.localScale.x)
             {
                 spikeQuicksandOutline.transform.localScale = newSize;
             }
