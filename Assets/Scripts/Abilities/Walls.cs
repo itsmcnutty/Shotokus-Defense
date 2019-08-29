@@ -6,6 +6,12 @@ using Valve.VR.InteractionSystem;
 
 public class Walls : MonoBehaviour
 {
+    
+    public float wallMaxHeight = 2f;
+    public float wallSizeMultiplier = 120f;
+    public float wallSpeedReduction = 50f;
+    public float wallButtonClickDelay = 0.05f;
+
     private GameObject wallOutlinePrefab;
     private GameObject wallPrefab;
     private PlayerEnergy playerEnergy;
@@ -13,12 +19,7 @@ public class Walls : MonoBehaviour
     private Material invalidOutlineMat;
     private LayerMask outlineLayerMask;
     private GameObject player;
-
     private float rockCreationDistance;
-    private float wallMaxHeight;
-    private float wallSizeMultiplier;
-    private float wallSpeedReduction;
-    private float wallButtonClickDelay;
 
     private static GameObject wallOutline;
     private static GameObject wall;
@@ -33,8 +34,7 @@ public class Walls : MonoBehaviour
     private NavMeshSurface surfaceWalls;
 
     public static Walls CreateComponent(GameObject gameObjectToAdd, GameObject wallPrefab, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy,
-        Material validOutlineMat, Material invalidOutlineMat, float rockCreationDistance, float wallMaxHeight, float wallSizeMultiplier,
-        float wallSpeedReduction, float wallButtonClickDelay, LayerMask outlineLayerMask, GameObject player)
+        Material validOutlineMat, Material invalidOutlineMat, float rockCreationDistance, LayerMask outlineLayerMask, GameObject player)
     {
         Walls walls = gameObjectToAdd.AddComponent<Walls>();
 
@@ -44,10 +44,6 @@ public class Walls : MonoBehaviour
         walls.validOutlineMat = validOutlineMat;
         walls.invalidOutlineMat = invalidOutlineMat;
         walls.rockCreationDistance = rockCreationDistance;
-        walls.wallMaxHeight = wallMaxHeight;
-        walls.wallSizeMultiplier = wallSizeMultiplier;
-        walls.wallSpeedReduction = wallSpeedReduction;
-        walls.wallButtonClickDelay = wallButtonClickDelay;
         walls.outlineLayerMask = outlineLayerMask;
         walls.player = player;
 
