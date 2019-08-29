@@ -1,30 +1,32 @@
 ﻿using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
 public class SpikeQuicksand : MonoBehaviour
 {
+
+    public float baseSpikeRadius = 0.5f;
+    public float spikeSpeedReduction = 10f;
+    public float spikeMinSpeed = .05f;
+    public float spikeMaxHeight = 1.75f;
+    public float energyPerSpikeInChain = 50;
+    public float maxSpikesInChain = 50;
+    public float maxSpikeDiameter = 5f;
+    public float quicksandSizeMultiplier = 2f;
+    public float maxEarthquakeDistance = 3f;
+    public float earthquakeDuration = 1f;
+
     private GameObject spikePrefab;
     private GameObject quicksandPrefab;
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
     private Material validOutlineMat;
     private Material invalidOutlineMat;
-    private float baseSpikeRadius;
-    private float spikeSpeedReduction;
-    private float spikeMinSpeed;
-    private float spikeMaxHeight;
     private LayerMask outlineLayerMask;
-    private float energyPerSpikeInChain;
-    private float maxSpikesInChain;
-    private float maxSpikeDiameter;
-    private float quicksandSizeMultiplier;
-    private float maxEarthquakeDistance;
-    private float earthquakeDuration;
 
     private float startingSpikeHandHeight;
     private Vector2 horizontalSpikeChainVelocity;
@@ -35,9 +37,7 @@ public class SpikeQuicksand : MonoBehaviour
     private Queue<float> previousVelocities = new Queue<float>();
 
     public static SpikeQuicksand CreateComponent(GameObject gameObjectToAdd, GameObject spikePrefab, GameObject quicksandPrefab, GameObject areaOutlinePrefab,
-        PlayerEnergy playerEnergy, Material validOutlineMat, Material invalidOutlineMat, float baseSpikeRadius, float spikeSpeedReduction, float spikeMinSpeed,
-        float spikeMaxHeight, LayerMask outlineLayerMask, float energyPerSpikeInChain, float maxSpikesInChain, float maxSpikeDiameter, float quicksandSizeMultiplier,
-        float earthquakeDuration, float maxEarthquakeDistance)
+        PlayerEnergy playerEnergy, Material validOutlineMat, Material invalidOutlineMat, LayerMask outlineLayerMask)
     {
         SpikeQuicksand spikes = gameObjectToAdd.AddComponent<SpikeQuicksand>();
 
@@ -47,18 +47,13 @@ public class SpikeQuicksand : MonoBehaviour
         spikes.playerEnergy = playerEnergy;
         spikes.validOutlineMat = validOutlineMat;
         spikes.invalidOutlineMat = invalidOutlineMat;
-        spikes.baseSpikeRadius = baseSpikeRadius;
-        spikes.spikeSpeedReduction = spikeSpeedReduction;
-        spikes.spikeMinSpeed = spikeMinSpeed;
-        spikes.spikeMaxHeight = spikeMaxHeight;
         spikes.outlineLayerMask = outlineLayerMask;
-        spikes.energyPerSpikeInChain = energyPerSpikeInChain;
-        spikes.maxSpikesInChain = maxSpikesInChain;
-        spikes.maxSpikeDiameter = maxSpikeDiameter;
-        spikes.quicksandSizeMultiplier = quicksandSizeMultiplier;
-        spikes.earthquakeDuration = earthquakeDuration;
-        spikes.maxEarthquakeDistance = maxEarthquakeDistance;
 
+        return spikes;
+    }
+
+    public void InitSpikes()
+    {
         spikeLocations.Add(new Vector2(2, 0));
         spikeLocations.Add(new Vector2(1, 1));
         spikeLocations.Add(new Vector2(-1, 1));
@@ -77,15 +72,13 @@ public class SpikeQuicksand : MonoBehaviour
             spike.SetActive(false);
             MakeSpikeAvailable(spike);
         }
-
-        return spikes;
     }
 
     public List<GameObject> IntializeOutline(Hand hand, GameObject player)
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         spikeQuicksandOutlines.Add(Instantiate(areaOutlinePrefab));
-        
+
         spikeQuicksandOutlines[0].transform.position = arc.GetEndPosition();
         startingSpikeHandHeight = hand.transform.position.y;
 
@@ -112,7 +105,7 @@ public class SpikeQuicksand : MonoBehaviour
         float handDistance = hand.transform.position.y - startingSpikeHandHeight;
         float size = (float) Math.Pow((Math.Abs(handDistance)) + (baseSpikeRadius * 2), 3);
         previousVelocities.Enqueue(controllerPose.GetVelocity().y);
-        if(previousVelocities.Count > 10)
+        if (previousVelocities.Count > 10)
         {
             previousVelocities.Dequeue();
         }

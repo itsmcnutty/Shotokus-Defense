@@ -10,7 +10,6 @@ public class PlayerAbility : MonoBehaviour
     public SteamVR_Action_Boolean gripAction;
     public SteamVR_Action_Boolean drawAction;
     public Hand otherHand;
-    public float baseSpikeRadius = 0.5f;
 
     [Header("Prefabs")]
     public GameObject playerAbilityAreaPrefab;
@@ -26,25 +25,9 @@ public class PlayerAbility : MonoBehaviour
     public Material invalidOutlineMat;
 
     [Header("Ability Values")]
+
     public float rockCreationDistance = 3f;
-    public float numberOfRocksInCluster = 4;
-    public float minRockDiameter = 0.25f;
-    public float maxRockDimater = 1.5f;
-    public float rockMassScale = 100f;
-    public float spikeSpeedReduction = 10f;
-    public float spikeMinSpeed = .05f;
-    public float spikeMaxHeight = 1.75f;
     public LayerMask outlineLayerMask;
-    public float energyPerSpikeInChain = 50;
-    public float maxSpikesInChain = 50;
-    public float maxSpikeDiameter = 5f;
-    public float quicksandSizeMultiplier = 2f;
-    public float wallMaxHeight = 2f;
-    public float wallSizeMultiplier = 120f;
-    public float wallSpeedReduction = 50f;
-    public float wallButtonClickDelay = 0.05f;
-    public float maxEarthquakeDistance = 3f;
-    public float earthquakeDuration = 1f;
 
     private Hand hand;
     private PlayerEnergy playerEnergy;
@@ -69,17 +52,18 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy>();
         }
+        rocks = Rocks.CreateComponent(gameObject, rockPrefab, playerEnergy);
+        spikeQuicksand = SpikeQuicksand.CreateComponent(gameObject, spikePrefab, quicksandPrefab, areaOutlinePrefab, playerEnergy, validOutlineMat,
+            invalidOutlineMat, outlineLayerMask);
+        walls = Walls.CreateComponent(gameObject, wallPrefab, wallOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, rockCreationDistance,
+            outlineLayerMask, player);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        rocks = Rocks.CreateComponent(gameObject, rockPrefab, playerEnergy, rockCreationDistance, rockMassScale, minRockDiameter, maxRockDimater, numberOfRocksInCluster);
-        spikeQuicksand = SpikeQuicksand.CreateComponent(gameObject, spikePrefab, quicksandPrefab, areaOutlinePrefab, playerEnergy, validOutlineMat,
-            invalidOutlineMat, baseSpikeRadius, spikeSpeedReduction, spikeMinSpeed, spikeMaxHeight, outlineLayerMask, energyPerSpikeInChain,
-            maxSpikesInChain, maxSpikeDiameter, quicksandSizeMultiplier, earthquakeDuration, maxEarthquakeDistance);
-        walls = Walls.CreateComponent(gameObject, wallPrefab, wallOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, rockCreationDistance,
-            wallMaxHeight, wallSizeMultiplier, wallSpeedReduction, wallButtonClickDelay, outlineLayerMask, player);
+        rocks.InitRocks();
+        spikeQuicksand.InitSpikes();
 
         arc = GetComponentInChildren<ControllerArc>();
         otherArc = otherHand.GetComponentInChildren<ControllerArc>();
@@ -172,19 +156,22 @@ public class PlayerAbility : MonoBehaviour
         {
             walls.CreateNewWall(hand, otherHand);
         }
-        else if (!walls.WallIsActive() && arc.CanUseAbility())
+        else if (!walls.WallIsActive())
         {
-            if (hand.currentAttachedObject != null)
+            if (hand.hoveringInteractable != null && hand.hoveringInteractable.gameObject.tag == "Rock")
             {
                 rocks.PickupRock(hand, otherHand);
             }
-            else if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+            else if (arc.CanUseAbility())
             {
-                rocks.CreateNewRock(hand, arc);
-            }
-            else if (playerEnergy.EnergyAboveThreshold(200f))
-            {
-                spikeQuicksand.IntializeOutline(hand, player);
+                if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+                {
+                    rocks.CreateNewRock(hand, arc);
+                }
+                else if (playerEnergy.EnergyAboveThreshold(200f))
+                {
+                    spikeQuicksand.IntializeOutline(hand, player);
+                }
             }
         }
     }
