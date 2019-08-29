@@ -211,15 +211,7 @@ public class SpikeQuicksand : MonoBehaviour
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         float controllerVelocity = previousVelocities.Average();
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
-        bool allOutlinesValid = true;
-        foreach (GameObject outline in spikeQuicksandOutlines)
-        {
-            if (!SpikeQuicksandIsValid(arc, outline))
-            {
-                allOutlinesValid = false;
-            }
-        }
-        if (handPos < 0 && allOutlinesValid)
+        if (handPos < 0 && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
             GameObject quicksand = Instantiate(quicksandPrefab) as GameObject;
@@ -240,9 +232,9 @@ public class SpikeQuicksand : MonoBehaviour
                 hand.TriggerHapticPulse(800);
             }
         }
-        else if (handPos > 0 && controllerVelocity > 0 && allOutlinesValid)
+        else if (handPos > 0 && controllerVelocity > 0)
         {
-            CreateSpikes(hand, controllerPose, controllerVelocity);
+            CreateSpikes(hand, arc, controllerPose, controllerVelocity);
         }
         else
         {
@@ -251,7 +243,7 @@ public class SpikeQuicksand : MonoBehaviour
         }
     }
 
-    public void CreateSpikes(Hand hand, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity)
+    public void CreateSpikes(Hand hand, ControllerArc arc, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity)
     {
         if (PlayerAbility.SpikeChainEnabled())
         {
@@ -264,7 +256,7 @@ public class SpikeQuicksand : MonoBehaviour
                 spikeQuicksandOutlines.Remove(outline);
             }
         }
-        else
+        else if(SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
             PowerupController.IncrementSpikeChainCounter();
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
@@ -311,6 +303,11 @@ public class SpikeQuicksand : MonoBehaviour
             }
             allSpikes.Clear();
         }
+        else
+        {
+            CancelSpikes();
+            playerEnergy.CancelEnergyUsage(hand);
+        }
     }
 
     private IEnumerator CreateChainSpike(Hand hand, GameObject outline, Vector2 spikeMoveDirection, float spikeVelocity)
@@ -319,6 +316,11 @@ public class SpikeQuicksand : MonoBehaviour
         float verticleCorrection = 0;
         while (true)
         {
+            if (!SpikeChainIsValid(outline) || numSpikes > maxSpikesInChain)
+            {
+                Destroy(outline);
+                break;
+            }
             verticleCorrection = 0;
             GameObject spike = GetNewSpike();
             spike.transform.position = outline.transform.position;
@@ -337,12 +339,12 @@ public class SpikeQuicksand : MonoBehaviour
 
             bool outOfBounds;
             verticleCorrection = CalculateOutlineVerticleCorrection(outline, out outOfBounds);
-            outline.transform.position += new Vector3(0, verticleCorrection, 0);
-            if (!SpikeChainIsValid(outline) || numSpikes > maxSpikesInChain || outOfBounds)
+            if (outOfBounds)
             {
                 Destroy(outline);
                 break;
             }
+            outline.transform.position += new Vector3(0, verticleCorrection, 0);
             yield return new WaitForSeconds(0.1f);
         }
     }
