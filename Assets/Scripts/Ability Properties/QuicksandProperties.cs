@@ -76,11 +76,6 @@ public class QuicksandProperties : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
-        if (agent != null)
-        {
-            agent.speed = quicksandSpeedReduction;
-        }
-
         if(slowedEnemies.TryGetValue(agent, out float speed))
         {
             if(agent != null)
