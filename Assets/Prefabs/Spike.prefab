@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3384877183683094561}
   - component: {fileID: 940370148264286728}
   - component: {fileID: 1658546375992077345}
-  - component: {fileID: 2548508281339401831}
   m_Layer: 15
   m_Name: Spike
   m_TagString: Spike
@@ -79,18 +78,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: -1.1, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &2548508281339401831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2816802675583756699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01354048b294be148af73114e48b69f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4060520353978023018
 GameObject:
   m_ObjectHideFlags: 0

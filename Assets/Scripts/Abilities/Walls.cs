@@ -8,14 +8,13 @@ using Valve.VR.InteractionSystem;
 
 public class Walls : MonoBehaviour
 {
-
+    public GameObject wallPrefab;
     public float wallMaxHeight = 2f;
     public float wallSizeMultiplier = 120f;
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
     private GameObject wallOutlinePrefab;
-    private GameObject wallPrefab;
     private PlayerEnergy playerEnergy;
     private Material validOutlineMat;
     private Material invalidOutlineMat;
@@ -36,12 +35,11 @@ public class Walls : MonoBehaviour
     private NavMeshSurface surfaceLight;
     private NavMeshSurface surfaceWalls;
 
-    public static Walls CreateComponent(GameObject gameObjectToAdd, GameObject wallPrefab, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy,
-        Material validOutlineMat, Material invalidOutlineMat, float rockCreationDistance, LayerMask outlineLayerMask, GameObject player)
+    public static Walls CreateComponent(GameObject player, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy, Material validOutlineMat,
+    Material invalidOutlineMat, float rockCreationDistance, LayerMask outlineLayerMask)
     {
-        Walls walls = gameObjectToAdd.AddComponent<Walls>();
+        Walls walls = player.GetComponent<Walls>();
 
-        walls.wallPrefab = wallPrefab;
         walls.wallOutlinePrefab = wallOutlinePrefab;
         walls.playerEnergy = playerEnergy;
         walls.validOutlineMat = validOutlineMat;
@@ -186,7 +184,7 @@ public class Walls : MonoBehaviour
     {
         if (firstHandHeld != null && firstHandHeld != hand)
         {
-            firstHandHeld.GetComponent<Walls>().CancelInvoke("WallButtonsNotSimultaneous");
+            CancelInvoke("WallButtonsNotSimultaneous");
             wallOutline = Instantiate(wallOutlinePrefab) as GameObject;
             SetWallLocation(hand.GetComponentInChildren<ControllerArc>(), otherHand.GetComponentInChildren<ControllerArc>());
             firstHandHeld = null;
@@ -209,7 +207,7 @@ public class Walls : MonoBehaviour
     {
         if (firstHandReleased != null && firstHandReleased != hand)
         {
-            firstHandReleased.GetComponent<Walls>().CancelInvoke("WallButtonsNotSimultaneous");
+            CancelInvoke("WallButtonsNotSimultaneous");
             Destroy(wallOutline);
             ResetWallInfo();
             firstHandReleased = null;

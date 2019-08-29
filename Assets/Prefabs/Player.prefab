@@ -1696,14 +1696,11 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 5697528617264073322}
-  baseSpikeRadius: 0.5
   playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
     type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
-    type: 3}
-  rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
     type: 3}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
@@ -1714,26 +1711,9 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
-  numberOfRocksInCluster: 4
-  minRockDiameter: 0.25
-  maxRockDimater: 1.5
-  rockMassScale: 100
-  spikeSpeedReduction: 15
-  spikeMinSpeed: 0.05
-  spikeMaxHeight: 1.75
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
-  energyPerSpikeInChain: 50
-  maxSpikesInChain: 50
-  maxSpikeDiameter: 5
-  quicksandSizeMultiplier: 2
-  wallMaxHeight: 2
-  wallSizeMultiplier: 200
-  wallSpeedReduction: 50
-  wallButtonClickDelay: 0.05
-  maxEarthquakeDistance: 25
-  earthquakeDuration: 5
 --- !u!114 &5697528617253961032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1975,14 +1955,11 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 5697528617264122612}
-  baseSpikeRadius: 0.5
   playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
     type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
-    type: 3}
-  rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
     type: 3}
   spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
     type: 3}
@@ -1993,26 +1970,9 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
-  numberOfRocksInCluster: 4
-  minRockDiameter: 0.25
-  maxRockDimater: 1.5
-  rockMassScale: 100
-  spikeSpeedReduction: 15
-  spikeMinSpeed: 0.05
-  spikeMaxHeight: 1.75
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
-  energyPerSpikeInChain: 50
-  maxSpikesInChain: 50
-  maxSpikeDiameter: 5
-  quicksandSizeMultiplier: 2
-  wallMaxHeight: 2
-  wallSizeMultiplier: 200
-  wallSpeedReduction: 50
-  wallButtonClickDelay: 0.05
-  maxEarthquakeDistance: 25
-  earthquakeDuration: 5
 --- !u!1 &5697528617253825732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,6 +2447,9 @@ GameObject:
   - component: {fileID: 5697528617253961037}
   - component: {fileID: 5697528617253961036}
   - component: {fileID: 5697528617253961025}
+  - component: {fileID: 7507517966833001625}
+  - component: {fileID: 1156229015251733590}
+  - component: {fileID: 1384481047780279340}
   m_Layer: 10
   m_Name: VRCamera
   m_TagString: MainCamera
@@ -2640,6 +2603,62 @@ MonoBehaviour:
   spikeChainTime: 30
   earthquakeTime: 30
   wallPushTime: 30
+--- !u!114 &7507517966833001625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697528617253900718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43879362bb244b34e80072110bd06122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
+    type: 3}
+  numberOfRocksInCluster: 4
+  minRockDiameter: 0.25
+  maxRockDimater: 1.5
+  rockMassScale: 100
+--- !u!114 &1156229015251733590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697528617253900718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01354048b294be148af73114e48b69f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSpikeRadius: 0.5
+  spikeSpeedReduction: 10
+  spikeMinSpeed: 0.05
+  spikeMaxHeight: 1.75
+  energyPerSpikeInChain: 50
+  maxSpikesInChain: 50
+  maxSpikeDiameter: 5
+  quicksandSizeMultiplier: 2
+  maxEarthquakeDistance: 3
+  earthquakeDuration: 1
+--- !u!114 &1384481047780279340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5697528617253900718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0534ed2d22794f246b2ff7cfaf5bb610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallMaxHeight: 2
+  wallSizeMultiplier: 120
+  wallSpeedReduction: 50
+  wallButtonClickDelay: 0.05
 --- !u!1 &5697528617253905748
 GameObject:
   m_ObjectHideFlags: 0
@@ -4159,15 +4178,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
---- !u!1 &3058137214681458692 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 3058137214681608466}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3058137214681133438 stripped
+--- !u!4 &3058137214681151014 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+  m_CorrespondingSourceObject: {fileID: 460596, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 3058137214681608466}
   m_PrefabAsset: {fileID: 0}
@@ -4177,9 +4190,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3058137214681608466}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &3058137214681151014 stripped
+--- !u!1 &3058137214681458692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+    type: 3}
+  m_PrefabInstance: {fileID: 3058137214681608466}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3058137214681133438 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 460596, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+  m_CorrespondingSourceObject: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 3058137214681608466}
   m_PrefabAsset: {fileID: 0}
