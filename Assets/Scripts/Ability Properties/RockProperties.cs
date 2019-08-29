@@ -2,6 +2,7 @@
 
 public class RockProperties : MonoBehaviour
 {
+    public AudioSource rockHit;
     private static float rockLifetime = 5.0f;
     // Start is called before the first frame update
     void Start()
@@ -32,7 +33,6 @@ public class RockProperties : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        AudioSource rockHit = gameObject.GetComponent<Rocks>().rockHit;
         rockHit.PlayOneShot(rockHit.clip);
     }
 

@@ -90,6 +90,7 @@ public class Rocks : MonoBehaviour
         else
         {
             activeRock.AddComponent<RockProperties>();
+            activeRock.GetComponent<RockProperties>().rockHit = rockHit;
             activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
             playerEnergy.UseEnergy(hand);
             hand.TriggerHapticPulse(500);
@@ -107,6 +108,7 @@ public class Rocks : MonoBehaviour
                     {
                         GameObject newRock = GetNewRock();
                         newRock.AddComponent<RockProperties>();
+                        newRock.GetComponent<RockProperties>().rockHit = rockHit;
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
 
                         newRock.transform.position = activeRock.transform.position;
@@ -115,7 +117,7 @@ public class Rocks : MonoBehaviour
                         newRockRigidbody.velocity = velocity;
                         newRockRigidbody.velocity = Vector3.ProjectOnPlane(UnityEngine.Random.insideUnitSphere, velocity) * (.75f + activeRock.transform.localScale.x) + velocity;
                         newRockRigidbody.angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
-                        
+
                         rockThrow.PlayOneShot(rockThrow.clip);
                     }
                 }

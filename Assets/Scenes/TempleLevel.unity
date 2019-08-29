@@ -4372,6 +4372,16 @@ PrefabInstance:
       propertyPath: outlineLayerMask.m_Bits
       value: 45057
       objectReference: {fileID: 0}
+    - target: {fileID: 7507517966833001625, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: rockThrow
+      value: 
+      objectReference: {fileID: 1102047820}
+    - target: {fileID: 7507517966833001625, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: rockHit
+      value: 
+      objectReference: {fileID: 1102047819}
     - target: {fileID: 1156229015251733590, guid: c4b40cb2a53b607439da31578005b9cd,
         type: 3}
       propertyPath: spikePrefab
@@ -4390,8 +4400,30 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
         type: 3}
+    - target: {fileID: 797876623031379474, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821961638267615160, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}
+--- !u!82 &1102047819 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1821961638267615160, guid: c4b40cb2a53b607439da31578005b9cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1102047818}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1102047820 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 797876623031379474, guid: c4b40cb2a53b607439da31578005b9cd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1102047818}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1112612361
 PrefabInstance:
   m_ObjectHideFlags: 0
