@@ -44,6 +44,8 @@ public class PlayerAbility : MonoBehaviour
 
     private SpikeQuicksand spikeQuicksand;
     private List<GameObject> spikeQuicksandOutlines = new List<GameObject>();
+    private float startingSpikeHandHeight;
+    private Vector2 horizontalSpikeChainVelocity;
 
     private Walls walls;
 
@@ -171,7 +173,7 @@ public class PlayerAbility : MonoBehaviour
                 }
                 else if (playerEnergy.EnergyAboveThreshold(200f))
                 {
-                    spikeQuicksandOutlines.Add(spikeQuicksand.IntializeOutline(hand, player));
+                    spikeQuicksandOutlines.Add(spikeQuicksand.IntializeOutline(hand, player, out startingSpikeHandHeight, out horizontalSpikeChainVelocity));
                 }
             }
         }
@@ -186,7 +188,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (SpikeQuicksandIsActive())
         {
-            spikeQuicksandOutlines = spikeQuicksand.UpdateOutline(spikeQuicksandOutlines, hand, controllerPose);
+            spikeQuicksandOutlines = spikeQuicksand.UpdateOutline(spikeQuicksandOutlines, hand, controllerPose, startingSpikeHandHeight, horizontalSpikeChainVelocity);
         }
         else if (walls.WallIsActive() && playerEnergy.EnergyIsNotZero())
         {
@@ -203,7 +205,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (SpikeQuicksandIsActive())
         {
-            spikeQuicksand.TryCreateSpikesOrQuicksand(spikeQuicksandOutlines, hand, controllerPose);
+            spikeQuicksand.TryCreateSpikesOrQuicksand(spikeQuicksandOutlines, hand, controllerPose, startingSpikeHandHeight, horizontalSpikeChainVelocity);
             spikeQuicksand.ClearSpikeQuicksandOutlines(spikeQuicksandOutlines);
         }
         else if (walls.WallIsActive())
