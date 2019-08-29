@@ -5,30 +5,26 @@ using Valve.VR.InteractionSystem;
 
 public class Rocks : MonoBehaviour
 {
-    private GameObject rockPrefab;
-    private PlayerEnergy playerEnergy;
-    private float rockCreationDistance;
-    private float rockMassScale;
-    private float minRockDiameter;
-    private float maxRockDimater;
-    private float numberOfRocksInCluster;
+    public float numberOfRocksInCluster = 4;
+    public float minRockDiameter = 0.25f;
+    public float maxRockDimater = 1.5f;
+    public float rockMassScale = 100f;
 
+    private PlayerEnergy playerEnergy;
+    private GameObject rockPrefab;
     private GameObject activeRock;
     private static List<GameObject> availableRocks = new List<GameObject>();
 
-    public static Rocks CreateComponent(GameObject gameObjectToAdd, GameObject rockPrefab, PlayerEnergy playerEnergy, float rockCreationDistance,
-        float rockMassScale, float minRockDiameter, float maxRockDimater, float numberOfRocksInCluster)
+    public static Rocks CreateComponent(GameObject gameObjectToAdd, GameObject rockPrefab, PlayerEnergy playerEnergy)
     {
         Rocks rocks = gameObjectToAdd.AddComponent<Rocks>();
-
-        rocks.rockPrefab = rockPrefab;
         rocks.playerEnergy = playerEnergy;
-        rocks.rockCreationDistance = rockCreationDistance;
-        rocks.rockMassScale = rockMassScale;
-        rocks.minRockDiameter = minRockDiameter;
-        rocks.maxRockDimater = maxRockDimater;
-        rocks.numberOfRocksInCluster = numberOfRocksInCluster;
+        rocks.rockPrefab = rockPrefab;
+        return rocks;
+    }
 
+    public void InitRocks()
+    {
         float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime() * 25;
 
         for (int i = 0; i < numRocks; i++)
@@ -38,27 +34,25 @@ public class Rocks : MonoBehaviour
             rock.SetActive(false);
             MakeRockAvailable(rock);
         }
-
-        return rocks;
     }
 
     public void PickupRock(Hand hand, Hand otherHand)
     {
         if (otherHand.currentAttachedObject == null)
         {
-            if (GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+            if (GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
             {
-                activeRock = hand.currentAttachedObject;
+                activeRock = hand.hoveringInteractable.gameObject;
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
             else
             {
-                hand.DetachObject(hand.currentAttachedObject);
+                hand.hoveringInteractable = null;
             }
         }
-        else if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+        else if (hand.hoveringInteractable.gameObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
         {
-            activeRock = hand.currentAttachedObject;
+            activeRock = hand.hoveringInteractable.gameObject;
             Destroy(activeRock.GetComponent<RockProperties>());
         }
     }

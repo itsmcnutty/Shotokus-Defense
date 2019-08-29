@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Valve.VR;
@@ -6,6 +8,12 @@ using Valve.VR.InteractionSystem;
 
 public class Walls : MonoBehaviour
 {
+
+    public float wallMaxHeight = 2f;
+    public float wallSizeMultiplier = 120f;
+    public float wallSpeedReduction = 50f;
+    public float wallButtonClickDelay = 0.05f;
+
     private GameObject wallOutlinePrefab;
     private GameObject wallPrefab;
     private PlayerEnergy playerEnergy;
@@ -13,12 +21,7 @@ public class Walls : MonoBehaviour
     private Material invalidOutlineMat;
     private LayerMask outlineLayerMask;
     private GameObject player;
-
     private float rockCreationDistance;
-    private float wallMaxHeight;
-    private float wallSizeMultiplier;
-    private float wallSpeedReduction;
-    private float wallButtonClickDelay;
 
     private static GameObject wallOutline;
     private static GameObject wall;
@@ -27,14 +30,14 @@ public class Walls : MonoBehaviour
     private static float lastAngle;
     private static float startingHandHeight;
     private static float currentWallHeight;
+    private Queue<Vector3> previousVelocities = new Queue<Vector3>();
 
     private NavMeshSurface surface;
     private NavMeshSurface surfaceLight;
     private NavMeshSurface surfaceWalls;
 
     public static Walls CreateComponent(GameObject gameObjectToAdd, GameObject wallPrefab, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy,
-        Material validOutlineMat, Material invalidOutlineMat, float rockCreationDistance, float wallMaxHeight, float wallSizeMultiplier,
-        float wallSpeedReduction, float wallButtonClickDelay, LayerMask outlineLayerMask, GameObject player)
+        Material validOutlineMat, Material invalidOutlineMat, float rockCreationDistance, LayerMask outlineLayerMask, GameObject player)
     {
         Walls walls = gameObjectToAdd.AddComponent<Walls>();
 
@@ -44,15 +47,8 @@ public class Walls : MonoBehaviour
         walls.validOutlineMat = validOutlineMat;
         walls.invalidOutlineMat = invalidOutlineMat;
         walls.rockCreationDistance = rockCreationDistance;
-        walls.wallMaxHeight = wallMaxHeight;
-        walls.wallSizeMultiplier = wallSizeMultiplier;
-        walls.wallSpeedReduction = wallSpeedReduction;
-        walls.wallButtonClickDelay = wallButtonClickDelay;
         walls.outlineLayerMask = outlineLayerMask;
         walls.player = player;
-
-        //        walls.surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
-        //        walls.surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
         walls.surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
 
         return walls;
@@ -86,10 +82,11 @@ public class Walls : MonoBehaviour
         }
     }
 
-    public void UpdateWallHeight(Hand hand, Hand otherHand)
+    public void UpdateWallHeight(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
         hand.TriggerHapticPulse(1500);
-        float newHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+        float newHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+
         if (newHandHeight < 1 && currentWallHeight < newHandHeight)
         {
             MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
@@ -99,13 +96,20 @@ public class Walls : MonoBehaviour
             float area = (float) Math.Round(wall.transform.localScale.x * meshRenderer.bounds.size.x * wallMaxHeight * newHandHeight, 2) * wallSizeMultiplier;
             playerEnergy.SetTempEnergy(firstHandHeld, area);
         }
+
+        previousVelocities.Enqueue(new Vector3(controllerPose.GetVelocity().x, 0, controllerPose.GetVelocity().z));
+        if (previousVelocities.Count > 5)
+        {
+            previousVelocities.Dequeue();
+        }
     }
 
     public void EndCreateWall(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
 
-        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
-        if (finalHandHeight < 0.01f)
+        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+        Debug.Log(finalHandHeight);
+        if (finalHandHeight < 0.18f)
         {
             Destroy(wall);
             playerEnergy.CancelEnergyUsage(firstHandHeld);
@@ -113,33 +117,35 @@ public class Walls : MonoBehaviour
         else
         {
             wall.AddComponent<WallProperties>();
-            wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+            wall.GetComponent<WallProperties>().wallHeightPercent = finalHandHeight;
 
             playerEnergy.UseEnergy(firstHandHeld);
             if (PlayerAbility.WallPushEnabled())
             {
-                Vector3 velocity = new Vector3(controllerPose.GetVelocity().x, 0, controllerPose.GetVelocity().z);
+                Vector3 finalVelocity = Vector3.zero;
+                foreach(Vector3 velocity in previousVelocities)
+                {
+                    finalVelocity += velocity;
+                }
+                finalVelocity /= previousVelocities.Count;
 
-                wall.GetComponent<WallProperties>().direction = velocity.normalized;
-                wall.GetComponent<WallProperties>().wallMoveSpeed = velocity.magnitude / wallSpeedReduction;
+                wall.GetComponent<WallProperties>().direction = finalVelocity.normalized;
+                wall.GetComponent<WallProperties>().wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
             }
             else
             {
                 PowerupController.IncrementWallPushCounter();
             }
+            wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
+            surfaceWalls.BuildNavMesh();
         }
-        wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
-        //            surface.BuildNavMesh();
-        //            surfaceLight.BuildNavMesh();
-        Debug.Log("BUILDING THE NAVMESH");
-        surfaceWalls.BuildNavMesh();
         ResetWallInfo();
     }
 
     public void CancelWall(Hand hand, Hand otherHand)
     {
         wall.AddComponent<WallProperties>();
-        wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min (hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * 2f;
+        wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
         playerEnergy.UseEnergy(firstHandHeld);
         ResetWallInfo();
     }
