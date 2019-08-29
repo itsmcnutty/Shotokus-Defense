@@ -66,7 +66,6 @@ public class AdvanceState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
-		Debug.Log(ToString());
 		// No longer obstacle
 		obstacle.enabled = false;
 		enemyProps.EnablePathfind();

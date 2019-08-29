@@ -43,7 +43,6 @@ public class RagdollState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
-		Debug.Log(ToString());
 		// Not an obstacle
 		obstacle.enabled = false;
 	}
@@ -84,7 +83,6 @@ public class RagdollState : IState
 	{
 		Rigidbody spine = gameObj.GetComponentInChildren<Rigidbody>();
 
-		Debug.Log(spine.velocity.magnitude);
 		// If spine rigidbody is moving very slowly, enemy can recover
 		return spine.velocity.magnitude < 0.13f;
 	}
