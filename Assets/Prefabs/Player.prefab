@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2324511562106419484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2121020103847712411}
+  - component: {fileID: 6301489899779749720}
+  m_Layer: 10
+  m_Name: GameObject
+  m_TagString: PlayerCollider
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2121020103847712411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324511562106419484}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5697528617254054346}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6301489899779749720
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324511562106419484}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!1 &3058137214649070509
 GameObject:
   m_ObjectHideFlags: 0
@@ -1696,7 +1741,6 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 5697528617264073322}
-  baseSpikeRadius: 0.5
   playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
     type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
@@ -1714,26 +1758,9 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
-  numberOfRocksInCluster: 4
-  minRockDiameter: 0.25
-  maxRockDimater: 1.5
-  rockMassScale: 100
-  spikeSpeedReduction: 15
-  spikeMinSpeed: 0.05
-  spikeMaxHeight: 1.75
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
-  energyPerSpikeInChain: 50
-  maxSpikesInChain: 50
-  maxSpikeDiameter: 5
-  quicksandSizeMultiplier: 2
-  wallMaxHeight: 2
-  wallSizeMultiplier: 200
-  wallSpeedReduction: 50
-  wallButtonClickDelay: 0.05
-  maxEarthquakeDistance: 25
-  earthquakeDuration: 5
 --- !u!114 &5697528617253961032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1975,7 +2002,6 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 5697528617264122612}
-  baseSpikeRadius: 0.5
   playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
     type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
@@ -1993,26 +2019,9 @@ MonoBehaviour:
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
-  numberOfRocksInCluster: 4
-  minRockDiameter: 0.25
-  maxRockDimater: 1.5
-  rockMassScale: 100
-  spikeSpeedReduction: 15
-  spikeMinSpeed: 0.05
-  spikeMaxHeight: 1.75
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
-  energyPerSpikeInChain: 50
-  maxSpikesInChain: 50
-  maxSpikeDiameter: 5
-  quicksandSizeMultiplier: 2
-  wallMaxHeight: 2
-  wallSizeMultiplier: 200
-  wallSpeedReduction: 50
-  wallButtonClickDelay: 0.05
-  maxEarthquakeDistance: 25
-  earthquakeDuration: 5
 --- !u!1 &5697528617253825732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2765,7 +2774,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2121020103847712411}
   m_Father: {fileID: 5697528617254082802}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4112,10 +4122,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: teleportAction.actionPath
-      value: /actions/default/in/Teleport
-      objectReference: {fileID: 0}
     - target: {fileID: 11445956, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: material
       value: 
@@ -4136,10 +4142,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 113570, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Layer
-      value: 14
-      objectReference: {fileID: 0}
     - target: {fileID: 143570, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Layer
       value: 14
@@ -4148,29 +4150,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2327308, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+    - target: {fileID: 113570, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2307398, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2327308, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: teleportAction.actionPath
+      value: /actions/default/in/Teleport
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
---- !u!1 &3058137214681458692 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 3058137214681608466}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3058137214681133438 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
-    type: 3}
-  m_PrefabInstance: {fileID: 3058137214681608466}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3058137214681165042 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 450016, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
@@ -4180,6 +4178,18 @@ Transform:
 --- !u!4 &3058137214681151014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 460596, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+    type: 3}
+  m_PrefabInstance: {fileID: 3058137214681608466}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3058137214681133438 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+    type: 3}
+  m_PrefabInstance: {fileID: 3058137214681608466}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3058137214681458692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 3058137214681608466}
   m_PrefabAsset: {fileID: 0}
@@ -4230,10 +4240,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: teleportAction.actionPath
-      value: /actions/default/in/Teleport
-      objectReference: {fileID: 0}
     - target: {fileID: 11445956, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: material
       value: 
@@ -4250,28 +4256,32 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 113570, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Layer
-      value: 14
-      objectReference: {fileID: 0}
     - target: {fileID: 143570, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Layer
       value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 2327308, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+    - target: {fileID: 113570, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2307398, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2327308, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: teleportAction.actionPath
+      value: /actions/default/in/Teleport
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11445746, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
---- !u!4 &5697528616445779110 stripped
+--- !u!4 &5697528616445673770 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+  m_CorrespondingSourceObject: {fileID: 450016, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 5697528616445336778}
   m_PrefabAsset: {fileID: 0}
@@ -4281,15 +4291,15 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5697528616445336778}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5697528616445795326 stripped
+--- !u!4 &5697528616445779110 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 460596, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+  m_CorrespondingSourceObject: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 5697528616445336778}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5697528616445673770 stripped
+--- !u!4 &5697528616445795326 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 450016, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
+  m_CorrespondingSourceObject: {fileID: 460596, guid: 7a135b1a2cb9c8f488d4dd00c55ab283,
     type: 3}
   m_PrefabInstance: {fileID: 5697528616445336778}
   m_PrefabAsset: {fileID: 0}
