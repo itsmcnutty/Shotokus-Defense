@@ -19,16 +19,16 @@ public class DebugFunctionality : MonoBehaviour
         vrCamera = GameObject.FindGameObjectWithTag("MainCamera");
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         menuUiController = GameObject.FindGameObjectWithTag("UIController").GetComponent<MenuUIController>();
-        enemiesLeft = transform.Find("Canvas/EnemiesLeft").GetComponent<Text>();
-        totalEnemies = transform.Find("Canvas/TotalEnemies").GetComponent<Text>();
+//        enemiesLeft = transform.Find("Canvas/EnemiesLeft").GetComponent<Text>();
+//        totalEnemies = transform.Find("Canvas/TotalEnemies").GetComponent<Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        int subs = gameController.numOfEnemiesPerWave - gameController.enemiesDestroyed;
-        enemiesLeft.text = subs.ToString();
-        totalEnemies.text = gameController.numOfEnemiesPerWave.ToString();
+//        int subs = gameController.numOfEnemiesPerWave - gameController.enemiesDestroyed;
+//        enemiesLeft.text = subs.ToString();
+//        totalEnemies.text = gameController.numOfEnemiesPerWave.ToString();
     }
 
     public void takeDamage()

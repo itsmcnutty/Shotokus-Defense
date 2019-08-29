@@ -75,7 +75,7 @@ public class MenuUIController : MonoBehaviour
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor*5;
-        spawnPosition.y = (float) 2.5; // todo test this out
+        spawnPosition.y = (float) 3; // todo test this out
         
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
         pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
