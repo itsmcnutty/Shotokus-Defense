@@ -17,8 +17,8 @@ public class LightEnemyController : MonoBehaviour
 
     private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
 
-    private float bulletSpeed = 2500f;
-    private float fireRate = 1f; // how many second to wait between shots
+    private float bulletSpeed = 500f;
+    private float fireRate = 3f; // how many second to wait between shots
     private bool allowShoot; // keep track if enemy can shoot based on fire rate timer
     
     // Start is called before the first frame update
