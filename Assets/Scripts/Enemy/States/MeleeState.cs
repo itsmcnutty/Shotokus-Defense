@@ -35,7 +35,7 @@ public class MeleeState : IState
 	// This enemy's GameObject
 	private GameObject gameObj;
 	// The enemy properties component
-	private EnemyHeavyProperties enemyProps;
+	private EnemyProperties enemyProps;
 
 	// True when enemy has begun swinging and should transition to swing state
 	private bool swinging;
@@ -57,16 +57,36 @@ public class MeleeState : IState
 		sqrAttackRadius = enemyProps.sqrAttackRadius;
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
-		advanceState = enemyProps.advanceState;
-		retreatState = enemyProps.retreatState;
-		swingState = enemyProps.swingState;
-		ragdollState = enemyProps.ragdollState;
+		this.enemyProps = enemyProps;
+	}
+
+	public MeleeState(EnemyMediumProperties enemyProps)
+	{
+		attackRadius = enemyProps.MELEE_RADIUS;
+		attackDelay = enemyProps.MELEE_DELAY;
+		agent = enemyProps.agent;
+		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
+		obstacle = enemyProps.obstacle;
+		sqrAttackRadius = enemyProps.sqrMeleeRadius;
+		player = enemyProps.player;
+		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		advanceState = enemyProps.advanceState;
+		retreatState = enemyProps.retreatState;
+		swingState = enemyProps.swingState;
+		ragdollState = enemyProps.ragdollState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		advanceState = enemyProps.advanceState;
 		retreatState = enemyProps.retreatState;

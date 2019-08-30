@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AdvanceState : IState
+public class RunState : IState
 {
-	// Radius for attacking
-	private float attackRadius;
+	// Radius for ranged attacks
+	private float rangedRadius;
     
 	// This is the agent to move around by NavMesh
 	private NavMeshAgent agent;
@@ -19,12 +19,9 @@ public class AdvanceState : IState
 	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
 	private bool debugNoWalk;
-
-	// Allowed space around attack radius that enemy's can attack from
-	private float attackMargin;
     
-	// Squared attack radius (for optimized calculations)
-	private float sqrAttackRadius;
+	// Squared ranged radius (for optimized calculations)
+	private float sqrRangedRadius;
     
 	// Player GameObject
 	private GameObject player;
@@ -36,54 +33,29 @@ public class AdvanceState : IState
 	private EnemyProperties enemyProps;
 	
 	// States to transition to
-	private MeleeState meleeState;
+	private StrafeState strafeState;
 	private RagdollState ragdollState;
-
-	public AdvanceState(EnemyHeavyProperties enemyProps)
+	
+	public RunState(EnemyMediumProperties enemyProps)
 	{
-		attackRadius = enemyProps.ATTACK_RADIUS;
+		rangedRadius = enemyProps.RANGED_RADIUS;
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		debugNoWalk = enemyProps.debugNoWalk;
-		attackMargin = enemyProps.ATTACK_MARGIN;
-		sqrAttackRadius = enemyProps.sqrAttackRadius;
+		sqrRangedRadius = enemyProps.sqrRangedRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
-	}
-	
-	public AdvanceState(EnemyMediumProperties enemyProps)
-	{
-		attackRadius = enemyProps.MELEE_RADIUS;
-		agent = enemyProps.agent;
-		animator = enemyProps.animator;
-		ragdollController = enemyProps.ragdollController;
-		obstacle = enemyProps.obstacle;
-		debugNoWalk = enemyProps.debugNoWalk;
-		attackMargin = enemyProps.ATTACK_MARGIN;
-		sqrAttackRadius = enemyProps.sqrMeleeRadius;
-		player = enemyProps.player;
-		playerPos = enemyProps.playerPos;
-		gameObj = enemyProps.gameObject;
-		this.enemyProps = enemyProps;
-	}
-	
-	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
-	// necessary states for the machine
-	public void InitializeStates(EnemyHeavyProperties enemyProps)
-	{
-		meleeState = enemyProps.meleeState;
-		ragdollState = enemyProps.ragdollState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
-		meleeState = enemyProps.meleeState;
+		strafeState = enemyProps.strafeState;
 		ragdollState = enemyProps.ragdollState;
 	}
 
@@ -95,7 +67,7 @@ public class AdvanceState : IState
 		enemyProps.EnablePathfind();
 		
 		// Settings for agent
-		agent.stoppingDistance = attackRadius;
+		agent.stoppingDistance = rangedRadius;
 		agent.angularSpeed = 8000f;
 	}
 
@@ -110,7 +82,7 @@ public class AdvanceState : IState
         
 		// Pass speed to animation controller
 		float moveSpeed = agent.velocity.magnitude;
-		animator.SetFloat("WalkSpeed", moveSpeed);
+		animator.SetFloat("RunSpeed", moveSpeed);
 		
 		// Move to player if outside attack range, otherwise transition
 		if (agent.enabled && !debugNoWalk)
@@ -119,7 +91,7 @@ public class AdvanceState : IState
 			agent.SetDestination(playerPos);
 
 			// Stopping distance will cause enemy to decelerate into attack radius
-			agent.stoppingDistance = attackRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
+			agent.stoppingDistance = rangedRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
 		}
 	}
 
@@ -142,10 +114,10 @@ public class AdvanceState : IState
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
 		// If within melee range, transition to melee state
-		if (sqrDist - sqrAttackRadius < 0.1 * attackMargin)
+		if (sqrDist - sqrRangedRadius < 1f)
 		{
-			animator.SetTrigger("Melee");
-			return meleeState;
+			animator.SetTrigger("Strafe");
+			return strafeState;
 		}
 		
 		// Otherwise, don't transition
@@ -154,6 +126,6 @@ public class AdvanceState : IState
 
 	public override string ToString()
 	{
-		return "Advance";
+		return "Run";
 	}
 }

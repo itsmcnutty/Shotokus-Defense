@@ -24,18 +24,24 @@ public class RagdollState : IState
 	// States to transition to
 	private AdvanceState advanceState;
 
-	public RagdollState(EnemyHeavyProperties enemyProps)
+	public RagdollState(EnemyProperties enemyProps)
 	{
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		gameObj = enemyProps.gameObject;
-		advanceState = enemyProps.advanceState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		advanceState = enemyProps.advanceState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		advanceState = enemyProps.advanceState;
 	}

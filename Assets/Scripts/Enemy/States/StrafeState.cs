@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class RetreatState : IState
+public class StrafeState : IState
 {
-	// Radius to retreat to
-	public float retreatRadius;
+	// Radius for melee attacks
+	private float meleeRadius;
     
 	// This is the agent to move around by NavMesh
-	public NavMeshAgent agent;
+	private NavMeshAgent agent;
 	// The enemy's Animator component
 	private Animator animator;
 	// The enemy's ragdoll controller
@@ -18,68 +18,48 @@ public class RetreatState : IState
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
-	public bool debugNoWalk = false;
-	
-	// Squared retreat radius (for optimized calculations)
-	private float sqrRetreatRadius;
+	private bool debugNoWalk;
     
-	// The player's head
-	public GameObject player;
-	// The player's head's world location
+	// Squared melee radius (for optimized calculations)
+	private float sqrMeleeRadius;
+	// Squared ranged radius (for optimized calculations)
+	private float sqrRangedRadius;
+    
+	// Player GameObject
+	private GameObject player;
+	// Player's head's world position
 	private Vector3 playerPos;
-	// This enemy's GameObject
+	// This enemy GameObject
 	private GameObject gameObj;
-	//This enemy's world location
-	private Vector3 gameObjPos;
 	// The enemy properties component
 	private EnemyProperties enemyProps;
-
+	
 	// States to transition to
+	private RunState runState;
 	private MeleeState meleeState;
 	private RagdollState ragdollState;
-
-	public RetreatState(EnemyHeavyProperties enemyProps)
+	
+	public StrafeState(EnemyMediumProperties enemyProps)
 	{
-		retreatRadius = enemyProps.ATTACK_RADIUS;
+		meleeRadius = enemyProps.MELEE_RADIUS;
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
-		player = enemyProps.player;
 		debugNoWalk = enemyProps.debugNoWalk;
-		sqrRetreatRadius = enemyProps.sqrAttackRadius;
+		sqrMeleeRadius = enemyProps.sqrMeleeRadius;
+		sqrRangedRadius = enemyProps.sqrRangedRadius;
+		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
-	}
-	
-	public RetreatState(EnemyMediumProperties enemyProps)
-	{
-		retreatRadius = enemyProps.MELEE_RADIUS;
-		agent = enemyProps.agent;
-		animator = enemyProps.animator;
-		ragdollController = enemyProps.ragdollController;
-		obstacle = enemyProps.obstacle;
-		player = enemyProps.player;
-		debugNoWalk = enemyProps.debugNoWalk;
-		sqrRetreatRadius = enemyProps.sqrMeleeRadius;
-		playerPos = enemyProps.playerPos;
-		gameObj = enemyProps.gameObject;
-		this.enemyProps = enemyProps;
-	}
-	
-	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
-	// necessary states for the machine
-	public void InitializeStates(EnemyHeavyProperties enemyProps)
-	{
-		meleeState = enemyProps.meleeState;
-		ragdollState = enemyProps.ragdollState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
+		runState = enemyProps.runState;
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
 	}
@@ -91,9 +71,9 @@ public class RetreatState : IState
 		obstacle.enabled = false;
 		enemyProps.EnablePathfind();
 		
-		// Don't automatically decelerate or rotate
-		agent.stoppingDistance = 0f;
-		agent.angularSpeed = 0f;
+		// Settings for agent
+		agent.stoppingDistance = meleeRadius;
+		agent.angularSpeed = 8000f;
 	}
 
 	// Called upon exiting this state
@@ -102,29 +82,22 @@ public class RetreatState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
-		if (!agent.enabled)
-		{
-			agent.enabled = true;
-			return;
-		}
-		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
-		gameObjPos = gameObj.transform.position;
+        
+		// Pass speed to animation controller
+		float moveSpeed = agent.velocity.magnitude;
+		animator.SetFloat("StrafeSpeedForward", moveSpeed);
 		
-		// Back up
-		Vector3 backUpVector = gameObjPos - playerPos;
-		backUpVector.Normalize();
-                
+		// Move to player if outside attack range, otherwise transition
 		if (agent.enabled && !debugNoWalk)
 		{
-			agent.SetDestination(playerPos + 1.5f * retreatRadius * backUpVector);
-		}
+			// Too far, walk closer
+			agent.SetDestination(playerPos);
 
-		enemyProps.TurnToPlayer();
-                
-		// Pass move speed to animator
-		animator.SetFloat("WalkSpeed", agent.velocity.magnitude); 
+			// Stopping distance will cause enemy to decelerate into attack radius
+			agent.stoppingDistance = meleeRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
+		}
 	}
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -138,27 +111,33 @@ public class RetreatState : IState
 			return ragdollState;
 		}
 		
-		// Store positions
-		playerPos = player.transform.position;
-		gameObjPos = gameObj.transform.position;
+		// Get enemy position
+		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
 		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
-		
-		if (sqrDist - sqrRetreatRadius > 0f)
+
+		// If outside ranged radius, transition to run state
+		if (sqrDist - sqrRangedRadius > -1f)
 		{
-			// Done retreating, attack
+			animator.SetTrigger("Run");
+			return runState;
+		}
+		
+		// If within melee range, transition to melee state
+		if (sqrDist - sqrMeleeRadius < 1f)
+		{
 			animator.SetTrigger("Melee");
 			return meleeState;
 		}
 		
-		// Continue retreating
+		// Otherwise, don't transition
 		return null;
 	}
 
 	public override string ToString()
 	{
-		return "Retreat";
+		return "Run";
 	}
 }
