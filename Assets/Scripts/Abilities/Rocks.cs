@@ -46,10 +46,13 @@ public class Rocks : MonoBehaviour
             }
             else
             {
+                hand.DetachObject(pickup);
                 hand.hoveringInteractable = null;
             }
         }
+        else if (pickup != otherHand.currentAttachedObject && GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
         {
+            activeRock = pickup;
             Destroy(activeRock.GetComponent<RockProperties>());
         }
         return activeRock;
