@@ -24,6 +24,9 @@ public class SpikeQuicksand : MonoBehaviour
     [Header("Audio")]
     public AudioSource raiseSpike;
     public AudioSource breakSpike;
+    public AudioSource quicksandIdleSound;
+    public AudioSource quicksandSlowSound;
+    public AudioSource quicksandBreakSound;
 
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
@@ -237,7 +240,7 @@ public class SpikeQuicksand : MonoBehaviour
             float quicksandSize = outlineMeshRenderer.bounds.size.x / quicksandMeshRenderer.bounds.size.x;
             quicksand.transform.localScale = new Vector3(quicksandSize, 1f, quicksandSize);
 
-            QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, breakSpike);
+            QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, quicksandIdleSound, quicksandSlowSound, quicksandBreakSound);
             Destroy(spikeQuicksandOutline);
             spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
             playerEnergy.UseEnergy(hand);

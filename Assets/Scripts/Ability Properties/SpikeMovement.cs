@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class SpikeMovement : MonoBehaviour
 {
+    private AudioSource spikeBreakSound;
     private float speed;
     private Vector3 endPosition;
     private NavMeshObstacle obstacle;
@@ -43,11 +44,6 @@ public class SpikeMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit()
-    {
-        //colliding = false;
-    }
-
     public static void CreateComponent (GameObject spike, float speed, Vector3 endPosition)
     {
         SpikeMovement spikeMovement = spike.AddComponent<SpikeMovement> ();
@@ -57,6 +53,7 @@ public class SpikeMovement : MonoBehaviour
 
     private void OnDestroy ()
     {
+        spikeBreakSound.Play();
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
         SpikeQuicksand.MakeSpikeAvailable (gameObject);
