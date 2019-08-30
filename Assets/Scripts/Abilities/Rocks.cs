@@ -5,13 +5,16 @@ using Valve.VR.InteractionSystem;
 
 public class Rocks : MonoBehaviour
 {
-    public AudioSource rockThrow;
-    public AudioSource rockHit;
     public GameObject rockPrefab;
     public float numberOfRocksInCluster = 4;
     public float minRockDiameter = 0.25f;
     public float maxRockDimater = 1.5f;
     public float rockMassScale = 100f;
+    
+    [Header("Audio")]
+    public AudioSource rockThrow;
+    public AudioSource rockHit;
+    public AudioSource rockBreak;
 
     private PlayerEnergy playerEnergy;
     private static List<GameObject> availableRocks = new List<GameObject>();
@@ -89,8 +92,10 @@ public class Rocks : MonoBehaviour
         }
         else
         {
-            activeRock.AddComponent<RockProperties>();
-            activeRock.GetComponent<RockProperties>().rockHit = rockHit;
+            RockProperties properties = activeRock.AddComponent<RockProperties>();
+            properties.rockHit = rockHit;
+            properties.rockBreak = rockBreak;
+            
             activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
             playerEnergy.UseEnergy(hand);
             hand.TriggerHapticPulse(500);
