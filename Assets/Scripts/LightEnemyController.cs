@@ -15,11 +15,11 @@ public class LightEnemyController : MonoBehaviour
     public GameObject projectilePrefab;
     private GameObject projectile;
 
-    private Vector3 agentHead;
+    private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
 
     private float bulletSpeed = 2500f;
     private float fireRate = 1f; // how many second to wait between shots
-    private bool allowShoot;
+    private bool allowShoot; // keep track if enemy can shoot based on fire rate timer
     
     // Start is called before the first frame update
     void Start()
@@ -28,9 +28,6 @@ public class LightEnemyController : MonoBehaviour
         playerPos = player.transform.position;
         allowShoot = true;
     }
-
-    
-    // todo fix remaining distance not working properly
     
     
     // Update is called once per frame
@@ -69,7 +66,7 @@ public class LightEnemyController : MonoBehaviour
             // if player is visible and fire Rate is good, shoot!
             if (Physics.Raycast(visionRay, out hit)) 
             {
-                if (hit.collider.tag == "PlayerCollider")
+                if (hit.collider.CompareTag("PlayerCollider"))
                 {
                     // we can hit the player, so shoot
                     shoot();
