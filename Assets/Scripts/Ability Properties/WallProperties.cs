@@ -7,6 +7,8 @@ public class WallProperties : MonoBehaviour
     public float wallHeightPercent;
     public float wallMoveSpeed = 0f;
     public Vector3 direction = new Vector3();
+
+    public AudioSource breakWall;
     private float wallLifetime = 30.0f;
 
 //    private NavMeshSurface surface;
@@ -17,8 +19,6 @@ public class WallProperties : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-//        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
-//        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
         surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
         InvokeRepeating ("MoveWall", 0, 0.01f);
     }
@@ -26,13 +26,12 @@ public class WallProperties : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        breakWall.Play();
         Destroy(gameObject, wallLifetime);
     }
 
     void OnDestroy()
     {
-//        surface.BuildNavMesh();
-//        surfaceLight.BuildNavMesh();
         surfaceWalls.BuildNavMesh();
     }
 

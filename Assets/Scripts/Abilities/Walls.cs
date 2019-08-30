@@ -14,7 +14,9 @@ public class Walls : MonoBehaviour
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
+    [Header("Audio")]
     public AudioSource raiseWall;
+    public AudioSource breakWall;
 
     private GameObject wallOutlinePrefab;
     private PlayerEnergy playerEnergy;
@@ -117,8 +119,9 @@ public class Walls : MonoBehaviour
         }
         else
         {
-            wall.AddComponent<WallProperties>();
-            wall.GetComponent<WallProperties>().wallHeightPercent = finalHandHeight;
+            WallProperties properties = wall.AddComponent<WallProperties>();
+            properties.wallHeightPercent = finalHandHeight;
+            properties.breakWall = breakWall;
 
             playerEnergy.UseEnergy(firstHandHeld);
             if (PlayerAbility.WallPushEnabled())
@@ -130,8 +133,8 @@ public class Walls : MonoBehaviour
                 }
                 finalVelocity /= previousVelocities.Count;
 
-                wall.GetComponent<WallProperties>().direction = finalVelocity.normalized;
-                wall.GetComponent<WallProperties>().wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
+                properties.direction = finalVelocity.normalized;
+                properties.wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
             }
             else
             {

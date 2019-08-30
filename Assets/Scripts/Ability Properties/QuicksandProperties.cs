@@ -10,13 +10,16 @@ public class QuicksandProperties : MonoBehaviour
     private float quicksandSpeedReduction = 3f;
     private float maxEarthquakeDistance;
     private float earthquakeDuration;
+
+    private AudioSource breakSpike;
     private static Dictionary<NavMeshAgent, float> slowedEnemies = new Dictionary<NavMeshAgent, float>();
 
-    public static void CreateComponent(GameObject quicksand, float maxEarthquakeDistance, float earthquakeDuration)
+    public static void CreateComponent(GameObject quicksand, float maxEarthquakeDistance, float earthquakeDuration, AudioSource breakSpike)
     {
         QuicksandProperties properties = quicksand.AddComponent<QuicksandProperties>();
         properties.maxEarthquakeDistance = maxEarthquakeDistance;
         properties.earthquakeDuration = earthquakeDuration;
+        properties.breakSpike = breakSpike;
     }
 
     // Start is called before the first frame update
@@ -56,7 +59,7 @@ public class QuicksandProperties : MonoBehaviour
 
     void OnDestroy()
     {
-        //        GameObject.FindWithTag("NavMesh").GetComponent<NavMeshSurface>().BuildNavMesh();
+        breakSpike.Play();
     }
 
     private void OnTriggerEnter(Collider other)
