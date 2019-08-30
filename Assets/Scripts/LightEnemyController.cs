@@ -18,13 +18,15 @@ public class LightEnemyController : MonoBehaviour
     private Vector3 agentHead;
 
     private float bulletSpeed = 2500f;
+    private float fireRate = 1f; // how many second to wait between shots
+    private bool allowShoot;
     
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("MainCamera");
         playerPos = player.transform.position;
-
+        allowShoot = true;
     }
 
     
@@ -40,19 +42,19 @@ public class LightEnemyController : MonoBehaviour
         agentHead = transform.position;
         agentHead.y = 2.5f;
 
-        Debug.Log(agent.remainingDistance);
-
-        var temp = agent.remainingDistance;
+        // remaining distance to target
+        float remainingDist = Vector3.Distance(playerPos, agentHead);
+//        Debug.Log("vector3 distance is " + remainingDist);
+        
         
         // if agent is close enough, do range attack
-    //        if (temp < 5f)
-    //        {
-    //            agent.isStopped = true;
-    //        }
-        
+        if (remainingDist < 5f)
+        {
+            agent.isStopped = true;
+        }
         
         // check that target is inside range radius
-        if (agent.remainingDistance < 15f)
+        if (remainingDist < 15f)
         {
             // check for visibility to target through ray cast
             RaycastHit hit;
@@ -64,25 +66,39 @@ public class LightEnemyController : MonoBehaviour
             
             Debug.DrawRay(agentHead, rayDirection);
 
-            // if player is visible, shoot!! (beware of shooting rate)
+            // if player is visible and fire Rate is good, shoot!
             if (Physics.Raycast(visionRay, out hit)) 
             {
                 if (hit.collider.tag == "PlayerCollider")
                 {
                     // we can hit the player, so shoot
-                    Debug.Log("We can shoot the player");
-                    projectile = Instantiate(projectilePrefab);
-                    projectile.transform.position = agentHead;
-                    projectile.transform.LookAt(playerPos);
-                    projectile.GetComponent<Rigidbody>().AddForce(projectile.transform.forward * bulletSpeed);
-
+                    shoot();
                 }
             }
-
-            
         }
-        
-        
+    }
+
+    // Instantiates the projectile prefab, sets a velocity and the origin transform (where the projectile comes from)
+    // and shoots towards the target. 
+    // This function also sets the fire rate of the gun
+    private void shoot()
+    {
+        if (allowShoot)
+        {
+            Debug.Log("Shooting");
+            allowShoot = false;
+            projectile = Instantiate(projectilePrefab);
+            projectile.transform.position = agentHead;
+            projectile.transform.LookAt(playerPos);
+            projectile.GetComponent<Rigidbody>().AddForce(projectile.transform.forward * bulletSpeed);
+            StartCoroutine(Wait(fireRate));
+        }
+    }
+
+    IEnumerator Wait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        allowShoot = true;
     }
     
     
