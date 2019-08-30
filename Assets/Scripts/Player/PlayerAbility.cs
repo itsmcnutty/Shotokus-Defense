@@ -161,9 +161,13 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (!walls.WallIsActive())
         {
-            if (hand.hoveringInteractable != null && hand.hoveringInteractable.gameObject.tag == "Rock")
+            if (hand.currentAttachedObject != null)
             {
-                activeRock = rocks.PickupRock(hand, otherHand);
+                activeRock = rocks.PickupRock(hand.currentAttachedObject, hand, otherHand);
+            }
+            else if(hand.hoveringInteractable != null && hand.hoveringInteractable.tag == "Rock")
+            {
+                activeRock = rocks.PickupRock(hand.hoveringInteractable.gameObject, hand, otherHand);
             }
             else if (arc.CanUseAbility())
             {

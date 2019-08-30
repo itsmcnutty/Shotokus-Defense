@@ -34,14 +34,14 @@ public class Rocks : MonoBehaviour
         }
     }
 
-    public GameObject PickupRock(Hand hand, Hand otherHand)
+    public GameObject PickupRock(GameObject pickup, Hand hand, Hand otherHand)
     {
         GameObject activeRock = null;
         if (otherHand.currentAttachedObject == null)
         {
-            if (GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
+            if (GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
             {
-                activeRock = hand.hoveringInteractable.gameObject;
+                activeRock = pickup;
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
             else
@@ -49,9 +49,7 @@ public class Rocks : MonoBehaviour
                 hand.hoveringInteractable = null;
             }
         }
-        else if (hand.hoveringInteractable.gameObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.hoveringInteractable.gameObject) < playerEnergy.GetRemainingEnergy())
         {
-            activeRock = hand.hoveringInteractable.gameObject;
             Destroy(activeRock.GetComponent<RockProperties>());
         }
         return activeRock;
