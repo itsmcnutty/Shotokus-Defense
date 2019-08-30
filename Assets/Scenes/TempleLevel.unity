@@ -4362,6 +4362,34 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5697528617253961033, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: outlineLayerMask.m_Bits
+      value: 45057
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697528617253961139, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: outlineLayerMask.m_Bits
+      value: 45057
+      objectReference: {fileID: 0}
+    - target: {fileID: 1156229015251733590, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: spikePrefab
+      value: 
+      objectReference: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
+        type: 3}
+    - target: {fileID: 1156229015251733590, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: quicksandPrefab
+      value: 
+      objectReference: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
+        type: 3}
+    - target: {fileID: 1384481047780279340, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: wallPrefab
+      value: 
+      objectReference: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}
 --- !u!1001 &1112612361
