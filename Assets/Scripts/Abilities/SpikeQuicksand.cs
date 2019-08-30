@@ -21,6 +21,8 @@ public class SpikeQuicksand : MonoBehaviour
     public float maxEarthquakeDistance = 3f;
     public float earthquakeDuration = 1f;
 
+    public AudioSource raiseSpike;
+
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
     private Material validOutlineMat;
@@ -311,6 +313,7 @@ public class SpikeQuicksand : MonoBehaviour
 
                 SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
                 hand.TriggerHapticPulse(1500);
+                raiseSpike.PlayOneShot(raiseSpike.clip);
             }
             allSpikes.Clear();
         }
@@ -345,6 +348,7 @@ public class SpikeQuicksand : MonoBehaviour
 
             SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
             hand.TriggerHapticPulse(1500);
+            raiseSpike.PlayOneShot(raiseSpike.clip);
 
             outline.transform.position += new Vector3(spikeMoveDirection.x, 0, spikeMoveDirection.y);
 

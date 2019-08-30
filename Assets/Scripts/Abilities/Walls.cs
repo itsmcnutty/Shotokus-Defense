@@ -14,6 +14,8 @@ public class Walls : MonoBehaviour
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
+    public AudioSource raiseWall;
+
     private GameObject wallOutlinePrefab;
     private PlayerEnergy playerEnergy;
     private Material validOutlineMat;
@@ -66,6 +68,7 @@ public class Walls : MonoBehaviour
                 startingHandHeight = Math.Min(hand.transform.position.y, otherHand.transform.position.y);
                 playerEnergy.SetTempEnergy(firstHandHeld, 0);
                 Destroy(wallOutline);
+                raiseWall.Play();
             }
             else
             {
@@ -137,6 +140,7 @@ public class Walls : MonoBehaviour
             wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
+        raiseWall.Stop();
         ResetWallInfo();
     }
 
