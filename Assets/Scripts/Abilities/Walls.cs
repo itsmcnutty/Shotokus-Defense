@@ -68,7 +68,11 @@ public class Walls : MonoBehaviour
                 ParticleSystem particleSystem = wall.GetComponentInChildren<ParticleSystem>();
                 UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
                 shape.scale = new Vector3(shape.scale.x * wall.transform.localScale.x, shape.scale.y, shape.scale.z);
+
+                UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
+                emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
                 wall.GetComponentInChildren<ParticleSystem>().Play();
+
                 Destroy(wallOutline);
             }
             else
