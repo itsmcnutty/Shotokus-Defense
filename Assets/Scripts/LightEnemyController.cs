@@ -112,32 +112,44 @@ public class LightEnemyController : MonoBehaviour
     // given a point, return points around its circunference of radius r and every 45 degrees (pi/4 radians)
     Vector3[] pointsAround(Vector3 center)
     {
-        float radius = 5;
+        float radius = 5; // todo range away from player that the enemy should start strafying
         float angle = 0;
-        Vector3[] points = new Vector3[8];
         Vector3 coord;
-
+        Vector3[] points = new Vector3[8];
+        Vector3 offset = new Vector3(center.x,0,center.z);
+        
         for (int i = 0; i < 8; i++)
         {
             // x is x and y is z, in 3D coordinates unity
+            // vector is represented as (x, 0, y)
             float x = Mathf.Cos(angle) * radius;
             float y = Mathf.Sin(angle) * radius;
-            Vector3 offset = new Vector3(center.x,0,center.z);
             coord = new Vector3(x, 0, y) + offset;
-            Debug.Log("Iteration: " + i);
-            Debug.Log("Angle: " + angle);
-            Debug.Log(coord);
-            Debug.Log("");
+//            Debug.Log("Iteration: " + i);
+//            Debug.Log("Angle: " + angle);
+//            Debug.Log(coord);
+//            Debug.Log("");
             angle += Mathf.PI / 4;
             points[i] = coord;
         }
         
-        Debug.Log(points);
+//        Debug.Log(points);
+//        int count = 0;
+//        foreach(var point in points)
+//        {
+//            count += 1;
+//            Debug.Log(count);
+//            Debug.Log(point);
+//        }
         return points;
     }
     
     // given a enemy position and an array of possible future positions, return the next closest point
-    // todo do function for this
+    Vector3 closestPoint(Vector3 enemyPos, Vector3[] points)
+    {
+        // todo fill out
+        return new Vector3(0,0,0);
+    }
 
 
 
