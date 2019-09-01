@@ -16,7 +16,8 @@ public class LightEnemyController : MonoBehaviour
     private GameObject projectile;
 
     private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
-
+    private Vector3 enemyPos; // this is the position of the eney with y = 0 for distance operations
+    
     // shooting variables
     private float bulletSpeed = 500f;
     private float fireRate = 3f; // how many second to wait between shots
@@ -37,8 +38,9 @@ public class LightEnemyController : MonoBehaviour
         agent.SetDestination(playerPos);
         allowShoot = true;
         isStrafing = false;
-        lastPointIndex = 0;
+        lastPointIndex = 0; // just initialization
         
+        // assign randomly if enemy will strafe clockwise or counter clockwise
         if (Random.Range(0, 2) == 0)
         {
             // clockwise
@@ -50,10 +52,14 @@ public class LightEnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // Position of head of agent
         agentHead = transform.position;
         // todo change this, this is the head height value
-        agentHead.y = 0f;
+        agentHead.y = 2.5f;
+
+        // position of agent (enemy) with y = 0, to prevent distance errors
+        enemyPos = transform.position;
+        enemyPos.y = 0;
 
         // remaining distance to target
         // todo instead of using agentHead, use new variable with positions in the floor (y = 0)
@@ -79,7 +85,7 @@ public class LightEnemyController : MonoBehaviour
             pointsAroundTarget = pointsAround(playerPos);
             
             // pick the closest of these points to the enemy
-            circularPointDest = closestPoint(agentHead, pointsAroundTarget);
+            circularPointDest = closestPoint(enemyPos, pointsAroundTarget);
             
             // change enemy agent target to the new point
             agent.SetDestination(circularPointDest);
@@ -91,7 +97,7 @@ public class LightEnemyController : MonoBehaviour
         {
             // do not change destination until current one is reached
             // when destination is reached, move to next point 
-            float strafeRemainingDist = Vector3.Distance(agentHead, circularPointDest);
+            float strafeRemainingDist = Vector3.Distance(enemyPos, circularPointDest);
             Debug.Log(strafeRemainingDist);
             
             if (strafeRemainingDist < 1f)
@@ -122,7 +128,7 @@ public class LightEnemyController : MonoBehaviour
         
 
 
-        /* uncomment **********************************************************************
+        ///* uncomment **********************************************************************
          // todo SHOOTING STATE
         // check that target is inside range radius
         if (remainingDist < 15f)
@@ -147,7 +153,7 @@ public class LightEnemyController : MonoBehaviour
                 }
             }
         }
-        */
+        //*/
     }
 
 
@@ -162,6 +168,19 @@ public class LightEnemyController : MonoBehaviour
             allowShoot = false;
             projectile = Instantiate(projectilePrefab);
             projectile.transform.position = agentHead;
+            
+            // start calculating speed and direction
+            Vector3 dirToEnemy = playerPos - agentHead;
+            dirToEnemy.y = 0;
+            
+            // calculate velocity in x and y axis
+            // todo fill out
+            
+            
+            
+            
+            
+            
             projectile.transform.LookAt(playerPos);
             projectile.GetComponent<Rigidbody>().AddForce(projectile.transform.forward * bulletSpeed);
             StartCoroutine(Wait(fireRate));
