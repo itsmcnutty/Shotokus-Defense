@@ -27,6 +27,7 @@ public class LightEnemyController : MonoBehaviour
     private Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
     private Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
     private int lastPointIndex; // last point index value in the pointsAroundTarget array
+    private bool isClockwise = false; // walk in a clockwise direction when strafying
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +38,12 @@ public class LightEnemyController : MonoBehaviour
         allowShoot = true;
         isStrafing = false;
         lastPointIndex = 0;
+        
+        if (Random.Range(0, 2) == 0)
+        {
+            // clockwise
+            isClockwise = true;
+        }
     }
 
 
@@ -69,18 +76,14 @@ public class LightEnemyController : MonoBehaviour
             isStrafing = true;
             
             // Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
-            // todo this should not be everyframe
-            //Vector3[] points = pointsAround(playerPos);
             pointsAroundTarget = pointsAround(playerPos);
             
             // pick the closest of these points to the enemy
-            //Vector3 pointDest = closestPoint(agentHead, pointsAroundTarget);
             circularPointDest = closestPoint(agentHead, pointsAroundTarget);
             
             // change enemy agent target to the new point
             agent.SetDestination(circularPointDest);
         }
-        
 
         // if moving towards strafing point, check if it has being destination has been reached
         // if reached, calculate next moving point
@@ -88,15 +91,29 @@ public class LightEnemyController : MonoBehaviour
         {
             // do not change destination until current one is reached
             // when destination is reached, move to next point 
-            // todo this is buggy cuz it needs to be updated, and not everyframe
             float strafeRemainingDist = Vector3.Distance(agentHead, circularPointDest);
             Debug.Log(strafeRemainingDist);
             
             if (strafeRemainingDist < 1f)
             {
                 // get next point
-                lastPointIndex++;
-                circularPointDest = pointsAroundTarget[lastPointIndex % 8];
+                if (isClockwise)
+                {
+                    // clockwise, do absolute value
+                    Debug.Log("My agent is Clockwise");
+                    lastPointIndex--;
+                    if (lastPointIndex < 0)
+                    {
+                        lastPointIndex = pointsAroundTarget.Length;
+                    }
+                }
+                else
+                {
+                    // counter clockwise
+                    Debug.Log("My agent is counter clockwise");
+                    lastPointIndex++;
+                }
+                circularPointDest = pointsAroundTarget[Mathf.Abs(lastPointIndex % 8)];
 //                Debug.Log("Changing target to index " + lastPointIndex%8);
 //                Debug.Log("moving towards " +circularPointDest);
                 agent.SetDestination(circularPointDest);
@@ -203,8 +220,6 @@ public class LightEnemyController : MonoBehaviour
                 lastPointIndex = i;
             }
         }
-        
-        // todo keep track of angle
         return closestPoint;
     }
 
