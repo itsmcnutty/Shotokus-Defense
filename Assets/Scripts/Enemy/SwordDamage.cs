@@ -29,7 +29,7 @@ public class SwordDamage : MonoBehaviour
         
         // Deal damage if colliding with one of player's colliders and enemy is in "Attacking" animation
         if (otherTopParent.Equals(player) &&
-            parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsTag("Melee"))
+            parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsTag("Swinging"))
         {
             player.GetComponentInChildren<PlayerHealth>().TakeDamage(DAMAGE);
         }

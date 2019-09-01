@@ -5,157 +5,175 @@ using UnityEngine.UI;
 public class PowerupController : MonoBehaviour
 {
 
-    [Header ("Powerup Bars")]
-    public Slider rockClusterBar;
-    public Slider spikeChainBar;
-    public Slider earthquakeBar;
-    public Slider wallPushBar;
+    [Header("Powerup Bars")]
+    public Image rockClusterBar;
+    public Image spikeChainBar;
+    public Image earthquakeBar;
+    public Image wallPushBar;
 
-    [Header ("Points Required")]
-    public int pointsForRockCluster = 10;
-    public int pointsForSpikeChain = 10;
-    public int pointsForEarthquake = 10;
-    public int pointsForWallPush = 10;
+    [Header("Points Required")]
+    public float pointsForRockCluster = 10;
+    public float pointsForSpikeChain = 10;
+    public float pointsForEarthquake = 10;
+    public float pointsForWallPush = 10;
 
-    [Header ("Powerup Timer (In Seconds)")]
+    [Header("Powerup Timer (In Seconds)")]
     public int rockClusterTime = 30;
     public int spikeChainTime = 30;
     public int earthquakeTime = 30;
     public int wallPushTime = 30;
 
-    private static int rockClusterBarCounter = 0;
-    private static int spikeChainBarCounter = 0;
-    private static int earthquakeBarCounter = 0;
-    private static int wallPushBarCounter = 0;
-    // Start is called before the first frame update
-    void Start ()
-    {
-        rockClusterBar.maxValue = pointsForRockCluster;
-        spikeChainBar.maxValue = pointsForSpikeChain;
-        earthquakeBar.maxValue = pointsForEarthquake;
-        wallPushBar.maxValue = pointsForWallPush;
+    private static float rockClusterBarCounter = 0;
+    private static float spikeChainBarCounter = 0;
+    private static float earthquakeBarCounter = 0;
+    private static float wallPushBarCounter = 0;
+
+    void Start()
+    {   
+        rockClusterBar.material.SetColor("_EmissionColor", Color.white);
+        spikeChainBar.material.SetColor("_EmissionColor", Color.white);
+        earthquakeBar.material.SetColor("_EmissionColor", Color.white);
+        wallPushBar.material.SetColor("_EmissionColor", Color.white);
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-        TryActivatePowerUp ();
+        TryActivatePowerUp();
     }
 
-    private void TryActivatePowerUp ()
+    private void TryActivatePowerUp()
     {
         if (rockClusterBarCounter >= pointsForRockCluster)
         {
-            PlayerAbility.ToggleRockCluster ();
+            PlayerAbility.ToggleRockCluster();
             rockClusterBarCounter = 0;
-            StartCoroutine (EndRockCluster ());
+            StartCoroutine(EndRockCluster());
         }
-        else if (!PlayerAbility.RockClusterEnabled ())
+        else if (!PlayerAbility.RockClusterEnabled())
         {
-            rockClusterBar.value = rockClusterBarCounter;
+            rockClusterBar.fillAmount = rockClusterBarCounter / pointsForRockCluster;
         }
 
         if (spikeChainBarCounter >= pointsForSpikeChain)
         {
-            PlayerAbility.ToggleSpikeChain ();
+            PlayerAbility.ToggleSpikeChain();
             spikeChainBarCounter = 0;
-            StartCoroutine (EndSpikeChain ());
+            StartCoroutine(EndSpikeChain());
         }
-        else if (!PlayerAbility.SpikeChainEnabled ())
+        else if (!PlayerAbility.SpikeChainEnabled())
         {
-            spikeChainBar.value = spikeChainBarCounter;
+            spikeChainBar.fillAmount = spikeChainBarCounter / pointsForSpikeChain;
         }
 
         if (earthquakeBarCounter >= pointsForEarthquake)
         {
-            // TODO add earthquake functionality
+            PlayerAbility.ToggleEarthquake();
             earthquakeBarCounter = 0;
-            StartCoroutine (EndEarthquake ());
+            StartCoroutine(EndEarthquake());
         }
-        else
+        else if (!PlayerAbility.EarthquakeEnabled())
         {
-            earthquakeBar.value = earthquakeBarCounter;
+            earthquakeBar.fillAmount = earthquakeBarCounter / pointsForEarthquake;
         }
 
         if (wallPushBarCounter >= pointsForWallPush)
         {
-            PlayerAbility.ToggleWallPush ();
+            PlayerAbility.ToggleWallPush();
             wallPushBarCounter = 0;
-            StartCoroutine (EndWallPush ());
+            StartCoroutine(EndWallPush());
         }
-        else if (!PlayerAbility.WallPushEnabled ())
+        else if (!PlayerAbility.WallPushEnabled())
         {
-            wallPushBar.value = wallPushBarCounter;
+            wallPushBar.fillAmount = wallPushBarCounter / pointsForWallPush;
         }
     }
 
-    private IEnumerator EndRockCluster ()
+    private IEnumerator EndRockCluster()
     {
         float startTime = Time.time;
         while (Time.time - startTime < rockClusterTime)
         {
-            yield return DrainAbilityBar (startTime, rockClusterTime, rockClusterBar);
+            yield return DrainAbilityBar(startTime, rockClusterTime, rockClusterBar);
         }
-        rockClusterBar.value = 0;
-        PlayerAbility.ToggleRockCluster ();
+        rockClusterBar.fillAmount = 0;
+        rockClusterBar.material.SetColor("_EmissionColor", Color.white);
+        PlayerAbility.ToggleRockCluster();
     }
 
-    private IEnumerator EndSpikeChain ()
+    private IEnumerator EndSpikeChain()
     {
         float startTime = Time.time;
         while (Time.time - startTime < spikeChainTime)
         {
-            yield return DrainAbilityBar (startTime, spikeChainTime, spikeChainBar);
+            yield return DrainAbilityBar(startTime, spikeChainTime, spikeChainBar);
         }
-        spikeChainBar.value = 0;
-        PlayerAbility.ToggleSpikeChain ();
+        spikeChainBar.fillAmount = 0;
+        spikeChainBar.material.SetColor("_EmissionColor", Color.white);
+        PlayerAbility.ToggleSpikeChain();
     }
 
-    private IEnumerator EndEarthquake ()
+    private IEnumerator EndEarthquake()
     {
         float startTime = Time.time;
         while (Time.time - startTime < earthquakeTime)
         {
-            yield return DrainAbilityBar (startTime, earthquakeTime, earthquakeBar);
+            yield return DrainAbilityBar(startTime, earthquakeTime, earthquakeBar);
         }
-        earthquakeBar.value = 0;
-        // TODO added earthquake functionality
+        earthquakeBar.fillAmount = 0;
+        earthquakeBar.material.SetColor("_EmissionColor", Color.white);
+        PlayerAbility.ToggleEarthquake();
     }
 
-    private IEnumerator EndWallPush ()
+    private IEnumerator EndWallPush()
     {
         float startTime = Time.time;
         while (Time.time - startTime < wallPushTime)
         {
-            yield return DrainAbilityBar (startTime, wallPushTime, wallPushBar);
+            yield return DrainAbilityBar(startTime, wallPushTime, wallPushBar);
         }
-        wallPushBar.value = 0;
-        PlayerAbility.ToggleWallPush ();
+        wallPushBar.fillAmount = 0;
+        wallPushBar.material.SetColor("_EmissionColor", Color.white);
+        PlayerAbility.ToggleWallPush();
     }
 
-    private IEnumerator DrainAbilityBar (float startTime, float abilityTime, Slider bar)
+    private IEnumerator DrainAbilityBar(float startTime, float abilityTime, Image bar)
     {
         float barValuePercent = (abilityTime - (Time.time - startTime)) / abilityTime;
-        bar.value = barValuePercent * bar.maxValue;
-        yield return new WaitForEndOfFrame ();
+        bar.fillAmount = barValuePercent;
+
+        Color baseColor = Color.cyan;
+        Color finalColor;
+        if (barValuePercent > 0.3f)
+        { 
+            finalColor = baseColor * Mathf.LinearToGammaSpace(1);
+        }
+        else
+        {
+            float emission = Mathf.PingPong(Time.time, 1.0f);
+            finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
+        }
+        bar.material.SetColor("_EmissionColor", finalColor);
+
+        yield return new WaitForEndOfFrame();
     }
 
-    public static void IncrementRockClusterCounter ()
+    public static void IncrementRockClusterCounter()
     {
         rockClusterBarCounter++;
     }
 
-    public static void IncrementSpikeChainCounter ()
+    public static void IncrementSpikeChainCounter()
     {
         spikeChainBarCounter++;
     }
 
-    public static void IncrementEarthquakeCounter ()
+    public static void IncrementEarthquakeCounter()
     {
         earthquakeBarCounter++;
     }
 
-    public static void IncrementWallPushCounter ()
+    public static void IncrementWallPushCounter()
     {
         wallPushBarCounter++;
     }

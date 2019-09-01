@@ -5,30 +5,24 @@ using Valve.VR.InteractionSystem;
 
 public class Rocks : MonoBehaviour
 {
-    private GameObject rockPrefab;
-    private PlayerEnergy playerEnergy;
-    private float rockCreationDistance;
-    private float rockMassScale;
-    private float minRockDiameter;
-    private float maxRockDimater;
-    private float numberOfRocksInCluster;
+    public GameObject rockPrefab;
+    public float numberOfRocksInCluster = 4;
+    public float minRockDiameter = 0.25f;
+    public float maxRockDimater = 1.5f;
+    public float rockMassScale = 100f;
 
-    private GameObject activeRock;
+    private PlayerEnergy playerEnergy;
     private static List<GameObject> availableRocks = new List<GameObject>();
 
-    public static Rocks CreateComponent(GameObject gameObjectToAdd, GameObject rockPrefab, PlayerEnergy playerEnergy, float rockCreationDistance,
-        float rockMassScale, float minRockDiameter, float maxRockDimater, float numberOfRocksInCluster)
+    public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
-        Rocks rocks = gameObjectToAdd.AddComponent<Rocks>();
-
-        rocks.rockPrefab = rockPrefab;
+        Rocks rocks = player.GetComponent<Rocks>();
         rocks.playerEnergy = playerEnergy;
-        rocks.rockCreationDistance = rockCreationDistance;
-        rocks.rockMassScale = rockMassScale;
-        rocks.minRockDiameter = minRockDiameter;
-        rocks.maxRockDimater = maxRockDimater;
-        rocks.numberOfRocksInCluster = numberOfRocksInCluster;
+        return rocks;
+    }
 
+    public void InitRocks()
+    {
         float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime() * 25;
 
         for (int i = 0; i < numRocks; i++)
@@ -38,40 +32,41 @@ public class Rocks : MonoBehaviour
             rock.SetActive(false);
             MakeRockAvailable(rock);
         }
-
-        return rocks;
     }
 
-    public void TryCreateRock(Hand hand, Hand otherHand)
+    public GameObject PickupRock(GameObject pickup, Hand hand, Hand otherHand)
     {
-        ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
-        activeRock = null;
-        if (hand.currentAttachedObject != null)
+        GameObject activeRock = null;
+        if (otherHand.currentAttachedObject == null)
         {
-            if (hand.currentAttachedObject != otherHand.currentAttachedObject && GetRockEnergyCost(hand.currentAttachedObject) < playerEnergy.GetRemainingEnergy())
+            if (GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
             {
-                activeRock = hand.currentAttachedObject;
+                activeRock = pickup;
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
-        }
-        else if (arc.GetPointerHitObject().tag == "Rock")
-        {
-            if (GetRockEnergyCost(arc.GetPointerHitObject()) < playerEnergy.GetRemainingEnergy())
+            else
             {
-                activeRock = arc.GetPointerHitObject();
-                Destroy(activeRock.GetComponent<RockProperties>());
-                hand.AttachObject(activeRock, GrabTypes.Scripted);
+                hand.DetachObject(pickup);
+                hand.hoveringInteractable = null;
             }
         }
-        else if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+        else if (pickup != otherHand.currentAttachedObject && GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
         {
-            activeRock = GetNewRock();
-            activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
-            hand.AttachObject(activeRock, GrabTypes.Scripted);
+            activeRock = pickup;
+            Destroy(activeRock.GetComponent<RockProperties>());
         }
+        return activeRock;
     }
 
-    public void UpdateRock(Hand hand)
+    public GameObject CreateNewRock(Hand hand, ControllerArc arc)
+    {
+        GameObject activeRock = GetNewRock();
+        activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
+        hand.AttachObject(activeRock, GrabTypes.Scripted);
+        return activeRock;
+    }
+
+    public void UpdateRock(GameObject activeRock, Hand hand)
     {
         float rockEnergyCost = GetRockEnergyCost(activeRock);
         rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
@@ -80,7 +75,7 @@ public class Rocks : MonoBehaviour
         hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0);
     }
 
-    public void ThrowRock(Hand hand, Hand otherHand)
+    public void ThrowRock(GameObject activeRock, Hand hand, Hand otherHand)
     {
         hand.DetachObject(activeRock);
         hand.SetAllowResize(true);
@@ -89,7 +84,7 @@ public class Rocks : MonoBehaviour
             float rockSize = (float) Math.Pow(Math.Floor(activeRock.transform.localScale.x * activeRock.transform.localScale.y * activeRock.transform.localScale.z), 3);
             playerEnergy.SetTempEnergy(hand, rockSize);
             playerEnergy.TransferHandEnergy(hand, otherHand);
-            otherHand.GetComponent<Rocks>().activeRock = activeRock;
+            otherHand.GetComponent<PlayerAbility>().activeRock = activeRock;
         }
         else
         {
@@ -103,7 +98,7 @@ public class Rocks : MonoBehaviour
 
             if (PlayerAbility.RockClusterEnabled())
             {
-                if(velocity != Vector3.zero || angularVelocity != Vector3.zero)
+                if (velocity != Vector3.zero || angularVelocity != Vector3.zero)
                 {
                     for (int i = 0; i < numberOfRocksInCluster; i++)
                     {
@@ -125,7 +120,6 @@ public class Rocks : MonoBehaviour
                 PowerupController.IncrementRockClusterCounter();
             }
         }
-        activeRock = null;
     }
 
     private float GetRockEnergyCost(GameObject rock)
@@ -150,13 +144,8 @@ public class Rocks : MonoBehaviour
         return newRock;
     }
 
-    public static void MakeRockAvailable(GameObject spike)
+    public static void MakeRockAvailable(GameObject rock)
     {
-        availableRocks.Add(spike);
-    }
-
-    public bool RockIsActive()
-    {
-        return activeRock != null;
+        availableRocks.Add(rock);
     }
 }

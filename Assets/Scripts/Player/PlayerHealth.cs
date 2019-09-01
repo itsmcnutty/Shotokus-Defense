@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             // restart game
-            GameController.Instance.RestartGame();
+            GameController.Instance.playerLost();
         }
     }
 

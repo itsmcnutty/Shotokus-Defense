@@ -21,13 +21,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: WalkSpeedForward
+  - m_Name: StrafeSpeedForward
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: WalkSpeedRight
+  - m_Name: StrafeSpeedRight
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0
@@ -99,13 +99,13 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
-  m_BlendParameter: WalkSpeedForward
-  m_BlendParameterY: WalkSpeedRight
+  m_BlendParameter: StrafeSpeedRight
+  m_BlendParameterY: StrafeSpeedForward
   m_MinThreshold: 0
   m_MaxThreshold: 1
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
-  m_BlendType: 2
+  m_BlendType: 1
 --- !u!1107 &6587781819330632285
 AnimatorStateMachine:
   serializedVersion: 5
