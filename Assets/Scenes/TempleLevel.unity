@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 2.5
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 0ffaa0b7117ba8c47a9d05ae701d4b4d, type: 2}
@@ -269,7 +269,7 @@ PrefabInstance:
     - target: {fileID: 8011382186716793238, guid: aa12d21d09b16c7498f3dd82859922e9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8011382186716793238, guid: aa12d21d09b16c7498f3dd82859922e9,
         type: 3}
@@ -476,7 +476,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!108 &129913524
 Light:
@@ -488,8 +488,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 0.9254902, g: 0.72106814, b: 0.38039216, a: 1}
-  m_Intensity: 2
+  m_Color: {r: 1, g: 0.998377, b: 0.9669811, a: 1}
+  m_Intensity: 0.4
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -498,7 +498,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.9
     m_Bias: 0.02
     m_NormalBias: 0.1
     m_NearPlane: 0.1
@@ -531,7 +531,7 @@ Light:
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 2
+  m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 1, y: 6e-45, z: 0, w: 2.8934818e-24}
@@ -545,13 +545,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129913523}
-  m_LocalRotation: {x: 0.93165344, y: 0.044642597, z: -0.33909404, w: 0.12265456}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalRotation: {x: 0.83976173, y: 0.15348257, z: -0.3056482, w: 0.4216901}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 165, y: 40, z: 0}
+  m_LocalEulerAnglesHint: {x: 126.673004, y: 40, z: -0.000015258789}
 --- !u!4 &131437385 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3091471307488398075, guid: 8d33832ceaa6d73469122e80e2370ad4,
@@ -1368,41 +1368,19 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 327026033}
-  baseSpikeRadius: 0.5
   playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
     type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
-  rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
-    type: 3}
-  spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
-    type: 3}
-  quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
-    type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-    type: 3}
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
-  numberOfRocksInCluster: 4
-  minRockDiameter: 0.25
-  maxRockDimater: 1.5
-  rockMassScale: 100
-  spikeSpeedReduction: 15
-  spikeMinSpeed: 0.05
-  spikeMaxHeight: 1.75
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
-  energyPerSpikeInChain: 50
-  maxSpikesInChain: 50
-  maxSpikeDiameter: 5
-  wallMaxHeight: 2
-  wallSizeMultiplier: 200
-  wallSpeedReduction: 50
-  wallButtonClickDelay: 0.05
+  activeRock: {fileID: 0}
 --- !u!195 &327026047
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1525,41 +1503,19 @@ MonoBehaviour:
     actionPath: /actions/default/in/Draw
     needsReinit: 0
   otherHand: {fileID: 327026041}
-  baseSpikeRadius: 0.5
   playerAbilityAreaPrefab: {fileID: 1553519995215727174, guid: c9d0b979e938eb64c8da37cff62884e9,
     type: 3}
   areaOutlinePrefab: {fileID: 1553519995215727174, guid: de49ae65a73c0fd4c999f2e30d61d170,
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
-  rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
-    type: 3}
-  spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
-    type: 3}
-  quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
-    type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-    type: 3}
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
-  numberOfRocksInCluster: 4
-  minRockDiameter: 0.25
-  maxRockDimater: 1.5
-  rockMassScale: 100
-  spikeSpeedReduction: 15
-  spikeMinSpeed: 0.05
-  spikeMaxHeight: 1.75
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
-  energyPerSpikeInChain: 50
-  maxSpikesInChain: 50
-  maxSpikeDiameter: 5
-  wallMaxHeight: 2
-  wallSizeMultiplier: 200
-  wallSpeedReduction: 50
-  wallButtonClickDelay: 0.05
+  activeRock: {fileID: 0}
 --- !u!114 &327026053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1609,10 +1565,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d73994f92dfdf446bcf3b9752b56ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockClusterBar: {fileID: 1464521047}
-  spikeChainBar: {fileID: 1935758871}
-  earthquakeBar: {fileID: 645907208}
-  wallPushBar: {fileID: 1772977819}
+  rockClusterBar: {fileID: 0}
+  spikeChainBar: {fileID: 0}
+  earthquakeBar: {fileID: 0}
+  wallPushBar: {fileID: 0}
   pointsForRockCluster: 10
   pointsForSpikeChain: 10
   pointsForEarthquake: 10
@@ -3598,7 +3554,7 @@ Transform:
   m_Children:
   - {fileID: 5006512735370102935}
   m_Father: {fileID: 2055135826}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1134715625
 MonoBehaviour:
@@ -5553,8 +5509,8 @@ Transform:
   m_Children:
   - {fileID: 1200496308}
   - {fileID: 1344536421}
-  - {fileID: 1134715624}
   - {fileID: 67030880}
+  - {fileID: 1134715624}
   - {fileID: 5142605988790177726}
   - {fileID: 1858365093}
   - {fileID: 3408932247588169627}
@@ -14358,6 +14314,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493562202129058222, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_ImportantGI
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493562202129058222, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c23154e7f01a6f84184cfbf0b14310f9, type: 3}
