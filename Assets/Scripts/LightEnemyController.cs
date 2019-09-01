@@ -54,7 +54,9 @@ public class LightEnemyController : MonoBehaviour
 
         if (agent.isStopped)
         {
-            pointsAround(new Vector3(0f,0f,0f));
+            Vector3[] points = pointsAround(new Vector3(0f,0f,0f));
+            Vector3 pointDest = closestPoint(new Vector3(-10, 0, 0), points);
+            Debug.Log("my closest point is: " + pointDest);
         }
 
 
@@ -147,8 +149,20 @@ public class LightEnemyController : MonoBehaviour
     // given a enemy position and an array of possible future positions, return the next closest point
     Vector3 closestPoint(Vector3 enemyPos, Vector3[] points)
     {
-        // todo fill out
-        return new Vector3(0,0,0);
+        // todo change this sketchy code
+        float closestDist = Vector3.Distance(enemyPos, points[0]);;
+        Vector3 closestPoint = points[0];
+        
+        foreach (var point in points)
+        {
+            float tempDist = Vector3.Distance(enemyPos, point);
+            if (tempDist < closestDist)
+            {
+                closestPoint = point;
+                closestDist = tempDist;
+            }
+        }
+        return closestPoint;
     }
 
 
