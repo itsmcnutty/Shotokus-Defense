@@ -17,50 +17,96 @@ public class LightEnemyController : MonoBehaviour
 
     private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
 
+    // shooting variables
     private float bulletSpeed = 500f;
     private float fireRate = 3f; // how many second to wait between shots
     private bool allowShoot; // keep track if enemy can shoot based on fire rate timer
+
+    // variables for strafying
+    private bool isStrafing; // bool indicating if agent is in strafing state
+    private Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
+    private Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
+    private int lastPointIndex; // last point index value in the pointsAroundTarget array
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("MainCamera");
         playerPos = player.transform.position;
+        agent.SetDestination(playerPos);
         allowShoot = true;
+        isStrafing = false;
+        lastPointIndex = 0;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        playerPos = player.transform.position;
-        agent.SetDestination(playerPos);
-
+        
         agentHead = transform.position;
-        agentHead.y = 2.5f;
+        // todo change this, this is the head height value
+        agentHead.y = 0f;
 
         // remaining distance to target
+        // todo instead of using agentHead, use new variable with positions in the floor (y = 0)
         float remainingDist = Vector3.Distance(playerPos, agentHead);
-//        Debug.Log("vector3 distance is " + remainingDist);
+        Debug.Log("vector3 distance is " + remainingDist);
 
-
-        // if agent is close enough, do range attack
-        if (remainingDist < 10f)
+        // not in strafying mode
+        if (remainingDist > 10f)
         {
-            // todo start moving in circles
-            // ...
-            agent.isStopped = true;
-        }
-
-        if (agent.isStopped)
-        {
-            Vector3[] points = pointsAround(new Vector3(0f,0f,0f));
-            Vector3 pointDest = closestPoint(new Vector3(-10, 0, 0), points);
-            Debug.Log("my closest point is: " + pointDest);
+            playerPos = player.transform.position;
+            agent.SetDestination(playerPos);
         }
 
 
-        /* uncomment **********************************************************************8
+        // if agent is close enough and not strafing yet, enter strafe/shooting state
+        // calculate points and set new destination
+        if (remainingDist < 10f && !isStrafing)
+        {
+            // do not enter here if already strafing
+            isStrafing = true;
+            
+            // Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
+            // todo this should not be everyframe
+            //Vector3[] points = pointsAround(playerPos);
+            pointsAroundTarget = pointsAround(playerPos);
+            
+            // pick the closest of these points to the enemy
+            //Vector3 pointDest = closestPoint(agentHead, pointsAroundTarget);
+            circularPointDest = closestPoint(agentHead, pointsAroundTarget);
+            
+            // change enemy agent target to the new point
+            agent.SetDestination(circularPointDest);
+        }
+        
+
+        // if moving towards strafing point, check if it has being destination has been reached
+        // if reached, calculate next moving point
+        if (isStrafing)
+        {
+            // do not change destination until current one is reached
+            // when destination is reached, move to next point 
+            // todo this is buggy cuz it needs to be updated, and not everyframe
+            float strafeRemainingDist = Vector3.Distance(agentHead, circularPointDest);
+            Debug.Log(strafeRemainingDist);
+            
+            if (strafeRemainingDist < 1f)
+            {
+                // get next point
+                lastPointIndex++;
+                circularPointDest = pointsAroundTarget[lastPointIndex % 8];
+//                Debug.Log("Changing target to index " + lastPointIndex%8);
+//                Debug.Log("moving towards " +circularPointDest);
+                agent.SetDestination(circularPointDest);
+            }
+        }
+        
+
+
+        /* uncomment **********************************************************************
+         // todo SHOOTING STATE
         // check that target is inside range radius
         if (remainingDist < 15f)
         {
@@ -120,6 +166,8 @@ public class LightEnemyController : MonoBehaviour
         Vector3[] points = new Vector3[8];
         Vector3 offset = new Vector3(center.x,0,center.z);
         
+        // todo keep track of every angle
+        
         for (int i = 0; i < 8; i++)
         {
             // x is x and y is z, in 3D coordinates unity
@@ -134,34 +182,29 @@ public class LightEnemyController : MonoBehaviour
             angle += Mathf.PI / 4;
             points[i] = coord;
         }
-        
-//        Debug.Log(points);
-//        int count = 0;
-//        foreach(var point in points)
-//        {
-//            count += 1;
-//            Debug.Log(count);
-//            Debug.Log(point);
-//        }
         return points;
     }
     
     // given a enemy position and an array of possible future positions, return the next closest point
     Vector3 closestPoint(Vector3 enemyPos, Vector3[] points)
     {
-        // todo change this sketchy code
+        // initialize temp variables to first value in array of points
         float closestDist = Vector3.Distance(enemyPos, points[0]);;
         Vector3 closestPoint = points[0];
         
-        foreach (var point in points)
+        for(int i = 0; i < points.Length; i++)
         {
+            Vector3 point = points[i];
             float tempDist = Vector3.Distance(enemyPos, point);
             if (tempDist < closestDist)
             {
                 closestPoint = point;
                 closestDist = tempDist;
+                lastPointIndex = i;
             }
         }
+        
+        // todo keep track of angle
         return closestPoint;
     }
 
