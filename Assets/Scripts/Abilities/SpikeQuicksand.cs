@@ -309,6 +309,8 @@ public class SpikeQuicksand : MonoBehaviour
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
+                spike.GetComponentInChildren<ParticleSystem>().Play();
+
                 SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
                 hand.TriggerHapticPulse(1500);
             }
