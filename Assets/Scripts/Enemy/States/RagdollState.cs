@@ -22,7 +22,7 @@ public class RagdollState : IState
 	private float timeRagdolling = 0f;
 	
 	// States to transition to
-	private AdvanceState advanceState;
+	private IState resetState;
 
 	public RagdollState(EnemyProperties enemyProps)
 	{
@@ -36,14 +36,14 @@ public class RagdollState : IState
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
 	{
-		advanceState = enemyProps.advanceState;
+		resetState = enemyProps.advanceState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
-		advanceState = enemyProps.advanceState;
+		resetState = enemyProps.runState;
 	}
 	
 	// Called upon entering this state from anywhere
@@ -51,6 +51,9 @@ public class RagdollState : IState
 	{
 		// Not an obstacle
 		obstacle.enabled = false;
+		
+		// Begin ragdolling
+		timeRagdolling = 0;
 	}
 
 	// Called upon exiting this state
@@ -74,10 +77,10 @@ public class RagdollState : IState
 	public IState Transition()
 	{
 		Debug.Log(timeRagdolling);
-		// If the enemy can recover from ragdolling, transition to advanceState
+		// If the enemy can recover from ragdolling, transition to resetState
 		if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
 		{
-			return advanceState;
+			return resetState;
 		}
 		
 		// Continue ragdolling
