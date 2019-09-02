@@ -1702,18 +1702,13 @@ MonoBehaviour:
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
-  spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
-    type: 3}
-  quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
-    type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-    type: 3}
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
+  activeRock: {fileID: 0}
 --- !u!114 &5697528617253961032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1961,18 +1956,13 @@ MonoBehaviour:
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
-  spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
-    type: 3}
-  quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
-    type: 3}
-  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-    type: 3}
   validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 3
   outlineLayerMask:
     serializedVersion: 2
     m_Bits: 36865
+  activeRock: {fileID: 0}
 --- !u!1 &5697528617253825732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2633,6 +2623,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01354048b294be148af73114e48b69f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spikePrefab: {fileID: 2816802675583756699, guid: 5beb21abd551ada49bd1af28d8f41fa7,
+    type: 3}
+  quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
+    type: 3}
   baseSpikeRadius: 0.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
@@ -2655,6 +2649,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0534ed2d22794f246b2ff7cfaf5bb610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+    type: 3}
   wallMaxHeight: 2
   wallSizeMultiplier: 120
   wallSpeedReduction: 50

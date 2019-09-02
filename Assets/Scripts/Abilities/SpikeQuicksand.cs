@@ -33,7 +33,7 @@ public class SpikeQuicksand : MonoBehaviour
     private static List<GameObject> availableSpikes = new List<GameObject>();
 
     public static SpikeQuicksand CreateComponent(GameObject player, GameObject areaOutlinePrefab, PlayerEnergy playerEnergy, Material validOutlineMat,
-    Material invalidOutlineMat, LayerMask outlineLayerMask)
+        Material invalidOutlineMat, LayerMask outlineLayerMask)
     {
         SpikeQuicksand spikes = player.GetComponent<SpikeQuicksand>();
 
@@ -135,9 +135,9 @@ public class SpikeQuicksand : MonoBehaviour
             MeshRenderer meshRenderer = areaOutlinePrefab.GetComponentInChildren<MeshRenderer>();
             Collider[] colliders = Physics.OverlapSphere(spikeQuicksandOutline.transform.position, newSize.x * meshRenderer.bounds.size.x / 2, outlineLayerMask);
             bool collision = false;
-            foreach(Collider collider in colliders)
+            foreach (Collider collider in colliders)
             {
-                if(collider.transform.root != spikeQuicksandOutline.transform && collider.tag != "Ground")
+                if (collider.transform.root != spikeQuicksandOutline.transform && collider.tag != "Ground")
                 {
                     collision = true;
                     break;
@@ -224,24 +224,7 @@ public class SpikeQuicksand : MonoBehaviour
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
         if (handPos < 0 && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
-            GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
-            GameObject quicksand = Instantiate(quicksandPrefab) as GameObject;
-            quicksand.transform.position = spikeQuicksandOutline.transform.position;
-
-            MeshRenderer outlineMeshRenderer = spikeQuicksandOutline.GetComponentInChildren<MeshRenderer>();
-            MeshRenderer quicksandMeshRenderer = quicksandPrefab.GetComponentInChildren<MeshRenderer>();
-            float quicksandSize = outlineMeshRenderer.bounds.size.x / quicksandMeshRenderer.bounds.size.x;
-            quicksand.transform.localScale = new Vector3(quicksandSize, 1f, quicksandSize);
-
-            QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration);
-            Destroy(spikeQuicksandOutline);
-            spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
-            playerEnergy.UseEnergy(hand);
-            if (!PlayerAbility.EarthquakeEnabled())
-            {
-                PowerupController.IncrementEarthquakeCounter();
-                hand.TriggerHapticPulse(800);
-            }
+            StartCoroutine(CreateQuicksand(spikeQuicksandOutlines, hand));
         }
         else if (handPos > 0 && controllerVelocity > 0)
         {
@@ -254,7 +237,50 @@ public class SpikeQuicksand : MonoBehaviour
         }
     }
 
-    public void CreateSpikes(List<GameObject> spikeQuicksandOutlines, Hand hand, ControllerArc arc, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity, Vector2 horizontalSpikeChainVelocity)
+    private IEnumerator CreateQuicksand(List<GameObject> spikeQuicksandOutlines, Hand hand)
+    {
+        GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
+        GameObject quicksand = Instantiate(quicksandPrefab) as GameObject;
+        MeshRenderer outlineMeshRenderer = spikeQuicksandOutline.GetComponentInChildren<MeshRenderer>();
+        MeshRenderer quicksandMeshRenderer = quicksandPrefab.GetComponentInChildren<MeshRenderer>();
+        ParticleSystem particleSystem = quicksand.GetComponentInChildren<ParticleSystem>();
+
+        Vector3 outlinePos = spikeQuicksandOutline.transform.position;
+        float yOffset = outlineMeshRenderer.bounds.max.y + 0.1f - outlinePos.y;
+        quicksand.transform.position = new Vector3(outlinePos.x, outlinePos.y - yOffset, outlinePos.z);
+
+        float quicksandSize = outlineMeshRenderer.bounds.size.x / quicksandMeshRenderer.bounds.size.x;
+        quicksand.transform.localScale = new Vector3(quicksandSize, 1f, quicksandSize);
+
+        particleSystem.Play();
+
+        Destroy(spikeQuicksandOutline);
+        spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
+        playerEnergy.UseEnergy(hand);
+
+        Vector3 startPos = particleSystem.transform.position;
+        particleSystem.transform.position = new Vector3(startPos.x, outlinePos.y, startPos.z);
+
+        yield return new WaitForSeconds(0.1f);
+        float startTime = Time.time;
+        float totalTime = 0;
+        do
+        {
+            totalTime += Time.deltaTime / 1f;
+            quicksand.transform.position = Vector3.Lerp(quicksand.transform.position, outlinePos, totalTime);
+            particleSystem.transform.position = new Vector3(startPos.x, outlinePos.y, startPos.z);
+            yield return new WaitForEndOfFrame();
+        } while (totalTime <= 1f);
+
+        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration);
+        if (!PlayerAbility.EarthquakeEnabled())
+        {
+            PowerupController.IncrementEarthquakeCounter();
+            hand.TriggerHapticPulse(800);
+        }
+    }
+
+    private void CreateSpikes(List<GameObject> spikeQuicksandOutlines, Hand hand, ControllerArc arc, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity, Vector2 horizontalSpikeChainVelocity)
     {
         if (PlayerAbility.SpikeChainEnabled())
         {
@@ -267,7 +293,7 @@ public class SpikeQuicksand : MonoBehaviour
                 spikeQuicksandOutlines.Remove(outline);
             }
         }
-        else if(SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
+        else if (SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
             PowerupController.IncrementSpikeChainCounter();
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
@@ -308,6 +334,8 @@ public class SpikeQuicksand : MonoBehaviour
                 float spikeVelocity = (controllerVelocity / spikeSpeedReduction) + spikeMinSpeed;
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
+
+                spike.GetComponentInChildren<ParticleSystem>().Play();
 
                 SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
                 hand.TriggerHapticPulse(1500);
