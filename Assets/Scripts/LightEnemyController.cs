@@ -53,6 +53,9 @@ public class LightEnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerPos = player.transform.position;
+
+        
         // Position of head of agent
         agentHead = transform.position;
         // todo change this, this is the head height value
@@ -132,7 +135,7 @@ public class LightEnemyController : MonoBehaviour
         // check that target is inside range radius
         if (remainingDist < 17)
         {
-            Debug.Log("Im in shooting state");
+//            Debug.Log("Im in shooting state");
             // check for visibility to target through ray cast
             RaycastHit hit;
 
@@ -164,7 +167,7 @@ public class LightEnemyController : MonoBehaviour
     {
         if (allowShoot)
         {
-            Debug.Log("Shooting");
+//            Debug.Log("Shooting");
             allowShoot = false;
             projectile = Instantiate(projectilePrefab);
             projectile.transform.position = agentHead;
@@ -177,9 +180,7 @@ public class LightEnemyController : MonoBehaviour
             // todo fill out
             float velOriginX = 15f; // input initial velocity in X axis
             float distanceX = dirToEnemy.magnitude; // difference in the X axis from enemy to player
-            
             float distanceY = playerPos.y - projectile.transform.position.y; // difference in Y axis from enemy to player
-            Debug.Log("Change in Y is " + distanceY);
             double tempOriginY = (velOriginX / distanceX) *
                                (distanceY + (- 0.5 * Physics.gravity.y * Mathf.Pow(distanceX, 2) / Mathf.Pow(velOriginX,2)));
             float velOriginY = (float) tempOriginY;
@@ -189,13 +190,10 @@ public class LightEnemyController : MonoBehaviour
             
             // set rotation and add velocity vector to projectile
             projectile.transform.LookAt(playerPos);
-            bulletSpeed = 100f;
-            float bulletSpeedY = 75f;
+//            bulletSpeed = 100f;
+//            float bulletSpeedY = 75f;
 //            projectile.GetComponent<Rigidbody>().AddForce(projectile.transform.forward * bulletSpeed + projectile.transform.up * bulletSpeedY);
             projectile.GetComponent<Rigidbody>().velocity = velocity;
-//            projectile.GetComponent<Rigidbody>().velocity = new Vector3(5,10,5);
-            
-            
             StartCoroutine(Wait(fireRate));
         }
     }

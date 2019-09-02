@@ -7,7 +7,7 @@ public class ProjectileCollide : MonoBehaviour
     private GameObject player;
     private PlayerHealth playerHealth;
 
-    public float PROJECTILE_DAMAGE = 100;
+    public float PROJECTILE_DAMAGE = 10;
     
     // Start is called before the first frame update
     void Start()
