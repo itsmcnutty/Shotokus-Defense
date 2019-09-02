@@ -19,11 +19,13 @@ public class LightEnemyController : MonoBehaviour
     private Vector3 enemyPos; // this is the position of the eney with y = 0 for distance operations
     
     // shooting variables
-    private float bulletSpeed = 250f;
-    private float fireRate = 1f; // how many second to wait between shots
+    [Header("shooting Variables")]
+    public float fireRate = 3f; // how many second to wait between shots
+    public float initialVelocityX = 15f; // Initial velocity in X-axis for projectile
     private bool allowShoot; // keep track if enemy can shoot based on fire rate timer
 
-    // variables for strafying
+    // variables for strafing
+    [Header("Strafing Variables")]
     public float distanceFromPlayer = 15f; // distance that the enemy will start strafing around player
     private bool isStrafing; // bool indicating if agent is in strafing state
     private Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
@@ -44,19 +46,18 @@ public class LightEnemyController : MonoBehaviour
         // assign randomly if enemy will strafe clockwise or counter clockwise
         if (Random.Range(0, 2) == 0)
         {
-            // clockwise
             isClockwise = true;
         }
     }
-
-
+    
     // Update is called once per frame
     void Update()
     {
+        // todo this might be breaking stuff
+        // todo enemy needs to be able to keep tracking player if he gets away
         playerPos = player.transform.position;
-
         
-        // Position of head of agent
+        // Position of head of agent (enemy)
         agentHead = transform.position;
         // todo change this, this is the head height value
         agentHead.y = 2.5f;
@@ -73,15 +74,16 @@ public class LightEnemyController : MonoBehaviour
         // not in strafying mode
         if (remainingDist > 17f)
         {
+            Debug.Log("Pathfinding mode");
             playerPos = player.transform.position;
             agent.SetDestination(playerPos);
         }
-
-
+        
         // if agent is close enough and not strafing yet, enter strafe/shooting state
         // calculate points and set new destination
         if (remainingDist < 17f && !isStrafing)
         {
+            Debug.Log("Strafing mode / calculations");
             // do not enter here if already strafing
             isStrafing = true;
             
@@ -99,6 +101,7 @@ public class LightEnemyController : MonoBehaviour
         // if reached, calculate next moving point
         if (isStrafing)
         {
+            Debug.Log("Strafing mode / moving");
             // do not change destination until current one is reached
             // when destination is reached, move to next point 
             float strafeRemainingDist = Vector3.Distance(enemyPos, circularPointDest);
@@ -135,7 +138,7 @@ public class LightEnemyController : MonoBehaviour
         // check that target is inside range radius
         if (remainingDist < 17)
         {
-//            Debug.Log("Im in shooting state");
+            Debug.Log("Shooting mode");
             // check for visibility to target through ray cast
             RaycastHit hit;
 
@@ -167,37 +170,32 @@ public class LightEnemyController : MonoBehaviour
     {
         if (allowShoot)
         {
-//            Debug.Log("Shooting");
             allowShoot = false;
+            // Instantiate and set position where projectile spawns
             projectile = Instantiate(projectilePrefab);
-            projectile.transform.position = agentHead;
-            
-            // start calculating speed and direction
+            projectile.transform.position = agentHead;   // todo change this, so it comes out from right hand
+
+            // start calculating direction and velocity in X and Y axis for projectile
             Vector3 dirToEnemy = playerPos - agentHead;
             dirToEnemy.y = 0;
-            
-            // calculate velocity in x and y axis
-            // todo fill out
-            float velOriginX = 15f; // input initial velocity in X axis
+            float velInitialX = initialVelocityX; // input initial velocity in X axis   // todo this is up to us, change as needed
             float distanceX = dirToEnemy.magnitude; // difference in the X axis from enemy to player
             float distanceY = playerPos.y - projectile.transform.position.y; // difference in Y axis from enemy to player
-            double tempOriginY = (velOriginX / distanceX) *
-                               (distanceY + (- 0.5 * Physics.gravity.y * Mathf.Pow(distanceX, 2) / Mathf.Pow(velOriginX,2)));
-            float velOriginY = (float) tempOriginY;
-            Debug.Log("My VinitialY is: " + velOriginY);
+            double tempInitialY = (velInitialX / distanceX) *
+                               (distanceY + (- 0.5 * Physics.gravity.y * Mathf.Pow(distanceX, 2) / Mathf.Pow(velInitialX,2)));
+            float velInitialY = (float) tempInitialY;
             dirToEnemy = dirToEnemy.normalized;
-            Vector3 velocity = dirToEnemy * velOriginX + Vector3.up * velOriginY;
+            Vector3 velocity = dirToEnemy * velInitialX + Vector3.up * velInitialY;
             
             // set rotation and add velocity vector to projectile
             projectile.transform.LookAt(playerPos);
-//            bulletSpeed = 100f;
-//            float bulletSpeedY = 75f;
-//            projectile.GetComponent<Rigidbody>().AddForce(projectile.transform.forward * bulletSpeed + projectile.transform.up * bulletSpeedY);
             projectile.GetComponent<Rigidbody>().velocity = velocity;
+            // wait for fire rate timer
             StartCoroutine(Wait(fireRate));
         }
     }
 
+    // this function waits for the input number of seconds (waiTime), and then allows the enemy to shoot
     IEnumerator Wait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -207,18 +205,17 @@ public class LightEnemyController : MonoBehaviour
     // given a point, return points around its circunference of radius r and every 45 degrees (pi/4 radians)
     Vector3[] pointsAround(Vector3 center)
     {
-        float radius = distanceFromPlayer; // todo range away from player that the enemy should start strafying
+        float radius = distanceFromPlayer; // range away from player that the enemy should start strafying
         float angle = 0;
         Vector3 coord;
         Vector3[] points = new Vector3[8];
         Vector3 offset = new Vector3(center.x,0,center.z);
         
-        // todo keep track of every angle
+        // todo keep track of every angle, might not be necessary anymore
         
         for (int i = 0; i < 8; i++)
         {
-            // x is x and y is z, in 3D coordinates unity
-            // vector is represented as (x, 0, y)
+            // x is x and y is z, in 3D coordinates unity. For example, the 3D vector is represented as (x, 0, y).
             float x = Mathf.Cos(angle) * radius;
             float y = Mathf.Sin(angle) * radius;
             coord = new Vector3(x, 0, y) + offset;
@@ -247,7 +244,7 @@ public class LightEnemyController : MonoBehaviour
             {
                 closestPoint = point;
                 closestDist = tempDist;
-                lastPointIndex = i;
+                lastPointIndex = i; // keeps track of at which point in the rotation of points we were left at, this helps with moving to the next closest point
             }
         }
         return closestPoint;

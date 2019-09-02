@@ -7,12 +7,13 @@ public class ProjectileCollide : MonoBehaviour
     private GameObject player;
     private PlayerHealth playerHealth;
 
-    public float PROJECTILE_DAMAGE = 10;
+    public float PROJECTILE_DAMAGE = 100;
+    private float WALL_LIFETIME = 3f;
+
     
     // Start is called before the first frame update
     void Start()
     {
-        // todo should this check for player tag or maincamera tag?
         player = GameObject.FindGameObjectWithTag("MainCamera");
         playerHealth = player.GetComponent<PlayerHealth>();
     }
@@ -25,20 +26,19 @@ public class ProjectileCollide : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        // todo in theory nothing else but the player should have the player collider tag, therefore i can be sure that inside this if statement i should damage the playtyer
+        // todo in theory nothing else but the player should have the player collider tag, therefore i can be sure that inside this if statement i should damage the player
         if (other.gameObject.CompareTag("PlayerCollider"))
         {
-            Debug.Log("Damaging the player");
-            // todo only needed if doing non-VR mode
+//            Debug.Log("Damaging the player");
+            // Needed if doing non-VR mode
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(PROJECTILE_DAMAGE);
             }
-            
-            // todo put this back into the code
-//            other.gameObject.GetComponent<PlayerHealth>().TakeDamage(PROJECTILE_DAMAGE);
-//            Destroy(this.gameObject);
         }
+        // destroy projectile after colliding with any object and make its damage 0
+        Destroy(gameObject, WALL_LIFETIME);
+        PROJECTILE_DAMAGE = 0;
     }
 
 }

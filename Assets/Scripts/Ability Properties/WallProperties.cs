@@ -8,9 +8,7 @@ public class WallProperties : MonoBehaviour
     public float wallMoveSpeed = 0f;
     public Vector3 direction = new Vector3();
     private float wallLifetime = 30.0f;
-
-//    private NavMeshSurface surface;
-//    private NavMeshSurface surfaceLight;
+    
     private NavMeshSurface surfaceWalls;
 
 
@@ -31,8 +29,6 @@ public class WallProperties : MonoBehaviour
 
     void OnDestroy()
     {
-//        surface.BuildNavMesh();
-//        surfaceLight.BuildNavMesh();
         surfaceWalls.BuildNavMesh();
     }
 
