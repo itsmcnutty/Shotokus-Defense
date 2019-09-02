@@ -6,17 +6,19 @@ using UnityEngine.AI;
 
 public class QuicksandProperties : MonoBehaviour
 {
-    private float quicksandLifetime = 30.0f;
+    private float quicksandLifetime = 3;//30.0f;
     private float quicksandSpeedReduction = 3f;
     private float maxEarthquakeDistance;
     private float earthquakeDuration;
+    private ParticleSystem destroyQuicksandParticles;
     private static Dictionary<NavMeshAgent, float> slowedEnemies = new Dictionary<NavMeshAgent, float>();
 
-    public static void CreateComponent(GameObject quicksand, float maxEarthquakeDistance, float earthquakeDuration)
+    public static void CreateComponent(GameObject quicksand, float maxEarthquakeDistance, float earthquakeDuration, ParticleSystem destroyQuicksandParticles)
     {
         QuicksandProperties properties = quicksand.AddComponent<QuicksandProperties>();
         properties.maxEarthquakeDistance = maxEarthquakeDistance;
         properties.earthquakeDuration = earthquakeDuration;
+        properties.destroyQuicksandParticles = destroyQuicksandParticles;
     }
 
     // Start is called before the first frame update
@@ -56,7 +58,18 @@ public class QuicksandProperties : MonoBehaviour
 
     void OnDestroy()
     {
-        //        GameObject.FindWithTag("NavMesh").GetComponent<NavMeshSurface>().BuildNavMesh();
+        if(destroyQuicksandParticles != null)
+        {
+            ParticleSystem particleSystem = Instantiate(destroyQuicksandParticles);
+            particleSystem.transform.position = transform.position;
+            particleSystem.transform.rotation = transform.rotation;
+
+            UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
+            shape.scale = transform.localScale;
+
+            UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
+            emissionModule.rateOverTimeMultiplier = (float) Math.Pow(700, gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

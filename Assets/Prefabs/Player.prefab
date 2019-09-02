@@ -1707,7 +1707,7 @@ MonoBehaviour:
   rockCreationDistance: 3
   outlineLayerMask:
     serializedVersion: 2
-    m_Bits: 36865
+    m_Bits: 45057
   activeRock: {fileID: 0}
 --- !u!114 &5697528617253961032
 MonoBehaviour:
@@ -1961,7 +1961,7 @@ MonoBehaviour:
   rockCreationDistance: 3
   outlineLayerMask:
     serializedVersion: 2
-    m_Bits: 36865
+    m_Bits: 45057
   activeRock: {fileID: 0}
 --- !u!1 &5697528617253825732
 GameObject:
@@ -2643,6 +2643,8 @@ MonoBehaviour:
     type: 3}
   createQuicksandParticles: {fileID: 7692048562241331371, guid: 47155701ba46c314880e66e219f92629,
     type: 3}
+  destroyQuicksandParticles: {fileID: 7692048562241331371, guid: f55af511d87c01c40aa2a4e8c0836aaa,
+    type: 3}
 --- !u!114 &1384481047780279340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2662,6 +2664,8 @@ MonoBehaviour:
   wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
   wallCreateParticles: {fileID: 337255554311895372, guid: 2ff8475a3164d2f46ba415899594db22,
+    type: 3}
+  wallDestroyParticles: {fileID: 8698782110496229370, guid: 8a2b51d9f3b5a284996419f0be37b58f,
     type: 3}
 --- !u!1 &5697528617253905748
 GameObject:
