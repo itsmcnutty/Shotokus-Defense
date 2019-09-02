@@ -24,6 +24,7 @@ public class SpikeQuicksand : MonoBehaviour
     public ParticleSystem createSpikeParticles;
     public ParticleSystem destroySpikeParticles;
     public ParticleSystem createQuicksandParticles;
+    public ParticleSystem destroyQuicksandParticles;
 
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
@@ -272,7 +273,7 @@ public class SpikeQuicksand : MonoBehaviour
             yield return new WaitForEndOfFrame();
         } while (totalTime <= 1f);
 
-        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration);
+        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, destroyQuicksandParticles);
         if (!PlayerAbility.EarthquakeEnabled())
         {
             PowerupController.IncrementEarthquakeCounter();

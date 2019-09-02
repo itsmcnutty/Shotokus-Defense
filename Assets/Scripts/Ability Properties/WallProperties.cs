@@ -37,7 +37,6 @@ public class WallProperties : MonoBehaviour
 
         UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
         emissionModule.rateOverTimeMultiplier = (float) Math.Pow(700, gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
-        Debug.Log(gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
     }
 
     public static void CreateComponent (GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed, ParticleSystem destroyWallParticles)
