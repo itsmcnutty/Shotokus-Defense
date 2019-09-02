@@ -44,11 +44,6 @@ public class SpikeMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit()
-    {
-        //colliding = false;
-    }
-
     public static void CreateComponent (GameObject spike, float speed, Vector3 endPosition, ParticleSystem destroySpikeParticles)
     {
         SpikeMovement spikeMovement = spike.AddComponent<SpikeMovement> ();
