@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class SpikeMovement : MonoBehaviour
 {
+    private ParticleSystem destroySpikeParticles;
     private float speed;
     private Vector3 endPosition;
     private NavMeshObstacle obstacle;
@@ -48,15 +49,20 @@ public class SpikeMovement : MonoBehaviour
         //colliding = false;
     }
 
-    public static void CreateComponent (GameObject spike, float speed, Vector3 endPosition)
+    public static void CreateComponent (GameObject spike, float speed, Vector3 endPosition, ParticleSystem destroySpikeParticles)
     {
         SpikeMovement spikeMovement = spike.AddComponent<SpikeMovement> ();
         spikeMovement.speed = speed;
         spikeMovement.endPosition = endPosition;
+        spikeMovement.destroySpikeParticles = destroySpikeParticles;
     }
 
     private void OnDestroy ()
     {
+        ParticleSystem particleSystem = Instantiate(destroySpikeParticles);
+        particleSystem.transform.position = transform.position;
+        particleSystem.transform.localScale = transform.localScale;
+        particleSystem.Play();
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
         SpikeQuicksand.MakeSpikeAvailable (gameObject);
