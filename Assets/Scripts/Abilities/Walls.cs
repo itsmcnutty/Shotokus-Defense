@@ -14,6 +14,7 @@ public class Walls : MonoBehaviour
     public float wallButtonClickDelay = 0.05f;
 
     public ParticleSystem wallCreateParticles;
+    public ParticleSystem wallDestroyParticles;
 
     private GameObject wallOutlinePrefab;
     private PlayerEnergy playerEnergy;
@@ -76,7 +77,6 @@ public class Walls : MonoBehaviour
 
                 UnityEngine.ParticleSystem.EmissionModule emissionModule = currentParticles.emission;
                 emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
-                currentParticles.Play();
 
                 Destroy(wallOutline);
             }
@@ -131,26 +131,26 @@ public class Walls : MonoBehaviour
         }
         else
         {
-            wall.AddComponent<WallProperties>();
-            wall.GetComponent<WallProperties>().wallHeightPercent = finalHandHeight;
+            Vector3 finalVelocity = Vector3.zero;
+            float wallMoveSpeed = 0;
 
             playerEnergy.UseEnergy(firstHandHeld);
             if (PlayerAbility.WallPushEnabled())
             {
-                Vector3 finalVelocity = Vector3.zero;
                 foreach (Vector3 velocity in previousVelocities)
                 {
                     finalVelocity += velocity;
                 }
                 finalVelocity /= previousVelocities.Count;
 
-                wall.GetComponent<WallProperties>().direction = finalVelocity.normalized;
-                wall.GetComponent<WallProperties>().wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
+                finalVelocity = finalVelocity.normalized;
+                wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
             }
             else
             {
                 PowerupController.IncrementWallPushCounter();
             }
+            WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles);
             wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
@@ -161,8 +161,8 @@ public class Walls : MonoBehaviour
     {
         UnityEngine.ParticleSystem.MainModule main = currentParticles.main;
         main.loop = false;
-        wall.AddComponent<WallProperties>();
-        wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+        WallProperties.CreateComponent(wall, finalHandHeight, wallDestroyParticles);
         playerEnergy.UseEnergy(firstHandHeld);
         ResetWallInfo();
     }

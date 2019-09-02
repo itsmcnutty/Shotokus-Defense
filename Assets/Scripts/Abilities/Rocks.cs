@@ -42,6 +42,7 @@ public class Rocks : MonoBehaviour
             if (GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
             {
                 activeRock = pickup;
+                playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
             else
@@ -53,6 +54,7 @@ public class Rocks : MonoBehaviour
         else if (pickup != otherHand.currentAttachedObject && GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
         {
             activeRock = pickup;
+            playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
             Destroy(activeRock.GetComponent<RockProperties>());
         }
         return activeRock;

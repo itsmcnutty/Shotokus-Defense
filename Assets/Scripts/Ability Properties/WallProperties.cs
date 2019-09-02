@@ -1,24 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
-using Valve.VR.InteractionSystem;
 
 public class WallProperties : MonoBehaviour
 {
-    public float wallHeightPercent;
-    public float wallMoveSpeed = 0f;
-    public Vector3 direction = new Vector3();
-    private float wallLifetime = 30.0f;
+    private float wallHeightPercent;
+    private float wallMoveSpeed = 0f;
+    private Vector3 direction = new Vector3();
+    private ParticleSystem destroyWallParticles;
 
-//    private NavMeshSurface surface;
-//    private NavMeshSurface surfaceLight;
+    private float wallLifetime = 1;//30.0f;
     private NavMeshSurface surfaceWalls;
-
 
     // Start is called before the first frame update
     void Start()
     {
-//        surface = GameObject.FindGameObjectWithTag("NavMesh").GetComponent<NavMeshSurface>();
-//        surfaceLight = GameObject.FindGameObjectWithTag("NavMesh Light").GetComponent<NavMeshSurface>();
         surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
         InvokeRepeating ("MoveWall", 0, 0.01f);
     }
@@ -31,9 +27,34 @@ public class WallProperties : MonoBehaviour
 
     void OnDestroy()
     {
-//        surface.BuildNavMesh();
-//        surfaceLight.BuildNavMesh();
         surfaceWalls.BuildNavMesh();
+        ParticleSystem particleSystem = Instantiate(destroyWallParticles);
+        particleSystem.transform.position = transform.position;
+        particleSystem.transform.rotation = transform.rotation;
+
+        UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
+        shape.scale = new Vector3(transform.localScale.x, transform.localScale.y * wallHeightPercent, transform.localScale.z);
+
+        UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
+        emissionModule.rateOverTimeMultiplier = (float) Math.Pow(700, gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
+    }
+
+    public static void CreateComponent (GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed, ParticleSystem destroyWallParticles)
+    {
+        WallProperties wallProperties = wall.AddComponent<WallProperties> ();
+        wallProperties.wallHeightPercent = wallHeightPercent;
+        wallProperties.direction = direction;
+        wallProperties.wallMoveSpeed = wallMoveSpeed;
+        wallProperties.destroyWallParticles = destroyWallParticles;
+    }
+
+    public static void CreateComponent (GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles)
+    {
+        WallProperties wallProperties = wall.AddComponent<WallProperties> ();
+        wallProperties.wallHeightPercent = wallHeightPercent;
+        wallProperties.direction = Vector3.zero;
+        wallProperties.wallMoveSpeed = 0;
+        wallProperties.destroyWallParticles = destroyWallParticles;
     }
 
     private void MoveWall()
@@ -54,6 +75,14 @@ public class WallProperties : MonoBehaviour
         if(other.gameObject.name == "Player Ability Area")
         {
             Destroy(gameObject);
+        }
+    }
+
+    public float WallHeightPercent
+    {
+        get
+        {
+            return wallHeightPercent;
         }
     }
 }

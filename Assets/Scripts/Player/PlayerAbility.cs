@@ -224,6 +224,10 @@ public class PlayerAbility : MonoBehaviour
         {
             hand.hoveringInteractable = null;
         }
+        else if(hand.currentAttachedObject != null && activeRock == null)
+        {
+            hand.DetachObject(hand.currentAttachedObject);
+        }
         else if (walls.WallIsActive())
         {
             walls.CancelWall(hand, otherHand);
