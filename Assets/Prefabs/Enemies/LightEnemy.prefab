@@ -198,7 +198,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -7728691430467014882, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -436,7 +436,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4268106905830834115, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -659,7 +659,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -5793968988183399947, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -1400,7 +1400,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -6293494347192890927, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -1908,6 +1908,7 @@ MonoBehaviour:
   agent: {fileID: 1275101893616847299}
   projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
     type: 3}
+  distanceFromPlayer: 15
 --- !u!1 &7747424865217325253
 GameObject:
   m_ObjectHideFlags: 0
