@@ -303,7 +303,7 @@ PrefabInstance:
         type: 3}
       propertyPath: prefab.Array.data[0]
       value: 
-      objectReference: {fileID: 1065938169411510748, guid: f0f52fdd4bcdb0147b6fbf818898918e,
+      objectReference: {fileID: 1663810992258648749, guid: a4db71a2ef42f4749b158f48179ac48f,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 921980b4835e024468909be45ce775d7, type: 3}
@@ -481,7 +481,7 @@ PrefabInstance:
         type: 3}
       propertyPath: prefab.Array.data[0]
       value: 
-      objectReference: {fileID: 1065938169411510748, guid: f0f52fdd4bcdb0147b6fbf818898918e,
+      objectReference: {fileID: 1663810992258648749, guid: a4db71a2ef42f4749b158f48179ac48f,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 921980b4835e024468909be45ce775d7, type: 3}
@@ -634,7 +634,7 @@ PrefabInstance:
         type: 3}
       propertyPath: prefab.Array.data[0]
       value: 
-      objectReference: {fileID: 1065938169411510748, guid: f0f52fdd4bcdb0147b6fbf818898918e,
+      objectReference: {fileID: 1663810992258648749, guid: a4db71a2ef42f4749b158f48179ac48f,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 921980b4835e024468909be45ce775d7, type: 3}
@@ -1224,6 +1224,26 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5142605987923199866}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1018914735 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 612244714953033358, guid: 2eac681e2e27b4f428ff1ea09b55a44c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2118028848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1018914736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018914735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb5713b5a2f78b4d91bfe558fde05b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameoverMenuPrefab: {fileID: 4037016777891229806, guid: 8f16c1fa097b66747ba5fb9febd46ba8,
+    type: 3}
 --- !u!4 &1044373951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3454722942143526677, guid: 322075a80750f8445a4ce388d6fa2932,
@@ -1417,7 +1437,7 @@ PrefabInstance:
         type: 3}
       propertyPath: prefab.Array.data[0]
       value: 
-      objectReference: {fileID: 1065938169411510748, guid: f0f52fdd4bcdb0147b6fbf818898918e,
+      objectReference: {fileID: 1663810992258648749, guid: a4db71a2ef42f4749b158f48179ac48f,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 921980b4835e024468909be45ce775d7, type: 3}
@@ -10911,6 +10931,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Temple_ground
       objectReference: {fileID: 0}
+    - target: {fileID: 902660445088284018, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 4241754491627409249, guid: c23154e7f01a6f84184cfbf0b14310f9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10980,6 +11005,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ScaleInLightmap
       value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 2693509123910432824, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c23154e7f01a6f84184cfbf0b14310f9, type: 3}
