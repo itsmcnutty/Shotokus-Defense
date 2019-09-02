@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -36,7 +35,7 @@ public class Walls : MonoBehaviour
     private NavMeshSurface surfaceWalls;
 
     public static Walls CreateComponent(GameObject player, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy, Material validOutlineMat,
-    Material invalidOutlineMat, float rockCreationDistance, LayerMask outlineLayerMask)
+        Material invalidOutlineMat, float rockCreationDistance, LayerMask outlineLayerMask)
     {
         Walls walls = player.GetComponent<Walls>();
 
@@ -60,11 +59,20 @@ public class Walls : MonoBehaviour
             if (WallIsValid(hand.GetComponentInChildren<ControllerArc>(), otherHand.GetComponentInChildren<ControllerArc>()))
             {
                 wall = Instantiate(wallPrefab) as GameObject;
-                wall.transform.position = wallOutline.transform.position;
+                wall.transform.position = new Vector3(wallOutline.transform.position.x, wallOutline.transform.position.y + wallMaxHeight, wallOutline.transform.position.z);
                 wall.transform.localScale = wallOutline.transform.localScale;
                 wall.transform.rotation = wallOutline.transform.rotation;
                 startingHandHeight = Math.Min(hand.transform.position.y, otherHand.transform.position.y);
                 playerEnergy.SetTempEnergy(firstHandHeld, 0);
+
+                ParticleSystem particleSystem = wall.GetComponentInChildren<ParticleSystem>();
+                UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
+                shape.scale = new Vector3(shape.scale.x * wall.transform.localScale.x, shape.scale.y, shape.scale.z);
+
+                UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
+                emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
+                wall.GetComponentInChildren<ParticleSystem>().Play();
+
                 Destroy(wallOutline);
             }
             else
@@ -87,10 +95,19 @@ public class Walls : MonoBehaviour
 
         if (newHandHeight < 1 && currentWallHeight < newHandHeight)
         {
-            MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
+            float heightDifference = (wallMaxHeight * newHandHeight) - (wallMaxHeight * currentWallHeight);
+            float newWallPosY = wall.transform.position.y + heightDifference;
             currentWallHeight = newHandHeight;
-            Vector3 newPos = new Vector3(wall.transform.position.x, wallMaxHeight * newHandHeight, wall.transform.position.z);
+
+            Vector3 newPos = new Vector3(wall.transform.position.x, newWallPosY, wall.transform.position.z);
             wall.transform.position = Vector3.MoveTowards(wall.transform.position, newPos, 1f);
+
+            ParticleSystem particleSystem = wall.GetComponentInChildren<ParticleSystem>();
+            Vector3 particleSystemPos = particleSystem.transform.position;
+            particleSystemPos = new Vector3(particleSystemPos.x, wall.transform.position.y - (wallMaxHeight * newHandHeight), particleSystemPos.z);
+            particleSystem.transform.position = particleSystemPos;
+            
+            MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
             float area = (float) Math.Round(wall.transform.localScale.x * meshRenderer.bounds.size.x * wallMaxHeight * newHandHeight, 2) * wallSizeMultiplier;
             playerEnergy.SetTempEnergy(firstHandHeld, area);
         }
@@ -104,9 +121,9 @@ public class Walls : MonoBehaviour
 
     public void EndCreateWall(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
-
         float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
-        Debug.Log(finalHandHeight);
+        UnityEngine.ParticleSystem.MainModule main = wall.GetComponentInChildren<ParticleSystem>().main;
+        main.loop = false;
         if (finalHandHeight < 0.18f)
         {
             Destroy(wall);
@@ -121,7 +138,7 @@ public class Walls : MonoBehaviour
             if (PlayerAbility.WallPushEnabled())
             {
                 Vector3 finalVelocity = Vector3.zero;
-                foreach(Vector3 velocity in previousVelocities)
+                foreach (Vector3 velocity in previousVelocities)
                 {
                     finalVelocity += velocity;
                 }
@@ -142,6 +159,8 @@ public class Walls : MonoBehaviour
 
     public void CancelWall(Hand hand, Hand otherHand)
     {
+        UnityEngine.ParticleSystem.MainModule main = wall.GetComponentInChildren<ParticleSystem>().main;
+        main.loop = false;
         wall.AddComponent<WallProperties>();
         wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
         playerEnergy.UseEnergy(firstHandHeld);
