@@ -9,7 +9,7 @@ public class WallProperties : MonoBehaviour
     private Vector3 direction = new Vector3();
     private ParticleSystem destroyWallParticles;
 
-    private float wallLifetime = 1;//30.0f;
+    private float wallLifetime = 30.0f;
     private NavMeshSurface surfaceWalls;
 
     // Start is called before the first frame update

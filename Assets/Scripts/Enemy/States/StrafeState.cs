@@ -128,14 +128,14 @@ public class StrafeState : IState
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
 		// If outside ranged radius, transition to run state
-		if (sqrDist - sqrRangedRadius > -1f)
+		if (sqrDist - sqrRangedRadius > 0)
 		{
 			animator.SetTrigger("Run");
 			return runState;
 		}
 		
 		// If within melee range, transition to melee state
-		if (sqrDist - sqrMeleeRadius < 1f)
+		if (sqrDist - sqrMeleeRadius < 0)
 		{
 			animator.SetTrigger("Melee");
 			return meleeState;
@@ -147,6 +147,6 @@ public class StrafeState : IState
 
 	public override string ToString()
 	{
-		return "Run";
+		return "Strafe";
 	}
 }

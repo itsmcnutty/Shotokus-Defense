@@ -263,22 +263,27 @@ public class SpikeQuicksand : MonoBehaviour
         spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
         playerEnergy.UseEnergy(hand);
 
+        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration,
+            destroyQuicksandParticles);
+        if (!PlayerAbility.EarthquakeEnabled())
+        {
+            PowerupController.IncrementEarthquakeCounter();
+            hand.TriggerHapticPulse(800);
+        }
+
         yield return new WaitForSeconds(0.1f);
         float startTime = Time.time;
         float totalTime = 0;
         do
         {
             totalTime += Time.deltaTime / 1f;
+            if (!quicksand)
+            {
+                break;
+            }
             quicksand.transform.position = Vector3.Lerp(quicksand.transform.position, outlinePos, totalTime);
             yield return new WaitForEndOfFrame();
         } while (totalTime <= 1f);
-
-        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, destroyQuicksandParticles);
-        if (!PlayerAbility.EarthquakeEnabled())
-        {
-            PowerupController.IncrementEarthquakeCounter();
-            hand.TriggerHapticPulse(800);
-        }
     }
 
     private void CreateSpikes(List<GameObject> spikeQuicksandOutlines, Hand hand, ControllerArc arc, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity, Vector2 horizontalSpikeChainVelocity)

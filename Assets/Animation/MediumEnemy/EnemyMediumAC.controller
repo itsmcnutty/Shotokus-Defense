@@ -238,25 +238,7 @@ BlendTree:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walk-RunBlend
-  m_Childs:
-  - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: b0cc585fc1bfd814a8cde567454c3930,
-      type: 3}
-    m_Threshold: 2.3
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1.8594974
-    m_CycleOffset: 0
-    m_DirectBlendParameter: WalkSpeed
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 2c0e5d93bae3a7c4d9bc09b8d0bfc7c3,
-      type: 3}
-    m_Threshold: 4
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.96
-    m_CycleOffset: 0
-    m_DirectBlendParameter: WalkSpeed
-    m_Mirror: 0
+  m_Childs: []
   m_BlendParameter: RunSpeed
   m_BlendParameterY: WalkSpeed
   m_MinThreshold: 2.3
@@ -815,7 +797,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -5041390550920096628}
+  m_Motion: {fileID: -203655887218126122, guid: 2c0e5d93bae3a7c4d9bc09b8d0bfc7c3,
+    type: 3}
   m_Tag: Movement
   m_SpeedParameter: RunSpeed
   m_MirrorParameter: 
@@ -887,7 +870,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 1}
-    m_TimeScale: 1.1
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -896,7 +879,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0.25
     m_Position: {x: 1, y: 0}
-    m_TimeScale: 1.1
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -905,7 +888,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0.5
     m_Position: {x: 0, y: -1}
-    m_TimeScale: 1.1
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -914,7 +897,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0.75
     m_Position: {x: -1, y: 0}
-    m_TimeScale: 1.1
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -1100,7 +1083,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Strafing
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3602944346442442145}
