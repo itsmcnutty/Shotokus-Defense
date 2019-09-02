@@ -21,6 +21,10 @@ public class SpikeQuicksand : MonoBehaviour
     public float maxEarthquakeDistance = 3f;
     public float earthquakeDuration = 1f;
 
+    public ParticleSystem createSpikeParticles;
+    public ParticleSystem destroySpikeParticles;
+    public ParticleSystem createQuicksandParticles;
+
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
     private Material validOutlineMat;
@@ -243,7 +247,6 @@ public class SpikeQuicksand : MonoBehaviour
         GameObject quicksand = Instantiate(quicksandPrefab) as GameObject;
         MeshRenderer outlineMeshRenderer = spikeQuicksandOutline.GetComponentInChildren<MeshRenderer>();
         MeshRenderer quicksandMeshRenderer = quicksandPrefab.GetComponentInChildren<MeshRenderer>();
-        ParticleSystem particleSystem = quicksand.GetComponentInChildren<ParticleSystem>();
 
         Vector3 outlinePos = spikeQuicksandOutline.transform.position;
         float yOffset = outlineMeshRenderer.bounds.max.y + 0.1f - outlinePos.y;
@@ -252,14 +255,13 @@ public class SpikeQuicksand : MonoBehaviour
         float quicksandSize = outlineMeshRenderer.bounds.size.x / quicksandMeshRenderer.bounds.size.x;
         quicksand.transform.localScale = new Vector3(quicksandSize, 1f, quicksandSize);
 
+        ParticleSystem particleSystem = Instantiate(createQuicksandParticles);
+        particleSystem.transform.position = outlinePos;
         particleSystem.Play();
 
         Destroy(spikeQuicksandOutline);
         spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
         playerEnergy.UseEnergy(hand);
-
-        Vector3 startPos = particleSystem.transform.position;
-        particleSystem.transform.position = new Vector3(startPos.x, outlinePos.y, startPos.z);
 
         yield return new WaitForSeconds(0.1f);
         float startTime = Time.time;
@@ -268,7 +270,6 @@ public class SpikeQuicksand : MonoBehaviour
         {
             totalTime += Time.deltaTime / 1f;
             quicksand.transform.position = Vector3.Lerp(quicksand.transform.position, outlinePos, totalTime);
-            particleSystem.transform.position = new Vector3(startPos.x, outlinePos.y, startPos.z);
             yield return new WaitForEndOfFrame();
         } while (totalTime <= 1f);
 
@@ -335,9 +336,11 @@ public class SpikeQuicksand : MonoBehaviour
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
-                spike.GetComponentInChildren<ParticleSystem>().Play();
+                ParticleSystem particleSystem = Instantiate(createSpikeParticles);
+                particleSystem.transform.position = spike.transform.position;
+                particleSystem.transform.localScale = spike.transform.localScale;
 
-                SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
+                SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, destroySpikeParticles);
                 hand.TriggerHapticPulse(1500);
             }
             allSpikes.Clear();
@@ -371,7 +374,7 @@ public class SpikeQuicksand : MonoBehaviour
             Vector3 spikeEndPosition = spike.transform.position;
             spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
-            SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition);
+            SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, destroySpikeParticles);
             hand.TriggerHapticPulse(1500);
 
             outline.transform.position += new Vector3(spikeMoveDirection.x, 0, spikeMoveDirection.y);
