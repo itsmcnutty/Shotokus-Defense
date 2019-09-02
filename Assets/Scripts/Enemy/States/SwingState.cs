@@ -53,7 +53,6 @@ public class SwingState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
-		Debug.Log(ToString());
 		startedSwinging = false;
 		finishedSwinging = false;
 	}

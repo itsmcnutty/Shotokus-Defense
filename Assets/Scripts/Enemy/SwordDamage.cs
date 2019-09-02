@@ -31,7 +31,7 @@ public class SwordDamage : MonoBehaviour
         if (otherTopParent.Equals(player) &&
             parentEnemy.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsTag("Swinging"))
         {
-            player.GetComponentInChildren<PlayerHealth>().TakeDamage(DAMAGE);
+            player.GetComponentInChildren<PlayerHealth>()?.TakeDamage(DAMAGE);
         }
     }
 
