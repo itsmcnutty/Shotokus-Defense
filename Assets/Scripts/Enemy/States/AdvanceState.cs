@@ -15,6 +15,8 @@ public class AdvanceState : IState
 	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
+	// Speed of navmesh agent in this state
+	private float maxWalkSpeed;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
@@ -33,7 +35,7 @@ public class AdvanceState : IState
 	// This enemy GameObject
 	private GameObject gameObj;
 	// The enemy properties component
-	private EnemyHeavyProperties enemyProps;
+	private EnemyProperties enemyProps;
 	
 	// States to transition to
 	private MeleeState meleeState;
@@ -46,6 +48,7 @@ public class AdvanceState : IState
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
+		maxWalkSpeed = enemyProps.MAX_RUN_SPEED;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
 		sqrAttackRadius = enemyProps.sqrAttackRadius;
@@ -55,9 +58,34 @@ public class AdvanceState : IState
 		this.enemyProps = enemyProps;
 	}
 	
+	public AdvanceState(EnemyMediumProperties enemyProps)
+	{
+		attackRadius = enemyProps.MELEE_RADIUS;
+		agent = enemyProps.agent;
+		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
+		maxWalkSpeed = enemyProps.MAX_STRAFE_SPEED;
+		obstacle = enemyProps.obstacle;
+		debugNoWalk = enemyProps.debugNoWalk;
+		attackMargin = enemyProps.ATTACK_MARGIN;
+		sqrAttackRadius = enemyProps.sqrMeleeRadius;
+		player = enemyProps.player;
+		playerPos = enemyProps.playerPos;
+		gameObj = enemyProps.gameObject;
+		this.enemyProps = enemyProps;
+	}
+	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		meleeState = enemyProps.meleeState;
+		ragdollState = enemyProps.ragdollState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
@@ -72,14 +100,15 @@ public class AdvanceState : IState
 		
 		// Settings for agent
 		agent.stoppingDistance = attackRadius;
+		agent.speed = maxWalkSpeed;
 		agent.angularSpeed = 8000f;
 	}
 
 	// Called upon exiting this state
-	void IState.Exit() {}
+	public void Exit() {}
 
 	// Called during Update while currently in this state
-	void IState.Action()
+	public void Action()
 	{
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;

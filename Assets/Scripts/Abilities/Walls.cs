@@ -13,6 +13,9 @@ public class Walls : MonoBehaviour
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
 
+    public ParticleSystem wallCreateParticles;
+    public ParticleSystem wallDestroyParticles;
+
     private GameObject wallOutlinePrefab;
     private PlayerEnergy playerEnergy;
     private Material validOutlineMat;
@@ -29,6 +32,8 @@ public class Walls : MonoBehaviour
     private static float startingHandHeight;
     private static float currentWallHeight;
     private Queue<Vector3> previousVelocities = new Queue<Vector3>();
+
+    private static ParticleSystem currentParticles;
 
     private NavMeshSurface surface;
     private NavMeshSurface surfaceLight;
@@ -65,13 +70,13 @@ public class Walls : MonoBehaviour
                 startingHandHeight = Math.Min(hand.transform.position.y, otherHand.transform.position.y);
                 playerEnergy.SetTempEnergy(firstHandHeld, 0);
 
-                ParticleSystem particleSystem = wall.GetComponentInChildren<ParticleSystem>();
-                UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
+                currentParticles = Instantiate(wallCreateParticles);
+                currentParticles.transform.position = wall.transform.position;
+                UnityEngine.ParticleSystem.ShapeModule shape = currentParticles.shape;
                 shape.scale = new Vector3(shape.scale.x * wall.transform.localScale.x, shape.scale.y, shape.scale.z);
 
-                UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
+                UnityEngine.ParticleSystem.EmissionModule emissionModule = currentParticles.emission;
                 emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
-                wall.GetComponentInChildren<ParticleSystem>().Play();
 
                 Destroy(wallOutline);
             }
@@ -101,11 +106,6 @@ public class Walls : MonoBehaviour
 
             Vector3 newPos = new Vector3(wall.transform.position.x, newWallPosY, wall.transform.position.z);
             wall.transform.position = Vector3.MoveTowards(wall.transform.position, newPos, 1f);
-
-            ParticleSystem particleSystem = wall.GetComponentInChildren<ParticleSystem>();
-            Vector3 particleSystemPos = particleSystem.transform.position;
-            particleSystemPos = new Vector3(particleSystemPos.x, wall.transform.position.y - (wallMaxHeight * newHandHeight), particleSystemPos.z);
-            particleSystem.transform.position = particleSystemPos;
             
             MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
             float area = (float) Math.Round(wall.transform.localScale.x * meshRenderer.bounds.size.x * wallMaxHeight * newHandHeight, 2) * wallSizeMultiplier;
@@ -122,7 +122,7 @@ public class Walls : MonoBehaviour
     public void EndCreateWall(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
         float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
-        UnityEngine.ParticleSystem.MainModule main = wall.GetComponentInChildren<ParticleSystem>().main;
+        UnityEngine.ParticleSystem.MainModule main = currentParticles.main;
         main.loop = false;
         if (finalHandHeight < 0.18f)
         {
@@ -131,26 +131,26 @@ public class Walls : MonoBehaviour
         }
         else
         {
-            wall.AddComponent<WallProperties>();
-            wall.GetComponent<WallProperties>().wallHeightPercent = finalHandHeight;
+            Vector3 finalVelocity = Vector3.zero;
+            float wallMoveSpeed = 0;
 
             playerEnergy.UseEnergy(firstHandHeld);
             if (PlayerAbility.WallPushEnabled())
             {
-                Vector3 finalVelocity = Vector3.zero;
                 foreach (Vector3 velocity in previousVelocities)
                 {
                     finalVelocity += velocity;
                 }
                 finalVelocity /= previousVelocities.Count;
 
-                wall.GetComponent<WallProperties>().direction = finalVelocity.normalized;
-                wall.GetComponent<WallProperties>().wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
+                finalVelocity = finalVelocity.normalized;
+                wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
             }
             else
             {
                 PowerupController.IncrementWallPushCounter();
             }
+            WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles);
             wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
@@ -159,10 +159,10 @@ public class Walls : MonoBehaviour
 
     public void CancelWall(Hand hand, Hand otherHand)
     {
-        UnityEngine.ParticleSystem.MainModule main = wall.GetComponentInChildren<ParticleSystem>().main;
+        UnityEngine.ParticleSystem.MainModule main = currentParticles.main;
         main.loop = false;
-        wall.AddComponent<WallProperties>();
-        wall.GetComponent<WallProperties>().wallHeightPercent = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
+        WallProperties.CreateComponent(wall, finalHandHeight, wallDestroyParticles);
         playerEnergy.UseEnergy(firstHandHeld);
         ResetWallInfo();
     }
@@ -245,6 +245,7 @@ public class Walls : MonoBehaviour
         wall = null;
         lastAngle = 0;
         currentWallHeight = 0;
+        currentParticles = null;
     }
 
     private void SetWallPosition(ControllerArc arc, ControllerArc otherArc)
