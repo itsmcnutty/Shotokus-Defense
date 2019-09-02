@@ -257,7 +257,6 @@ public class SpikeQuicksand : MonoBehaviour
 
         ParticleSystem particleSystem = Instantiate(createQuicksandParticles);
         particleSystem.transform.position = outlinePos;
-        particleSystem.Play();
 
         Destroy(spikeQuicksandOutline);
         spikeQuicksandOutlines.Remove(spikeQuicksandOutline);

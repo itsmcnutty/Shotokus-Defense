@@ -77,7 +77,6 @@ public class Walls : MonoBehaviour
 
                 UnityEngine.ParticleSystem.EmissionModule emissionModule = currentParticles.emission;
                 emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
-                currentParticles.Play();
 
                 Destroy(wallOutline);
             }
