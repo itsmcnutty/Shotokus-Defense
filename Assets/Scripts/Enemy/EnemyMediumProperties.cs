@@ -13,6 +13,8 @@ public class EnemyMediumProperties : EnemyProperties
     public float MELEE_DELAY = 2f;
     // Radius for melee attacking
     public float MELEE_RADIUS;
+    // Speed of navmesh agent when strafing
+    public float MAX_STRAFE_SPEED;
 
     // Allowed space around attack radius that enemies can attack from
     [NonSerialized] public float ATTACK_MARGIN = 1f;
@@ -57,6 +59,23 @@ public class EnemyMediumProperties : EnemyProperties
         ragdollState.InitializeStates(this);
 		
         // Give FSM an initial state
-        stateMachine.ChangeState(advanceState);
+        stateMachine.ChangeState(runState);
+    }
+
+    public override float GetCurrentMaxSpeed()
+    {
+	    switch (stateMachine.GetCurrentState())
+	    {
+		    case "Run":
+			    return MAX_RUN_SPEED;
+		    case "Strafe":
+			    return MAX_STRAFE_SPEED;
+		    case "Advance":
+			    return MAX_STRAFE_SPEED;
+		    case "Retreat":
+			    return MAX_STRAFE_SPEED;
+		    default:
+			    return 0;
+	    }
     }
 }

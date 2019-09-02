@@ -15,6 +15,8 @@ public class AdvanceState : IState
 	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
+	// Speed of navmesh agent in this state
+	private float maxWalkSpeed;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
@@ -46,6 +48,7 @@ public class AdvanceState : IState
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
+		maxWalkSpeed = enemyProps.MAX_RUN_SPEED;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
 		sqrAttackRadius = enemyProps.sqrAttackRadius;
@@ -61,6 +64,7 @@ public class AdvanceState : IState
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
+		maxWalkSpeed = enemyProps.MAX_STRAFE_SPEED;
 		obstacle = enemyProps.obstacle;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
@@ -96,6 +100,7 @@ public class AdvanceState : IState
 		
 		// Settings for agent
 		agent.stoppingDistance = attackRadius;
+		agent.speed = maxWalkSpeed;
 		agent.angularSpeed = 8000f;
 	}
 

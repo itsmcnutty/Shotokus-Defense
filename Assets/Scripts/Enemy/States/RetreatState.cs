@@ -15,6 +15,8 @@ public class RetreatState : IState
 	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
+	// Speed of navmesh agent in this state
+	private float maxWalkSpeed;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
@@ -44,6 +46,7 @@ public class RetreatState : IState
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
+		maxWalkSpeed = enemyProps.MAX_RUN_SPEED;
 		obstacle = enemyProps.obstacle;
 		player = enemyProps.player;
 		debugNoWalk = enemyProps.debugNoWalk;
@@ -59,6 +62,7 @@ public class RetreatState : IState
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
+		maxWalkSpeed = enemyProps.MAX_STRAFE_SPEED;
 		obstacle = enemyProps.obstacle;
 		player = enemyProps.player;
 		debugNoWalk = enemyProps.debugNoWalk;
@@ -93,6 +97,7 @@ public class RetreatState : IState
 		
 		// Don't automatically decelerate or rotate
 		agent.stoppingDistance = 0f;
+		agent.speed = maxWalkSpeed;
 		agent.angularSpeed = 0f;
 	}
 

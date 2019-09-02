@@ -17,6 +17,8 @@ public class StrafeState : IState
 	private RagdollController ragdollController;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
+	// Speed of navmesh agent in this state
+	private float maxStrafeSpeed;
 	// Doesn't walk if true (for debugging)
 	private bool debugNoWalk;
     
@@ -46,6 +48,7 @@ public class StrafeState : IState
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
+		maxStrafeSpeed = enemyProps.MAX_STRAFE_SPEED;
 		debugNoWalk = enemyProps.debugNoWalk;
 		sqrMeleeRadius = enemyProps.sqrMeleeRadius;
 		sqrRangedRadius = enemyProps.sqrRangedRadius;
@@ -73,7 +76,8 @@ public class StrafeState : IState
 		
 		// Settings for agent
 		agent.stoppingDistance = meleeRadius;
-		agent.angularSpeed = 8000f;
+		agent.speed = maxStrafeSpeed;
+		agent.angularSpeed = 0;
 	}
 
 	// Called upon exiting this state
@@ -84,10 +88,15 @@ public class StrafeState : IState
 	{
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
-        
-		// Pass speed to animation controller
-		float moveSpeed = agent.velocity.magnitude;
-		animator.SetFloat("StrafeSpeedForward", moveSpeed);
+		Vector3 enemyVelocity = agent.velocity;
+		
+		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
+		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);
+		float strafeSpeedRight = Vector3.Dot(enemyVelocity, gameObj.transform.right);
+		
+		// Pass to animator
+		animator.SetFloat("StrafeSpeedForward", strafeSpeedForward);
+		animator.SetFloat("StrafeSpeedRight", strafeSpeedRight);
 		
 		// Move to player if outside attack range, otherwise transition
 		if (agent.enabled && !debugNoWalk)
@@ -96,7 +105,7 @@ public class StrafeState : IState
 			agent.SetDestination(playerPos);
 
 			// Stopping distance will cause enemy to decelerate into attack radius
-			agent.stoppingDistance = meleeRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
+			agent.stoppingDistance = meleeRadius + enemyVelocity.magnitude * enemyVelocity.magnitude / (2 * agent.acceleration);
 		}
 	}
 

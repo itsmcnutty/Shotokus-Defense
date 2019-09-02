@@ -464,7 +464,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.3
-  m_Speed: 6
+  m_Speed: 5
   m_Acceleration: 6
   avoidancePriority: 50
   m_AngularSpeed: 6000
@@ -504,13 +504,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dbf7fea202e1264689c2e526b8a4a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ATTACK_DELAY: 0.9
-  ATTACK_RADIUS: 2.9
   agent: {fileID: 2116074739590195269}
   obstacle: {fileID: 6174234616195165507}
   ragdollController: {fileID: 4023649777233007960}
   animator: {fileID: 7572751303127467155}
+  MAX_RUN_SPEED: 3.5
   debugNoWalk: 0
+  ATTACK_DELAY: 0.9
+  ATTACK_RADIUS: 2.9
 --- !u!1 &1740661674447508861
 GameObject:
   m_ObjectHideFlags: 0
@@ -2536,11 +2537,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8882097429358479568}
     m_Modifications:
-    - target: {fileID: 7524114311264712760, guid: eb148d6af4a17514b825049307fa8696,
-        type: 3}
-      propertyPath: m_Name
-      value: EnemyHealthBar
-      objectReference: {fileID: 0}
     - target: {fileID: 9179866932452110010, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2645,6 +2641,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7524114311264712760, guid: eb148d6af4a17514b825049307fa8696,
+        type: 3}
+      propertyPath: m_Name
+      value: EnemyHealthBar
       objectReference: {fileID: 0}
     - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}

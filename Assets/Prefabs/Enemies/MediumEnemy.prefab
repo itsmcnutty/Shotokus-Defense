@@ -538,7 +538,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.06889297
+  m_Radius: 0.1
   m_Height: 0.27557188
   m_Direction: 1
   m_Center: {x: 0, y: 0.13778594, z: 0}
@@ -649,7 +649,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.23
   m_Center: {x: 0, y: 0.106070206, z: 0.07}
 --- !u!54 &8339264384501481952
 Rigidbody:
@@ -848,10 +848,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.073360644
+  m_Radius: 0.22
   m_Height: 0.24453548
   m_Direction: 1
-  m_Center: {x: 0, y: 0.12226774, z: 0}
+  m_Center: {x: 0, y: 0.21, z: -0.02}
 --- !u!54 &4871440473866462891
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1263,10 +1263,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.050146975
+  m_Radius: 0.09
   m_Height: 0.2005879
   m_Direction: 1
-  m_Center: {x: 0, y: 0.10029395, z: 0}
+  m_Center: {x: 0, y: 0.16, z: -0.02}
 --- !u!54 &2934302377620420321
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1513,7 +1513,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.06890306
+  m_Radius: 0.1
   m_Height: 0.27561224
   m_Direction: 1
   m_Center: {x: 0, y: 0.13780612, z: 0}
@@ -1622,7 +1622,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.086612634
+  m_Radius: 0.06
   m_Height: 0.43306318
   m_Direction: 1
   m_Center: {x: 0, y: 0.21653159, z: 0}
@@ -1859,10 +1859,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.07329505
+  m_Radius: 0.22
   m_Height: 0.24431683
   m_Direction: 1
-  m_Center: {x: 0, y: 0.122158416, z: 0}
+  m_Center: {x: 0, y: 0.21, z: -0.02}
 --- !u!54 &1829509213528387516
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1999,10 +1999,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.058374576
+  m_Radius: 0.09
   m_Height: 0.2334983
   m_Direction: 1
-  m_Center: {x: 0, y: 0.11674915, z: 0}
+  m_Center: {x: 0, y: 0.16, z: -0.02}
 --- !u!54 &5262432805306773301
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2108,7 +2108,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.088290416
+  m_Radius: 0.06
   m_Height: 0.4414521
   m_Direction: 1
   m_Center: {x: 0, y: 0.22072604, z: 0}
@@ -2259,7 +2259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd923125896806243808fdc885c49fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HEALTH: 300
+  MAX_HEALTH: 3000
   ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 3
   RAGDOLL_DMG_THRESHOLD: 15
@@ -2322,11 +2322,13 @@ MonoBehaviour:
   obstacle: {fileID: 4699850651619254656}
   ragdollController: {fileID: 3256949796255240803}
   animator: {fileID: 4151198718686024816}
+  MAX_RUN_SPEED: 4.5
   debugNoWalk: 0
   RANGED_DELAY: 3
   RANGED_RADIUS: 10
   MELEE_DELAY: 2
   MELEE_RADIUS: 2.5
+  MAX_STRAFE_SPEED: 1
 --- !u!1 &9150253065292358800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2364,11 +2366,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4365777871255944510}
     m_Modifications:
-    - target: {fileID: 7524114311264712760, guid: eb148d6af4a17514b825049307fa8696,
-        type: 3}
-      propertyPath: m_Name
-      value: EnemyHealthBar
-      objectReference: {fileID: 0}
     - target: {fileID: 9179866932452110010, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2473,6 +2470,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7524114311264712760, guid: eb148d6af4a17514b825049307fa8696,
+        type: 3}
+      propertyPath: m_Name
+      value: EnemyHealthBar
       objectReference: {fileID: 0}
     - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}

@@ -25,6 +25,8 @@ public class MeleeState : IState
 	private float ATTACK_MARGIN = 1f;
 	// Squared attack radius (for optimized calculations)
 	private float sqrAttackRadius;
+	// Number of potential attacks in animator controller
+	private int numAttacks;
 	
 	// Timer for attack delay
 	private float attackTimer = 0f;
@@ -55,6 +57,7 @@ public class MeleeState : IState
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		sqrAttackRadius = enemyProps.sqrAttackRadius;
+		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
@@ -69,6 +72,7 @@ public class MeleeState : IState
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		sqrAttackRadius = enemyProps.sqrMeleeRadius;
+		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
@@ -122,7 +126,7 @@ public class MeleeState : IState
 		// When attackTimer is lower than 0, it allows the enemy to attack again
 		if (attackTimer <= 0f)
 		{
-			animator.SetInteger("AttackNum", Random.Range(0, 2));
+			animator.SetInteger("AttackNum", Random.Range(0, numAttacks));
 			swinging = true;
 			attackTimer = attackDelay;
 		}

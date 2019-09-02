@@ -17,6 +17,8 @@ public class RunState : IState
 	private RagdollController ragdollController;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
+	// Speed of navmesh agent in this state
+	private float maxRunSpeed;
 	// Doesn't walk if true (for debugging)
 	private bool debugNoWalk;
     
@@ -43,6 +45,7 @@ public class RunState : IState
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
+		maxRunSpeed = enemyProps.MAX_RUN_SPEED;
 		debugNoWalk = enemyProps.debugNoWalk;
 		sqrRangedRadius = enemyProps.sqrRangedRadius;
 		player = enemyProps.player;
@@ -68,6 +71,7 @@ public class RunState : IState
 		
 		// Settings for agent
 		agent.stoppingDistance = rangedRadius;
+		agent.speed = maxRunSpeed;
 		agent.angularSpeed = 8000f;
 	}
 
@@ -77,7 +81,7 @@ public class RunState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
-		// Store transform variables for player and this enemy
+		// Store transform variables for player
 		playerPos = player.transform.position;
         
 		// Pass speed to animation controller
@@ -114,7 +118,7 @@ public class RunState : IState
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
 		// If within melee range, transition to melee state
-		if (sqrDist - sqrRangedRadius < 1f)
+		if (sqrDist - sqrRangedRadius < 0.2f)
 		{
 			animator.SetTrigger("Strafe");
 			return strafeState;

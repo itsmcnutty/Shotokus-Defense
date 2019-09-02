@@ -9,7 +9,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(RagdollController))]
 [RequireComponent(typeof(Animator))]
 
-public class EnemyProperties : MonoBehaviour
+public abstract  class EnemyProperties : MonoBehaviour
 {
 	// This is the agent to move around by NavMesh
 	public NavMeshAgent agent;
@@ -19,6 +19,8 @@ public class EnemyProperties : MonoBehaviour
 	public RagdollController ragdollController;
 	// The enemy's Animator component
 	public Animator animator;
+	// Speed of navmesh agent when running
+	public float MAX_RUN_SPEED;
 	// Doesn't walk if true (for debugging)
 	public bool debugNoWalk = false;
 
@@ -83,4 +85,7 @@ public class EnemyProperties : MonoBehaviour
 			EnablePathfind();
 		}
 	}
+
+	// Returns the potential maxspeed of this enemy in their current state, unhindered by slowing effects like quicksand
+	public abstract float GetCurrentMaxSpeed();
 }

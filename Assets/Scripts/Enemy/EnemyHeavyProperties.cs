@@ -49,4 +49,17 @@ public class EnemyHeavyProperties : EnemyProperties
 		// Give FSM an initial state
 		stateMachine.ChangeState(advanceState);
 	}
+
+	public override float GetCurrentMaxSpeed()
+	{
+		switch (stateMachine.GetCurrentState())
+		{
+			case "Advance":
+				return MAX_RUN_SPEED;
+			case "Retreat":
+				return MAX_RUN_SPEED;
+			default:
+				return 0;
+		}
+	}
 }

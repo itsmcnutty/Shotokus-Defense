@@ -189,7 +189,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: StopRun
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 4
     m_ConditionEvent: RunSpeed
     m_EventTreshold: 0.1
   m_DstStateMachine: {fileID: 0}
@@ -215,7 +215,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Melee
+    m_ConditionEvent: Strafe
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
@@ -304,7 +304,7 @@ AnimatorState:
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
   m_Mirror: 0
-  m_SpeedParameterActive: 0
+  m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
@@ -348,7 +348,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Retreating
-  m_Speed: 1
+  m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7363606445676348248}
@@ -475,7 +475,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Melee
+  m_Name: Meleeing
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -737,6 +737,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: NumAttacks
+    m_Type: 3
+    m_DefaultFloat: 0
+    m_DefaultInt: 3
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -771,7 +777,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Melee
+    m_ConditionEvent: Strafe
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
@@ -880,8 +886,8 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: b0cc585fc1bfd814a8cde567454c3930,
       type: 3}
     m_Threshold: 0
-    m_Position: {x: 0, y: 3}
-    m_TimeScale: 1
+    m_Position: {x: 0, y: 1}
+    m_TimeScale: 1.1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -889,8 +895,8 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: 33c537c2f63faef4b918b8e313445624,
       type: 3}
     m_Threshold: 0.25
-    m_Position: {x: 3, y: 0}
-    m_TimeScale: 1
+    m_Position: {x: 1, y: 0}
+    m_TimeScale: 1.1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -898,8 +904,8 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: 14c2dffee9007d24bbe939ed7f15e9b0,
       type: 3}
     m_Threshold: 0.5
-    m_Position: {x: 0, y: -3}
-    m_TimeScale: 1
+    m_Position: {x: 0, y: -1}
+    m_TimeScale: 1.1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -907,8 +913,8 @@ BlendTree:
     m_Motion: {fileID: -203655887218126122, guid: 9fc6c74c2f11ecb47ad08095d200a629,
       type: 3}
     m_Threshold: 0.75
-    m_Position: {x: -3, y: 0}
-    m_TimeScale: 1
+    m_Position: {x: -1, y: 0}
+    m_TimeScale: 1.1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -978,7 +984,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: -203655887218126122, guid: 04abeb6ba9437484b8f9fd778ce7d9e5,
     type: 3}
-  m_Tag: 
+  m_Tag: Swinging
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 

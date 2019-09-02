@@ -29,6 +29,12 @@ public class AIStateMachine : MonoBehaviour
             ChangeState(nextState);
         }
     }
+    
+    // Returns the name of the current state
+    public string GetCurrentState()
+    {
+        return currentState.ToString();
+    }
 }
 
 public interface IState
