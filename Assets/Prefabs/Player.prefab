@@ -1583,7 +1583,7 @@ MonoBehaviour:
   noSteamVRFallbackCamera: {fileID: 0}
   noSteamVRFallbackMaxDistanceNoItem: 10
   noSteamVRFallbackMaxDistanceWithItem: 0.5
-  renderModelPrefab: {fileID: 1000012617731570, guid: 837f93beb9a614743ae3a2c0ada7c388,
+  renderModelPrefab: {fileID: 1000012617731570, guid: d07386f0ec952ec409dc7753bcf5746b,
     type: 3}
   showDebugText: 0
   spewDebugText: 0
@@ -1816,7 +1816,7 @@ MonoBehaviour:
   noSteamVRFallbackCamera: {fileID: 0}
   noSteamVRFallbackMaxDistanceNoItem: 10
   noSteamVRFallbackMaxDistanceWithItem: 0.5
-  renderModelPrefab: {fileID: 1000011547835092, guid: d5082f7d9f947374197e0a97786f4e40,
+  renderModelPrefab: {fileID: 1000011547835092, guid: 8ade79fed86bbd141926d1cd94c98457,
     type: 3}
   showDebugText: 0
   spewDebugText: 0
@@ -2614,6 +2614,8 @@ MonoBehaviour:
   createRockParticles: {fileID: 1358986761048532159, guid: d1f592a9713798948a2874bcf240ecca,
     type: 3}
   destroyRockParticles: {fileID: 1358986761048532159, guid: eacf8c771fe64a84e91926fed70eb55f,
+    type: 3}
+  regrowRockParticles: {fileID: 1358986761048532159, guid: f86ef3b9f1f9d364e93573c1309202fa,
     type: 3}
 --- !u!114 &1156229015251733590
 MonoBehaviour:
