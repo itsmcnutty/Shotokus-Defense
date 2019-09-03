@@ -8,7 +8,7 @@ public class EnemyMediumProperties : EnemyProperties
 	// Time between ranged attacks (seconds)
 	public float RANGED_DELAY = 3f;
 	// Minimum distance before using ranged attacks on player
-	public float RANGED_RADIUS = 15f;
+	public float RANGED_RADIUS = 20f;
     // Time between melee attacks (seconds)
     public float MELEE_DELAY = 2f;
     // Radius for melee attacking
@@ -38,8 +38,8 @@ public class EnemyMediumProperties : EnemyProperties
     [NonSerialized] public float ATTACK_MARGIN = 1f;
     
     // Squared attack radii (for optimized calculations)
-    [NonSerialized] public float sqrRangedRadius;
-    [NonSerialized] public float sqrMeleeRadius;
+//    [NonSerialized] public float sqrRangedRadius;
+//    [NonSerialized] public float sqrMeleeRadius;
 
     // All states
     [NonSerialized] public RunState runState;
@@ -55,8 +55,8 @@ public class EnemyMediumProperties : EnemyProperties
     {
         base.Start();
 		
-        sqrMeleeRadius = MELEE_RADIUS * MELEE_RADIUS;
-        sqrRangedRadius = RANGED_RADIUS * RANGED_RADIUS;
+//        sqrMeleeRadius = MELEE_RADIUS * MELEE_RADIUS;
+//        sqrRangedRadius = RANGED_RADIUS * RANGED_RADIUS;
         
         allowShoot = true;
         isStrafing = false;

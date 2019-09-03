@@ -8,6 +8,8 @@ public class StrafeState : IState
 {
 	// Radius for melee attacks
 	private float meleeRadius;
+	// Radius for strafe state
+	private float rangedRadius;
     
 	// This is the agent to move around by NavMesh
 	private NavMeshAgent agent;
@@ -21,12 +23,7 @@ public class StrafeState : IState
 	private float maxStrafeSpeed;
 	// Doesn't walk if true (for debugging)
 	private bool debugNoWalk;
-    
-	// Squared melee radius (for optimized calculations)
-	private float sqrMeleeRadius;
-	// Squared ranged radius (for optimized calculations)
-	private float sqrRangedRadius;
-    
+
 	// Player GameObject
 	private GameObject player;
 	// Player's head's world position
@@ -43,8 +40,8 @@ public class StrafeState : IState
 	
 	// shooting variables
 	private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
-	private GameObject projectilePrefab; // projectile prefab to shoot
-	private GameObject projectile; // reference to projectile instantiated
+//	private GameObject projectilePrefab; // projectile prefab to shoot
+//	private GameObject projectile; // reference to projectile instantiated
 	private float fireRate; // how many second to wait between shots
 	private float initialVelocityX; // Initial velocity in X-axis for projectile
 	private bool allowShoot; // keep track if enemy can shoot based on fire rate timer
@@ -64,14 +61,15 @@ public class StrafeState : IState
 	public StrafeState(EnemyMediumProperties enemyProps)
 	{
 		meleeRadius = enemyProps.MELEE_RADIUS;
+		rangedRadius = enemyProps.RANGED_RADIUS;
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
-		maxStrafeSpeed = enemyProps.MAX_STRAFE_SPEED;
+		maxStrafeSpeed = enemyProps.MAX_STRAFE_SPEED; // todo add this functionality
 		debugNoWalk = enemyProps.debugNoWalk;
-		sqrMeleeRadius = enemyProps.sqrMeleeRadius;
-		sqrRangedRadius = enemyProps.sqrRangedRadius;
+//		sqrMeleeRadius = enemyProps.sqrMeleeRadius;
+//		sqrRangedRadius = enemyProps.sqrRangedRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
@@ -79,8 +77,8 @@ public class StrafeState : IState
 		
 		// shooting variables
 		agentHead = enemyProps.agentHead; 
-		projectilePrefab = enemyProps.projectilePrefab;
-		projectile = enemyProps.projectile; 
+//		projectilePrefab = enemyProps.projectilePrefab;
+//		projectile = enemyProps.projectile; 
 		fireRate = enemyProps.RANGED_DELAY; 
 		initialVelocityX = enemyProps.INITIAL_VEL_X;
 		allowShoot = enemyProps.allowShoot; 
@@ -133,9 +131,8 @@ public class StrafeState : IState
 		playerPos = player.transform.position;
 		Vector3 enemyVelocity = agent.velocity;
 		
-		// Store position for agent (enemy) with y = 0 for distance operations
-		enemyPos = gameObj.transform.position;
-		enemyPos.y = 0;
+		// Store position for agent
+		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Store position for agent's head, where the raycast for shooting visibility will come from
 		agentHead = gameObj.transform.position;
@@ -161,9 +158,9 @@ public class StrafeState : IState
 //		}
 
 		// remaining distance to target
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
 		// todo instead of using agentHead, use new variable with positions in the floor (y = 0)
-		float remainingDist = Vector3.Distance(playerPos, agentHead);
-//        Debug.Log("vector3 distance is " + remainingDist);
+//        Debug.Log("vector3 distance is " + distanceToPlayer);
 
 		// only enters here, first time it enters te strafing state
 		// if agent is close enough and not strafing yet, enter strafe/shooting state
@@ -226,7 +223,7 @@ public class StrafeState : IState
 		///* uncomment **********************************************************************
 		// todo SHOOTING STATE
 		// check that target is inside range radius
-		if (remainingDist < 17)
+		if (distanceToPlayer < 17)
 		{
 			Debug.Log("Shooting mode");
 			// check for visibility to target through ray cast
@@ -269,18 +266,18 @@ public class StrafeState : IState
 		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+
 
 		// If outside ranged radius, transition to run state
-		if (sqrDist - sqrRangedRadius > 0)
+		if (distanceToPlayer >  rangedRadius)
 		{
 			animator.SetTrigger("Run");
 			return runState;
 		}
 		
 		// If within melee range, transition to melee state
-		if (sqrDist - sqrMeleeRadius < 0)
+		if (distanceToPlayer < meleeRadius)
 		{
 			animator.SetTrigger("Melee");
 			return meleeState;

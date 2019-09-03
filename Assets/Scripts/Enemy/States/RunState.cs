@@ -19,11 +19,13 @@ public class RunState : IState
 	private NavMeshObstacle obstacle;
 	// Speed of navmesh agent in this state
 	private float maxRunSpeed;
+	// Speed of navmesh agent when in strafe state
+	private float maxStrafeSpeed;
 	// Doesn't walk if true (for debugging)
 	private bool debugNoWalk;
     
 	// Squared ranged radius (for optimized calculations)
-	private float sqrRangedRadius;
+//	private float sqrRangedRadius;
     
 	// Player GameObject
 	private GameObject player;
@@ -46,8 +48,9 @@ public class RunState : IState
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		maxRunSpeed = enemyProps.MAX_RUN_SPEED;
+		maxStrafeSpeed = enemyProps.MAX_STRAFE_SPEED;
 		debugNoWalk = enemyProps.debugNoWalk;
-		sqrRangedRadius = enemyProps.sqrRangedRadius;
+//		sqrRangedRadius = enemyProps.sqrRangedRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
@@ -95,7 +98,11 @@ public class RunState : IState
 			agent.SetDestination(playerPos);
 
 			// Stopping distance will cause enemy to decelerate into attack radius
-			agent.stoppingDistance = rangedRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
+//			agent.stoppingDistance = rangedRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
+			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed
+			agent.stoppingDistance = rangedRadius +
+			                         ((maxStrafeSpeed * maxStrafeSpeed - moveSpeed * moveSpeed )/ 2 * agent.acceleration);
+			Debug.Log("my stopping distance is" + agent.stoppingDistance);
 		}
 	}
 
@@ -114,12 +121,16 @@ public class RunState : IState
 		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		Debug.Log("im running");
+		Debug.Log("distance to player is " + distanceToPlayer);
+//		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+//		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
 		// If within ranged attack range, transition to strafe state
-		if (sqrDist - sqrRangedRadius < 0)
+		if (distanceToPlayer < rangedRadius)
 		{
+			Debug.Log("i wanna strafe");
 			animator.SetTrigger("Strafe");
 			return strafeState;
 		}

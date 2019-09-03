@@ -31,7 +31,7 @@ public abstract  class EnemyProperties : MonoBehaviour
 	[NonSerialized] public Vector3 playerPos;
 	// Player GameObject
 	[NonSerialized] public GameObject player;
-    
+
 	// This enemy's finite state machine
 	protected AIStateMachine stateMachine;
 
@@ -88,4 +88,17 @@ public abstract  class EnemyProperties : MonoBehaviour
 
 	// Returns the potential maxspeed of this enemy in their current state, unhindered by slowing effects like quicksand
 	public abstract float GetCurrentMaxSpeed();
+
+	
+	// Given two vectors, it sets the y axis to 0, and returns distance
+	// Distance just in the x,z axis. Y = 0.
+	public float calculateDist(Vector3 vector1, Vector3 vector2)
+	{
+		Vector3 v1 = new Vector3(vector1.x, 0,vector1.z);
+		Vector3 v2 = new Vector3(vector2.x, 0,vector2.z);
+
+		float remainingDist = Vector3.Distance(v1, v2);
+		return remainingDist;
+	}
+	
 }
