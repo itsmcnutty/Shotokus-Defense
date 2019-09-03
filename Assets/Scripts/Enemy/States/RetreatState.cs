@@ -107,18 +107,13 @@ public class RetreatState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
-		if (!agent.enabled)
-		{
-			agent.enabled = true;
-			return;
-		}
-		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
 		gameObjPos = gameObj.transform.position;
 		
 		// Back up
 		Vector3 backUpVector = gameObjPos - playerPos;
+		backUpVector.y = 0;
 		backUpVector.Normalize();
                 
 		if (agent.enabled && !debugNoWalk)
@@ -151,7 +146,7 @@ public class RetreatState : IState
 		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 		
-		if (sqrDist - sqrRetreatRadius > 0f)
+		if (sqrDist - sqrRetreatRadius > 0)
 		{
 			// Done retreating, attack
 			animator.SetTrigger("Melee");

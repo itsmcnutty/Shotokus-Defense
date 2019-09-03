@@ -76,7 +76,6 @@ public class RagdollState : IState
 	// is possible
 	public IState Transition()
 	{
-		Debug.Log(timeRagdolling);
 		// If the enemy can recover from ragdolling, transition to resetState
 		if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
 		{

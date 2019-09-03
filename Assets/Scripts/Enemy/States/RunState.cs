@@ -117,8 +117,8 @@ public class RunState : IState
 		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
-		// If within strafe/shoot range, transition to strafe state
-		if (sqrDist - sqrRangedRadius < 0.2f)
+		// If within ranged attack range, transition to strafe state
+		if (sqrDist - sqrRangedRadius < 0)
 		{
 			animator.SetTrigger("Strafe");
 			return strafeState;
