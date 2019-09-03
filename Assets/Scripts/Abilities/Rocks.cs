@@ -11,8 +11,14 @@ public class Rocks : MonoBehaviour
     public float maxRockDimater = 1.5f;
     public float rockMassScale = 100f;
 
+    public ParticleSystem createRockParticles;
+    public ParticleSystem destroyRockParticles;
+    public ParticleSystem regrowRockParticles;
+
     private PlayerEnergy playerEnergy;
     private static List<GameObject> availableRocks = new List<GameObject>();
+
+    private static ParticleSystem currentRegrowthSystem;
 
     public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
@@ -23,7 +29,7 @@ public class Rocks : MonoBehaviour
 
     public void InitRocks()
     {
-        float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime() * 25;
+        float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime() * 10;
 
         for (int i = 0; i < numRocks; i++)
         {
@@ -66,6 +72,10 @@ public class Rocks : MonoBehaviour
         activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
         hand.AttachObject(activeRock, GrabTypes.Scripted);
         playerEnergy.SetTempEnergy(hand, 0);
+
+        ParticleSystem rockParticleSystem = Instantiate(createRockParticles);
+        rockParticleSystem.transform.position = activeRock.transform.position;
+
         return activeRock;
     }
 
@@ -76,12 +86,29 @@ public class Rocks : MonoBehaviour
         activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
         playerEnergy.SetTempEnergy(hand, rockEnergyCost);
         hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0);
+
+        if(!currentRegrowthSystem)
+        {
+            currentRegrowthSystem = Instantiate(regrowRockParticles);
+        }
+        currentRegrowthSystem.transform.position = activeRock.transform.position;
+    }
+
+    public void StopRegrowthParticles()
+    {
+        if(currentRegrowthSystem)
+        {
+            UnityEngine.ParticleSystem.MainModule main = currentRegrowthSystem.main;
+            main.loop = false;
+            currentRegrowthSystem = null;
+        }
     }
 
     public void ThrowRock(GameObject activeRock, Hand hand, Hand otherHand)
     {
         hand.DetachObject(activeRock);
         hand.SetAllowResize(true);
+
         if (otherHand.currentAttachedObject == activeRock)
         {
             float rockSize = (float) Math.Pow(Math.Floor(activeRock.transform.localScale.x * activeRock.transform.localScale.y * activeRock.transform.localScale.z), 3);
@@ -91,7 +118,7 @@ public class Rocks : MonoBehaviour
         }
         else
         {
-            activeRock.AddComponent<RockProperties>();
+            RockProperties.CreateComponent(activeRock, destroyRockParticles);
             activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
             playerEnergy.UseEnergy(hand);
             hand.TriggerHapticPulse(500);
