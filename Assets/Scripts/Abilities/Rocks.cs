@@ -13,9 +13,12 @@ public class Rocks : MonoBehaviour
 
     public ParticleSystem createRockParticles;
     public ParticleSystem destroyRockParticles;
+    public ParticleSystem regrowRockParticles;
 
     private PlayerEnergy playerEnergy;
     private static List<GameObject> availableRocks = new List<GameObject>();
+
+    private static ParticleSystem currentRegrowthSystem;
 
     public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
@@ -83,12 +86,29 @@ public class Rocks : MonoBehaviour
         activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
         playerEnergy.SetTempEnergy(hand, rockEnergyCost);
         hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0);
+
+        if(!currentRegrowthSystem)
+        {
+            currentRegrowthSystem = Instantiate(regrowRockParticles);
+        }
+        currentRegrowthSystem.transform.position = activeRock.transform.position;
+    }
+
+    public void StopRegrowthParticles()
+    {
+        if(currentRegrowthSystem)
+        {
+            UnityEngine.ParticleSystem.MainModule main = currentRegrowthSystem.main;
+            main.loop = false;
+            currentRegrowthSystem = null;
+        }
     }
 
     public void ThrowRock(GameObject activeRock, Hand hand, Hand otherHand)
     {
         hand.DetachObject(activeRock);
         hand.SetAllowResize(true);
+
         if (otherHand.currentAttachedObject == activeRock)
         {
             float rockSize = (float) Math.Pow(Math.Floor(activeRock.transform.localScale.x * activeRock.transform.localScale.y * activeRock.transform.localScale.z), 3);
