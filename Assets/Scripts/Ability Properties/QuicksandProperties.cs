@@ -6,12 +6,11 @@ using UnityEngine.AI;
 
 public class QuicksandProperties : MonoBehaviour
 {
-    private float quicksandLifetime = 3;//30.0f;
+    private float quicksandLifetime = 30.0f;
     private float quicksandSpeedReduction = 3f;
     private float maxEarthquakeDistance;
     private float earthquakeDuration;
     private ParticleSystem destroyQuicksandParticles;
-    private static Dictionary<NavMeshAgent, float> slowedEnemies = new Dictionary<NavMeshAgent, float>();
 
     public static void CreateComponent(GameObject quicksand, float maxEarthquakeDistance, float earthquakeDuration, ParticleSystem destroyQuicksandParticles)
     {
@@ -24,6 +23,8 @@ public class QuicksandProperties : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Invoke("DestroyQuicksand", quicksandLifetime);
+        
         if (PlayerAbility.EarthquakeEnabled())
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -32,13 +33,13 @@ public class QuicksandProperties : MonoBehaviour
                 NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
                 if (agent != null)
                 {
-                    float distanceToEarthquake = (enemy.transform.position - gameObject.transform.position).magnitude;
-                    if (distanceToEarthquake < maxEarthquakeDistance && !slowedEnemies.TryGetValue(agent, out float speed))
+                    float distanceToEarthquake = (enemy.transform.position - transform.position).magnitude;
+                    
+                    // Slow those within earthquake radius, ragdoll those within quicksand bounds
+                    if (distanceToEarthquake < maxEarthquakeDistance)
                     {
-                        slowedEnemies.Add(agent, agent.speed);
                         float slowRate = distanceToEarthquake / maxEarthquakeDistance;
-                        slowRate = (slowRate != 0) ? (float) Math.Pow(slowRate, 1) : float.MinValue;
-                        StartCoroutine(SlowEnemyForTime(agent, slowRate, earthquakeDuration));
+                        StartCoroutine(SlowEnemyForTime(agent, slowRate * quicksandSpeedReduction, earthquakeDuration));
                         if(distanceToEarthquake < gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x)
                         {
                             RagdollController ragdollController = enemy.GetComponent<RagdollController>();
@@ -50,14 +51,21 @@ public class QuicksandProperties : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Destroy(gameObject, quicksandLifetime);
-    }
-
     void OnDestroy()
     {
+        CancelInvoke("DestroyQuicksand");
+
+        Collider[] collidersInSand = Physics.OverlapSphere(transform.position, GetComponentInChildren<MeshRenderer>().bounds.size.x / 2);
+
+        foreach (var collider in collidersInSand)
+        {
+            NavMeshAgent agent = collider.GetComponentInParent<NavMeshAgent>();
+            if (agent)
+            {
+                UnslowAgent(agent);
+            }
+        }
+
         if(destroyQuicksandParticles != null)
         {
             ParticleSystem particleSystem = Instantiate(destroyQuicksandParticles);
@@ -68,17 +76,21 @@ public class QuicksandProperties : MonoBehaviour
             shape.scale = transform.localScale / 2;
 
             UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
-            emissionModule.rateOverTimeMultiplier = (float) Math.Pow(700, gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
+            //emissionModule.rateOverTimeMultiplier = (float) Math.Pow(700, gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void DestroyQuicksand()
+    {
+        Destroy(gameObject);
+    }
+    
+    private void OnTriggerStay(Collider other)
     {
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
-        if (agent != null && !slowedEnemies.TryGetValue(agent, out float speed))
+        if (agent != null)
         {
-            agent.speed /= quicksandSpeedReduction;
-            slowedEnemies.Add(agent, agent.speed);
+            SlowAgent(agent, quicksandSpeedReduction);
         }
         else if (other.attachedRigidbody != null)
         {
@@ -89,24 +101,39 @@ public class QuicksandProperties : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
-        if(slowedEnemies.TryGetValue(agent, out float speed))
+        if(agent != null)
         {
-            if(agent != null)
-            {
-                agent.speed = speed;
-            }
-            slowedEnemies.Remove(agent);
+            UnslowAgent(agent);
         }
     }
 
     private IEnumerator SlowEnemyForTime(NavMeshAgent agent, float slowRate, float duration)
     {
-        agent.speed *= slowRate;
+        SlowAgent(agent, slowRate);
         yield return new WaitForSeconds(duration);
-        if (agent != null && slowedEnemies.TryGetValue(agent, out float speed))
+        if (agent)
         {
-            agent.speed = speed;
+            UnslowAgent(agent);
         }
-        slowedEnemies.Remove(agent);
+    }
+
+    // Set the speed of the nav agent to be the current maximum speed divided by the specified slow divisor
+    private void SlowAgent(NavMeshAgent agent, float slowDivisor)
+    {
+        EnemyProperties enemyProps = agent.gameObject.GetComponent<EnemyProperties>();
+        if (enemyProps)
+        {
+            agent.speed = enemyProps.GetCurrentMaxSpeed() / slowDivisor;
+        }
+    }
+    
+    // Set the speed of the nav agent to be the current maximum speed for the state it is in (no slow multiplier)
+    private void UnslowAgent(NavMeshAgent agent)
+    {
+        EnemyProperties enemyProps = agent.gameObject.GetComponent<EnemyProperties>();
+        if (enemyProps)
+        {
+            agent.speed = enemyProps.GetCurrentMaxSpeed();
+        }
     }
 }

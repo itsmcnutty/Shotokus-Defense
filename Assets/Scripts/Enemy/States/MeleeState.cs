@@ -25,6 +25,8 @@ public class MeleeState : IState
 	private float ATTACK_MARGIN = 1f;
 	// Squared attack radius (for optimized calculations)
 	private float sqrAttackRadius;
+	// Number of potential attacks in animator controller
+	private int numAttacks;
 	
 	// Timer for attack delay
 	private float attackTimer = 0f;
@@ -35,7 +37,7 @@ public class MeleeState : IState
 	// This enemy's GameObject
 	private GameObject gameObj;
 	// The enemy properties component
-	private EnemyHeavyProperties enemyProps;
+	private EnemyProperties enemyProps;
 
 	// True when enemy has begun swinging and should transition to swing state
 	private bool swinging;
@@ -55,18 +57,40 @@ public class MeleeState : IState
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		sqrAttackRadius = enemyProps.sqrAttackRadius;
+		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
-		advanceState = enemyProps.advanceState;
-		retreatState = enemyProps.retreatState;
-		swingState = enemyProps.swingState;
-		ragdollState = enemyProps.ragdollState;
+		this.enemyProps = enemyProps;
+	}
+
+	public MeleeState(EnemyMediumProperties enemyProps)
+	{
+		attackRadius = enemyProps.MELEE_RADIUS;
+		attackDelay = enemyProps.MELEE_DELAY;
+		agent = enemyProps.agent;
+		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
+		obstacle = enemyProps.obstacle;
+		sqrAttackRadius = enemyProps.sqrMeleeRadius;
+		numAttacks = animator.GetInteger("NumAttacks");
+		player = enemyProps.player;
+		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		advanceState = enemyProps.advanceState;
+		retreatState = enemyProps.retreatState;
+		swingState = enemyProps.swingState;
+		ragdollState = enemyProps.ragdollState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		advanceState = enemyProps.advanceState;
 		retreatState = enemyProps.retreatState;
@@ -102,7 +126,7 @@ public class MeleeState : IState
 		// When attackTimer is lower than 0, it allows the enemy to attack again
 		if (attackTimer <= 0f)
 		{
-			animator.SetInteger("AttackNum", Random.Range(0, 2));
+			animator.SetInteger("AttackNum", Random.Range(0, numAttacks));
 			swinging = true;
 			attackTimer = attackDelay;
 		}

@@ -251,9 +251,9 @@ public class PlayerAbility : MonoBehaviour
     private void DestroyPointerHitObject()
     {
         GameObject hitObject = arc.GetPointerHitObject();
-        if (hitObject.tag == "Wall" || hitObject.tag == "Quicksand")
+        if (hitObject.CompareTag("Wall") || hitObject.CompareTag("Quicksand"))
         {
-            Destroy(hitObject);
+            Destroy(hitObject.transform.parent.gameObject);
         }
     }
 

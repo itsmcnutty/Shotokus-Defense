@@ -65,6 +65,7 @@ public class Rocks : MonoBehaviour
         GameObject activeRock = GetNewRock();
         activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
         hand.AttachObject(activeRock, GrabTypes.Scripted);
+        playerEnergy.SetTempEnergy(hand, 0);
         return activeRock;
     }
 

@@ -10,7 +10,7 @@ public class SwingState : IState
 	private RagdollController ragdollController;
 	
 	// The enemy properties component
-	private EnemyHeavyProperties enemyProps;
+	private EnemyProperties enemyProps;
 	
 	// Flags for tracking progression through swinging animations
 	private bool startedSwinging;
@@ -24,14 +24,27 @@ public class SwingState : IState
 	{
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
-		meleeState = enemyProps.meleeState;
-		ragdollState = enemyProps.ragdollState;
+		this.enemyProps = enemyProps;
+	}
+	
+	public SwingState(EnemyMediumProperties enemyProps)
+	{
+		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
 		this.enemyProps = enemyProps;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		meleeState = enemyProps.meleeState;
+		ragdollState = enemyProps.ragdollState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
