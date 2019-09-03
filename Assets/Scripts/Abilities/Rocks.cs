@@ -133,7 +133,7 @@ public class Rocks : MonoBehaviour
                     for (int i = 0; i < numberOfRocksInCluster; i++)
                     {
                         GameObject newRock = GetNewRock();
-                        newRock.AddComponent<RockProperties>();
+                        RockProperties.CreateComponent(newRock, destroyRockParticles);
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
 
                         newRock.transform.position = activeRock.transform.position;
