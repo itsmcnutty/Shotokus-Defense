@@ -157,6 +157,11 @@ public class SpikeQuicksand : MonoBehaviour
         }
         else
         {
+            if(spikeQuicksandOutlines.Count == 1)
+            {
+                spikeQuicksandOutlines[0].transform.localScale = areaOutlinePrefab.transform.localScale;
+            }
+
             foreach (GameObject outline in spikeQuicksandOutlines)
             {
                 SetOutlineMaterial(outline, SpikeQuicksandIsValid(arc, outline));
