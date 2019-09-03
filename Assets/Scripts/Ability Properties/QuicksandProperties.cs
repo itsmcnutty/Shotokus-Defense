@@ -65,7 +65,7 @@ public class QuicksandProperties : MonoBehaviour
             particleSystem.transform.rotation = transform.rotation;
 
             UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
-            shape.scale = transform.localScale;
+            shape.scale = transform.localScale / 2;
 
             UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
             emissionModule.rateOverTimeMultiplier = (float) Math.Pow(700, gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
