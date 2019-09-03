@@ -50,8 +50,7 @@ public class StrafeState : IState
 	private Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
 	private int lastPointIndex; // last point index value in the pointsAroundTarget array
 	private bool isClockwise; // walk in a clockwise direction when strafying
-	private Vector3 enemyPos; // this is the position of the enemy with y = 0 for distance operations
-	private float radiusReduction = 0; // float that will reduce the radius of points around center every time, the agent reaches a point
+	private float radiusReduction; // float that will reduce the radius of points around center every time, the agent reaches a point
 	
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
@@ -83,7 +82,7 @@ public class StrafeState : IState
 		circularPointDest = enemyProps.circularPointDest; 
 		lastPointIndex = enemyProps.lastPointIndex; 
 		isClockwise = enemyProps.isClockwise;
-		enemyPos = enemyProps.enemyPos;
+		radiusReduction = enemyProps.RADIUS_REDUCTION;
 		
 		// shooting ability
 		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
@@ -140,6 +139,9 @@ public class StrafeState : IState
 		animator.SetFloat("StrafeSpeedForward", strafeSpeedForward);
 		animator.SetFloat("StrafeSpeedRight", strafeSpeedRight);
 		
+		// turn to player
+		enemyProps.TurnToPlayer();
+		
 		// Move to player if outside attack range, otherwise transition
 //		if (agent.enabled && !debugNoWalk)
 //		{
@@ -194,7 +196,7 @@ public class StrafeState : IState
 			{
 				// recalculate points around circle with smaller radius
 				pointsAroundTarget = pointsAround(playerPos, strafeDistance - radiusReduction); // todo reduce radius
-				radiusReduction += 10; // reduce by 2f for next point
+				radiusReduction += radiusReduction; // reduce by 2f for next point
 				// this prevents over shooting from the agent
 				if (radiusReduction > strafeDistance)
 				{
