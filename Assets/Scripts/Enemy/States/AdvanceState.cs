@@ -26,7 +26,7 @@ public class AdvanceState : IState
 	private float attackMargin;
     
 	// Squared attack radius (for optimized calculations)
-	private float sqrAttackRadius;
+//	private float sqrAttackRadius;
     
 	// Player GameObject
 	private GameObject player;
@@ -51,7 +51,7 @@ public class AdvanceState : IState
 		maxWalkSpeed = enemyProps.MAX_RUN_SPEED;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
-		sqrAttackRadius = enemyProps.sqrAttackRadius;
+//		sqrAttackRadius = enemyProps.sqrAttackRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
@@ -68,7 +68,7 @@ public class AdvanceState : IState
 		obstacle = enemyProps.obstacle;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
-		sqrAttackRadius = enemyProps.sqrMeleeRadius;
+//		sqrAttackRadius = enemyProps.sqrMeleeRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
@@ -124,7 +124,7 @@ public class AdvanceState : IState
 			agent.SetDestination(playerPos);
 
 			// Stopping distance will cause enemy to decelerate into attack radius
-			agent.stoppingDistance = attackRadius + moveSpeed * moveSpeed / (2 * agent.acceleration);
+			agent.stoppingDistance = attackRadius + moveSpeed * moveSpeed / (2 * agent.acceleration) - attackMargin;
 		}
 	}
 
@@ -139,15 +139,16 @@ public class AdvanceState : IState
 			return ragdollState;
 		}
 		
-		// Get enemy position
+		// Get enemy position with y = 0 for distance calculations
 		Vector3 gameObjPos = gameObj.transform.position;
+
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
 		
-		// Calculate enemy distance
-		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
+//		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+//		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
 		// If within melee range, transition to melee state
-		if (sqrDist - sqrAttackRadius < 0.1 * attackMargin)
+		if (distanceToPlayer <= attackRadius)
 		{
 			animator.SetTrigger("Melee");
 			return meleeState;

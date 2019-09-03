@@ -198,7 +198,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -7728691430467014882, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -436,7 +436,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4268106905830834115, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -659,7 +659,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -5793968988183399947, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -1400,7 +1400,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -6293494347192890927, guid: 7d8f6afbbd0ac7a4ca639258f4492741, type: 3}
   m_Bones:
@@ -1816,6 +1816,8 @@ MonoBehaviour:
   MAX_HEALTH: 100
   ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 1
+  RAGDOLL_DMG_THRESHOLD: 0
+  debugShowHealthText: 0
   healthBarCanvas: {fileID: 0}
   healthBarText: {fileID: 0}
   healthBarActual: {fileID: 0}
@@ -1879,7 +1881,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.7
-  m_Speed: 8
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1904,6 +1906,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 1275101893616847299}
+  projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
+    type: 3}
+  distanceFromPlayer: 15
 --- !u!1 &7747424865217325253
 GameObject:
   m_ObjectHideFlags: 0

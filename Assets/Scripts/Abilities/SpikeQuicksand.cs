@@ -21,7 +21,8 @@ public class SpikeQuicksand : MonoBehaviour
     public float maxEarthquakeDistance = 3f;
     public float earthquakeDuration = 1f;
 
-    public ParticleSystem createSpikeParticles;
+    public ParticleSystem createSpikeRockParticles;
+    public ParticleSystem createSpikeEarthParticles;
     public ParticleSystem destroySpikeParticles;
     public ParticleSystem createQuicksandParticles;
     public ParticleSystem destroyQuicksandParticles;
@@ -157,6 +158,11 @@ public class SpikeQuicksand : MonoBehaviour
         }
         else
         {
+            if(spikeQuicksandOutlines.Count == 1)
+            {
+                spikeQuicksandOutlines[0].transform.localScale = areaOutlinePrefab.transform.localScale;
+            }
+
             foreach (GameObject outline in spikeQuicksandOutlines)
             {
                 SetOutlineMaterial(outline, SpikeQuicksandIsValid(arc, outline));
@@ -341,11 +347,11 @@ public class SpikeQuicksand : MonoBehaviour
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
-                ParticleSystem particleSystem = Instantiate(createSpikeParticles);
-                particleSystem.transform.position = spike.transform.position;
-                particleSystem.transform.localScale = spike.transform.localScale;
+                ParticleSystem rockParticleSystem = Instantiate(createSpikeRockParticles);
+                rockParticleSystem.transform.position = spike.transform.position;
+                rockParticleSystem.transform.localScale = spike.transform.localScale;
 
-                SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, destroySpikeParticles);
+                SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles);
                 hand.TriggerHapticPulse(1500);
             }
             allSpikes.Clear();
@@ -379,7 +385,7 @@ public class SpikeQuicksand : MonoBehaviour
             Vector3 spikeEndPosition = spike.transform.position;
             spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
-            SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, destroySpikeParticles);
+            SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles);
             hand.TriggerHapticPulse(1500);
 
             outline.transform.position += new Vector3(spikeMoveDirection.x, 0, spikeMoveDirection.y);

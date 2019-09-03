@@ -22,9 +22,9 @@ public class MeleeState : IState
 	private NavMeshObstacle obstacle;
 	
 	// Allowed space around attack radius that enemy's can attack from
-	private float ATTACK_MARGIN = 1f;
+	private float attackMargin = 1f;
 	// Squared attack radius (for optimized calculations)
-	private float sqrAttackRadius;
+//	private float sqrAttackRadius;
 	// Number of potential attacks in animator controller
 	private int numAttacks;
 	
@@ -50,13 +50,14 @@ public class MeleeState : IState
 
 	public MeleeState(EnemyHeavyProperties enemyProps)
 	{
+		attackMargin = enemyProps.ATTACK_MARGIN;
 		attackRadius = enemyProps.ATTACK_RADIUS;
 		attackDelay = enemyProps.ATTACK_DELAY;
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
-		sqrAttackRadius = enemyProps.sqrAttackRadius;
+//		sqrAttackRadius = enemyProps.sqrAttackRadius;
 		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
@@ -65,13 +66,14 @@ public class MeleeState : IState
 
 	public MeleeState(EnemyMediumProperties enemyProps)
 	{
+		attackMargin = enemyProps.ATTACK_MARGIN;
 		attackRadius = enemyProps.MELEE_RADIUS;
 		attackDelay = enemyProps.MELEE_DELAY;
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
-		sqrAttackRadius = enemyProps.sqrMeleeRadius;
+//		sqrAttackRadius = enemyProps.sqrMeleeRadius;
 		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
@@ -152,17 +154,18 @@ public class MeleeState : IState
 		
 		// Calculate enemy distance
 		Vector3 gameObjPos = gameObj.transform.position;
-		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+//		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+//		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 		
 		// Continue to attack if within attack range, otherwise transition
-		if (sqrDist - sqrAttackRadius > ATTACK_MARGIN)
+		if (distanceToPlayer > attackRadius + attackMargin)
 		{
 			// Too far, advance
 			animator.SetTrigger("Advance");
 			return advanceState;
 		}
-		if (sqrDist - sqrAttackRadius < -ATTACK_MARGIN)
+		if (distanceToPlayer < attackRadius - attackMargin)
 		{
 			// Too close, retreat
 			animator.SetTrigger("Retreat");

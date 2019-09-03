@@ -188,7 +188,14 @@ public class PlayerAbility : MonoBehaviour
 
         if (RockIsActive())
         {
-            rocks.UpdateRock(activeRock, hand);
+            if(hand.currentAttachedObject == otherHand.currentAttachedObject)
+            {
+                rocks.UpdateRock(activeRock, hand);
+            }
+            else
+            {
+                rocks.StopRegrowthParticles();
+            }
         }
         else if (SpikeQuicksandIsActive())
         {
