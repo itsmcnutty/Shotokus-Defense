@@ -24,7 +24,7 @@ public class QuicksandProperties : MonoBehaviour
     void Start()
     {
         Invoke("DestroyQuicksand", quicksandLifetime);
-        
+
         if (PlayerAbility.EarthquakeEnabled())
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -34,13 +34,13 @@ public class QuicksandProperties : MonoBehaviour
                 if (agent != null)
                 {
                     float distanceToEarthquake = (enemy.transform.position - transform.position).magnitude;
-                    
+
                     // Slow those within earthquake radius, ragdoll those within quicksand bounds
                     if (distanceToEarthquake < maxEarthquakeDistance)
                     {
                         float slowRate = distanceToEarthquake / maxEarthquakeDistance;
                         StartCoroutine(SlowEnemyForTime(agent, slowRate * quicksandSpeedReduction, earthquakeDuration));
-                        if(distanceToEarthquake < gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x)
+                        if (distanceToEarthquake < gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x)
                         {
                             RagdollController ragdollController = enemy.GetComponent<RagdollController>();
                             ragdollController.StartRagdoll();
@@ -66,7 +66,7 @@ public class QuicksandProperties : MonoBehaviour
             }
         }
 
-        if(destroyQuicksandParticles != null)
+        if (destroyQuicksandParticles != null)
         {
             ParticleSystem particleSystem = Instantiate(destroyQuicksandParticles);
             particleSystem.transform.position = transform.position;
@@ -75,8 +75,8 @@ public class QuicksandProperties : MonoBehaviour
             UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
             shape.scale = transform.localScale / 2;
 
-            UnityEngine.ParticleSystem.EmissionModule emissionModule = particleSystem.emission;
-            //emissionModule.rateOverTimeMultiplier = (float) Math.Pow(700, gameObject.GetComponentInChildren<MeshRenderer>().bounds.size.x);
+            UnityEngine.ParticleSystem.EmissionModule emission = particleSystem.emission;
+            emission.rateOverTimeMultiplier = transform.localScale.x * emission.rateOverTimeMultiplier;
         }
     }
 
@@ -84,7 +84,7 @@ public class QuicksandProperties : MonoBehaviour
     {
         Destroy(gameObject);
     }
-    
+
     private void OnTriggerStay(Collider other)
     {
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
@@ -101,7 +101,7 @@ public class QuicksandProperties : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
-        if(agent != null)
+        if (agent != null)
         {
             UnslowAgent(agent);
         }
@@ -126,7 +126,7 @@ public class QuicksandProperties : MonoBehaviour
             agent.speed = enemyProps.GetCurrentMaxSpeed() / slowDivisor;
         }
     }
-    
+
     // Set the speed of the nav agent to be the current maximum speed for the state it is in (no slow multiplier)
     private void UnslowAgent(NavMeshAgent agent)
     {

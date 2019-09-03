@@ -2611,6 +2611,10 @@ MonoBehaviour:
   minRockDiameter: 0.25
   maxRockDimater: 1.5
   rockMassScale: 100
+  createRockParticles: {fileID: 1358986761048532159, guid: d1f592a9713798948a2874bcf240ecca,
+    type: 3}
+  destroyRockParticles: {fileID: 1358986761048532159, guid: eacf8c771fe64a84e91926fed70eb55f,
+    type: 3}
 --- !u!114 &1156229015251733590
 MonoBehaviour:
   m_ObjectHideFlags: 0
