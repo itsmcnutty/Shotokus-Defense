@@ -23,7 +23,7 @@ public class Rocks : MonoBehaviour
 
     public void InitRocks()
     {
-        float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime() * 25;
+        float numRocks = (numberOfRocksInCluster + 1) * RockProperties.GetRockLifetime() * 10;
 
         for (int i = 0; i < numRocks; i++)
         {
