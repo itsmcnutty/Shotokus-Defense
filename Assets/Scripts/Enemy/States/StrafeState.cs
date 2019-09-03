@@ -40,14 +40,11 @@ public class StrafeState : IState
 	
 	// shooting variables
 	private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
-//	private GameObject projectilePrefab; // projectile prefab to shoot
-//	private GameObject projectile; // reference to projectile instantiated
 	private float fireRate; // how many second to wait between shots
 	private float initialVelocityX; // Initial velocity in X-axis for projectile
-	private bool allowShoot; // keep track if enemy can shoot based on fire rate timer
 	
 	// strafing variables
-	private float distanceFromPlayer; // distance that the enemy will start strafing around player
+	private float strafeDistance; // distance that the enemy will start strafing around player
 	private bool isStrafing; // bool indicating if agent is in strafing state
 	private Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
 	private Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
@@ -68,23 +65,18 @@ public class StrafeState : IState
 		obstacle = enemyProps.obstacle;
 		maxStrafeSpeed = enemyProps.MAX_STRAFE_SPEED; // todo add this functionality
 		debugNoWalk = enemyProps.debugNoWalk;
-//		sqrMeleeRadius = enemyProps.sqrMeleeRadius;
-//		sqrRangedRadius = enemyProps.sqrRangedRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
 		
 		// shooting variables
-		agentHead = enemyProps.agentHead; 
-//		projectilePrefab = enemyProps.projectilePrefab;
-//		projectile = enemyProps.projectile; 
+		agentHead = enemyProps.agentHead;
 		fireRate = enemyProps.RANGED_DELAY; 
-		initialVelocityX = enemyProps.INITIAL_VEL_X;
-		allowShoot = enemyProps.allowShoot; 
+		initialVelocityX = enemyProps.PROJECTILE_VEL_X;
 
 		// strafing variables
-//		distanceFromPlayer = enemyProps.sqrStrafeRadius; todo uncomment
+		strafeDistance = enemyProps.STRAFE_DIST; 
 		isStrafing = enemyProps.isStrafing; 
 		pointsAroundTarget = enemyProps.pointsAroundTarget;
 		circularPointDest = enemyProps.circularPointDest; 
@@ -159,7 +151,6 @@ public class StrafeState : IState
 
 		// remaining distance to target
 		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
-		// todo instead of using agentHead, use new variable with positions in the floor (y = 0)
 //        Debug.Log("vector3 distance is " + distanceToPlayer);
 
 		// only enters here, first time it enters te strafing state
@@ -179,7 +170,7 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-			Debug.Log(circularPointDest);
+			Debug.Log("my destination is " + circularPointDest);
 			Debug.DrawRay(circularPointDest, Vector3.up, Color.blue);
 			// check if path is valid in navmesh
 //            Debug.Log();
@@ -193,7 +184,7 @@ public class StrafeState : IState
 			Debug.Log("Strafing mode / moving");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
-			float strafeRemainingDist = Vector3.Distance(enemyPos, circularPointDest);
+			float strafeRemainingDist = enemyProps.calculateDist(circularPointDest, gameObjPos);
 //            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
             
 			if (strafeRemainingDist < 1f)
@@ -243,7 +234,7 @@ public class StrafeState : IState
 				{
 					// we can hit the player, so shoot
 //					shoot(); // todo uncoomment
-					shootingAbility.shoot(allowShoot, agentHead, playerPos, initialVelocityX, fireRate);
+					shootingAbility.shoot(agentHead, playerPos, initialVelocityX, fireRate);
 				}
 			}
 		}
@@ -295,7 +286,7 @@ public class StrafeState : IState
 	// given a point, return points around its circunference of radius r and every 45 degrees (pi/4 radians)
 	private Vector3[] pointsAround(Vector3 center)
 	{
-		float radius = distanceFromPlayer; // range away from player that the enemy should start strafying
+		float radius = strafeDistance; // range away from player that the enemy should start strafying
 		float angle = 0;
 		Vector3 coord;
 		Vector3[] points = new Vector3[8];

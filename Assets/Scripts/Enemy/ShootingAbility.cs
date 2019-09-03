@@ -7,12 +7,14 @@ public class ShootingAbility : MonoBehaviour
 
     public GameObject projectilePrefab;
     private GameObject projectile;
-    
+
+    private bool allowShoot;
     
     
     // Start is called before the first frame update
     void Start()
     {
+        allowShoot = true;
     }
 
     // Update is called once per frame
@@ -24,7 +26,7 @@ public class ShootingAbility : MonoBehaviour
     // Instantiates the projectile prefab, sets a velocity and the origin transform (where the projectile comes from)
     // and shoots towards the target. 
     // This function also sets the fire rate of the gun
-    public void shoot(bool allowShoot, Vector3 agentHead, Vector3 playerPos, float initialVelocityX, float fireRate)
+    public void shoot(Vector3 agentHead, Vector3 playerPos, float initialVelocityX, float fireRate)
     {
         
         if (allowShoot)
@@ -50,12 +52,12 @@ public class ShootingAbility : MonoBehaviour
             projectile.transform.LookAt(playerPos);
             projectile.GetComponent<Rigidbody>().velocity = velocity;
             // wait for fire rate timer
-            StartCoroutine(Wait(fireRate, allowShoot));
+            StartCoroutine(Wait(fireRate));
         }
     }
 
     // this function waits for the input number of seconds (waiTime), and then allows the enemy to shoot
-    IEnumerator Wait(float waitTime, bool allowShoot)
+    IEnumerator Wait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         allowShoot = true;
