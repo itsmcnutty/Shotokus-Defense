@@ -72,16 +72,18 @@ public class LightEnemyController : MonoBehaviour
 //        Debug.Log("vector3 distance is " + remainingDist);
 
         // not in strafying mode
-        if (remainingDist > 17f)
+        // todo I changed this to be really big since the only reason this should happen is if the enemy is reallyyyyy far away from the player
+        if (remainingDist > 25f)
         {
             Debug.Log("Pathfinding mode");
             playerPos = player.transform.position;
             agent.SetDestination(playerPos);
+            isStrafing = false;
         }
         
         // if agent is close enough and not strafing yet, enter strafe/shooting state
         // calculate points and set new destination
-        if (remainingDist < 17f && !isStrafing)
+        if (remainingDist < 25f && !isStrafing)
         {
             Debug.Log("Strafing mode / calculations");
             // do not enter here if already strafing
@@ -95,6 +97,10 @@ public class LightEnemyController : MonoBehaviour
             
             // change enemy agent target to the new point
             agent.SetDestination(circularPointDest);
+            Debug.Log(circularPointDest);
+            Debug.DrawRay(circularPointDest, Vector3.up, Color.blue);
+            // check if path is valid in navmesh
+//            Debug.Log();
         }
 
         // if moving towards strafing point, check if it has being destination has been reached
@@ -131,8 +137,7 @@ public class LightEnemyController : MonoBehaviour
             }
         }
         
-
-
+        
         ///* uncomment **********************************************************************
          // todo SHOOTING STATE
         // check that target is inside range radius

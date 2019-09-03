@@ -41,6 +41,26 @@ public class StrafeState : IState
 	private MeleeState meleeState;
 	private RagdollState ragdollState;
 	
+	// shooting variables
+	private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
+	private GameObject projectilePrefab; // projectile prefab to shoot
+	private GameObject projectile; // reference to projectile instantiated
+	private float fireRate; // how many second to wait between shots
+	private float initialVelocityX; // Initial velocity in X-axis for projectile
+	private bool allowShoot; // keep track if enemy can shoot based on fire rate timer
+	
+	// strafing variables
+	private float distanceFromPlayer; // distance that the enemy will start strafing around player
+	private bool isStrafing; // bool indicating if agent is in strafing state
+	private Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
+	private Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
+	private int lastPointIndex; // last point index value in the pointsAroundTarget array
+	private bool isClockwise; // walk in a clockwise direction when strafying
+	private Vector3 enemyPos; // this is the position of the enemy with y = 0 for distance operations
+
+	// get instance of right hand for shooting
+	private ShootingAbility shootingAbility;
+
 	public StrafeState(EnemyMediumProperties enemyProps)
 	{
 		meleeRadius = enemyProps.MELEE_RADIUS;
@@ -56,6 +76,26 @@ public class StrafeState : IState
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
+		
+		// shooting variables
+		agentHead = enemyProps.agentHead; 
+		projectilePrefab = enemyProps.projectilePrefab;
+		projectile = enemyProps.projectile; 
+		fireRate = enemyProps.RANGED_DELAY; 
+		initialVelocityX = enemyProps.INITIAL_VEL_X;
+		allowShoot = enemyProps.allowShoot; 
+
+		// strafing variables
+//		distanceFromPlayer = enemyProps.sqrStrafeRadius; todo uncomment
+		isStrafing = enemyProps.isStrafing; 
+		pointsAroundTarget = enemyProps.pointsAroundTarget;
+		circularPointDest = enemyProps.circularPointDest; 
+		lastPointIndex = enemyProps.lastPointIndex; 
+		isClockwise = enemyProps.isClockwise;
+		enemyPos = enemyProps.enemyPos;
+		
+		// shooting ability
+		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -81,7 +121,10 @@ public class StrafeState : IState
 	}
 
 	// Called upon exiting this state
-	public void Exit() {}
+	public void Exit()
+	{
+		isStrafing = false;
+	}
 
 	// Called during Update while currently in this state
 	public void Action()
@@ -89,6 +132,15 @@ public class StrafeState : IState
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
 		Vector3 enemyVelocity = agent.velocity;
+		
+		// Store position for agent (enemy) with y = 0 for distance operations
+		enemyPos = gameObj.transform.position;
+		enemyPos.y = 0;
+		
+		// Store position for agent's head, where the raycast for shooting visibility will come from
+		agentHead = gameObj.transform.position;
+		// todo change this, this is the head height value
+		agentHead.y = 2.5f;
 		
 		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
 		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);
@@ -99,14 +151,107 @@ public class StrafeState : IState
 		animator.SetFloat("StrafeSpeedRight", strafeSpeedRight);
 		
 		// Move to player if outside attack range, otherwise transition
-		if (agent.enabled && !debugNoWalk)
-		{
-			// Too far, walk closer
-			agent.SetDestination(playerPos);
+//		if (agent.enabled && !debugNoWalk)
+//		{
+//			// Too far, walk closer
+//			agent.SetDestination(playerPos);
+//
+//			// Stopping distance will cause enemy to decelerate into attack radius
+//			agent.stoppingDistance = meleeRadius + enemyVelocity.magnitude * enemyVelocity.magnitude / (2 * agent.acceleration);
+//		}
 
-			// Stopping distance will cause enemy to decelerate into attack radius
-			agent.stoppingDistance = meleeRadius + enemyVelocity.magnitude * enemyVelocity.magnitude / (2 * agent.acceleration);
+		// remaining distance to target
+		// todo instead of using agentHead, use new variable with positions in the floor (y = 0)
+		float remainingDist = Vector3.Distance(playerPos, agentHead);
+//        Debug.Log("vector3 distance is " + remainingDist);
+
+		// only enters here, first time it enters te strafing state
+		// if agent is close enough and not strafing yet, enter strafe/shooting state
+		// calculate points and set new destination
+		if (!isStrafing)
+		{
+			Debug.Log("Strafing mode / calculations");
+			// do not enter here if already strafing
+			isStrafing = true;
+            
+			// Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
+			pointsAroundTarget = pointsAround(playerPos);
+            
+			// pick the closest of these points to the enemy
+			circularPointDest = closestPoint(enemyPos, pointsAroundTarget);
+            
+			// change enemy agent target to the new point
+			agent.SetDestination(circularPointDest);
+			Debug.Log(circularPointDest);
+			Debug.DrawRay(circularPointDest, Vector3.up, Color.blue);
+			// check if path is valid in navmesh
+//            Debug.Log();
 		}
+		
+		
+		// if moving towards strafing point, check if it has being destination has been reached
+		// if reached, calculate next moving point
+		if (isStrafing)
+		{
+			Debug.Log("Strafing mode / moving");
+			// do not change destination until current one is reached
+			// when destination is reached, move to next point 
+			float strafeRemainingDist = Vector3.Distance(enemyPos, circularPointDest);
+//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+            
+			if (strafeRemainingDist < 1f)
+			{
+				// get next point
+				if (isClockwise)
+				{
+					// clockwise, do absolute value
+					lastPointIndex--;
+					if (lastPointIndex < 0)
+					{
+						lastPointIndex = pointsAroundTarget.Length;
+					}
+				}
+				else
+				{
+					// counter clockwise
+					lastPointIndex++;
+				}
+				circularPointDest = pointsAroundTarget[Mathf.Abs(lastPointIndex % 8)];
+//                Debug.Log("Changing target to index " + lastPointIndex%8);
+//                Debug.Log("moving towards " +circularPointDest);
+				agent.SetDestination(circularPointDest);
+			}
+		}
+		
+		///* uncomment **********************************************************************
+		// todo SHOOTING STATE
+		// check that target is inside range radius
+		if (remainingDist < 17)
+		{
+			Debug.Log("Shooting mode");
+			// check for visibility to target through ray cast
+			RaycastHit hit;
+
+			Vector3 rayDirection = playerPos - agentHead; // todo this might shoot from the feet
+            
+			// set where the ray is coming from and its direction
+			Ray visionRay = new Ray(agentHead, rayDirection);
+            
+			Debug.DrawRay(agentHead, rayDirection, Color.red);
+
+			// if player is visible and fire Rate is good, shoot!
+			if (Physics.Raycast(visionRay, out hit)) 
+			{
+				if (hit.collider.CompareTag("PlayerCollider"))
+				{
+					// we can hit the player, so shoot
+//					shoot(); // todo uncoomment
+					shootingAbility.shoot(allowShoot, agentHead, playerPos, initialVelocityX, fireRate);
+				}
+			}
+		}
+		//*/
+		
 	}
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -149,4 +294,56 @@ public class StrafeState : IState
 	{
 		return "Run";
 	}
+	
+	// given a point, return points around its circunference of radius r and every 45 degrees (pi/4 radians)
+	private Vector3[] pointsAround(Vector3 center)
+	{
+		float radius = distanceFromPlayer; // range away from player that the enemy should start strafying
+		float angle = 0;
+		Vector3 coord;
+		Vector3[] points = new Vector3[8];
+		Vector3 offset = new Vector3(center.x,0,center.z);
+        
+		// todo keep track of every angle, might not be necessary anymore
+        
+		for (int i = 0; i < 8; i++)
+		{
+			// x is x and y is z, in 3D coordinates unity. For example, the 3D vector is represented as (x, 0, y).
+			float x = Mathf.Cos(angle) * radius;
+			float y = Mathf.Sin(angle) * radius;
+			coord = new Vector3(x, 0, y) + offset;
+//            Debug.Log("Iteration: " + i);
+//            Debug.Log("Angle: " + angle);
+//            Debug.Log(coord);
+//            Debug.Log("");
+			angle += Mathf.PI / 4;
+			points[i] = coord;
+		}
+		return points;
+	}
+    
+	// given a enemy position and an array of possible future positions, return the next closest point
+	private Vector3 closestPoint(Vector3 enemyPos, Vector3[] points)
+	{
+		// initialize temp variables to first value in array of points
+		float closestDist = Vector3.Distance(enemyPos, points[0]);;
+		Vector3 closestPoint = points[0];
+        
+		for(int i = 0; i < points.Length; i++)
+		{
+			Vector3 point = points[i];
+			float tempDist = Vector3.Distance(enemyPos, point);
+			if (tempDist < closestDist)
+			{
+				closestPoint = point;
+				closestDist = tempDist;
+				lastPointIndex = i; // keeps track of at which point in the rotation of points we were left at, this helps with moving to the next closest point
+			}
+		}
+		return closestPoint;
+	}
+
+	
+	
+	
 }

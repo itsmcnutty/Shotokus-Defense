@@ -117,7 +117,7 @@ public class RunState : IState
 		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
 		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 
-		// If within melee range, transition to melee state
+		// If within strafe/shoot range, transition to strafe state
 		if (sqrDist - sqrRangedRadius < 0.2f)
 		{
 			animator.SetTrigger("Strafe");
