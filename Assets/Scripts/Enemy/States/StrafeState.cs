@@ -106,7 +106,7 @@ public class StrafeState : IState
 		enemyProps.EnablePathfind();
 		
 		// Settings for agent
-		agent.stoppingDistance = meleeRadius;
+		agent.stoppingDistance = 0;
 		agent.speed = maxStrafeSpeed;
 		agent.angularSpeed = 0;
 	}
@@ -167,7 +167,7 @@ public class StrafeState : IState
 			pointsAroundTarget = pointsAround(playerPos, strafeDistance);
             
 			// pick the closest of these points to the enemy
-			circularPointDest = closestPoint(enemyPos, pointsAroundTarget);
+			circularPointDest = closestPoint(gameObjPos, pointsAroundTarget);
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
@@ -187,14 +187,19 @@ public class StrafeState : IState
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			float strafeRemainingDist = enemyProps.calculateDist(circularPointDest, gameObjPos);
-//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
-            
+            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
 			{
 				// recalculate points around circle with smaller radius
 				pointsAroundTarget = pointsAround(playerPos, strafeDistance - radiusReduction); // todo reduce radius
 				radiusReduction += 10; // reduce by 2f for next point
+				// this prevents over shooting from the agent
+				if (radiusReduction > strafeDistance)
+				{
+					radiusReduction = strafeDistance;
+				}
 				
 				// get next point for clockwise
 				if (isClockwise)
@@ -210,6 +215,8 @@ public class StrafeState : IState
 					// next point for counter clockwise
 					lastPointIndex++;
 				}
+				Debug.Log(lastPointIndex);
+				
 				circularPointDest = pointsAroundTarget[Mathf.Abs(lastPointIndex % 8)];
 //                Debug.Log("Changing target to index " + lastPointIndex%8);
 //                Debug.Log("moving towards " +circularPointDest);
@@ -240,6 +247,7 @@ public class StrafeState : IState
 				{
 					// we can hit the player, so shoot
 //					shoot(); // todo uncoomment
+					// todo look at player when shooting
 					shootingAbility.shoot(agentHead, playerPos, initialVelocityX, fireRate);
 				}
 			}
@@ -264,6 +272,7 @@ public class StrafeState : IState
 		
 		// Calculate enemy distance
 		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		Debug.Log(distanceToPlayer);
 
 
 		// If outside ranged radius, transition to run state
@@ -306,10 +315,10 @@ public class StrafeState : IState
 			float x = Mathf.Cos(angle) * radius;
 			float y = Mathf.Sin(angle) * radius;
 			coord = new Vector3(x, 0, y) + offset;
-//            Debug.Log("Iteration: " + i);
-//            Debug.Log("Angle: " + angle);
-//            Debug.Log(coord);
-//            Debug.Log("");
+            Debug.Log("Iteration: " + i);
+            Debug.Log("Angle: " + angle);
+            Debug.Log(coord);
+            Debug.Log("");
 			angle += Mathf.PI / 4;
 			points[i] = coord;
 		}
@@ -320,13 +329,13 @@ public class StrafeState : IState
 	private Vector3 closestPoint(Vector3 enemyPos, Vector3[] points)
 	{
 		// initialize temp variables to first value in array of points
-		float closestDist = Vector3.Distance(enemyPos, points[0]);;
+		float closestDist =  enemyProps.calculateDist(enemyPos, points[0]);	
 		Vector3 closestPoint = points[0];
         
 		for(int i = 0; i < points.Length; i++)
 		{
 			Vector3 point = points[i];
-			float tempDist = Vector3.Distance(enemyPos, point);
+			float tempDist = enemyProps.calculateDist(enemyPos, point);
 			if (tempDist < closestDist)
 			{
 				closestPoint = point;
