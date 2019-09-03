@@ -51,7 +51,8 @@ public class StrafeState : IState
 	private int lastPointIndex; // last point index value in the pointsAroundTarget array
 	private bool isClockwise; // walk in a clockwise direction when strafying
 	private Vector3 enemyPos; // this is the position of the enemy with y = 0 for distance operations
-
+	private float radiusReduction = 0; // float that will reduce the radius of points around center every time, the agent reaches a point
+	
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
 
@@ -163,7 +164,7 @@ public class StrafeState : IState
 			isStrafing = true;
             
 			// Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
-			pointsAroundTarget = pointsAround(playerPos);
+			pointsAroundTarget = pointsAround(playerPos, strafeDistance);
             
 			// pick the closest of these points to the enemy
 			circularPointDest = closestPoint(enemyPos, pointsAroundTarget);
@@ -178,7 +179,8 @@ public class StrafeState : IState
 		
 		
 		// if moving towards strafing point, check if it has being destination has been reached
-		// if reached, calculate next moving point
+		// if reached, calculate points around circle again on a reduced radius
+		// and start moving to the next point (medium enemy)
 		if (isStrafing)
 		{
 			Debug.Log("Strafing mode / moving");
@@ -187,12 +189,16 @@ public class StrafeState : IState
 			float strafeRemainingDist = enemyProps.calculateDist(circularPointDest, gameObjPos);
 //            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
             
+			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
 			{
-				// get next point
+				// recalculate points around circle with smaller radius
+				pointsAroundTarget = pointsAround(playerPos, strafeDistance - radiusReduction); // todo reduce radius
+				radiusReduction += 10; // reduce by 2f for next point
+				
+				// get next point for clockwise
 				if (isClockwise)
 				{
-					// clockwise, do absolute value
 					lastPointIndex--;
 					if (lastPointIndex < 0)
 					{
@@ -201,7 +207,7 @@ public class StrafeState : IState
 				}
 				else
 				{
-					// counter clockwise
+					// next point for counter clockwise
 					lastPointIndex++;
 				}
 				circularPointDest = pointsAroundTarget[Mathf.Abs(lastPointIndex % 8)];
@@ -283,10 +289,10 @@ public class StrafeState : IState
 		return "Strafe";
 	}
 	
-	// given a point, return points around its circunference of radius r and every 45 degrees (pi/4 radians)
-	private Vector3[] pointsAround(Vector3 center)
+	// given a point and a radius, return points around the center with the input radius and every 45 degrees (pi/4 radians)
+	private Vector3[] pointsAround(Vector3 center, float radius)
 	{
-		float radius = strafeDistance; // range away from player that the enemy should start strafying
+//		float radius = strafeDistance; // range away from player that the enemy should start strafying
 		float angle = 0;
 		Vector3 coord;
 		Vector3[] points = new Vector3[8];
