@@ -23,7 +23,7 @@ public class RetreatState : IState
 	public bool debugNoWalk = false;
 	
 	// Squared retreat radius (for optimized calculations)
-	private float sqrRetreatRadius;
+//	private float sqrRetreatRadius;
     
 	// The player's head
 	public GameObject player;
@@ -50,7 +50,7 @@ public class RetreatState : IState
 		obstacle = enemyProps.obstacle;
 		player = enemyProps.player;
 		debugNoWalk = enemyProps.debugNoWalk;
-		sqrRetreatRadius = enemyProps.sqrAttackRadius;
+//		sqrRetreatRadius = enemyProps.sqrAttackRadius;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
@@ -66,7 +66,7 @@ public class RetreatState : IState
 		obstacle = enemyProps.obstacle;
 		player = enemyProps.player;
 		debugNoWalk = enemyProps.debugNoWalk;
-		sqrRetreatRadius = enemyProps.sqrMeleeRadius;
+//		sqrRetreatRadius = enemyProps.sqrMeleeRadius;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
@@ -143,10 +143,11 @@ public class RetreatState : IState
 		gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+//		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+//		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 		
-		if (sqrDist - sqrRetreatRadius > 0)
+		if (distanceToPlayer > retreatRadius)
 		{
 			// Done retreating, attack
 			animator.SetTrigger("Melee");
