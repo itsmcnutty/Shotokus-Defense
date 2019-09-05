@@ -212,38 +212,20 @@ public class StrafeState : IState
 			if (strafeRemainingDist < 1f)
 			{
 				// recalculate points around circle with smaller radius
-				// todo move the radius reduction up
-				pointsAroundTarget = pointsAround(playerPos, strafeDistance - totalCurrentReduction); 
 				totalCurrentReduction += radiusReduction; // reduce by 2f for next point
-
 				// this prevents over shooting from the agent
-				if (radiusReduction > strafeDistance)
+				if (totalCurrentReduction > strafeDistance)
 				{
-					radiusReduction = strafeDistance;
+					totalCurrentReduction = strafeDistance;
 				}
+				pointsAroundTarget = pointsAround(playerPos, strafeDistance - totalCurrentReduction);
 				
 				// update lastPointIndex to next circular point coordinate
-				lastPointIndex = getNextCircularPointIndex(lastPointIndex);
-
-//				isClockwise = false; // todo remove ONLY FOR DEBUGGING
-//				// get next point for clockwise
-//				if (isClockwise)
-//				{
-//					lastPointIndex--;
-//					if (lastPointIndex < 0)
-//					{
-//						lastPointIndex = pointsAroundTarget.Length;
-//					}
-//				}
-//				else
-//				{
-//					// next point for counter clockwise
-//					lastPointIndex++;
-//				}
-
-//				Debug.Log("last point index: " + lastPointIndex);
+				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
+				
+				Debug.Log("last point index: " + lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord; // todo check where to change lastpointindex
-                Debug.Log("Changing target to index " + lastPointIndex);
+//                Debug.Log("Changing target to index " + lastPointIndex);
                 Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
@@ -299,7 +281,6 @@ public class StrafeState : IState
 		// Calculate enemy distance
 		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
 //		Debug.Log(distanceToPlayer);
-
 
 		// If outside ranged radius, transition to run state
 		if (distanceToPlayer >  rangedRadius)
@@ -391,43 +372,42 @@ public class StrafeState : IState
 		return closestPoint;
 	}
 
-	// 
-//	private bool isValidPoint()
-//	{
-//		
-//	}
-
 	// this function updates the lastPointIndex to indicate the agent which circular point to move towards 
 	// this function skips over circular points that are not valid or partial
-	// todo if no points found, then recalculate more points with smaller radius
-	private int getNextCircularPointIndex(int lastPointIndex)
+	// todo if no points found, then recalculate more points with smaller radius!!
+	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
-		isClockwise = false;
-		
+		// todo remove this DEBUGGING ONLY
+		isClockwise = true;
 		int newIndex = lastPointIndex;
-		// skip unavailable points
-		// todo if newINdex reaches end of list and its still not reachable, then do something
-		for (int i = newIndex; i < pointsAroundTarget.Length; i++)
+		
+		if (isClockwise)
 		{
-			// get next point for clockwise
-			if (isClockwise)
+			for (int i = newIndex; i > -1; i--)
 			{
 				newIndex--;
 				if (newIndex < 0) 
-					newIndex = pointsAroundTarget.Length;
-			}
-			else
-			{
-				// next point for counter clockwise
-				newIndex++;
-			}
-			newIndex = Mathf.Abs(newIndex % 8);
-			if (pointsAroundTarget[newIndex].isReachable)
-			{
-				break;
+					newIndex = newIndex + pointsAroundTarget.Length;
+				newIndex %= 8;
+				if (pointsAroundTarget[newIndex].isReachable)
+				{
+					break;
+				}
 			}
 		}
-//		Debug.Log(newIndex);
+		else
+		{
+			for (int i = newIndex; i < pointsAroundTarget.Length; i++)
+			{
+				newIndex++;
+				newIndex %= 8;
+				if (pointsAroundTarget[newIndex].isReachable)
+				{
+					break;
+				}
+			}
+		}
+		// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 		return newIndex;
 	}
 	
