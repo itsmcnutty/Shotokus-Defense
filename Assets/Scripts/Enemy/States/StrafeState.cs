@@ -378,7 +378,7 @@ public class StrafeState : IState
 	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
 		// todo remove this DEBUGGING ONLY
-		isClockwise = true;
+		isClockwise = false;
 		int newIndex = lastPointIndex;
 		
 		if (isClockwise)
