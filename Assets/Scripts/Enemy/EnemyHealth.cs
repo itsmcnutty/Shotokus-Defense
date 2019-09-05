@@ -108,7 +108,7 @@ public class EnemyHealth : CallParentCollision
 
 		if (health <= 0f)
 		{
-			Destroy(gameObject);
+			GetComponent<RagdollController>().StartRagdoll();
 			// Indicate the Game Controller that an enemy was destroyed
 			GameController.Instance.EnemyGotDestroyed();
 			// Check if round is over or not
