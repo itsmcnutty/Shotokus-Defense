@@ -144,7 +144,9 @@ public class Rocks : MonoBehaviour
                     {
                         GameObject newRock = GetNewRock();
                         RockProperties.CreateComponent(newRock, destroyRockParticles);
+                        
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
+                        newRockRigidbody.mass = rockMassScale * activeRock.transform.localScale.x;
 
                         newRock.transform.position = activeRock.transform.position;
                         newRock.transform.localScale = activeRock.transform.localScale;
