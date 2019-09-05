@@ -65,42 +65,51 @@ public class CreateNavLink : MonoBehaviour
             Debug.Log("No wall properties");
         }
 
-        // Store the height of wall on front
+        // Store the height of wall on front and back
         float wallHeightF = -10;
+        float wallHeightB = -10;
         // shoot raycast from point at startPos + the height y of wall in wallPos
         // This will allow us to know the height from the wall to the floor
-        RaycastHit hit;
+        RaycastHit hitF;
+        RaycastHit hitB;
         Vector3 originFront = new Vector3(startPosF.x, wallPos.y, startPosF.z);
+        Vector3 originBack = new Vector3(startPosB.x, wallPos.y, startPosB.z);
         // todo implement for backside too
-        Vector3 rayDirection = startPosF - originFront; // todo this might shoot from the feet
+        Vector3 rayDirection = Vector3.down; // shoot laser downwards
         
         // set where the ray is coming from and its direction
-        Ray visionRay = new Ray(originFront, rayDirection);
-
-        Debug.DrawRay(originFront, rayDirection, Color.red);
+        Ray visionRayF = new Ray(originFront, rayDirection);
+        Ray visionRayB = new Ray(originBack, rayDirection);
         
-        // if we hit the ground ... print out height that would be distance of ray
-        if (Physics.Raycast(visionRay, out hit)) 
+        // if we hit the ground, set the heigh of wall equal to difference between total heigh of wall and distance to floor
+        if (Physics.Raycast(visionRayF, out hitF)) 
         {
-            if (hit.collider.CompareTag("Ground"))
+            if (hitF.collider.CompareTag("Ground"))
             {
-                wallHeightF = hit.distance;
+                wallHeightF = hitF.distance;
                 // we can hit the player, so shoot
-                Debug.Log("We hit the ground!!");
+                Debug.Log("We hit the ground on the front!!");
                 Debug.Log("Height is " + wallHeightF);
             }
         }
+        if (Physics.Raycast(visionRayB, out hitB)) 
+        {
+            if (hitB.collider.CompareTag("Ground"))
+            {
+                wallHeightB = hitB.distance;
+                // we can hit the player, so shoot
+                Debug.Log("We hit the ground on the back!!");
+                Debug.Log("Height is " + wallHeightB);
+            }
+        }
         
-        float height = wallHeightF; 
-        float floorHeight = transform.position.y - height;
-        startPosB.y = floorHeight;
-        startPosF.y = floorHeight;
-        
-//        float height = wallProperties.WallHeightPercent;
-//        float wallHeightaboveGround = height * wallMaxHeight;
-//        float floorHeight = transform.position.y - wallHeightaboveGround;
-//        startPosB.y = floorHeight;
-//        startPosF.y = floorHeight;
+        float heightF = wallHeightF; 
+        float heightB = wallHeightB; 
+        float floorHeightF = transform.position.y - heightF;
+        float floorHeightB = transform.position.y - heightB;
+        startPosF.y = floorHeightF;
+        startPosB.y = floorHeightB;
+
         
         navMeshLinkB.startPoint = startPosB;
         navMeshLinkF.startPoint = startPosF;

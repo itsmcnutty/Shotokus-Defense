@@ -785,6 +785,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5697528617253801718, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: m_TagString
+      value: Right Hand
+      objectReference: {fileID: 0}
     - target: {fileID: 5697528617264073322, guid: c4b40cb2a53b607439da31578005b9cd,
         type: 3}
       propertyPath: renderModelPrefab
@@ -803,11 +808,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3608211169773213929, guid: 82649a8d7ea1c7c4db3662068ebe412f,
         type: 3}
-    - target: {fileID: 5697528617253801718, guid: c4b40cb2a53b607439da31578005b9cd,
-        type: 3}
-      propertyPath: m_TagString
-      value: Right Hand
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5697528617253961138, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}
@@ -1072,7 +1072,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 23800000, guid: dd48f7ce91837f249bcb599b9c9be981,
+        type: 2}
     - target: {fileID: 8618336351119341840, guid: f432ca6eb057f7148bc3fec9a3a8567d,
         type: 3}
       propertyPath: m_LayerMask.m_Bits
@@ -1466,7 +1467,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 274a2228068be424d97d91c70bd4cfcc,
+      objectReference: {fileID: 23800000, guid: d07885a88bd949e4882e3ebb3e91d88d,
         type: 2}
     - target: {fileID: 127712924463657758, guid: bd6d9910cd4fa9840b0177eca7a22871,
         type: 3}
@@ -2192,7 +2193,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 477e18f6b53d21e4b8d32bc16a1400b4,
+      objectReference: {fileID: 23800000, guid: 47b36ec5adb726f4680f6ff9581679cd,
         type: 2}
     - target: {fileID: 5167523848604400447, guid: 93d512a080749cd42ad5ff436daf04a0,
         type: 3}
