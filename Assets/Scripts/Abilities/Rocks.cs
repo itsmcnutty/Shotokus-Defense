@@ -10,15 +10,18 @@ public class Rocks : MonoBehaviour
     public float minRockDiameter = 0.25f;
     public float maxRockDimater = 1.5f;
     public float rockMassScale = 100f;
+    public float maxRockEnergyCost = 200f;
 
     public ParticleSystem createRockParticles;
     public ParticleSystem destroyRockParticles;
     public ParticleSystem regrowRockParticles;
+    public ParticleSystem regrowRockSwirl;
 
     private PlayerEnergy playerEnergy;
-    private static List<GameObject> availableRocks = new List<GameObject>();
+    private static Queue<GameObject> availableRocks = new Queue<GameObject>();
 
-    private static ParticleSystem currentRegrowthSystem;
+    private static ParticleSystem currentRegrowthParticleSystem;
+    private static ParticleSystem currentRegrowthSwirlSystem;
 
     public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
@@ -85,22 +88,29 @@ public class Rocks : MonoBehaviour
         rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
         activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
         playerEnergy.SetTempEnergy(hand, rockEnergyCost);
-        hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0);
+        hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && rockEnergyCost < maxRockEnergyCost);
 
-        if(!currentRegrowthSystem)
+        if(!currentRegrowthParticleSystem)
         {
-            currentRegrowthSystem = Instantiate(regrowRockParticles);
+            currentRegrowthParticleSystem = Instantiate(regrowRockParticles);
+            currentRegrowthSwirlSystem = Instantiate(regrowRockSwirl);
+            currentRegrowthSwirlSystem.transform.parent = activeRock.transform;
         }
-        currentRegrowthSystem.transform.position = activeRock.transform.position;
+        currentRegrowthParticleSystem.transform.position = activeRock.GetComponent<SkinnedMeshRenderer>().bounds.center;
+        currentRegrowthSwirlSystem.transform.position = activeRock.GetComponent<SkinnedMeshRenderer>().bounds.center;
     }
 
     public void StopRegrowthParticles()
     {
-        if(currentRegrowthSystem)
+        if(currentRegrowthParticleSystem)
         {
-            UnityEngine.ParticleSystem.MainModule main = currentRegrowthSystem.main;
-            main.loop = false;
-            currentRegrowthSystem = null;
+            UnityEngine.ParticleSystem.MainModule particleMain = currentRegrowthParticleSystem.main;
+            particleMain.loop = false;
+            currentRegrowthParticleSystem = null;
+            
+            UnityEngine.ParticleSystem.MainModule swirlMain = currentRegrowthSwirlSystem.main;
+            swirlMain.loop = false;
+            currentRegrowthSwirlSystem = null;
         }
     }
 
@@ -134,7 +144,9 @@ public class Rocks : MonoBehaviour
                     {
                         GameObject newRock = GetNewRock();
                         RockProperties.CreateComponent(newRock, destroyRockParticles);
+                        
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
+                        newRockRigidbody.mass = rockMassScale * activeRock.transform.localScale.x;
 
                         newRock.transform.position = activeRock.transform.position;
                         newRock.transform.localScale = activeRock.transform.localScale;
@@ -155,7 +167,7 @@ public class Rocks : MonoBehaviour
     private float GetRockEnergyCost(GameObject rock)
     {
         float range = maxRockDimater - minRockDiameter;
-        return (rock.transform.localScale.x - minRockDiameter) * playerEnergy.maxEnergy / range;
+        return (rock.transform.localScale.x - minRockDiameter) * maxRockEnergyCost / range;
     }
 
     private GameObject GetNewRock()
@@ -163,9 +175,8 @@ public class Rocks : MonoBehaviour
         GameObject newRock;
         if (availableRocks.Count != 0)
         {
-            newRock = availableRocks[0];
+            newRock = availableRocks.Dequeue();
             newRock.SetActive(true);
-            availableRocks.Remove(newRock);
         }
         else
         {
@@ -176,6 +187,6 @@ public class Rocks : MonoBehaviour
 
     public static void MakeRockAvailable(GameObject rock)
     {
-        availableRocks.Add(rock);
+        availableRocks.Enqueue(rock);
     }
 }
