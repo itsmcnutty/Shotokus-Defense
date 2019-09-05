@@ -1741,7 +1741,8 @@ GameObject:
   - component: {fileID: 4828776817018062485}
   - component: {fileID: 5625520736201670366}
   - component: {fileID: 1275101893616847299}
-  - component: {fileID: 7167125418838329711}
+  - component: {fileID: -7045992815299466980}
+  - component: {fileID: -7629776146271357035}
   m_Layer: 9
   m_Name: LightEnemy
   m_TagString: Enemy
@@ -1801,6 +1802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PHYSIC_MATERIAL: {fileID: 0}
   resetPosition: 0
+  enemyDeathParticles: {fileID: 0}
 --- !u!114 &4828776817018062485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1893,14 +1895,14 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7167125418838329711
+--- !u!114 &-7045992815299466980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7570988895621427575}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df8c3f21b6ab97449bef91710d43c082, type: 3}
   m_Name: 
@@ -1908,7 +1910,25 @@ MonoBehaviour:
   agent: {fileID: 1275101893616847299}
   projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
     type: 3}
+  fireRate: 3
+  initialVelocityX: 15
   distanceFromPlayer: 15
+--- !u!208 &-7629776146271357035
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570988895621427575}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7747424865217325253
 GameObject:
   m_ObjectHideFlags: 0

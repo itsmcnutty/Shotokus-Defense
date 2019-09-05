@@ -114,6 +114,13 @@ public class RunState : IState
 			return ragdollState;
 		}
 		
+//		// Transition to climbing state if climbing
+//		if (agent.isOnOffMeshLink)
+//		{
+//			// todo do something with animator
+//			return climbingState;
+//		}
+		
 		// Get enemy position
 		Vector3 gameObjPos = gameObj.transform.position;
 		

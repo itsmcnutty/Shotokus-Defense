@@ -59,19 +59,48 @@ public class CreateNavLink : MonoBehaviour
         Vector3 startPosB = wallPos + transform.forward * 1.5f; // position for navmesh link start point
         Vector3 startPosF = wallPos - transform.forward * 1.5f; // position for navmesh link start point
 
-        // todo uncomment later
         wallProperties = GetComponent<WallProperties>();
         if (wallProperties == null)
         {
             Debug.Log("No wall properties");
-            
+        }
+
+        // Store the height of wall on front
+        float wallHeightF = -10;
+        // shoot raycast from point at startPos + the height y of wall in wallPos
+        // This will allow us to know the height from the wall to the floor
+        RaycastHit hit;
+        Vector3 originFront = new Vector3(startPosF.x, wallPos.y, startPosF.z);
+        // todo implement for backside too
+        Vector3 rayDirection = startPosF - originFront; // todo this might shoot from the feet
+        
+        // set where the ray is coming from and its direction
+        Ray visionRay = new Ray(originFront, rayDirection);
+
+        Debug.DrawRay(originFront, rayDirection, Color.red);
+        
+        // if we hit the ground ... print out height that would be distance of ray
+        if (Physics.Raycast(visionRay, out hit)) 
+        {
+            if (hit.collider.CompareTag("Ground"))
+            {
+                wallHeightF = hit.distance;
+                // we can hit the player, so shoot
+                Debug.Log("We hit the ground!!");
+                Debug.Log("Height is " + wallHeightF);
+            }
         }
         
-        float height = wallProperties.WallHeightPercent;
-        float wallHeightaboveGround = height * wallMaxHeight;
-        float floorHeight = transform.position.y - wallHeightaboveGround;
+        float height = wallHeightF; 
+        float floorHeight = transform.position.y - height;
         startPosB.y = floorHeight;
         startPosF.y = floorHeight;
+        
+//        float height = wallProperties.WallHeightPercent;
+//        float wallHeightaboveGround = height * wallMaxHeight;
+//        float floorHeight = transform.position.y - wallHeightaboveGround;
+//        startPosB.y = floorHeight;
+//        startPosF.y = floorHeight;
         
         navMeshLinkB.startPoint = startPosB;
         navMeshLinkF.startPoint = startPosF;

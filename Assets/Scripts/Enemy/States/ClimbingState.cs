@@ -46,6 +46,7 @@ public class ClimbingState : IState
         obstacle.enabled = false;
         
 //        enemyProps.EnablePathfind(); // todo ask if i need this??
+        Debug.Log("I entered climbing state");
         
     }
     
