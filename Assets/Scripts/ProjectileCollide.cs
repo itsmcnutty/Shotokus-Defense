@@ -7,7 +7,7 @@ public class ProjectileCollide : MonoBehaviour
     private GameObject player;
     private PlayerHealth playerHealth;
 
-    public float PROJECTILE_DAMAGE = 100;
+    public float projectileDamage = 100;
     private float WALL_LIFETIME = 3f;
 
     
@@ -33,12 +33,12 @@ public class ProjectileCollide : MonoBehaviour
             // Needed if doing non-VR mode
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(PROJECTILE_DAMAGE);
+                playerHealth.TakeDamage(projectileDamage);
             }
         }
         // destroy projectile after colliding with any object and make its damage 0
         Destroy(gameObject, WALL_LIFETIME);
-        PROJECTILE_DAMAGE = 0;
+        projectileDamage = 0;
     }
 
 }
