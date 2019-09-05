@@ -14,11 +14,13 @@ public class Rocks : MonoBehaviour
     public ParticleSystem createRockParticles;
     public ParticleSystem destroyRockParticles;
     public ParticleSystem regrowRockParticles;
+    public ParticleSystem regrowRockSwirl;
 
     private PlayerEnergy playerEnergy;
-    private static List<GameObject> availableRocks = new List<GameObject>();
+    private static Queue<GameObject> availableRocks = new Queue<GameObject>();
 
-    private static ParticleSystem currentRegrowthSystem;
+    private static ParticleSystem currentRegrowthParticleSystem;
+    private static ParticleSystem currentRegrowthSwirlSystem;
 
     public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
@@ -87,20 +89,27 @@ public class Rocks : MonoBehaviour
         playerEnergy.SetTempEnergy(hand, rockEnergyCost);
         hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0);
 
-        if(!currentRegrowthSystem)
+        if(!currentRegrowthParticleSystem)
         {
-            currentRegrowthSystem = Instantiate(regrowRockParticles);
+            currentRegrowthParticleSystem = Instantiate(regrowRockParticles);
+            currentRegrowthSwirlSystem = Instantiate(regrowRockSwirl);
+            currentRegrowthSwirlSystem.transform.parent = activeRock.transform;
         }
-        currentRegrowthSystem.transform.position = activeRock.transform.position;
+        currentRegrowthParticleSystem.transform.position = activeRock.GetComponent<SkinnedMeshRenderer>().bounds.center;
+        currentRegrowthSwirlSystem.transform.position = activeRock.GetComponent<SkinnedMeshRenderer>().bounds.center;
     }
 
     public void StopRegrowthParticles()
     {
-        if(currentRegrowthSystem)
+        if(currentRegrowthParticleSystem)
         {
-            UnityEngine.ParticleSystem.MainModule main = currentRegrowthSystem.main;
-            main.loop = false;
-            currentRegrowthSystem = null;
+            UnityEngine.ParticleSystem.MainModule particleMain = currentRegrowthParticleSystem.main;
+            particleMain.loop = false;
+            currentRegrowthParticleSystem = null;
+            
+            UnityEngine.ParticleSystem.MainModule swirlMain = currentRegrowthSwirlSystem.main;
+            swirlMain.loop = false;
+            currentRegrowthSwirlSystem = null;
         }
     }
 
@@ -163,9 +172,8 @@ public class Rocks : MonoBehaviour
         GameObject newRock;
         if (availableRocks.Count != 0)
         {
-            newRock = availableRocks[0];
+            newRock = availableRocks.Dequeue();
             newRock.SetActive(true);
-            availableRocks.Remove(newRock);
         }
         else
         {
@@ -176,6 +184,6 @@ public class Rocks : MonoBehaviour
 
     public static void MakeRockAvailable(GameObject rock)
     {
-        availableRocks.Add(rock);
+        availableRocks.Enqueue(rock);
     }
 }
