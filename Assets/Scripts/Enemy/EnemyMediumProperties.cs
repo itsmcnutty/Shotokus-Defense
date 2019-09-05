@@ -27,9 +27,11 @@ public class EnemyMediumProperties : EnemyProperties
     public float STRAFE_DIST = 15f; 
     // every time a point around the strafing circle is reached, next point will be close to the center of circle by this radius
     public float RADIUS_REDUCTION = 5f;
+    // allows to have a random radius reduction for each enemy, given the specified radius
+    public bool randomRadiusReduction = true;
+    public float minRangeRadiusReduction = 3;
+    public float maxRangeRadiusReduction = 7;
     [NonSerialized] public bool isStrafing = false; // bool indicating if agent is in strafing state
-    [NonSerialized] public Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
-    [NonSerialized] public Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
     [NonSerialized] public int lastPointIndex; // last point index value in the pointsAroundTarget array
     [NonSerialized] public bool isClockwise = false; // walk in a clockwise direction when strafying
 
@@ -56,6 +58,11 @@ public class EnemyMediumProperties : EnemyProperties
         if (UnityEngine.Random.Range(0, 2) == 0)
         {
 	        isClockwise = true;
+        }
+        
+        if (randomRadiusReduction)
+        {
+	        RADIUS_REDUCTION = UnityEngine.Random.Range(minRangeRadiusReduction, maxRangeRadiusReduction);
         }
         
         // Instantiate states with the properties above
