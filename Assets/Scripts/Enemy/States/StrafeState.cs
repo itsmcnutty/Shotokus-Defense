@@ -4,6 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+// Struct to keep track of information for pointsAround() function
+struct CircularCoord
+{
+	public Vector3 coord; // point calculated around center for pointsAround() function
+	public int index; // keeping track of last position. Using the index replaces the need for keeping track of angles 
+	// todo maybe keep track of angle? although index is sufficient for now
+	public bool isReachable; // keeps track if the coordinate is reachable, false if path is invalid or partial
+	// todo maybe store the NavMesh path variable??
+}
+
 public class StrafeState : IState
 {
 	// Radius for melee attacks
@@ -37,6 +47,7 @@ public class StrafeState : IState
 	private RunState runState;
 	private MeleeState meleeState;
 	private RagdollState ragdollState;
+	private ClimbingState climbingState;
 	
 	// shooting variables
 	private Vector3 agentHead; // this is where the ray cast originates, determines if enemy can see player
@@ -46,11 +57,12 @@ public class StrafeState : IState
 	// strafing variables
 	private float strafeDistance; // distance that the enemy will start strafing around player
 	private bool isStrafing; // bool indicating if agent is in strafing state
-	private Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
+	private CircularCoord[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
 	private Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
 	private int lastPointIndex; // last point index value in the pointsAroundTarget array
 	private bool isClockwise; // walk in a clockwise direction when strafying
 	private float radiusReduction; // float that will reduce the radius of points around center every time, the agent reaches a point
+	private float totalCurrentReduction; // float that will keep track of the increase in radiausReduction
 	
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
@@ -78,11 +90,12 @@ public class StrafeState : IState
 		// strafing variables
 		strafeDistance = enemyProps.STRAFE_DIST; 
 		isStrafing = enemyProps.isStrafing; 
-		pointsAroundTarget = enemyProps.pointsAroundTarget;
-		circularPointDest = enemyProps.circularPointDest; 
+//		pointsAroundTarget = enemyProps.pointsAroundTarget;
+//		circularPointDest = enemyProps.circularPointDest; 
 		lastPointIndex = enemyProps.lastPointIndex; 
 		isClockwise = enemyProps.isClockwise;
 		radiusReduction = enemyProps.RADIUS_REDUCTION;
+		totalCurrentReduction = 0;
 		
 		// shooting ability
 		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
@@ -108,6 +121,9 @@ public class StrafeState : IState
 		agent.stoppingDistance = 0;
 		agent.speed = maxStrafeSpeed;
 		agent.angularSpeed = 0;
+		
+		// Restart radius reduction, to prevent enemy approaching you right away after being launched from ragdoll
+		totalCurrentReduction = 0;
 	}
 
 	// Called upon exiting this state
@@ -121,6 +137,9 @@ public class StrafeState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
+		if (agent.isOnOffMeshLink) 
+			Debug.Log("im on nav mesh climbing");
+		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
 		Vector3 enemyVelocity = agent.velocity;
@@ -170,15 +189,13 @@ public class StrafeState : IState
 			// Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
 			pointsAroundTarget = pointsAround(playerPos, strafeDistance);
             
-			// pick the closest of these points to the enemy
+			// pick the closest of these points that has a complete path to the enemy
 			circularPointDest = closestPoint(gameObjPos, pointsAroundTarget);
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
 			Debug.Log("my destination is " + circularPointDest);
-			Debug.DrawRay(circularPointDest, Vector3.up, Color.blue);
-			// check if path is valid in navmesh
-//            Debug.Log();
+//			Debug.DrawRay(circularPointDest, Vector3.up, Color.blue);
 		}
 		
 		
@@ -197,68 +214,50 @@ public class StrafeState : IState
 			if (strafeRemainingDist < 1f)
 			{
 				// recalculate points around circle with smaller radius
-				pointsAroundTarget = pointsAround(playerPos, strafeDistance - radiusReduction); // todo reduce radius
-				radiusReduction += radiusReduction; // reduce by 2f for next point
+				totalCurrentReduction += radiusReduction; // reduce by 2f for next point
 				// this prevents over shooting from the agent
-				if (radiusReduction > strafeDistance)
+				if (totalCurrentReduction > strafeDistance)
 				{
-					radiusReduction = strafeDistance;
+					totalCurrentReduction = strafeDistance;
 				}
+				pointsAroundTarget = pointsAround(playerPos, strafeDistance - totalCurrentReduction);
 				
-				// get next point for clockwise
-				if (isClockwise)
-				{
-					lastPointIndex--;
-					if (lastPointIndex < 0)
-					{
-						lastPointIndex = pointsAroundTarget.Length;
-					}
-				}
-				else
-				{
-					// next point for counter clockwise
-					lastPointIndex++;
-				}
-				Debug.Log(lastPointIndex);
+				// update lastPointIndex to next circular point coordinate
+				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				
-				circularPointDest = pointsAroundTarget[Mathf.Abs(lastPointIndex % 8)];
-//                Debug.Log("Changing target to index " + lastPointIndex%8);
-//                Debug.Log("moving towards " +circularPointDest);
+				Debug.Log("last point index: " + lastPointIndex);
+				circularPointDest = pointsAroundTarget[lastPointIndex].coord; // todo check where to change lastpointindex
+//                Debug.Log("Changing target to index " + lastPointIndex);
+                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
 		
-		///* uncomment **********************************************************************
 		// todo SHOOTING STATE
-		// check that target is inside range radius
-		if (distanceToPlayer < 17)
+//		Debug.Log("Shooting mode");
+		// check for visibility to target through ray cast
+		RaycastHit hit;
+
+		Vector3 rayDirection = playerPos - agentHead; // todo this might shoot from the feet
+            
+		// set where the ray is coming from and its direction
+		Ray visionRay = new Ray(agentHead, rayDirection);
+            
+		Debug.DrawRay(agentHead, rayDirection, Color.red);
+
+		// if player is visible and fire Rate is good, shoot!
+		if (Physics.Raycast(visionRay, out hit)) 
 		{
-			Debug.Log("Shooting mode");
-			// check for visibility to target through ray cast
-			RaycastHit hit;
-
-			Vector3 rayDirection = playerPos - agentHead; // todo this might shoot from the feet
-            
-			// set where the ray is coming from and its direction
-			Ray visionRay = new Ray(agentHead, rayDirection);
-            
-			Debug.DrawRay(agentHead, rayDirection, Color.red);
-
-			// if player is visible and fire Rate is good, shoot!
-			if (Physics.Raycast(visionRay, out hit)) 
+			if (hit.collider.CompareTag("PlayerCollider"))
 			{
-				if (hit.collider.CompareTag("PlayerCollider"))
-				{
-					// we can hit the player, so shoot
-//					shoot(); // todo uncoomment
-					// todo look at player when shooting
-					shootingAbility.Shoot(initialVelocityX, fireRate, animator);
-				}
+				// we can hit the player, so shoot
+//				shoot(); // todo uncoomment
+				// todo look at player when shooting
+				shootingAbility.Shoot(initialVelocityX, fireRate, animator);
 			}
 		}
-		//*/
-		
 	}
+	
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
 	// is possible
@@ -271,13 +270,20 @@ public class StrafeState : IState
 			return ragdollState;
 		}
 		
+		// todo CONTINUE TESTING THIS
+		// Transition to climbing state if climbing
+		if (agent.isOnOffMeshLink)
+		{
+			// todo do something with animator
+			return climbingState;
+		}
+		
 		// Get enemy position
 		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
 		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
-		Debug.Log(distanceToPlayer);
-
+//		Debug.Log(distanceToPlayer);
 
 		// If outside ranged radius, transition to run state
 		if (distanceToPlayer >  rangedRadius)
@@ -303,42 +309,61 @@ public class StrafeState : IState
 	}
 	
 	// given a point and a radius, return points around the center with the input radius and every 45 degrees (pi/4 radians)
-	private Vector3[] pointsAround(Vector3 center, float radius)
+	private CircularCoord[] pointsAround(Vector3 center, float radius)
 	{
-//		float radius = strafeDistance; // range away from player that the enemy should start strafying
 		float angle = 0;
-		Vector3 coord;
-		Vector3[] points = new Vector3[8];
+		CircularCoord[] points = new CircularCoord[8];
 		Vector3 offset = new Vector3(center.x,0,center.z);
         
-		// todo keep track of every angle, might not be necessary anymore
+		// todo keep track of every angle, might not be necessary anymore, index might be enough
         
+		// checking for navmesh status on points (if available or not)
+		NavMeshPath path = new NavMeshPath();
+		
 		for (int i = 0; i < 8; i++)
 		{
 			// x is x and y is z, in 3D coordinates unity. For example, the 3D vector is represented as (x, 0, y).
 			float x = Mathf.Cos(angle) * radius;
 			float y = Mathf.Sin(angle) * radius;
-			coord = new Vector3(x, 0, y) + offset;
+			Vector3 coord = new Vector3(x, 0, y) + offset;
             Debug.Log("Iteration: " + i);
             Debug.Log("Angle: " + angle);
             Debug.Log(coord);
-            Debug.Log("");
+			// check that path to circular coordinate can be completed. Invalid or partial points are not accepted.
+			agent.CalculatePath(coord, path);
+			if (path.status != NavMeshPathStatus.PathComplete)
+			{
+				points[i].isReachable = false;
+			}
+			else
+			{
+				points[i].isReachable = true;
+			}
+			Debug.Log("My path status is: " + path.status);
 			angle += Mathf.PI / 4;
-			points[i] = coord;
+			points[i].coord = coord;
+			points[i].index = i;
 		}
 		return points;
 	}
     
+	// TODO WHAT IF NONE OF THEM ARE REACHABLE?
+	// ADDED: THIS FUNCTION DOESNT TAKE ON ACCOUNT ANY POINTS THAT ARE NOT VALID OR PARTIAL
 	// given a enemy position and an array of possible future positions, return the next closest point
-	private Vector3 closestPoint(Vector3 enemyPos, Vector3[] points)
+	private Vector3 closestPoint(Vector3 enemyPos, CircularCoord[] points)
 	{
 		// initialize temp variables to first value in array of points
-		float closestDist =  enemyProps.calculateDist(enemyPos, points[0]);	
-		Vector3 closestPoint = points[0];
+		float closestDist =  enemyProps.calculateDist(enemyPos, points[0].coord);	
+		Vector3 closestPoint = points[0].coord;
         
 		for(int i = 0; i < points.Length; i++)
 		{
-			Vector3 point = points[i];
+			// skip point that is not reachable
+			if (!points[i].isReachable)
+			{
+				continue;
+			}
+			Vector3 point = points[i].coord;
 			float tempDist = enemyProps.calculateDist(enemyPos, point);
 			if (tempDist < closestDist)
 			{
@@ -350,7 +375,44 @@ public class StrafeState : IState
 		return closestPoint;
 	}
 
-	
-	
+	// this function updates the lastPointIndex to indicate the agent which circular point to move towards 
+	// this function skips over circular points that are not valid or partial
+	// todo if no points found, then recalculate more points with smaller radius!!
+	private int GetNextCircularPointIndex(int lastPointIndex)
+	{
+		// todo remove this DEBUGGING ONLY
+		// clockwise and RD = 2 is broken??
+		isClockwise = true;
+		int newIndex = lastPointIndex;
+		
+		if (isClockwise)
+		{
+			for (int i = newIndex; i > -1; i--)
+			{
+				newIndex--;
+				if (newIndex < 0) 
+					newIndex = newIndex + pointsAroundTarget.Length;
+				newIndex %= 8;
+				if (pointsAroundTarget[newIndex].isReachable)
+				{
+					break;
+				}
+			}
+		}
+		else
+		{
+			for (int i = newIndex; i < pointsAroundTarget.Length; i++)
+			{
+				newIndex++;
+				newIndex %= 8;
+				if (pointsAroundTarget[newIndex].isReachable)
+				{
+					break;
+				}
+			}
+		}
+		// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
+		return newIndex;
+	}
 	
 }

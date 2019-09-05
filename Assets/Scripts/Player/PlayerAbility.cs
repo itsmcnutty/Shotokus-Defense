@@ -226,7 +226,7 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    private void CancelAbility()
+    public void CancelAbility()
     {
         if (hand.hoveringInteractable != null && hand.hoveringInteractable.gameObject.tag == "Rock")
         {

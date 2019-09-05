@@ -695,6 +695,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5697528617253818052, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: m_TagString
+      value: Left Hand
+      objectReference: {fileID: 0}
     - target: {fileID: 5697528617254103152, guid: c4b40cb2a53b607439da31578005b9cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -780,6 +785,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5697528617253801718, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: m_TagString
+      value: Right Hand
+      objectReference: {fileID: 0}
     - target: {fileID: 5697528617264073322, guid: c4b40cb2a53b607439da31578005b9cd,
         type: 3}
       propertyPath: renderModelPrefab
@@ -839,6 +849,11 @@ PrefabInstance:
     - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
       propertyPath: initialNumOfEnemies
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: increaseOfEnePerWave
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1512379628719005127, guid: b1dc17f4976431549a284f73babe35ae,
@@ -1353,7 +1368,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 23800000, guid: cd3c5372583981b46aab03814109ad58,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd6d9910cd4fa9840b0177eca7a22871, type: 3}
 --- !u!4 &1047831917 stripped
@@ -1480,7 +1496,7 @@ PrefabInstance:
         type: 3}
       propertyPath: prefab.Array.data[1]
       value: 
-      objectReference: {fileID: 1663810992258648749, guid: a4db71a2ef42f4749b158f48179ac48f,
+      objectReference: {fileID: 8822753593585016445, guid: 9914bf2b29091354c94a4de4a83082f6,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 921980b4835e024468909be45ce775d7, type: 3}
