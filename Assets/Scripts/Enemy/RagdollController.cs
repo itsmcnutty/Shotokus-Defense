@@ -85,13 +85,14 @@ public class RagdollController : MonoBehaviour
     {
         if (GetComponent<EnemyHealth>().healthBarActual.value <= 0)
         {
-            SkinnedMeshRenderer[] skinnedMeshes = GetComponentsInChildren<SkinnedMeshRenderer>();
             SkinnedMeshRenderer skinnedMesh = new SkinnedMeshRenderer();
-            foreach(SkinnedMeshRenderer skinnedMeshCheck in skinnedMeshes)
+            
+            // Loop through children to find body skinned mesh
+            foreach(Transform child in transform)
             {
-                if(skinnedMeshCheck.name == "Enemy_heavy")
+                if(child.CompareTag("EnemyBody"))
                 {
-                    skinnedMesh = skinnedMeshCheck;
+                    skinnedMesh = child.GetComponent<SkinnedMeshRenderer>();
                     break;
                 }
             }
