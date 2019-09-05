@@ -46,11 +46,11 @@ public class ShootingAbility : MonoBehaviour
     }
 
     // Called by animator when entering the "ReleasingArrow" state
-    public void ReleaseArrow()
+    public void LaunchArrow()
     {
         // Store location of player and projectile
         Vector3 playerPos = player.transform.position;
-        Vector3 projPos = transform.position;
+        Vector3 projPos = projectile.transform.position;
         
         // Release the arrow from the hand
         DropArrow();
@@ -84,9 +84,12 @@ public class ShootingAbility : MonoBehaviour
     // Removes the arrow in hand so it may be shot or dropped
     public void DropArrow()
     {
-        projectile.transform.parent = null;
-        rigidbody.isKinematic = false;
-        rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        if (projectile)
+        {
+            projectile.transform.parent = null;
+            rigidbody.isKinematic = false;
+            rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        }
     }
     
 }
