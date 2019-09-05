@@ -131,7 +131,7 @@ public class Rocks : MonoBehaviour
             RockProperties.CreateComponent(activeRock, destroyRockParticles);
             activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
             playerEnergy.UseEnergy(hand);
-            hand.TriggerHapticPulse(500);
+            StartCoroutine(PlayerAbility.LongVibration(hand, 0.1f, 1000));
 
             Vector3 velocity, angularVelocity;
             activeRock.GetComponent<Throwable>().GetReleaseVelocities(hand, out velocity, out angularVelocity);
@@ -144,7 +144,7 @@ public class Rocks : MonoBehaviour
                     {
                         GameObject newRock = GetNewRock();
                         RockProperties.CreateComponent(newRock, destroyRockParticles);
-                        
+
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
                         newRockRigidbody.mass = rockMassScale * activeRock.transform.localScale.x;
 
