@@ -326,7 +326,7 @@ public class StrafeState : IState
             Debug.Log("Iteration: " + i);
             Debug.Log("Angle: " + angle);
             Debug.Log(coord);
-//			// check that path to circular coordinate can be completed. Invalid or partial points are not accepted.
+			// check that path to circular coordinate can be completed. Invalid or partial points are not accepted.
 			agent.CalculatePath(coord, path);
 			if (path.status != NavMeshPathStatus.PathComplete)
 			{
@@ -378,7 +378,8 @@ public class StrafeState : IState
 	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
 		// todo remove this DEBUGGING ONLY
-		isClockwise = false;
+		// clockwise and RD = 2 is broken??
+		isClockwise = true;
 		int newIndex = lastPointIndex;
 		
 		if (isClockwise)

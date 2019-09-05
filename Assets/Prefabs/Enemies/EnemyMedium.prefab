@@ -1469,9 +1469,12 @@ MonoBehaviour:
   RANGED_DELAY: 3
   PROJECTILE_VEL_X: 12
   MAX_STRAFE_SPEED: 3
-  RANGED_RADIUS: 20
+  RANGED_RADIUS: 23
   STRAFE_DIST: 15
-  RADIUS_REDUCTION: 0
+  RADIUS_REDUCTION: 2
+  randomRadiusReduction: 0
+  minRangeRadiusReduction: 3
+  maxRangeRadiusReduction: 7
 --- !u!1001 &8499968343413575499
 PrefabInstance:
   m_ObjectHideFlags: 0
