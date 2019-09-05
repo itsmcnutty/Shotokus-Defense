@@ -1729,7 +1729,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Trigger
     needsReinit: 0
   hand: {fileID: 5697528617264122612}
-  energyCost: 20
+  energyCost: 5
 --- !u!1 &5697528617253818052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,7 +1925,7 @@ MonoBehaviour:
     actionPath: /actions/default/in/Trigger
     needsReinit: 0
   hand: {fileID: 5697528617264073322}
-  energyCost: 20
+  energyCost: 5
 --- !u!114 &5697528617253961139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2567,7 +2567,7 @@ MonoBehaviour:
   energyBarText: {fileID: 5697528617519577972}
   maxEnergy: 1000
   energyRegenPerSecond: 500
-  regenDelayInSec: 1
+  regenDelayInSec: 0.5
   debugShowEnergyText: 0
 --- !u!114 &5697528617253961025
 MonoBehaviour:
@@ -2611,11 +2611,14 @@ MonoBehaviour:
   minRockDiameter: 0.25
   maxRockDimater: 1.5
   rockMassScale: 100
+  maxRockEnergyCost: 200
   createRockParticles: {fileID: 1358986761048532159, guid: d1f592a9713798948a2874bcf240ecca,
     type: 3}
   destroyRockParticles: {fileID: 1358986761048532159, guid: eacf8c771fe64a84e91926fed70eb55f,
     type: 3}
   regrowRockParticles: {fileID: 1358986761048532159, guid: f86ef3b9f1f9d364e93573c1309202fa,
+    type: 3}
+  regrowRockSwirl: {fileID: 3608211169773213929, guid: 82649a8d7ea1c7c4db3662068ebe412f,
     type: 3}
 --- !u!114 &1156229015251733590
 MonoBehaviour:
@@ -2638,6 +2641,7 @@ MonoBehaviour:
   spikeMinSpeed: 0.05
   spikeMaxHeight: 1.75
   energyPerSpikeInChain: 50
+  maxNumberOfSpikeChains: 6
   maxSpikesInChain: 50
   maxSpikeDiameter: 5
   quicksandSizeMultiplier: 2

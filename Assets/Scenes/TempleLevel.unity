@@ -780,6 +780,24 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5697528617264073322, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: renderModelPrefab
+      value: 
+      objectReference: {fileID: 1000011547835092, guid: 8ade79fed86bbd141926d1cd94c98457,
+        type: 3}
+    - target: {fileID: 5697528617264122612, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: renderModelPrefab
+      value: 
+      objectReference: {fileID: 1000012617731570, guid: d07386f0ec952ec409dc7753bcf5746b,
+        type: 3}
+    - target: {fileID: 7507517966833001625, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: regrowRockSwirl
+      value: 
+      objectReference: {fileID: 3608211169773213929, guid: 82649a8d7ea1c7c4db3662068ebe412f,
+        type: 3}
     m_RemovedComponents:
     - {fileID: 5697528617253961138, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}

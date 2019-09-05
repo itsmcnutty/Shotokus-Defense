@@ -54,7 +54,7 @@ public class PlayerHeal : MonoBehaviour
             }
             else if (firstTriggerHeld != hand && HandsAreClose ())
             {
-                if (playerEnergy.EnergyIsNotZero ())
+                if (playerEnergy.EnergyIsNotZero () && !playerHealth.HealthIsMax())
                 {
                     GetComponent<Hand> ().TriggerHapticPulse (1500);
                     firstTriggerHeld.GetComponent<Hand> ().TriggerHapticPulse (1500);
