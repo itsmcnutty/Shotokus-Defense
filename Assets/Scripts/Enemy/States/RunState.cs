@@ -39,7 +39,8 @@ public class RunState : IState
 	// States to transition to
 	private StrafeState strafeState;
 	private RagdollState ragdollState;
-	
+	private ClimbingState climbingState;
+
 	public RunState(EnemyMediumProperties enemyProps)
 	{
 		rangedRadius = enemyProps.RANGED_RADIUS;
@@ -62,6 +63,7 @@ public class RunState : IState
 	{
 		strafeState = enemyProps.strafeState;
 		ragdollState = enemyProps.ragdollState;
+		climbingState = enemyProps.climbingState;
 	}
 
 	// Called upon entering this state from anywhere
@@ -115,11 +117,11 @@ public class RunState : IState
 		}
 		
 //		// Transition to climbing state if climbing
-//		if (agent.isOnOffMeshLink)
-//		{
-//			// todo do something with animator
-//			return climbingState;
-//		}
+		if (agent.isOnOffMeshLink)
+		{
+			// todo do something with animator
+			return climbingState;
+		}
 		
 		// Get enemy position
 		Vector3 gameObjPos = gameObj.transform.position;

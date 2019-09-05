@@ -137,9 +137,6 @@ public class StrafeState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
-//		if (agent.isOnOffMeshLink) 
-//			Debug.Log("im on nav mesh climbing");
-		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
 		Vector3 enemyVelocity = agent.velocity;
