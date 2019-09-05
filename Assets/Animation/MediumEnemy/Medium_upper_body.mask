@@ -6,18 +6,14 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Medium_UpperBody
+  m_Name: Medium_upper_body
   m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000000000000000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
-  - m_Path: Group31864
+  - m_Path: Enemy_medium
     m_Weight: 1
-  - m_Path: Group35140
-    m_Weight: 1
-  - m_Path: Group41273
-    m_Weight: 1
-  - m_Path: Group59288
+  - m_Path: hair
     m_Weight: 1
   - m_Path: mixamorig:Hips
     m_Weight: 1
@@ -84,4 +80,6 @@ AvatarMask:
   - m_Path: mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:RightShoulder/mixamorig:RightArm/mixamorig:RightForeArm/mixamorig:RightHand/mixamorig:RightHandIndex1/mixamorig:RightHandIndex2/mixamorig:RightHandIndex3
     m_Weight: 1
   - m_Path: mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:RightShoulder/mixamorig:RightArm/mixamorig:RightForeArm/mixamorig:RightHand/mixamorig:RightHandIndex1/mixamorig:RightHandIndex2/mixamorig:RightHandIndex3/mixamorig:RightHandIndex4
+    m_Weight: 1
+  - m_Path: shorts
     m_Weight: 1
