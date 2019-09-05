@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
@@ -48,7 +49,6 @@ public class PlayerAbility : MonoBehaviour
     private Vector2 horizontalSpikeChainVelocity;
 
     private Walls walls;
-
 
     private void Awake()
     {
@@ -165,7 +165,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 activeRock = rocks.PickupRock(hand.currentAttachedObject, hand, otherHand);
             }
-            else if(hand.hoveringInteractable != null && hand.hoveringInteractable.tag == "Rock")
+            else if (hand.hoveringInteractable != null && hand.hoveringInteractable.tag == "Rock")
             {
                 activeRock = rocks.PickupRock(hand.hoveringInteractable.gameObject, hand, otherHand);
             }
@@ -188,7 +188,7 @@ public class PlayerAbility : MonoBehaviour
 
         if (RockIsActive())
         {
-            if(hand.currentAttachedObject == otherHand.currentAttachedObject)
+            if (hand.currentAttachedObject == otherHand.currentAttachedObject)
             {
                 rocks.UpdateRock(activeRock, hand);
             }
@@ -217,7 +217,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (SpikeQuicksandIsActive())
         {
-            spikeQuicksand.TryCreateSpikesOrQuicksand(spikeQuicksandOutlines, hand, controllerPose, startingSpikeHandHeight, horizontalSpikeChainVelocity);
+            spikeQuicksand.TryCreateSpikesOrQuicksand(spikeQuicksandOutlines, hand, otherHand, controllerPose, startingSpikeHandHeight, horizontalSpikeChainVelocity);
             spikeQuicksand.ClearSpikeQuicksandOutlines(spikeQuicksandOutlines);
         }
         else if (walls.WallIsActive())
@@ -232,7 +232,7 @@ public class PlayerAbility : MonoBehaviour
         {
             hand.hoveringInteractable = null;
         }
-        else if(hand.currentAttachedObject != null && activeRock == null)
+        else if (hand.currentAttachedObject != null && activeRock == null)
         {
             hand.DetachObject(hand.currentAttachedObject);
         }
@@ -313,5 +313,14 @@ public class PlayerAbility : MonoBehaviour
     public static bool EarthquakeEnabled()
     {
         return earthquakeEnabled;
+    }
+
+    public static IEnumerator LongVibration(Hand hand, float length, ushort strength)
+    {
+        for(float i = 0; i < length; i += Time.deltaTime)
+        {
+            hand.TriggerHapticPulse(strength);
+            yield return new WaitForEndOfFrame(); //every single frame for the duration of "length" you will vibrate at "strength" amount
+        }
     }
 }

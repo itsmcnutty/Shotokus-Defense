@@ -235,14 +235,14 @@ public class SpikeQuicksand : MonoBehaviour
         }
     }
 
-    public void TryCreateSpikesOrQuicksand(List<GameObject> spikeQuicksandOutlines, Hand hand, SteamVR_Behaviour_Pose controllerPose, float startingSpikeHandHeight, Vector2 horizontalSpikeChainVelocity)
+    public void TryCreateSpikesOrQuicksand(List<GameObject> spikeQuicksandOutlines, Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose, float startingSpikeHandHeight, Vector2 horizontalSpikeChainVelocity)
     {
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         float controllerVelocity = previousVelocities.Average();
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
         if (handPos < 0 && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
-            StartCoroutine(CreateQuicksand(spikeQuicksandOutlines, hand));
+            StartCoroutine(CreateQuicksand(spikeQuicksandOutlines, hand, otherHand));
         }
         else if (handPos > 0 && controllerVelocity > 0)
         {
@@ -255,7 +255,7 @@ public class SpikeQuicksand : MonoBehaviour
         }
     }
 
-    private IEnumerator CreateQuicksand(List<GameObject> spikeQuicksandOutlines, Hand hand)
+    private IEnumerator CreateQuicksand(List<GameObject> spikeQuicksandOutlines, Hand hand, Hand otherHand)
     {
         GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
         GameObject quicksand = Instantiate(quicksandPrefab) as GameObject;
@@ -281,7 +281,12 @@ public class SpikeQuicksand : MonoBehaviour
         if (!PlayerAbility.EarthquakeEnabled())
         {
             PowerupController.IncrementEarthquakeCounter();
-            hand.TriggerHapticPulse(800);
+            StartCoroutine(PlayerAbility.LongVibration(hand, 1f, 1500));
+        }
+        else
+        {
+            StartCoroutine(PlayerAbility.LongVibration(hand, 1.5f, 2500));
+            StartCoroutine(PlayerAbility.LongVibration(otherHand, 1.5f, 2500));
         }
 
         yield return new WaitForSeconds(0.1f);
@@ -336,6 +341,7 @@ public class SpikeQuicksand : MonoBehaviour
             Destroy(spikeQuicksandOutline);
             spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
             playerEnergy.UseEnergy(hand);
+            StartCoroutine(PlayerAbility.LongVibration(hand, .2f, 3500));
 
             foreach (Vector3 spikePos in allSpikes)
             {
@@ -359,7 +365,6 @@ public class SpikeQuicksand : MonoBehaviour
                 rockParticleSystem.transform.localScale = spike.transform.localScale;
 
                 SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles);
-                hand.TriggerHapticPulse(1500);
             }
             allSpikes.Clear();
         }
@@ -393,7 +398,7 @@ public class SpikeQuicksand : MonoBehaviour
             spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
             SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles);
-            hand.TriggerHapticPulse(1500);
+            StartCoroutine(PlayerAbility.LongVibration(hand, .05f, 2000));
 
             outline.transform.position += new Vector3(spikeMoveDirection.x, 0, spikeMoveDirection.y);
 

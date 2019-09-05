@@ -12,7 +12,9 @@ public class RagdollController : MonoBehaviour
     public PhysicMaterial PHYSIC_MATERIAL;
     // Return to position from start of ragdoll or not
     public bool resetPosition;
-    
+
+    public ParticleSystem enemyDeathParticles;
+
     // All Rigidbodies of the enemy's ragdoll
     private Rigidbody[] rigidbodies;
     // The enemy's Animator component
@@ -21,14 +23,14 @@ public class RagdollController : MonoBehaviour
     private NavMeshAgent agent;
     // True when ragdolling
     private bool ragdolling = false;
-    
+
     // Start is called before the first frame update
     private void Start()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        
+
         // Add components to children to alert parents on collision
         AddCPCToChildren(rigidbodies[0].gameObject);
 
@@ -47,14 +49,14 @@ public class RagdollController : MonoBehaviour
     private void AddCPCToChildren(GameObject obj)
     {
         obj.AddComponent<CallParentCollision>();
-        
+
         // Break after looping through all children (or has no children)
         for (int i = 0; i < obj.transform.childCount; i++)
         {
             AddCPCToChildren(obj.transform.GetChild(i).gameObject);
         }
     }
-    
+
     // Returns true when the enemy is ragdolling
     public bool IsRagdolling()
     {
@@ -65,7 +67,7 @@ public class RagdollController : MonoBehaviour
     public void StartRagdoll()
     {
         ragdolling = true;
-        
+
         // Disable animation and pathfinding
         animator.enabled = false;
         agent.enabled = false;
@@ -81,11 +83,37 @@ public class RagdollController : MonoBehaviour
     // Re-enables the Animator to regain control of Rigidbodies
     public void StopRagdoll()
     {
+        if (GetComponent<EnemyHealth>().healthBarActual.value <= 0)
+        {
+            SkinnedMeshRenderer[] skinnedMeshes = GetComponentsInChildren<SkinnedMeshRenderer>();
+            SkinnedMeshRenderer skinnedMesh = new SkinnedMeshRenderer();
+            foreach(SkinnedMeshRenderer skinnedMeshCheck in skinnedMeshes)
+            {
+                if(skinnedMeshCheck.name == "Enemy_heavy")
+                {
+                    skinnedMesh = skinnedMeshCheck;
+                    break;
+                }
+            }
+
+            Mesh mesh = new Mesh();
+            skinnedMesh.BakeMesh(mesh);
+
+            ParticleSystem particleSystem = Instantiate(enemyDeathParticles);
+            particleSystem.transform.position = skinnedMesh.transform.position;
+
+            UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
+            shape.rotation = skinnedMesh.transform.rotation.eulerAngles;
+            shape.mesh = mesh;
+
+            Destroy(gameObject);
+        }
+
         ragdolling = false;
-        
+
         // Re-enable animation
         animator.enabled = true;
-        
+
         // Reset all animator triggers
         foreach (AnimatorControllerParameter trigger in animator.parameters)
         {
@@ -94,7 +122,7 @@ public class RagdollController : MonoBehaviour
                 animator.ResetTrigger(trigger.name);
             }
         }
-        
+
         // Move to position where ragdoll was laying and re-enable pathfinding
         if (!resetPosition)
         {
