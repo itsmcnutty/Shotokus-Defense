@@ -23,8 +23,6 @@ public class MeleeState : IState
 	
 	// Allowed space around attack radius that enemy's can attack from
 	private float attackMargin = 1f;
-	// Squared attack radius (for optimized calculations)
-//	private float sqrAttackRadius;
 	// Number of potential attacks in animator controller
 	private int numAttacks;
 	
@@ -57,7 +55,6 @@ public class MeleeState : IState
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
-//		sqrAttackRadius = enemyProps.sqrAttackRadius;
 		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
@@ -73,7 +70,6 @@ public class MeleeState : IState
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
-//		sqrAttackRadius = enemyProps.sqrMeleeRadius;
 		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
@@ -155,9 +151,7 @@ public class MeleeState : IState
 		// Calculate enemy distance
 		Vector3 gameObjPos = gameObj.transform.position;
 		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
-//		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-//		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
-		
+
 		// Continue to attack if within attack range, otherwise transition
 		if (distanceToPlayer > attackRadius + attackMargin)
 		{
