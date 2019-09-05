@@ -7,6 +7,9 @@ public class ShootingAbility : MonoBehaviour
 
     public GameObject projectilePrefab;
     private GameObject projectile;
+    private GameObject player;
+    private float initialVelocityX;
+    private float fireRate;
 
     private bool allowShoot;
     
@@ -15,49 +18,65 @@ public class ShootingAbility : MonoBehaviour
     void Start()
     {
         allowShoot = true;
+        player = GameObject.FindWithTag("MainCamera");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     // Instantiates the projectile prefab, sets a velocity and the origin transform (where the projectile comes from)
-    // and shoots towards the target. 
+    // so it is ready to shoot the target.
     // This function also sets the fire rate of the gun
-    public void shoot(Vector3 agentHead, Vector3 playerPos, float initialVelocityX, float fireRate)
+    public void Shoot(float initialVelocityX, float fireRate, Animator animator)
     {
-        
         if (allowShoot)
         {
+            // Block additional shots
             allowShoot = false;
-            // Instantiate and set position where projectile spawns
-            projectile = Instantiate(projectilePrefab);
-            projectile.transform.position = agentHead;   // todo change this, so it comes out from right hand
-
-            // start calculating direction and velocity in X and Y axis for projectile
-            Vector3 dirToEnemy = playerPos - agentHead;
-            dirToEnemy.y = 0;
-            float velInitialX = initialVelocityX; // input initial velocity in X axis   // todo this is up to us, change as needed
-            float distanceX = dirToEnemy.magnitude; // difference in the X axis from enemy to player
-            float distanceY = playerPos.y - projectile.transform.position.y; // difference in Y axis from enemy to player
-            double tempInitialY = (velInitialX / distanceX) *
-                                  (distanceY + (- 0.5 * Physics.gravity.y * Mathf.Pow(distanceX, 2) / Mathf.Pow(velInitialX,2)));
-            float velInitialY = (float) tempInitialY;
-            dirToEnemy = dirToEnemy.normalized;
-            Vector3 velocity = dirToEnemy * velInitialX + Vector3.up * velInitialY;
             
-            // set rotation and add velocity vector to projectile
-            projectile.transform.LookAt(playerPos);
-            projectile.GetComponent<Rigidbody>().velocity = velocity;
-            // wait for fire rate timer
-            StartCoroutine(Wait(fireRate));
+            // Store info about arrow for shooting
+            this.initialVelocityX = initialVelocityX;
+            this.fireRate = fireRate;
+            
+            // Instantiate and set position where projectile spawns
+            projectile = Instantiate(projectilePrefab, transform);
+            
+            // Begin animation
+            animator.SetTrigger("Shoot");
         }
     }
 
-    // this function waits for the input number of seconds (waiTime), and then allows the enemy to shoot
-    IEnumerator Wait(float waitTime)
+    // Called by animator when entering the "ReleasingArrow" state
+    public void ReleaseArrow()
+    {
+        // Store location of player and projectile
+        Vector3 playerPos = player.transform.position;
+        Vector3 projPos = transform.position;
+        
+        // Release the arrow from the hand
+        projectile.transform.parent = null;
+        Rigidbody rigidbody = projectile.GetComponent<Rigidbody>();
+        rigidbody.isKinematic = false;
+        rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        // start calculating direction and velocity in X and Y axis for projectile
+        Vector3 dirToEnemy = playerPos - projPos;
+        dirToEnemy.y = 0;
+        float distanceX = dirToEnemy.magnitude; // difference in the X axis from enemy to player
+        float distanceY = playerPos.y - projectile.transform.position.y; // difference in Y axis from enemy to player
+        double tempInitialY = (initialVelocityX / distanceX) *
+                              (distanceY + (- 0.5 * Physics.gravity.y * Mathf.Pow(distanceX, 2) / Mathf.Pow(initialVelocityX,2)));
+        float velInitialY = (float) tempInitialY;
+        dirToEnemy = dirToEnemy.normalized;
+        Vector3 velocity = dirToEnemy * initialVelocityX + Vector3.up * velInitialY;
+            
+        // set rotation and add velocity vector to projectile
+        projectile.transform.LookAt(playerPos);
+        rigidbody.velocity = velocity;
+        
+        // wait for fire rate timer
+        StartCoroutine(Wait(fireRate));
+    }
+
+    // Waits for the input number of seconds (waiTime), and then allows the enemy to shoot
+    private IEnumerator Wait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         allowShoot = true;

@@ -250,7 +250,7 @@ public class StrafeState : IState
 					// we can hit the player, so shoot
 //					shoot(); // todo uncoomment
 					// todo look at player when shooting
-					shootingAbility.shoot(agentHead, playerPos, initialVelocityX, fireRate);
+					shootingAbility.Shoot(initialVelocityX, fireRate, animator);
 				}
 			}
 		}

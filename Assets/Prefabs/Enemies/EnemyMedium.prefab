@@ -210,7 +210,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4268560467366281623}
-  - component: {fileID: 1049803280643608867}
   m_Layer: 0
   m_Name: mixamorig:RightHandIndex1
   m_TagString: Untagged
@@ -233,20 +232,6 @@ Transform:
   m_Father: {fileID: 7658042546896322859}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1049803280643608867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349723556674264801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccae4bc8ce263cd4592215ef73510b55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
-    type: 3}
 --- !u!1 &960179974380197094
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,6 +665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7658042546896322859}
+  - component: {fileID: 7897593854697667816}
   m_Layer: 0
   m_Name: mixamorig:RightHand
   m_TagString: Untagged
@@ -703,6 +689,20 @@ Transform:
   m_Father: {fileID: 6895196734515705527}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7897593854697667816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3493545514496991230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccae4bc8ce263cd4592215ef73510b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
+    type: 3}
 --- !u!1 &4114681966009140216
 GameObject:
   m_ObjectHideFlags: 0
