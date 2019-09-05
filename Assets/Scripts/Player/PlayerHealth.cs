@@ -79,4 +79,9 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public bool HealthIsMax()
+    {
+        return currentHealth == maxHealth;
+    }
+
 }

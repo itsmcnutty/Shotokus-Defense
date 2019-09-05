@@ -196,6 +196,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 rocks.StopRegrowthParticles();
             }
+            playerEnergy.UpdateAbilityUseTime();
         }
         else if (SpikeQuicksandIsActive())
         {

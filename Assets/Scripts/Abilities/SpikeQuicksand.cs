@@ -15,6 +15,7 @@ public class SpikeQuicksand : MonoBehaviour
     public float spikeMinSpeed = .05f;
     public float spikeMaxHeight = 1.75f;
     public float energyPerSpikeInChain = 50;
+    public float maxNumberOfSpikeChains = 5;
     public float maxSpikesInChain = 50;
     public float maxSpikeDiameter = 5f;
     public float quicksandSizeMultiplier = 2f;
@@ -158,7 +159,7 @@ public class SpikeQuicksand : MonoBehaviour
         }
         else
         {
-            if(spikeQuicksandOutlines.Count == 1)
+            if (spikeQuicksandOutlines.Count == 1)
             {
                 spikeQuicksandOutlines[0].transform.localScale = areaOutlinePrefab.transform.localScale;
             }
@@ -178,7 +179,7 @@ public class SpikeQuicksand : MonoBehaviour
             {
                 numOutlines++;
                 energyCost += energyPerSpikeInChain;
-                if (numOutlines > spikeQuicksandOutlines.Count && playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy)
+                if (CanMakeSpikeChain(spikeQuicksandOutlines, numOutlines, energyCost))
                 {
                     CorrectSpikeChainOutline(spikeQuicksandOutlines, spikeChainOffset, true);
 
@@ -209,6 +210,12 @@ public class SpikeQuicksand : MonoBehaviour
             }
         }
         return spikeQuicksandOutlines;
+    }
+
+    private bool CanMakeSpikeChain(List<GameObject> spikeQuicksandOutlines, float numOutlines, float energyCost)
+    {
+        return (numOutlines > spikeQuicksandOutlines.Count && numOutlines <= maxNumberOfSpikeChains &&
+            playerEnergy.EnergyIsNotZero() && energyCost <= playerEnergy.maxEnergy);
     }
 
     private void CorrectSpikeChainOutline(List<GameObject> spikeQuicksandOutlines, Vector3 spikeChainOffset, bool addSpike)
