@@ -10,6 +10,7 @@ public class Rocks : MonoBehaviour
     public float minRockDiameter = 0.25f;
     public float maxRockDimater = 1.5f;
     public float rockMassScale = 100f;
+    public float maxRockEnergyCost = 200f;
 
     public ParticleSystem createRockParticles;
     public ParticleSystem destroyRockParticles;
@@ -87,7 +88,7 @@ public class Rocks : MonoBehaviour
         rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
         activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
         playerEnergy.SetTempEnergy(hand, rockEnergyCost);
-        hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0);
+        hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && rockEnergyCost < maxRockEnergyCost);
 
         if(!currentRegrowthParticleSystem)
         {
@@ -164,7 +165,7 @@ public class Rocks : MonoBehaviour
     private float GetRockEnergyCost(GameObject rock)
     {
         float range = maxRockDimater - minRockDiameter;
-        return (rock.transform.localScale.x - minRockDiameter) * playerEnergy.maxEnergy / range;
+        return (rock.transform.localScale.x - minRockDiameter) * maxRockEnergyCost / range;
     }
 
     private GameObject GetNewRock()
