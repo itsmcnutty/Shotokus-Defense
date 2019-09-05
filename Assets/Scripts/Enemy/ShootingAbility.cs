@@ -7,6 +7,7 @@ public class ShootingAbility : MonoBehaviour
 
     public GameObject projectilePrefab;
     private GameObject projectile;
+    private Rigidbody rigidbody;
     private GameObject player;
     private float initialVelocityX;
     private float fireRate;
@@ -37,6 +38,7 @@ public class ShootingAbility : MonoBehaviour
             
             // Instantiate and set position where projectile spawns
             projectile = Instantiate(projectilePrefab, transform);
+            rigidbody = projectile.GetComponent<Rigidbody>();
             
             // Begin animation
             animator.SetTrigger("Shoot");
@@ -51,10 +53,7 @@ public class ShootingAbility : MonoBehaviour
         Vector3 projPos = transform.position;
         
         // Release the arrow from the hand
-        projectile.transform.parent = null;
-        Rigidbody rigidbody = projectile.GetComponent<Rigidbody>();
-        rigidbody.isKinematic = false;
-        rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        DropArrow();
 
         // start calculating direction and velocity in X and Y axis for projectile
         Vector3 dirToEnemy = playerPos - projPos;
@@ -82,4 +81,12 @@ public class ShootingAbility : MonoBehaviour
         allowShoot = true;
     }
 
+    // Removes the arrow in hand so it may be shot or dropped
+    public void DropArrow()
+    {
+        projectile.transform.parent = null;
+        rigidbody.isKinematic = false;
+        rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+    }
+    
 }

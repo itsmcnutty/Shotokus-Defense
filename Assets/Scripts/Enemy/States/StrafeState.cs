@@ -114,6 +114,8 @@ public class StrafeState : IState
 	public void Exit()
 	{
 		isStrafing = false;
+		animator.SetTrigger("ResetShoot");
+		shootingAbility.DropArrow();
 	}
 
 	// Called during Update while currently in this state
@@ -139,7 +141,7 @@ public class StrafeState : IState
 		animator.SetFloat("StrafeSpeedForward", strafeSpeedForward);
 		animator.SetFloat("StrafeSpeedRight", strafeSpeedRight);
 		
-		// turn to player
+		// Turn to player
 		enemyProps.TurnToPlayer();
 		
 		// Move to player if outside attack range, otherwise transition
