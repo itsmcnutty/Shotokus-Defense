@@ -34,13 +34,6 @@ public class ClimbingState : IState
     
     // Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
     // necessary states for the machine
-    public void InitializeStates(EnemyHeavyProperties enemyProps)
-    {
-        resetState = enemyProps.advanceState;
-    }
-	
-    // Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
-    // necessary states for the machine
     public void InitializeStates(EnemyMediumProperties enemyProps)
     {
         resetState = enemyProps.runState;
@@ -52,23 +45,25 @@ public class ClimbingState : IState
         // Not an obstacle
         obstacle.enabled = false;
         
-        // No longer obstacle
-        enemyProps.EnablePathfind(); // todo ask if i need this??
+//        enemyProps.EnablePathfind(); // todo ask if i need this??
         
     }
     
     // Called upon exiting this state
     public void Exit()
     {
+        // todo fill out
         // Restart animation in Walking state
-        animator.SetTrigger("Ragdoll"); // todo change to climbing animation
+//        animator.SetTrigger("Ragdoll"); // todo change to climbing animation
     }
 
     // Called during Update while currently in this state
     public void Action()
     {
+        // todo fill out
         // wait for climbing animation to be done??
         // set time for how long should it take??
+        Debug.Log("IM CLIMBING ( ͡° ͜ʖ ͡°)");
     }
     
     // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -77,10 +72,10 @@ public class ClimbingState : IState
     {
         // If the enemy can recover from ragdolling, transition to resetState
         // todo fill out
-//        if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
-//        {
-//            return resetState;
-//        }
+        if (!agent.isOnOffMeshLink)
+        {
+            return resetState;
+        }
 		
         // Continue climbing
         return null;

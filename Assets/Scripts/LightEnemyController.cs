@@ -53,118 +53,125 @@ public class LightEnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // todo this might be breaking stuff
-        // todo enemy needs to be able to keep tracking player if he gets away
-        playerPos = player.transform.position;
         
-        // Position of head of agent (enemy)
-        agentHead = transform.position;
-        // todo change this, this is the head height value
-        agentHead.y = 2.5f;
-
-        // position of agent (enemy) with y = 0, to prevent distance errors
-        enemyPos = transform.position;
-        enemyPos.y = 0;
-
-        // remaining distance to target
-        // todo instead of using agentHead, use new variable with positions in the floor (y = 0)
-        float remainingDist = Vector3.Distance(playerPos, agentHead);
-//        Debug.Log("vector3 distance is " + remainingDist);
-
-        // not in strafying mode
-        // todo I changed this to be really big since the only reason this should happen is if the enemy is reallyyyyy far away from the player
-        if (remainingDist > 25f)
-        {
-            Debug.Log("Pathfinding mode");
-            playerPos = player.transform.position;
-            agent.SetDestination(playerPos);
-            isStrafing = false;
-        }
-        
-        // if agent is close enough and not strafing yet, enter strafe/shooting state
-        // calculate points and set new destination
-        if (remainingDist < 25f && !isStrafing)
-        {
-            Debug.Log("Strafing mode / calculations");
-            // do not enter here if already strafing
-            isStrafing = true;
-            
-            // Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
-            pointsAroundTarget = pointsAround(playerPos);
-            
-            // pick the closest of these points to the enemy
-            circularPointDest = closestPoint(enemyPos, pointsAroundTarget);
-            
-            // change enemy agent target to the new point
-            agent.SetDestination(circularPointDest);
-            Debug.Log(circularPointDest);
-            Debug.DrawRay(circularPointDest, Vector3.up, Color.blue);
-            // check if path is valid in navmesh
-//            Debug.Log();
-        }
-
-        // if moving towards strafing point, check if it has being destination has been reached
-        // if reached, calculate next moving point
-        if (isStrafing)
-        {
-            Debug.Log("Strafing mode / moving");
-            // do not change destination until current one is reached
-            // when destination is reached, move to next point 
-            float strafeRemainingDist = Vector3.Distance(enemyPos, circularPointDest);
-//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
-            
-            if (strafeRemainingDist < 1f)
-            {
-                // get next point
-                if (isClockwise)
-                {
-                    // clockwise, do absolute value
-                    lastPointIndex--;
-                    if (lastPointIndex < 0)
-                    {
-                        lastPointIndex = pointsAroundTarget.Length;
-                    }
-                }
-                else
-                {
-                    // counter clockwise
-                    lastPointIndex++;
-                }
-                circularPointDest = pointsAroundTarget[Mathf.Abs(lastPointIndex % 8)];
-//                Debug.Log("Changing target to index " + lastPointIndex%8);
-//                Debug.Log("moving towards " +circularPointDest);
-                agent.SetDestination(circularPointDest);
-            }
-        }
-        
-        
-        ///* uncomment **********************************************************************
-         // todo SHOOTING STATE
-        // check that target is inside range radius
-        if (remainingDist < 17)
-        {
-            Debug.Log("Shooting mode");
-            // check for visibility to target through ray cast
-            RaycastHit hit;
-
-            Vector3 rayDirection = playerPos - agentHead; // todo this might shoot from the feet
-            
-            // set where the ray is coming from and its direction
-            Ray visionRay = new Ray(agentHead, rayDirection);
-            
-            Debug.DrawRay(agentHead, rayDirection, Color.red);
-
-            // if player is visible and fire Rate is good, shoot!
-            if (Physics.Raycast(visionRay, out hit)) 
-            {
-                if (hit.collider.CompareTag("PlayerCollider"))
-                {
-                    // we can hit the player, so shoot
-                    shoot();
-                }
-            }
-        }
+//        if (agent.isOnOffMeshLink)
+//        {
+//            Debug.Log("IM ON NAVMESH LINK");
+//        }
+//
+//        // todo this might be breaking stuff
+//        // todo enemy needs to be able to keep tracking player if he gets away
+//        playerPos = player.transform.position;
+//        
+//        // Position of head of agent (enemy)
+//        agentHead = transform.position;
+//        // todo change this, this is the head height value
+//        agentHead.y = 2.5f;
+//
+//        // position of agent (enemy) with y = 0, to prevent distance errors
+//        enemyPos = transform.position;
+//        enemyPos.y = 0;
+//
+//        // remaining distance to target
+//        // todo instead of using agentHead, use new variable with positions in the floor (y = 0)
+//        float remainingDist = Vector3.Distance(playerPos, agentHead);
+////        Debug.Log("vector3 distance is " + remainingDist);
+//
+//        // not in strafying mode
+//        // todo I changed this to be really big since the only reason this should happen is if the enemy is reallyyyyy far away from the player
+//        if (remainingDist > 25f)
+//        {
+//            Debug.Log("Pathfinding mode");
+//            playerPos = player.transform.position;
+//            agent.SetDestination(playerPos);
+//            isStrafing = false;
+//        }
+//        
+//        // if agent is close enough and not strafing yet, enter strafe/shooting state
+//        // calculate points and set new destination
+//        if (remainingDist < 25f && !isStrafing)
+//        {
+//            Debug.Log("Strafing mode / calculations");
+//            // do not enter here if already strafing
+//            isStrafing = true;
+//            
+//            // Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
+//            pointsAroundTarget = pointsAround(playerPos);
+//            
+//            // pick the closest of these points to the enemy
+//            circularPointDest = closestPoint(enemyPos, pointsAroundTarget);
+//            
+//            // change enemy agent target to the new point
+//            agent.SetDestination(circularPointDest);
+////            Debug.Log(circularPointDest);
+////            Debug.DrawRay(circularPointDest, Vector3.up, Color.blue);
+//            // check if path is valid in navmesh
+////            Debug.Log();
+//        }
+//
+//        // if moving towards strafing point, check if it has being destination has been reached
+//        // if reached, calculate next moving point
+//        if (isStrafing)
+//        {
+//            Debug.Log("Strafing mode / moving");
+//            // do not change destination until current one is reached
+//            // when destination is reached, move to next point 
+//            float strafeRemainingDist = Vector3.Distance(enemyPos, circularPointDest);
+////            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+//            
+//            if (strafeRemainingDist < 1f)
+//            {
+//                // get next point
+//                if (isClockwise)
+//                {
+//                    // clockwise, do absolute value
+//                    lastPointIndex--;
+//                    if (lastPointIndex < 0)
+//                    {
+//                        lastPointIndex = pointsAroundTarget.Length;
+//                    }
+//                }
+//                else
+//                {
+//                    // counter clockwise
+//                    lastPointIndex++;
+//                }
+//                circularPointDest = pointsAroundTarget[Mathf.Abs(lastPointIndex % 8)];
+////                Debug.Log("Changing target to index " + lastPointIndex%8);
+////                Debug.Log("moving towards " +circularPointDest);
+////                agent.SetDestination(circularPointDest);
+//            }
+//        }
+//        
+//        
+//        ///* uncomment **********************************************************************
+//         // todo SHOOTING STATE
+//        // check that target is inside range radius
+//        if (remainingDist < 17)
+//        {
+//            Debug.Log("Shooting mode");
+//            // check for visibility to target through ray cast
+//            RaycastHit hit;
+//
+//            Vector3 rayDirection = playerPos - agentHead; // todo this might shoot from the feet
+//            
+//            // set where the ray is coming from and its direction
+//            Ray visionRay = new Ray(agentHead, rayDirection);
+//            
+//            Debug.DrawRay(agentHead, rayDirection, Color.red);
+//
+//            // if player is visible and fire Rate is good, shoot!
+//            if (Physics.Raycast(visionRay, out hit)) 
+//            {
+//                if (hit.collider.CompareTag("PlayerCollider"))
+//                {
+//                    // we can hit the player, so shoot
+//                    shoot();
+//                }
+//            }
+//        }
         //*/
+        agent.SetDestination(playerPos);
     }
 
 

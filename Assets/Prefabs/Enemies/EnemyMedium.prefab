@@ -2292,9 +2292,9 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8822753593585016445}
   m_Enabled: 1
-  m_AgentTypeID: -1372625422
-  m_Radius: 0.7
-  m_Speed: 4
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 1.6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2347,7 +2347,7 @@ MonoBehaviour:
   MAX_STRAFE_SPEED: 1.6
   RANGED_RADIUS: 20
   STRAFE_DIST: 15
-  RADIUS_REDUCTION: 5
+  RADIUS_REDUCTION: 3
 --- !u!1 &9150253065292358800
 GameObject:
   m_ObjectHideFlags: 0

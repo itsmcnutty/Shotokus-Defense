@@ -28,8 +28,8 @@ public class EnemyMediumProperties : EnemyProperties
     // every time a point around the strafing circle is reached, next point will be close to the center of circle by this radius
     public float RADIUS_REDUCTION = 5f;
     [NonSerialized] public bool isStrafing = false; // bool indicating if agent is in strafing state
-    [NonSerialized] public Vector3[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
-    [NonSerialized] public Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
+//    [NonSerialized] public circularCoord[] pointsAroundTarget; // points around target(player) with radius, and every 45 degrees
+//    [NonSerialized] public Vector3 circularPointDest; // point where the agent will move towards when strafying in circular motion
     [NonSerialized] public int lastPointIndex; // last point index value in the pointsAroundTarget array
     [NonSerialized] public bool isClockwise = false; // walk in a clockwise direction when strafying
 
