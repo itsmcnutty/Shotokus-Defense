@@ -65,8 +65,11 @@ public class Walls : MonoBehaviour
             if (WallIsValid(hand.GetComponentInChildren<ControllerArc>(), otherHand.GetComponentInChildren<ControllerArc>()))
             {
                 // Creates a wall with the given information of the outline, below the surface
+                MeshRenderer meshRenderer = wallOutline.GetComponentInChildren<MeshRenderer>();
+                float heightDifference = meshRenderer.bounds.size.y - wallMaxHeight;
+
                 wall = Instantiate(wallPrefab) as GameObject;
-                wall.transform.position = new Vector3(wallOutline.transform.position.x, wallOutline.transform.position.y + wallMaxHeight, wallOutline.transform.position.z);
+                wall.transform.position = new Vector3(wallOutline.transform.position.x, wallOutline.transform.position.y + heightDifference, wallOutline.transform.position.z);
                 wall.transform.localScale = wallOutline.transform.localScale;
                 wall.transform.rotation = wallOutline.transform.rotation;
                 startingHandHeight = Math.Min(hand.transform.position.y, otherHand.transform.position.y);
@@ -118,7 +121,7 @@ public class Walls : MonoBehaviour
             // Sets the new position of the wall
             Vector3 newPos = new Vector3(wall.transform.position.x, newWallPosY, wall.transform.position.z);
             wall.transform.position = Vector3.MoveTowards(wall.transform.position, newPos, 1f);
-            
+
             // Calculates the amount of energy used by the wall
             MeshRenderer meshRenderer = wallPrefab.GetComponentInChildren<MeshRenderer>();
             float area = (float) Math.Round(wall.transform.localScale.x * meshRenderer.bounds.size.x * wallMaxHeight * newHandHeight, 2) * wallSizeMultiplier;
@@ -137,46 +140,36 @@ public class Walls : MonoBehaviour
     {
         // Calculates the final hand height
         float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
-        
+
         // Ends the creation particle loop
         UnityEngine.ParticleSystem.MainModule main = currentParticles.main;
         main.loop = false;
+        Vector3 finalVelocity = Vector3.zero;
+        float wallMoveSpeed = 0;
 
-        if (finalHandHeight < 0.18f)
+        playerEnergy.UseEnergy(firstHandHeld);
+        if (PlayerAbility.WallPushEnabled())
         {
-            // Destroys the wall if it's below the ground
-            Destroy(wall);
-            playerEnergy.CancelEnergyUsage(firstHandHeld);
+            // Sets the velocity of the wall to the average of the velocities if wall push is enabled
+            foreach (Vector3 velocity in previousVelocities)
+            {
+                finalVelocity += velocity;
+            }
+            finalVelocity /= previousVelocities.Count;
+
+            finalVelocity = finalVelocity.normalized;
+            wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
         }
         else
         {
-            Vector3 finalVelocity = Vector3.zero;
-            float wallMoveSpeed = 0;
-
-            playerEnergy.UseEnergy(firstHandHeld);
-            if (PlayerAbility.WallPushEnabled())
-            {
-                // Sets the velocity of the wall to the average of the velocities if wall push is enabled
-                foreach (Vector3 velocity in previousVelocities)
-                {
-                    finalVelocity += velocity;
-                }
-                finalVelocity /= previousVelocities.Count;
-
-                finalVelocity = finalVelocity.normalized;
-                wallMoveSpeed = finalVelocity.magnitude / wallSpeedReduction;
-            }
-            else
-            {
-                // Increments wall push power-up when not enabled
-                PowerupController.IncrementWallPushCounter();
-            }
-
-            // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
-            WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles);
-            wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
-            surfaceWalls.BuildNavMesh();
+            // Increments wall push power-up when not enabled
+            PowerupController.IncrementWallPushCounter();
         }
+
+        // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
+        WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles);
+        wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
+        surfaceWalls.BuildNavMesh();
         ResetWallInfo();
     }
 
