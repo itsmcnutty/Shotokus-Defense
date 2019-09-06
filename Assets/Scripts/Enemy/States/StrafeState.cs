@@ -186,6 +186,10 @@ public class StrafeState : IState
 		agentHead = gameObj.transform.position;
 		// todo change this, this is the head height value
 		agentHead.y = 2.5f;
+
+		agent.SetDestination(playerPos);
+
+		/*
 		
 		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
 		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);
@@ -228,7 +232,7 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-//			Debug.Log("my destination is " + circularPointDest);
+			Debug.Log("my destination is " + circularPointDest);
 		}
 		
 		
@@ -240,7 +244,7 @@ public class StrafeState : IState
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
-            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
@@ -258,7 +262,7 @@ public class StrafeState : IState
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
 //				Debug.Log("last point index: " + lastPointIndex);
-//                Debug.Log("moving towards " +circularPointDest);
+                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
@@ -284,6 +288,8 @@ public class StrafeState : IState
 				shootingAbility.Shoot(initialVelocityX, fireRate, animator);
 			}
 		}
+		
+		*/
 	}
 	
 
