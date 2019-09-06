@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d28d90641f4961e4ea3641627ce91710
+guid: 0dee6e791af7c30459d73cad8035e451
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable:
@@ -75,7 +75,7 @@ ModelImporter:
     importCameras: 1
     importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
@@ -98,8 +98,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 04254fbb17e66a1459f70e12162b4d9d
+  referencedClips: []
   importAnimation: 0
   copyAvatar: 0
   humanDescription:
@@ -116,7 +115,7 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 0
