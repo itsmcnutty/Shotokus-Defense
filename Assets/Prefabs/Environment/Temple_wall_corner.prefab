@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4677494978604015548}
   - component: {fileID: -5346383212846017268}
   m_Layer: 0
-  m_Name: Temple_wall_corner_resize
+  m_Name: Temple_wall_corner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6401052038705163104}
-  m_Mesh: {fileID: 7466876820636168, guid: 4386933d22240b44787582f3affde8ea, type: 3}
+  m_Mesh: {fileID: 3895407280691614911, guid: ed1b443e2ed14674c8164b5946cec5bd, type: 3}
 --- !u!23 &4677494978604015548
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -86,10 +86,10 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6401052038705163104}
-  m_Material: {fileID: 13400000, guid: dc24bce09ee2e1141af67800c406b9a1, type: 2}
+  m_Material: {fileID: 13400000, guid: c084b62037a9e6e488cfca0e71495117, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
-  m_Mesh: {fileID: 7466876820636168, guid: 4386933d22240b44787582f3affde8ea, type: 3}
+  m_Mesh: {fileID: 3895407280691614911, guid: ed1b443e2ed14674c8164b5946cec5bd, type: 3}
