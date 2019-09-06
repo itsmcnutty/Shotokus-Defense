@@ -187,9 +187,8 @@ public class StrafeState : IState
 		// todo change this, this is the head height value
 		agentHead.y = 2.5f;
 
-		agent.SetDestination(playerPos);
+//		agent.SetDestination(playerPos);
 
-		/*
 		
 		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
 		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);
@@ -289,7 +288,6 @@ public class StrafeState : IState
 			}
 		}
 		
-		*/
 	}
 	
 
