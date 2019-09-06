@@ -40,17 +40,22 @@ public class PlayerEnergy : MonoBehaviour
 
     public void SetTempEnergy (Hand activeHand, float energy)
     {
+        // Uses energy if not in infinite energy mode
         if (infiniteEnergyDisabled)
         {
             float lastEnergyVal;
             if (!activeAbilityEnergyCost.TryGetValue (activeHand, out lastEnergyVal))
             {
+                // Adds a new hand with the given value if one has not been registered yet
                 activeAbilityEnergyCost.Add (activeHand, energy);
             }
             else
             {
+                // Adds energy if the hand already exists
                 activeAbilityEnergyCost[activeHand] = energy;
             }
+
+            // Sets energy cost to be no more than the maximum cost
             float afterAbilityEnergy = GetTotalEnergyUsage ();
             if (afterAbilityEnergy > currentEnergy)
             {
@@ -64,8 +69,10 @@ public class PlayerEnergy : MonoBehaviour
 
     public void DrainRealEnergy (float energy)
     {
+        // Checks that infinite energy is disabled
         if (infiniteEnergyDisabled)
         {
+            // Subtracts the given value from the energy, stopping at 0
             if (currentEnergy > 0)
             {
                 currentEnergy -= energy;
@@ -82,8 +89,10 @@ public class PlayerEnergy : MonoBehaviour
 
     public void UseEnergy (Hand activeHand)
     {
+        // Checks that infinite energy is disabled and that the hand isn't null
         if (infiniteEnergyDisabled && activeHand != null)
         {
+            // Subtracts the energy stored on the hand and removes it
             currentEnergy -= activeAbilityEnergyCost[activeHand];
             energyBarBefore.value = currentEnergy;
             activeAbilityEnergyCost[activeHand] = 0;
@@ -95,6 +104,7 @@ public class PlayerEnergy : MonoBehaviour
     {
         if (infiniteEnergyDisabled && activeHand != null)
         {
+            // Removes the hand and its energy
             energyBarAfter.value = currentEnergy;
             activeAbilityEnergyCost[activeHand] = 0;
             RemoveHandFromActive (activeHand);
@@ -123,6 +133,7 @@ public class PlayerEnergy : MonoBehaviour
 
     public void TransferHandEnergy (Hand activeHand, Hand newHand)
     {
+        // Moves the energy on one hand into the other hand
         if (infiniteEnergyDisabled)
         {
             float value = RemoveHandFromActive (activeHand);
@@ -144,8 +155,10 @@ public class PlayerEnergy : MonoBehaviour
 
     private void RegenEnergy ()
     {
+        // Checks that the regen delay has expired and that energy is not at its maximum
         if ((Time.time - lastAbilityUsedTime) > regenDelayInSec && currentEnergy < maxEnergy)
         {
+            // Regens energy until it reaches the max, setting it back to max if it get exceeded
             currentEnergy += (energyRegenPerSecond * Time.deltaTime);
             if (currentEnergy > maxEnergy)
             {
@@ -158,6 +171,7 @@ public class PlayerEnergy : MonoBehaviour
 
     private float RemoveHandFromActive (Hand activeHand)
     {
+        // Takes the hand out of the dictionary if it exists in it
         float value;
         if (activeAbilityEnergyCost.TryGetValue (activeHand, out value))
         {
@@ -169,6 +183,7 @@ public class PlayerEnergy : MonoBehaviour
 
     private float GetTotalEnergyUsage ()
     {
+        // Adds up all energy calculated from the dictionary values
         float totalEnergy = 0;
         foreach (float abilityEnergyCost in activeAbilityEnergyCost.Values)
         {

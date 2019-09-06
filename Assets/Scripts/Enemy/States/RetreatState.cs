@@ -15,13 +15,15 @@ public class RetreatState : IState
 	private Animator animator;
 	// The enemy's ragdoll controller
 	private RagdollController ragdollController;
+	// Speed of navmesh agent in this state
+	private float maxWalkSpeed;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
 	// Doesn't walk if true (for debugging)
 	public bool debugNoWalk = false;
 	
 	// Squared retreat radius (for optimized calculations)
-	private float sqrRetreatRadius;
+//	private float sqrRetreatRadius;
     
 	// The player's head
 	public GameObject player;
@@ -32,7 +34,7 @@ public class RetreatState : IState
 	//This enemy's world location
 	private Vector3 gameObjPos;
 	// The enemy properties component
-	private EnemyHeavyProperties enemyProps;
+	private EnemyProperties enemyProps;
 
 	// States to transition to
 	private MeleeState meleeState;
@@ -44,20 +46,43 @@ public class RetreatState : IState
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
+		maxWalkSpeed = enemyProps.MAX_RUN_SPEED;
 		obstacle = enemyProps.obstacle;
 		player = enemyProps.player;
 		debugNoWalk = enemyProps.debugNoWalk;
-		sqrRetreatRadius = enemyProps.sqrAttackRadius;
+//		sqrRetreatRadius = enemyProps.sqrAttackRadius;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
-		meleeState = enemyProps.meleeState;
-		ragdollState = enemyProps.ragdollState;
+		this.enemyProps = enemyProps;
+	}
+	
+	public RetreatState(EnemyMediumProperties enemyProps)
+	{
+		retreatRadius = enemyProps.MELEE_RADIUS;
+		agent = enemyProps.agent;
+		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
+		maxWalkSpeed = enemyProps.MAX_STRAFE_SPEED;
+		obstacle = enemyProps.obstacle;
+		player = enemyProps.player;
+		debugNoWalk = enemyProps.debugNoWalk;
+//		sqrRetreatRadius = enemyProps.sqrMeleeRadius;
+		playerPos = enemyProps.playerPos;
+		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		meleeState = enemyProps.meleeState;
+		ragdollState = enemyProps.ragdollState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
@@ -72,6 +97,7 @@ public class RetreatState : IState
 		
 		// Don't automatically decelerate or rotate
 		agent.stoppingDistance = 0f;
+		agent.speed = maxWalkSpeed;
 		agent.angularSpeed = 0f;
 	}
 
@@ -81,18 +107,13 @@ public class RetreatState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
-		if (!agent.enabled)
-		{
-			agent.enabled = true;
-			return;
-		}
-		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
 		gameObjPos = gameObj.transform.position;
 		
 		// Back up
 		Vector3 backUpVector = gameObjPos - playerPos;
+		backUpVector.y = 0;
 		backUpVector.Normalize();
                 
 		if (agent.enabled && !debugNoWalk)
@@ -102,8 +123,8 @@ public class RetreatState : IState
 
 		enemyProps.TurnToPlayer();
                 
-		// Pass reverse move speed to animator
-		animator.SetFloat("WalkSpeed", -agent.velocity.magnitude); 
+		// Pass move speed to animator
+		animator.SetFloat("WalkSpeed", agent.velocity.magnitude); 
 	}
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -122,10 +143,11 @@ public class RetreatState : IState
 		gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+//		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
+//		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 		
-		if (sqrDist - sqrRetreatRadius > 0f)
+		if (distanceToPlayer > retreatRadius)
 		{
 			// Done retreating, attack
 			animator.SetTrigger("Melee");

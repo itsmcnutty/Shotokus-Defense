@@ -168,6 +168,7 @@ namespace Valve.VR.InteractionSystem
                 MeshFilter newFilter = newFilterHolder.AddComponent<MeshFilter>();
                 newFilter.sharedMesh = existingFilter.sharedMesh;
                 MeshRenderer newRenderer = newFilterHolder.AddComponent<MeshRenderer>();
+                newRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
                 Material[] materials = new Material[existingRenderer.sharedMaterials.Length];
                 for (int materialIndex = 0; materialIndex < materials.Length; materialIndex++)

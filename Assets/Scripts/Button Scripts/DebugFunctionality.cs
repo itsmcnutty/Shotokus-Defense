@@ -48,7 +48,7 @@ public class DebugFunctionality : MonoBehaviour
 
     public void teleport()
     {
-        gameController.teleport();
+        gameController.Teleport();
         menuUiController.pauseToggle();
     }
 

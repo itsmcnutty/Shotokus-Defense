@@ -67,7 +67,7 @@ public class CreateNavLink : MonoBehaviour
             
         }
         
-        float height = wallProperties.wallHeightPercent;
+        float height = wallProperties.WallHeightPercent;
         float wallHeightaboveGround = height * wallMaxHeight;
         float floorHeight = transform.position.y - wallHeightaboveGround;
         startPosB.y = floorHeight;

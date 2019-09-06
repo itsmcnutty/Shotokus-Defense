@@ -22,9 +22,9 @@ public class MeleeState : IState
 	private NavMeshObstacle obstacle;
 	
 	// Allowed space around attack radius that enemy's can attack from
-	private float ATTACK_MARGIN = 1f;
-	// Squared attack radius (for optimized calculations)
-	private float sqrAttackRadius;
+	private float attackMargin = 1f;
+	// Number of potential attacks in animator controller
+	private int numAttacks;
 	
 	// Timer for attack delay
 	private float attackTimer = 0f;
@@ -35,7 +35,7 @@ public class MeleeState : IState
 	// This enemy's GameObject
 	private GameObject gameObj;
 	// The enemy properties component
-	private EnemyHeavyProperties enemyProps;
+	private EnemyProperties enemyProps;
 
 	// True when enemy has begun swinging and should transition to swing state
 	private bool swinging;
@@ -48,25 +48,47 @@ public class MeleeState : IState
 
 	public MeleeState(EnemyHeavyProperties enemyProps)
 	{
+		attackMargin = enemyProps.ATTACK_MARGIN;
 		attackRadius = enemyProps.ATTACK_RADIUS;
 		attackDelay = enemyProps.ATTACK_DELAY;
 		agent = enemyProps.agent;
 		animator = enemyProps.animator;
 		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
-		sqrAttackRadius = enemyProps.sqrAttackRadius;
+		numAttacks = animator.GetInteger("NumAttacks");
 		player = enemyProps.player;
 		gameObj = enemyProps.gameObject;
-		advanceState = enemyProps.advanceState;
-		retreatState = enemyProps.retreatState;
-		swingState = enemyProps.swingState;
-		ragdollState = enemyProps.ragdollState;
+		this.enemyProps = enemyProps;
+	}
+
+	public MeleeState(EnemyMediumProperties enemyProps)
+	{
+		attackMargin = enemyProps.ATTACK_MARGIN;
+		attackRadius = enemyProps.MELEE_RADIUS;
+		attackDelay = enemyProps.MELEE_DELAY;
+		agent = enemyProps.agent;
+		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
+		obstacle = enemyProps.obstacle;
+		numAttacks = animator.GetInteger("NumAttacks");
+		player = enemyProps.player;
+		gameObj = enemyProps.gameObject;
 		this.enemyProps = enemyProps;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
+	{
+		advanceState = enemyProps.advanceState;
+		retreatState = enemyProps.retreatState;
+		swingState = enemyProps.swingState;
+		ragdollState = enemyProps.ragdollState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		advanceState = enemyProps.advanceState;
 		retreatState = enemyProps.retreatState;
@@ -102,7 +124,7 @@ public class MeleeState : IState
 		// When attackTimer is lower than 0, it allows the enemy to attack again
 		if (attackTimer <= 0f)
 		{
-			animator.SetInteger("AttackNum", Random.Range(0, 2));
+			animator.SetInteger("AttackNum", Random.Range(0, numAttacks));
 			swinging = true;
 			attackTimer = attackDelay;
 		}
@@ -128,17 +150,16 @@ public class MeleeState : IState
 		
 		// Calculate enemy distance
 		Vector3 gameObjPos = gameObj.transform.position;
-		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
-		
+		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+
 		// Continue to attack if within attack range, otherwise transition
-		if (sqrDist - sqrAttackRadius > ATTACK_MARGIN)
+		if (distanceToPlayer > attackRadius + attackMargin)
 		{
 			// Too far, advance
 			animator.SetTrigger("Advance");
 			return advanceState;
 		}
-		if (sqrDist - sqrAttackRadius < -ATTACK_MARGIN)
+		if (distanceToPlayer < attackRadius - attackMargin)
 		{
 			// Too close, retreat
 			animator.SetTrigger("Retreat");

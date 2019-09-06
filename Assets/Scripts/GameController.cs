@@ -156,7 +156,7 @@ public class GameController : MonoBehaviour
     
     // This function moves the player around the 5 wave zones
     // todo update player object position too
-        public void teleport()
+        public void Teleport()
     {
         Vector3 destinationPos;
         int temp = caseSwitch;
