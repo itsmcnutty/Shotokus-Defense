@@ -315,11 +315,12 @@ public class Walls : MonoBehaviour
     private bool WallIsValid(ControllerArc arc, ControllerArc otherArc)
     {
         // Wall is valid when both arcs are valid, there's no collision, and the wall is outside the player radius
+        Vector3 playerFeetPos = new Vector3(player.transform.position.x, wallOutline.transform.position.y, player.transform.position.z);
         OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties>();
         return (arc.CanUseAbility() &&
             otherArc.CanUseAbility() &&
             !properties.CollisionDetected() &&
-            Vector3.Distance(player.transform.position, wallOutline.transform.position) >= rockCreationDistance);
+            Vector3.Distance(playerFeetPos, wallOutline.transform.position) >= rockCreationDistance);
     }
 
     public bool WallIsActive()
