@@ -941,6 +941,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pond (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2343858375573119624, guid: b8860ce667487c247a03926fef7b93d3,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5216090041481626487, guid: b8860ce667487c247a03926fef7b93d3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1088,6 +1093,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LayerMask.m_Bits
       value: 311
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618336351119341840, guid: f432ca6eb057f7148bc3fec9a3a8567d,
+        type: 3}
+      propertyPath: m_UseGeometry
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8618336351119341847, guid: f432ca6eb057f7148bc3fec9a3a8567d,
         type: 3}
@@ -1383,7 +1393,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: ad4d1087520f33f4db9b72bd65b28b6d,
+      objectReference: {fileID: 23800000, guid: d07885a88bd949e4882e3ebb3e91d88d,
         type: 2}
     - target: {fileID: 127712924463657758, guid: bd6d9910cd4fa9840b0177eca7a22871,
         type: 3}
@@ -1510,7 +1520,7 @@ PrefabInstance:
         type: 3}
       propertyPath: prefab.Array.data[0]
       value: 
-      objectReference: {fileID: 7570988895621427575, guid: b433e75edbf8ac24594e1b3c3f72eff0,
+      objectReference: {fileID: 8822753593585016445, guid: 9914bf2b29091354c94a4de4a83082f6,
         type: 3}
     - target: {fileID: 7508365555978717287, guid: 921980b4835e024468909be45ce775d7,
         type: 3}
@@ -2024,7 +2034,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 932893f532c9e594f8e136fb9fda358a,
+      objectReference: {fileID: 23800000, guid: 473fcb8af671ee042976a15e5003e942,
         type: 2}
     - target: {fileID: 5167523848604400447, guid: 93d512a080749cd42ad5ff436daf04a0,
         type: 3}
@@ -2074,6 +2084,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pond
+      objectReference: {fileID: 0}
+    - target: {fileID: 2343858375573119624, guid: b8860ce667487c247a03926fef7b93d3,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5216090041481626487, guid: b8860ce667487c247a03926fef7b93d3,
         type: 3}
@@ -11094,6 +11109,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765821603940282915, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412687689745014696, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6447242752775204709, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837520784342834614, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973111612182601109, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 795345125229261260, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8195168166131935400, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4938745106150252111, guid: c23154e7f01a6f84184cfbf0b14310f9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c23154e7f01a6f84184cfbf0b14310f9, type: 3}
