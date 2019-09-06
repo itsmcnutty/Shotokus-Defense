@@ -59,6 +59,7 @@ public class WallProperties : MonoBehaviour
 
     private void MoveWall()
     {
+        // Moves the wall if given a velocity from the move wall powerup
         if(wallMoveSpeed != 0)
         {
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, gameObject.transform.position + (direction * wallMoveSpeed), 1f);
@@ -69,11 +70,13 @@ public class WallProperties : MonoBehaviour
     {
         if(other.tag != "Ground" && other.gameObject.layer != 9 && other.gameObject.layer != 11 && other.gameObject.layer != 17)
         {
+            // Stops the wall from moving when it collides with something it can't move through
             CancelInvoke("MoveWall");
         }
 
         if(other.gameObject.name == "Player Ability Area")
         {
+            // Destroys the wall if it enters the player's play area
             Destroy(gameObject);
         }
     }

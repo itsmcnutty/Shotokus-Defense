@@ -129,6 +129,7 @@ public class StrafeState : IState
 		
 		// shooting ability
 		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
+		
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -138,6 +139,7 @@ public class StrafeState : IState
 		runState = enemyProps.runState;
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
+		climbingState = enemyProps.climbingState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -190,6 +192,10 @@ public class StrafeState : IState
 //		agent.SetDestination(playerPos);
 
 		
+//		// todo delete this
+//		if (agent.enabled && !debugNoWalk) 
+//			agent.SetDestination(playerPos);
+
 		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
 		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);
 		float strafeSpeedRight = Vector3.Dot(enemyVelocity, gameObj.transform.right);
@@ -302,7 +308,6 @@ public class StrafeState : IState
 			return ragdollState;
 		}
 		
-		// todo CONTINUE TESTING THIS
 		// Transition to climbing state if climbing
 		if (agent.isOnOffMeshLink)
 		{

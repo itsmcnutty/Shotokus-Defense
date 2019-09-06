@@ -30,6 +30,7 @@ public class PowerupController : MonoBehaviour
 
     void Start()
     {   
+        // Resets the color of the powerup material
         rockClusterBar.material.SetColor("_EmissionColor", Color.white);
         spikeChainBar.material.SetColor("_EmissionColor", Color.white);
         earthquakeBar.material.SetColor("_EmissionColor", Color.white);
@@ -44,6 +45,11 @@ public class PowerupController : MonoBehaviour
 
     private void TryActivatePowerUp()
     {
+        // For each of the abilities:
+        //      Checks that the counter has surpassed the points needed to activate
+        //      Toggle the ability to be active
+        //      Starts a Co-Routine to activate the ability
+        //      Reset ability counter
         if (rockClusterBarCounter >= pointsForRockCluster)
         {
             PlayerAbility.ToggleRockCluster();
@@ -91,11 +97,14 @@ public class PowerupController : MonoBehaviour
 
     private IEnumerator EndRockCluster()
     {
+        // The power-up is active for the alloted amount of time
         float startTime = Time.time;
         while (Time.time - startTime < rockClusterTime)
         {
             yield return DrainAbilityBar(startTime, rockClusterTime, rockClusterBar);
         }
+
+        // Resets power-up when time runs out
         rockClusterBar.fillAmount = 0;
         rockClusterBar.material.SetColor("_EmissionColor", Color.white);
         PlayerAbility.ToggleRockCluster();
@@ -139,6 +148,7 @@ public class PowerupController : MonoBehaviour
 
     private IEnumerator DrainAbilityBar(float startTime, float abilityTime, Image bar)
     {
+        // Gets the current status of the power-up drain
         float barValuePercent = (abilityTime - (Time.time - startTime)) / abilityTime;
         bar.fillAmount = barValuePercent;
 
@@ -146,10 +156,12 @@ public class PowerupController : MonoBehaviour
         Color finalColor;
         if (barValuePercent > 0.3f)
         { 
+            // Power-up gauge set to a normal color above 30% time remaining
             finalColor = baseColor * Mathf.LinearToGammaSpace(1);
         }
         else
         {
+            // Power-up starts to blink under 30% time remaining
             float emission = Mathf.PingPong(Time.time, 1.0f);
             finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
         }

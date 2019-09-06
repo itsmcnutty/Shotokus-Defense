@@ -39,7 +39,8 @@ public class RunState : IState
 	// States to transition to
 	private StrafeState strafeState;
 	private RagdollState ragdollState;
-	
+	private ClimbingState climbingState;
+
 	public RunState(EnemyMediumProperties enemyProps)
 	{
 		rangedRadius = enemyProps.RANGED_RADIUS;
@@ -78,6 +79,7 @@ public class RunState : IState
 	{
 		strafeState = enemyProps.strafeState;
 		ragdollState = enemyProps.ragdollState;
+		climbingState = enemyProps.climbingState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -136,6 +138,13 @@ public class RunState : IState
 		{
 			animator.SetTrigger("Ragdoll");
 			return ragdollState;
+		}
+		
+//		// Transition to climbing state if climbing
+		if (agent.isOnOffMeshLink)
+		{
+			// todo do something with animator
+			return climbingState;
 		}
 		
 		// Get enemy position

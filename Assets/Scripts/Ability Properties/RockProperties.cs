@@ -28,15 +28,18 @@ public class RockProperties : MonoBehaviour
 
     public void DestroyRock ()
     {
+        // Plays the particle effect when the rock is destroyed
         ParticleSystem particleSystem = Instantiate(destroyRockParticles);
         particleSystem.transform.position = gameObject.transform.position;
 
+        // Sets size and number of particles to reflect the size of the rock
         UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
         shape.scale = gameObject.transform.localScale;
 
         UnityEngine.ParticleSystem.EmissionModule emission = particleSystem.emission;
         emission.rateOverTimeMultiplier = gameObject.transform.localScale.x * emission.rateOverTimeMultiplier;
 
+        // Moves the rock out of the map and readds it to the stash of rocks
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
         Rocks.MakeRockAvailable (gameObject);
