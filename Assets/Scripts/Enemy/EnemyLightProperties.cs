@@ -67,6 +67,5 @@ public class EnemyLightProperties : EnemyProperties
                 return 0;
         }
     }
-}
     
 }

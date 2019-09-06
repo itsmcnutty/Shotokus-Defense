@@ -1278,6 +1278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 411869373212945495}
+  - component: {fileID: 1493471917078214349}
   m_Layer: 9
   m_Name: mixamorig:RightHand
   m_TagString: Untagged
@@ -1299,6 +1300,20 @@ Transform:
   m_Father: {fileID: 8320808924462871437}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1493471917078214349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118474554464255190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccae4bc8ce263cd4592215ef73510b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
+    type: 3}
 --- !u!1 &5694687386247625772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,6 +1757,8 @@ GameObject:
   - component: {fileID: 5625520736201670366}
   - component: {fileID: 1275101893616847299}
   - component: {fileID: 7167125418838329711}
+  - component: {fileID: 4932585594347115046}
+  - component: {fileID: 6623520137180078965}
   m_Layer: 9
   m_Name: LightEnemy
   m_TagString: Enemy
@@ -1801,6 +1818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PHYSIC_MATERIAL: {fileID: 0}
   resetPosition: 0
+  enemyDeathParticles: {fileID: 0}
 --- !u!114 &4828776817018062485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1879,7 +1897,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7570988895621427575}
   m_Enabled: 1
-  m_AgentTypeID: -1372625422
+  m_AgentTypeID: 0
   m_Radius: 0.7
   m_Speed: 3
   m_Acceleration: 8
@@ -1900,7 +1918,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7570988895621427575}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df8c3f21b6ab97449bef91710d43c082, type: 3}
   m_Name: 
@@ -1908,7 +1926,48 @@ MonoBehaviour:
   agent: {fileID: 1275101893616847299}
   projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
     type: 3}
+  fireRate: 3
+  initialVelocityX: 15
   distanceFromPlayer: 15
+--- !u!208 &4932585594347115046
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570988895621427575}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!114 &6623520137180078965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7570988895621427575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190cfa0e54bc2f0448a186314b0cf2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 1275101893616847299}
+  obstacle: {fileID: 4932585594347115046}
+  ragdollController: {fileID: 556872095284120024}
+  animator: {fileID: 2872818884319998084}
+  MAX_RUN_SPEED: 0
+  debugNoWalk: 0
+  RANGED_DELAY: 3
+  PROJECTILE_VEL_X: 15
+  MAX_STRAFE_SPEED: 0
+  RANGED_RADIUS: 23
+  STRAFE_DIST: 15
 --- !u!1 &7747424865217325253
 GameObject:
   m_ObjectHideFlags: 0
