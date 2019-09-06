@@ -21,6 +21,7 @@ public class PlayerHeal : MonoBehaviour
 
     private void Awake ()
     {
+        // Gets the player and player associated components
         GameObject player = GameObject.FindWithTag ("MainCamera");
         if (player != null)
         {
@@ -56,6 +57,7 @@ public class PlayerHeal : MonoBehaviour
             {
                 if (playerEnergy.EnergyIsNotZero () && !playerHealth.HealthIsMax())
                 {
+                    // Uses energy and heals when the player has energy and isn't at max health
                     GetComponent<Hand> ().TriggerHapticPulse (1500);
                     firstTriggerHeld.GetComponent<Hand> ().TriggerHapticPulse (1500);
                     playerHealth.RegenHealth ();
@@ -90,6 +92,7 @@ public class PlayerHeal : MonoBehaviour
 
     public bool HandsAreClose ()
     {
+        // Checks that the hands are within a certain distance
         Vector3 handPos = hand.transform.position;
         Vector3 otherHandPos = firstTriggerHeld.transform.position;
         return (Math.Abs (otherHandPos.x - handPos.x) < HAND_DIST_XZ) &&
