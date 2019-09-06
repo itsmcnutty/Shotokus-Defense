@@ -23,13 +23,16 @@ public class QuicksandProperties : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Invokes the method to destroy quicksand after the allotted time is up
         Invoke("DestroyQuicksand", quicksandLifetime);
 
         if (PlayerAbility.EarthquakeEnabled())
         {
+            // Applies earthquake effect to all enemies
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject enemy in enemies)
             {
+                // Gets all of the NavMeshAgents
                 NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
                 if (agent != null)
                 {
@@ -53,8 +56,10 @@ public class QuicksandProperties : MonoBehaviour
 
     void OnDestroy()
     {
+        // Prevents the destruction method from being called again if destroyed by another means
         CancelInvoke("DestroyQuicksand");
 
+        // Resets the speed of any enemies within the quicksand
         Collider[] collidersInSand = Physics.OverlapSphere(transform.position, GetComponentInChildren<MeshRenderer>().bounds.size.x / 2);
 
         foreach (var collider in collidersInSand)
@@ -68,10 +73,12 @@ public class QuicksandProperties : MonoBehaviour
 
         if (destroyQuicksandParticles != null)
         {
+            // Plays the particles effect for destroying quicksand
             ParticleSystem particleSystem = Instantiate(destroyQuicksandParticles);
             particleSystem.transform.position = transform.position;
             particleSystem.transform.rotation = transform.rotation;
 
+            // Changes the area size and number of particles based on size of the mesh
             UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
             shape.scale = transform.localScale / 2;
 
@@ -87,6 +94,7 @@ public class QuicksandProperties : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        // Slows any enemies within the quicksand
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
         if (agent != null)
         {
@@ -94,12 +102,14 @@ public class QuicksandProperties : MonoBehaviour
         }
         else if (other.attachedRigidbody != null)
         {
+            // Slows any object within the quicksand
             other.attachedRigidbody.velocity /= quicksandSpeedReduction;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        // Enemies speed back up after leaving the quicksand
         NavMeshAgent agent = other.gameObject.GetComponentInParent<NavMeshAgent>();
         if (agent != null)
         {
@@ -109,6 +119,7 @@ public class QuicksandProperties : MonoBehaviour
 
     private IEnumerator SlowEnemyForTime(NavMeshAgent agent, float slowRate, float duration)
     {
+        // Slows the given enemy for the given duration
         SlowAgent(agent, slowRate);
         yield return new WaitForSeconds(duration);
         if (agent)
