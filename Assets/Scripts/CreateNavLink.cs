@@ -7,10 +7,6 @@ public class CreateNavLink : MonoBehaviour
     // NavMesh Links Prefabs
     public Transform nmLinkPrefab; 
     
-    // references to navMeshSurface
-    private GameObject navMeshObject;
-    private NavMeshSurface navMeshSurface;
-    
     // references to navMeshLink Front and Back objects and scripts
     private Transform navMeshLinkObjB;
     private Transform navMeshLinkObjF;
@@ -22,8 +18,6 @@ public class CreateNavLink : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        navMeshObject = GameObject.FindGameObjectWithTag("NavMesh Light");
-        navMeshSurface = navMeshObject.GetComponent<NavMeshSurface>();
     }
 
     void Start()
