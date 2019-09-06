@@ -5,10 +5,10 @@ using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
-public class SwordDamage : MonoBehaviour
+public class MeleeDamage : MonoBehaviour
 {
     
-    // Damage dealt by sword attack
+    // Damage dealt by melee swing
     public float DAMAGE;
     
     // Player camera (HMD)
