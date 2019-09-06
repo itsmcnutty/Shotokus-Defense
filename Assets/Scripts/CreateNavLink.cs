@@ -45,10 +45,6 @@ public class CreateNavLink : MonoBehaviour
         MeshRenderer mesh = this.GetComponentInChildren<MeshRenderer> ();
         float meshX = mesh.bounds.size.x;
         float meshZ = mesh.bounds.size.z;
-        
-        Debug.Log("my size in z is:" + meshZ);
-        Debug.Log("my size in y is:" + mesh.bounds.size.y);
-        Debug.Log("my size in x is:" + meshX);
 
         // Set transform and rotation to 0 for navmesh link
         Vector3 pos = new Vector3((float) 0, (float) 0, (float) 0);
@@ -61,8 +57,8 @@ public class CreateNavLink : MonoBehaviour
         navMeshLinkF = navMeshLinkObjF.GetComponent<NavMeshLink>();
 
         // Calculate positions for nav mesh links
-        Vector3 startPosB = wallPos + transform.forward * 1.5f; // position for navmesh link start point
-        Vector3 startPosF = wallPos - transform.forward * 1.5f; // position for navmesh link start point
+        Vector3 startPosB = wallPos + transform.forward; // position for navmesh link start point
+        Vector3 startPosF = wallPos - transform.forward; // position for navmesh link start point
 
         wallProperties = GetComponent<WallProperties>();
         if (wallProperties == null)
@@ -92,9 +88,6 @@ public class CreateNavLink : MonoBehaviour
             if (hitF.collider.CompareTag("Ground"))
             {
                 wallHeightF = hitF.distance;
-                // we can hit the player, so shoot
-                Debug.Log("We hit the ground on the front!!");
-                Debug.Log("Height is " + wallHeightF);
             }
         }
         if (Physics.Raycast(visionRayB, out hitB)) 
@@ -102,9 +95,6 @@ public class CreateNavLink : MonoBehaviour
             if (hitB.collider.CompareTag("Ground"))
             {
                 wallHeightB = hitB.distance;
-                // we can hit the player, so shoot
-                Debug.Log("We hit the ground on the back!!");
-                Debug.Log("Height is " + wallHeightB);
             }
         }
         
@@ -114,19 +104,23 @@ public class CreateNavLink : MonoBehaviour
         float floorHeightB = transform.position.y - heightB;
         startPosF.y = floorHeightF;
         startPosB.y = floorHeightB;
-
-        // make endPoints hit the corner of the wall
-        Vector3 wallPosF = new Vector3(wallPos.x,wallPos.y,meshZ / 2);
-        Vector3 wallPosB = new Vector3(wallPos.x,wallPos.y,- meshZ / 2);
-//        wallPosF.z = meshZ / 2;
-//        wallPosB.z = - meshZ / 2;
         
+        // calculate vector that goes foward and back of the wall
+        Vector3 directionWidthF = new Vector3(startPosF.x, wallPos.y,  startPosF.z) - wallPos;
+        directionWidthF = directionWidthF.normalized;
+        Vector3 directionWidthB = new Vector3(startPosB.x, wallPos.y,  startPosB.z) - wallPos;
+        directionWidthB = directionWidthF.normalized;
+        
+        // add the direction to the transform vector to obtain the points at the corners
+        Vector3 wallPosF = wallPos - directionWidthF * 0.25f;
+        Vector3 wallPosB = wallPos + directionWidthB * 0.25f;
+
         navMeshLinkB.startPoint = startPosB;
         navMeshLinkF.startPoint = startPosF;
         navMeshLinkB.endPoint = wallPosF;
         navMeshLinkF.endPoint = wallPosB;
-        navMeshLinkB.width = meshX;
-        navMeshLinkF.width = meshX;
+        navMeshLinkB.width = meshZ;
+        navMeshLinkF.width = meshZ;
         
         navMeshLinkB.UpdateLink();
         navMeshLinkF.UpdateLink();
