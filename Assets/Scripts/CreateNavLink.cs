@@ -44,7 +44,12 @@ public class CreateNavLink : MonoBehaviour
         // get size of wall mesh
         MeshRenderer mesh = this.GetComponentInChildren<MeshRenderer> ();
         float meshX = mesh.bounds.size.x;
+        float meshZ = mesh.bounds.size.z;
         
+        Debug.Log("my size in z is:" + meshZ);
+        Debug.Log("my size in y is:" + mesh.bounds.size.y);
+        Debug.Log("my size in x is:" + meshX);
+
         // Set transform and rotation to 0 for navmesh link
         Vector3 pos = new Vector3((float) 0, (float) 0, (float) 0);
         Quaternion rot = Quaternion.Euler((float)0, (float)0, (float)0);
@@ -110,11 +115,16 @@ public class CreateNavLink : MonoBehaviour
         startPosF.y = floorHeightF;
         startPosB.y = floorHeightB;
 
+        // make endPoints hit the corner of the wall
+        Vector3 wallPosF = new Vector3(wallPos.x,wallPos.y,meshZ / 2);
+        Vector3 wallPosB = new Vector3(wallPos.x,wallPos.y,- meshZ / 2);
+//        wallPosF.z = meshZ / 2;
+//        wallPosB.z = - meshZ / 2;
         
         navMeshLinkB.startPoint = startPosB;
         navMeshLinkF.startPoint = startPosF;
-        navMeshLinkB.endPoint = wallPos;
-        navMeshLinkF.endPoint = wallPos;
+        navMeshLinkB.endPoint = wallPosF;
+        navMeshLinkF.endPoint = wallPosB;
         navMeshLinkB.width = meshX;
         navMeshLinkF.width = meshX;
         
