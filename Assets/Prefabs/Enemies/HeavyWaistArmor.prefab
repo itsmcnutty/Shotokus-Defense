@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7582323570255747004}
-  m_LocalRotation: {x: -0.6667265, y: 0, z: -0, w: 0.74530244}
+  m_LocalRotation: {x: -0.66672766, y: 0, z: 0, w: 0.7453015}
   m_LocalPosition: {x: -0, y: 0.56817496, z: -0.28272206}
-  m_LocalScale: {x: 1, y: 0.800673, z: 0.996529}
+  m_LocalScale: {x: 1, y: 0.800673, z: 0.99652994}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -83.630005, y: 0, z: 0}
 --- !u!33 &464818493319761279
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -80,15 +80,15 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -5387963150896550201, guid: 714776cf28ed84740ace95841710d7f6, type: 3}
   m_Bones: []
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: -0.00007349253, y: -0.22417362, z: 0.20591676}
-    m_Extent: {x: 0.30758798, y: 0.34869912, z: 0.2650336}
+    m_Center: {x: -0.00007349253, y: -0.22417375, z: 0.20591682}
+    m_Extent: {x: 0.30758798, y: 0.34869772, z: 0.2650322}
   m_DirtyAABB: 0
 --- !u!183 &989260871825468069
 Cloth:
@@ -307,6 +307,9 @@ Cloth:
   - maxDistance: 0.15
     collisionSphereDistance: 0
   m_CapsuleColliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
