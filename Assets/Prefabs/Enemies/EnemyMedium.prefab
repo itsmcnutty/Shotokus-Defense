@@ -2229,7 +2229,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.7
-  m_Speed: 4
+  m_Speed: 1.6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2279,10 +2279,13 @@ MonoBehaviour:
   MELEE_RADIUS: 1.5
   RANGED_DELAY: 3
   PROJECTILE_VEL_X: 12
-  MAX_STRAFE_SPEED: 1.6
-  RANGED_RADIUS: 20
+  MAX_STRAFE_SPEED: 3
+  RANGED_RADIUS: 23
   STRAFE_DIST: 15
-  RADIUS_REDUCTION: 10
+  RADIUS_REDUCTION: 2
+  randomRadiusReduction: 1
+  minRangeRadiusReduction: 3
+  maxRangeRadiusReduction: 8
 --- !u!1001 &8499968343413575499
 PrefabInstance:
   m_ObjectHideFlags: 0

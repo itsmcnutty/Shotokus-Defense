@@ -13,9 +13,6 @@ public class EnemyHeavyProperties : EnemyProperties
 
 	// Allowed space around attack radius that enemies can attack from
 	[NonSerialized] public float ATTACK_MARGIN = 1f;
-    
-	// Squared attack radius (for optimized calculations)
-//	[NonSerialized] public float sqrAttackRadius;
 	
 	// All states
 	[NonSerialized] public AdvanceState advanceState;
@@ -30,7 +27,6 @@ public class EnemyHeavyProperties : EnemyProperties
 		base.Start();
 		
 		agent.stoppingDistance = ATTACK_RADIUS;
-//		sqrAttackRadius = ATTACK_RADIUS * ATTACK_RADIUS;
         
 		// Instantiate states with the properties above
 		advanceState = new AdvanceState(this);
