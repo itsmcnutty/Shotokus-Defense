@@ -986,8 +986,16 @@ Cloth:
     collisionSphereDistance: 0
   - maxDistance: 0.2
     collisionSphereDistance: 0
-  m_CapsuleColliders: []
-  m_SphereColliders: []
+  m_CapsuleColliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_SphereColliders:
+  - first: {fileID: 0}
+    second: {fileID: 0}
   m_SelfCollisionDistance: 0
   m_SelfCollisionStiffness: 1
   m_SelfAndInterCollisionIndices: 
