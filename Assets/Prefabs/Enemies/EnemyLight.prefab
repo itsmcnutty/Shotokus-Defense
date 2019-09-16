@@ -1546,7 +1546,7 @@ Animator:
   m_GameObject: {fileID: 7570988895621427575}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2147242d3fc219d4397819c40c0ccdd4, type: 3}
-  m_Controller: {fileID: 9100000, guid: 9709b1b516ee637448845c31edd50a05, type: 2}
+  m_Controller: {fileID: 9100000, guid: e139cda22a18b754fba89f36280fc94b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 1
   m_ApplyRootMotion: 0
@@ -1667,7 +1667,7 @@ MonoBehaviour:
   debugNoWalk: 0
   RANGED_DELAY: 3
   PROJECTILE_VEL_X: 15
-  MAX_STRAFE_SPEED: 3
+  MAX_STRAFE_SPEED: 1.6
   RANGED_RADIUS: 23
   STRAFE_DIST: 15
 --- !u!1 &7600182823069540830
