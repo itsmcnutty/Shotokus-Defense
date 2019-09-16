@@ -808,7 +808,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 1.6}
-    m_TimeScale: 0.72
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -817,7 +817,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0.25
     m_Position: {x: 1.6, y: 0}
-    m_TimeScale: 0.72
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -826,7 +826,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0.5
     m_Position: {x: 0, y: -1.6}
-    m_TimeScale: 0.72
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -835,7 +835,7 @@ BlendTree:
       type: 3}
     m_Threshold: 0.75
     m_Position: {x: -1.6, y: 0}
-    m_TimeScale: 0.72
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
@@ -1021,7 +1021,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Strafing
-  m_Speed: 1.8
+  m_Speed: 1.296
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3602944346442442145}
