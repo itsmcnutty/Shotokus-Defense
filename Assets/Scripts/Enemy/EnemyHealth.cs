@@ -75,15 +75,17 @@ public class EnemyHealth : CallParentCollision
 		camera = GameObject.FindGameObjectWithTag("MainCamera");
 		hips = GetComponentInChildren<Rigidbody>().gameObject;
 		canvasRendererBackground = healthBarBackground.GetComponent<CanvasRenderer>();
-		canvasRendererBefore = healthBarBefore.GetComponent<CanvasRenderer>();
-		canvasRendererActual = healthBarActual.GetComponent<CanvasRenderer>();
+		canvasRendererBefore = healthBarBefore.GetComponentInChildren<CanvasRenderer>();
+		canvasRendererActual = healthBarActual.GetComponentInChildren<CanvasRenderer>();
 		
 		// Setup health bars
 
 		// Resize background and make health bar invisible
 		float healthBarWidth = MAX_HEALTH / HP_PER_METER * 100;
 		healthBarBackground.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthBarWidth);
-		healthBarBackground.GetComponentInParent<CanvasRenderer>().SetAlpha(0);
+		canvasRendererBackground.SetAlpha(0);
+		canvasRendererBefore.SetAlpha(0);
+		canvasRendererActual.SetAlpha(0);
 		
 		// Green health bar
 		healthBarActual.minValue = 0f;
@@ -131,6 +133,7 @@ public class EnemyHealth : CallParentCollision
 		health -= damage;
 		healthBarActual.SetValueWithoutNotify(health);
 		UpdateHealthString();
+		isDamaged = true;
 		
 		// Get linear rate of decrease for ghost damage
 		healthBarBeforeDecRate = (health - healthBeforeDamage) / REMOVE_DAMAGE_DURATION;
@@ -202,7 +205,7 @@ public class EnemyHealth : CallParentCollision
 	}
 	
 	// Lerps alpha value of all of the slider elements in the health bar UI to create a fade in effect when called repeatedly
-	private void setHealthBarAlpha(float alpha)
+	private void lerpHealthBarAlpha(float alpha)
 	{
 		// Get next alpha value
 		float nextAlpha = Mathf.Lerp(canvasRendererBackground.GetAlpha(), alpha, FADE_SPEED);
@@ -256,7 +259,7 @@ public class EnemyHealth : CallParentCollision
 		{
 			Debug.Log("Fading in");
 			
-			setHealthBarAlpha(1.0f);
+			lerpHealthBarAlpha(1.0f);
 		}
 		
 		// Rotate health bar to face player
