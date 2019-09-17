@@ -165,7 +165,7 @@ public class EnemyHealth : CallParentCollision
 		}
 	}
 
-	// Checks for death plane and controlls the animation of the "before" health bar
+	// Checks for death plane and controls the animation of the "before" health bar
 	private void Update()
 	{
 		if (transform.position.y <= DEATH_Y)
