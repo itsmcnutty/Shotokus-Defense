@@ -2102,7 +2102,7 @@ GameObject:
   - component: {fileID: 2322011803852930996}
   m_Layer: 0
   m_Name: Enemy_light
-  m_TagString: Untagged
+  m_TagString: EnemyBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2610,22 +2610,22 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
+    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
+    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
+    - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
+    - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2687,11 +2687,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8155109705155929151}
     m_Modifications:
-    - target: {fileID: 4010475543785057643, guid: 270e1e50e63114d47abccf224a166c3f,
-        type: 3}
-      propertyPath: m_Name
-      value: Bow
-      objectReference: {fileID: 0}
     - target: {fileID: 4010475543785156939, guid: 270e1e50e63114d47abccf224a166c3f,
         type: 3}
       propertyPath: m_RootOrder
@@ -2711,6 +2706,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010475543785057643, guid: 270e1e50e63114d47abccf224a166c3f,
+        type: 3}
+      propertyPath: m_Name
+      value: Bow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 270e1e50e63114d47abccf224a166c3f, type: 3}

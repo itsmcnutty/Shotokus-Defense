@@ -47,6 +47,8 @@ public class EnemyHealth : CallParentCollision
 	// Enemy's health points
 	private float health;
 
+	private bool isDead; // flag to keep prevent constant collision from spawning more enemies
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -63,6 +65,8 @@ public class EnemyHealth : CallParentCollision
 		healthBarBefore.maxValue = MAX_HEALTH;
 		healthBarBefore.SetValueWithoutNotify(MAX_HEALTH);
 		UpdateHealthString();
+		
+		isDead = false;
 	}
 
 	// Called by child when receiving a collision event or a collision from its child (used
@@ -106,8 +110,9 @@ public class EnemyHealth : CallParentCollision
 			GetComponent<RagdollController>().StartRagdoll();
 		}
 
-		if (health <= 0f)
+		if (health <= 0f && !isDead)
 		{
+			isDead = true;
 			GetComponent<RagdollController>().StartRagdoll();
 			// Indicate the Game Controller that an enemy was destroyed
 			GameController.Instance.EnemyGotDestroyed();
@@ -127,13 +132,13 @@ public class EnemyHealth : CallParentCollision
 		switch (tag)
 		{
 			case "Rock":
-				damage *= 2;
+				damage *= 3;
 				break;
 			case "Wall":
 				damage *= 1;
 				break;
 			case "Spike":
-				damage *= 3;
+				damage *= 4;
 				break;
 			default:
 				damage *= 0;
