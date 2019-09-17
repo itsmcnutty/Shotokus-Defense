@@ -57,6 +57,22 @@ public class RunState : IState
 		this.enemyProps = enemyProps;
 	}
 	
+	public RunState(EnemyLightProperties enemyProps)
+	{
+		rangedRadius = enemyProps.RANGED_RADIUS;
+		agent = enemyProps.agent;
+		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
+		obstacle = enemyProps.obstacle;
+		maxRunSpeed = enemyProps.MAX_RUN_SPEED;
+		maxStrafeSpeed = enemyProps.MAX_STRAFE_SPEED;
+		debugNoWalk = enemyProps.debugNoWalk;
+		player = enemyProps.player;
+		playerPos = enemyProps.playerPos;
+		gameObj = enemyProps.gameObject;
+		this.enemyProps = enemyProps;
+	}
+	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyMediumProperties enemyProps)
@@ -64,6 +80,14 @@ public class RunState : IState
 		strafeState = enemyProps.strafeState;
 		ragdollState = enemyProps.ragdollState;
 		climbingState = enemyProps.climbingState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyLightProperties enemyProps)
+	{
+		strafeState = enemyProps.strafeState;
+		ragdollState = enemyProps.ragdollState;
 	}
 
 	// Called upon entering this state from anywhere

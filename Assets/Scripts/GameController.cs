@@ -18,18 +18,38 @@ public class GameController : MonoBehaviour
     public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
     public int enemiesDestroyed; // number of enemies destroyed in current Wave
     
+    // variables for teleport function
     private int caseSwitch;
     private GameObject playerObj; // gameObject that contains cameraRig, vrCamera, hands
     // todo change the whole code where vrCamera is player
     private GameObject player; // vrCamera reference, contains all player scripts
     private GameObject vrCamera; // referenced as our player, contains player scripts
     private GameObject cameraRig; // this is the steamVRObjects object 
-
-
+    
     private GameObject UIControllerObj;
     private GameOverMenuController gameOverController;
     
+    [Header("North Spawner")] 
+    public int initialNumEnemiesNorth;
+    public int increasePerWaveNorth;
+    [NonSerialized] private EnemyProducer northProducer;
 
+    [Header("West Spawner")] 
+    public int initialNumEnemiesWest;
+    public int increasePerWaveWest;
+    [NonSerialized] private EnemyProducer westProducer;
+    
+    [Header("South Spawner")] 
+    public int initialNumEnemiesSouth;
+    public int increasePerWaveSouth;
+    [NonSerialized] private EnemyProducer southProducer;
+
+    [Header("East Spawner")] 
+    public int initialNumEnemiesEast;
+    public int increasePerWaveEast;
+    [NonSerialized] private EnemyProducer eastProducer;
+    
+    
     // Constructor
     private GameController(){}
     
@@ -64,20 +84,20 @@ public class GameController : MonoBehaviour
 //            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
 
+        // todo fix this for multiple producers
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
         
         UIControllerObj = GameObject.FindWithTag("UIController");
         gameOverController = UIControllerObj.GetComponent<GameOverMenuController>();
         
-        numOfEnemiesPerWave = initialNumOfEnemies;
-        StartWave(initialNumOfEnemies);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        numOfEnemiesPerWave = initialNumOfEnemies;
+        StartWave(initialNumOfEnemies);
     }
 
     // Update is called once per frame
