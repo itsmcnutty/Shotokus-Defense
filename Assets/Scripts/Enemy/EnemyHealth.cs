@@ -192,11 +192,11 @@ public class EnemyHealth : CallParentCollision
 	// Checks for death plane and controls the animation of the "before" health bar
 	private void Update()
 	{
-		if (transform.position.y <= DEATH_Y)
+		if (hips.transform.position.y <= DEATH_Y)
 		{
 			// Passed death plane
 			KillEnemy();
-			ragdollController.StopRagdoll();
+			Destroy(gameObject);
 		}
 		
 		timeSinceDamage += Time.deltaTime;
@@ -215,8 +215,6 @@ public class EnemyHealth : CallParentCollision
 		
 		// Rotate health bar to face player
 		Vector3 toPlayerVector = camera.transform.position - hips.transform.position;
-		Quaternion toPlayerQuat = (Quaternion.LookRotation(toPlayerVector));
-		double yRotation = 180.0 / Math.PI * Math.Atan2(toPlayerVector.x, toPlayerVector.z);
-		healthBarCanvas.transform.rotation = toPlayerQuat;
+		healthBarCanvas.transform.rotation = Quaternion.LookRotation(toPlayerVector);
 	}
 }
