@@ -155,6 +155,7 @@ public class GameController : MonoBehaviour
         Debug.Log("Restarting game");
         
         // Reset values of wave
+        numOfEnemiesPerWave = initialNumOfEnemies;
         playerHealth.RecoverAllHealth();
         StartWave(initialNumOfEnemies);
     }
