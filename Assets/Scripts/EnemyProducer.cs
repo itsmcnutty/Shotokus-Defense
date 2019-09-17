@@ -57,9 +57,6 @@ public class EnemyProducer : MonoBehaviour
         
         // update counter of enemies alive
         GameController.Instance.EnemyAddNumAlive(spawnInfo.NumHeavyEnemies + spawnInfo.NumMedEnemies + spawnInfo.NumLightEnemies);
-        
-        //todo enemyProducer to singleton and own game object
-        //todo spawners shouldnt have the enemyProducen script
     }
     
     // Update is called once per frame
