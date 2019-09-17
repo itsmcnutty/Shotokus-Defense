@@ -28,6 +28,8 @@ public class EnemyHealth : CallParentCollision
 	public Canvas healthBarCanvas;
 	// Text that displays the enemy's health
 	public Text healthBarText;
+	// Shape that forms background of health bar
+	public RectTransform healthBarBackground;
 	// Slider which reflects actual health of enemy
 	public Slider healthBarActual;
 	// Slider which highlights how much damage the enemy took recently
@@ -66,19 +68,21 @@ public class EnemyHealth : CallParentCollision
 		hips = GetComponentInChildren<Rigidbody>().gameObject;
 		
 		// Setup health bars
-		Vector3 healthBarScale = new Vector3(MAX_HEALTH / HP_PER_METER, 1, 1);
 		
+		// Resize background
+		float healthBarWidth = MAX_HEALTH / HP_PER_METER * 100;
+		healthBarBackground.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthBarWidth);
+		
+		// Green health bar
 		healthBarActual.minValue = 0f;
 		healthBarActual.maxValue = MAX_HEALTH;
 		healthBarActual.SetValueWithoutNotify(MAX_HEALTH);
-		healthBarActual.transform.localScale = healthBarScale;
 		
+		// Red health bar
 		healthBarBefore.minValue = 0f;
 		healthBarBefore.maxValue = MAX_HEALTH;
 		healthBarBefore.SetValueWithoutNotify(MAX_HEALTH);
-		healthBarBefore.transform.localScale = healthBarScale;
-		
-		
+
 		UpdateHealthString();
 		
 		isDead = false;
@@ -223,7 +227,7 @@ public class EnemyHealth : CallParentCollision
 		}
 		
 		// Rotate health bar to face player
-		Vector3 toPlayerVector = camera.transform.position - hips.transform.position;
+		Vector3 toPlayerVector = camera.transform.position - healthBarBefore.transform.position;
 		healthBarCanvas.transform.rotation = Quaternion.LookRotation(toPlayerVector);
 	}
 }
