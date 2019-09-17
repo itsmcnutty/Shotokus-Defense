@@ -12,6 +12,8 @@ public class EnemyHealth : CallParentCollision
 	private static float DEATH_Y = -10.0f;
 	// How much HP is represented by 1m (world space) of UI health bar
 	private static float HP_PER_METER = 5000;
+	// How fast the enemy health bar fades in
+	private static float FADE_SPEED = 0.1f;
 
 	// The enemy's max health
 	public float MAX_HEALTH;
@@ -34,6 +36,10 @@ public class EnemyHealth : CallParentCollision
 	public Slider healthBarActual;
 	// Slider which highlights how much damage the enemy took recently
 	public Slider healthBarBefore;
+	// Canvas renderers for all of the above for fade in effect
+	private CanvasRenderer canvasRendererBackground;
+	private CanvasRenderer canvasRendererBefore;
+	private CanvasRenderer canvasRendererActual;
 
 	// How long to show the damage that was dealt in the "before" health bar (seconds)
 	private float SHOW_DAMAGE_DURATION = 1f;
@@ -48,6 +54,8 @@ public class EnemyHealth : CallParentCollision
 	private float healthBarBeforeDecRate;
 	// Enemy's health points
 	private float health;
+	// Flag that's true when the enemy has been damaged by some amount
+	private bool isDamaged;
 	// Enemy's ragdoll controller
 	private RagdollController ragdollController;
 	// Player camera
@@ -66,12 +74,16 @@ public class EnemyHealth : CallParentCollision
 		ragdollController = GetComponent<RagdollController>();
 		camera = GameObject.FindGameObjectWithTag("MainCamera");
 		hips = GetComponentInChildren<Rigidbody>().gameObject;
+		canvasRendererBackground = healthBarBackground.GetComponent<CanvasRenderer>();
+		canvasRendererBefore = healthBarBefore.GetComponent<CanvasRenderer>();
+		canvasRendererActual = healthBarActual.GetComponent<CanvasRenderer>();
 		
 		// Setup health bars
-		
-		// Resize background
+
+		// Resize background and make health bar invisible
 		float healthBarWidth = MAX_HEALTH / HP_PER_METER * 100;
 		healthBarBackground.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthBarWidth);
+		healthBarBackground.GetComponentInParent<CanvasRenderer>().SetAlpha(0);
 		
 		// Green health bar
 		healthBarActual.minValue = 0f;
@@ -189,6 +201,18 @@ public class EnemyHealth : CallParentCollision
 		return obj.GetComponent<RockCollide>() != null;
 	}
 	
+	// Lerps alpha value of all of the slider elements in the health bar UI to create a fade in effect when called repeatedly
+	private void setHealthBarAlpha(float alpha)
+	{
+		// Get next alpha value
+		float nextAlpha = Mathf.Lerp(canvasRendererBackground.GetAlpha(), alpha, FADE_SPEED);
+		
+		// Update alpha values
+		canvasRendererBackground.SetAlpha(nextAlpha);
+		canvasRendererBefore.SetAlpha(nextAlpha);
+		canvasRendererActual.SetAlpha(nextAlpha);
+	}
+	
 	// Updates the text above the health bar based on the enemy's current health
 	private void UpdateHealthString()
 	{
@@ -205,6 +229,7 @@ public class EnemyHealth : CallParentCollision
 	// Checks for death plane and controls the animation of the "before" health bar
 	private void Update()
 	{
+		// Check for death plane
 		if (hips.transform.position.y <= DEATH_Y)
 		{
 			// Passed death plane
@@ -224,6 +249,14 @@ public class EnemyHealth : CallParentCollision
 		{
 			float decTime = timeSinceDamage - SHOW_DAMAGE_DURATION;
 			healthBarBefore.SetValueWithoutNotify(healthBeforeDamage + healthBarBeforeDecRate * decTime);
+		}
+		
+		// Fade in health bar if damaged
+		if (isDamaged && canvasRendererBackground.GetAlpha() > 0.9999)
+		{
+			Debug.Log("Fading in");
+			
+			setHealthBarAlpha(1.0f);
 		}
 		
 		// Rotate health bar to face player
