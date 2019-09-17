@@ -101,7 +101,7 @@ public class StrafeState : IState
 
 	public StrafeState(EnemyLightProperties props)
 	{
-//		meleeRadius = enemyProps.MELEE_RADIUS;
+		meleeRadius = -1; // The light enemy will never enter the melee state
 		rangedRadius = props.RANGED_RADIUS;
 		agent = props.agent;
 		animator = props.animator;

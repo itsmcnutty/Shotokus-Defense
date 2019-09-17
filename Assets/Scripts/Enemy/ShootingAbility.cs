@@ -13,8 +13,8 @@ public class ShootingAbility : MonoBehaviour
     private float fireRate;
 
     private bool allowShoot;
-    
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,30 +22,34 @@ public class ShootingAbility : MonoBehaviour
         player = GameObject.FindWithTag("MainCamera");
     }
 
-    // Instantiates the projectile prefab, sets a velocity and the origin transform (where the projectile comes from)
-    // so it is ready to shoot the target.
-    // This function also sets the fire rate of the gun
+    // Begins the shooting animation, sets velocity and fire rate of the arrow, and sets a flag to block extra shooting.
     public void Shoot(float initialVelocityX, float fireRate, Animator animator)
     {
         if (allowShoot)
         {
             // Block additional shots
             allowShoot = false;
-            
+
             // Store info about arrow for shooting
             this.initialVelocityX = initialVelocityX;
             this.fireRate = fireRate;
-            
-            // Instantiate and set position where projectile spawns
-            projectile = Instantiate(projectilePrefab, transform);
-            rigidbody = projectile.GetComponent<Rigidbody>();
-            
+
             // Begin animation
             animator.SetTrigger("Shoot");
         }
     }
 
-    // Called by animator when entering the "ReleasingArrow" state
+    // Instantiates the projectile prefab, sets the origin transform (where the projectile comes from)
+    // so it is ready to shoot the target.
+    public void CreateArrow()
+    {
+        // Instantiate and set position where projectile spawns
+        projectile = Instantiate(projectilePrefab, transform);
+        rigidbody = projectile.GetComponent<Rigidbody>();
+    }
+
+
+// Called by animator when entering the "ReleasingArrow" state
     public void LaunchArrow()
     {
         // Store location of player and projectile
