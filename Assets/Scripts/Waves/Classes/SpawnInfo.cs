@@ -7,57 +7,24 @@ public class SpawnInfo {
         None
     }
 
-    private SpawnLocation location;
-    private int numLightEnemies;
-    private int numMedEnemies;
-    private int numHeavyEnemies;
+    public SpawnLocation Location;
+    public int NumLightEnemies;
+    public int NumMedEnemies;
+    public int NumHeavyEnemies;
 
     public SpawnInfo(SpawnLocation location, int numLightEnemies, int numMedEnemies, int numHeavyEnemies)
     {
-        this.location = location;
-        this.numLightEnemies = numLightEnemies;
-        this.numMedEnemies = numMedEnemies;
-        this.numHeavyEnemies = numHeavyEnemies;
+        this.Location = location;
+        this.NumLightEnemies = numLightEnemies;
+        this.NumMedEnemies = numMedEnemies;
+        this.NumHeavyEnemies = numHeavyEnemies;
     }
 
-    public SpawnInfo()
-    {
-        this.location = SpawnLocation.None;
-        this.numLightEnemies = 0;
-        this.numMedEnemies = 0;
-        this.numHeavyEnemies = 0;
-    }
-    
-
-    public SpawnLocation Location
-    {
-        get 
-        {
-            return location;
-        }
-    }
-
-    public int NumLightEnemies
-    {
-        get 
-        {
-            return numLightEnemies;
-        }
-    }
-
-    public int NumMedEnemies
-    {
-        get 
-        {
-            return numMedEnemies;
-        }
-    }
-
-    public int NumHeavyEnemies
-    {
-        get 
-        {
-            return numHeavyEnemies;
-        }
-    }
+    // public SpawnInfo()
+    // {
+    //     this.Location = SpawnLocation.None;
+    //     this.NumLightEnemies = 0;
+    //     this.NumMedEnemies = 0;
+    //     this.NumHeavyEnemies = 0;
+    // }
 }

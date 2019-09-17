@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.Windows;
-using Valve.VR.InteractionSystem;
 using File = System.IO.File;
+using Newtonsoft.Json;
 
 public class GameController : MonoBehaviour
 {
@@ -32,7 +29,7 @@ public class GameController : MonoBehaviour
     private GameObject UIControllerObj;
     private GameOverMenuController gameOverController;
 
-    private Queue<LocationWaves> allLocationWaves;
+    private Queue<LocationWaves> allLocationWaves = new Queue<LocationWaves>();
     private LocationWaves currentLocation;
     private Wave currentWave;
 
@@ -103,7 +100,7 @@ public class GameController : MonoBehaviour
         // Parse json to get waves information
         // todo do this for every Location
         allLocationWaves.Enqueue(JsonParser.parseJson("/Scripts/Waves/Wave Json Files/Location_1.json"));
-
+        Debug.Log(allLocationWaves);
     }
 
     // Start is called before the first frame update

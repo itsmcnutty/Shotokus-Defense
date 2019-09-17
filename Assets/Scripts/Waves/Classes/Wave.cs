@@ -3,7 +3,12 @@ using System.Linq;
 
 public class Wave
 {
-    private Dictionary<float, SpawnInfo> waveSections;
+    public Dictionary<float, SpawnInfo> waveSections;
+
+    public Wave()
+    {
+        this.waveSections = new Dictionary<float, SpawnInfo>();
+    }
 
     public Wave(Dictionary<float, SpawnInfo> waveSections)
     {
@@ -27,7 +32,12 @@ public class Wave
 
     public SpawnInfo GetSpawnAtTime(float time)
     {
-        float? minTime = waveSections.Min(key => key.Key);
+        if(waveSections.Count == 0)
+        {
+            return null;
+        }
+
+        float? minTime = waveSections.Min(wave => wave.Key);
         if(minTime != null && minTime.Value < time)
         {
             time = minTime.Value;
@@ -39,12 +49,18 @@ public class Wave
             return info;
         }
         
-        return (waveSections.Count > 0) ? new SpawnInfo(): null;
+        return (waveSections.Count > 0) ? new SpawnInfo(SpawnInfo.SpawnLocation.None, 0, 0, 0): null;
     }
 
     public SpawnInfo GetNextSpawnTimeInfo(out float? nextTime)
     {
-        nextTime = waveSections.Min(key => key.Key);
+        if(waveSections.Count == 0)
+        {
+            nextTime = -1;
+            return null;
+        }
+
+        nextTime = waveSections.Min(wave => wave.Key);
         return (nextTime != null)? GetSpawnAtTime(nextTime.Value) : null;
     }
 }

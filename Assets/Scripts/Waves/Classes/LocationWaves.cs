@@ -2,8 +2,7 @@ using System.Collections.Generic;
 
 public class LocationWaves
 {
-    private Queue<Wave> waves;
-    private Wave currentWave;
+    public Queue<Wave> waves;
 
     public LocationWaves(Queue<Wave> waves)
     { 
