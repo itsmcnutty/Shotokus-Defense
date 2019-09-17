@@ -122,6 +122,23 @@ public class EnemyHealth : CallParentCollision
 		
 		// Raw incoming damage
 		float damage = IMPULSE_MULTIPLIER * momentum;
+		
+		string tag = other.gameObject.tag;
+		switch (tag)
+		{
+			case "Rock":
+				damage *= 2;
+				break;
+			case "Wall":
+				damage *= 1;
+				break;
+			case "Spike":
+				damage *= 3;
+				break;
+			default:
+				damage *= 0;
+				break;
+		}
 
 		// Determine whether armor will reduce damage
 		if (damage < ARMOR_CUTOFF)

@@ -228,9 +228,15 @@ public class StrafeState : IState
 //			Debug.Log("Strafing mode / calculations");
 			// do not enter here if already strafing
 			isStrafing = true;
+			
+			// recalculate the totalCurrentradiusReduction if the enemy is already inside the strafe Distance radius when entering strafe state
+			if (distanceToPlayer < strafeDistance)
+			{
+				totalCurrentReduction = strafeDistance - distanceToPlayer;
+			}
             
 			// Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
-			pointsAroundTarget = pointsAround(playerPos, strafeDistance);
+			pointsAroundTarget = pointsAround(playerPos, strafeDistance - totalCurrentReduction);
             
 			// pick the closest of these points that has a complete path to the enemy
 			circularPointDest = closestPoint(gameObjPos, pointsAroundTarget);
