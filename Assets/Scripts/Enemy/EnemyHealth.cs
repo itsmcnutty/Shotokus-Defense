@@ -13,7 +13,7 @@ public class EnemyHealth : CallParentCollision
 	// How much HP is represented by 1m (world space) of UI health bar
 	private static float HP_PER_METER = 5000;
 	// How fast the enemy health bar fades in
-	private static float FADE_SPEED = 0.1f;
+	private static float FADE_SPEED = 0.03f;
 
 	// The enemy's max health
 	public float MAX_HEALTH;
@@ -255,7 +255,7 @@ public class EnemyHealth : CallParentCollision
 		}
 		
 		// Fade in health bar if damaged
-		if (isDamaged && canvasRendererBackground.GetAlpha() > 0.9999)
+		if (isDamaged && canvasRendererBackground.GetAlpha() < 0.9999)
 		{
 			Debug.Log("Fading in");
 			
