@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
-using Valve.VR.InteractionSystem;
+using File = System.IO.File;
+using Newtonsoft.Json;
 
 public class GameController : MonoBehaviour
 {
@@ -15,9 +14,10 @@ public class GameController : MonoBehaviour
     private EnemyProducer enemyProducer; // EnemyProducer script functionality
     private PlayerHealth playerHealth; // controller for player health once round ends
 
-    public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
-    public int enemiesDestroyed; // number of enemies destroyed in current Wave
+//    public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
+    public int enemiesAlive; // number of enemies alive in current Wave
     
+
     // variables for teleport function
     private int caseSwitch;
     private GameObject playerObj; // gameObject that contains cameraRig, vrCamera, hands
@@ -28,7 +28,13 @@ public class GameController : MonoBehaviour
     
     private GameObject UIControllerObj;
     private GameOverMenuController gameOverController;
-    
+
+    private Queue<LocationWaves> allLocationWaves = new Queue<LocationWaves>();
+    private LocationWaves currentLocation;
+    private Wave currentWave;
+
+    private float currentTime;
+        
     [Header("North Spawner")] 
     public int initialNumEnemiesNorth;
     public int increasePerWaveNorth;
@@ -90,44 +96,82 @@ public class GameController : MonoBehaviour
         
         UIControllerObj = GameObject.FindWithTag("UIController");
         gameOverController = UIControllerObj.GetComponent<GameOverMenuController>();
-        
+            
+        // Parse json to get waves information
+        // todo do this for every Location
+        allLocationWaves.Enqueue(JsonParser.parseJson("/Scripts/Waves/Wave Json Files/Location_1.json"));
+        Debug.Log(allLocationWaves);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        numOfEnemiesPerWave = initialNumOfEnemies;
-        StartWave(initialNumOfEnemies);
+        currentTime = 0;
+        currentLocation = allLocationWaves.Dequeue();
+        currentWave = currentLocation.GetNextWave();
+        enemiesAlive = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        currentTime += Time.deltaTime;
+        if(currentWave != null)
+        {
+            SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
+            if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
+            {
+                enemyProducer.Spawn(spawnInfo);      
+            }
+        }
     }
 
     // This function starts a round and spawns the corresponding number of enemies
     // Future: this function should keep track of which types enemies to spawn and how many
     // Future: this function should keep track of the round number
-    void StartWave(int numOfEnemies)
-    {
-        enemiesDestroyed = 0;
-        enemyProducer.SpawnEnemy(numOfEnemies);
-    }
+//    void StartWave(SpawnInfo spawnInfo)
+//    {
+//        enemyProducer.Spawn(spawnInfo);
+//    }
     
     // This function will be called when the player eliminates all the enemies in the wave
     // It starts a new wave, while incrementing the number of enemies that will appear
     // this function should be called everytime an enemy dies
     public void OnEnemyDeathClear()
     {
-        if (enemiesDestroyed != numOfEnemiesPerWave)
+        if (enemiesAlive != 0)
         {
             // not all enemies have been destroyed, so don't do anything
             return;
         }
-        numOfEnemiesPerWave += increaseOfEnePerWave;
-        Debug.Log("Starting new Wave!!");
-        StartWave(numOfEnemiesPerWave);
+        
+        SpawnInfo spawnInfo = currentWave.GetNextSpawnTimeInfo(out float? newTime);
+        if (spawnInfo != null)
+        {
+            // if all enemies have been killed before next wave time, then spawn early
+            currentTime = newTime.Value; // this moves foward time to spawnInfo time
+            enemyProducer.Spawn(spawnInfo);
+            return;
+        }
+
+        currentTime = 0;
+        currentWave = currentLocation.GetNextWave();
+
+        if (currentWave != null)
+        {
+            Debug.Log("Starting next Wave!!");
+            // todo add delay between wave spawning
+            return;
+        }
+
+        // if there are no waves left, check if there are more locations
+        if(allLocationWaves.Count != 0)
+        {
+            currentLocation = allLocationWaves.Dequeue();
+            currentWave = currentLocation.GetNextWave();
+            return;
+        }
+        Debug.Log("YOU WIN");
     }
 
     // Future: delete all other instances of objects in the scene
@@ -155,9 +199,10 @@ public class GameController : MonoBehaviour
         Debug.Log("Restarting game");
         
         // Reset values of wave
-        numOfEnemiesPerWave = initialNumOfEnemies;
+        enemiesAlive = 0;
+        // restart queue
+        // json stuff
         playerHealth.RecoverAllHealth();
-        StartWave(initialNumOfEnemies);
     }
     
     // This function is called when player looses
@@ -171,10 +216,15 @@ public class GameController : MonoBehaviour
     // To be called when an enemey is destroyed
     public void EnemyGotDestroyed()
     {
-        enemiesDestroyed += 1;
+        enemiesAlive --;
     }
-    
-    
+
+    // Called in EnemyProducer, updates number of enemies alive
+    public void EnemyAddNumAlive(int amount)
+    {
+        enemiesAlive += amount;
+    }
+
     // This function moves the player around the 5 wave zones
     // todo update player object position too
         public void Teleport()
