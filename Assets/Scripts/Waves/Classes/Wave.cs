@@ -28,6 +28,12 @@ public class Wave
     public SpawnInfo GetSpawnAtTime(float time)
     {
         SpawnInfo info;
+        float? minTime = waveSections.Min(key => key.Key);
+        if(minTime != null && minTime.Value < time)
+        {
+            time = minTime.Value;
+        }
+
         if (waveSections.TryGetValue(time, out info))
         {
             waveSections.Remove(time);
