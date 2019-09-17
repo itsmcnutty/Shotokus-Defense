@@ -41,7 +41,7 @@ public class StrafeState : IState
 	// This enemy GameObject
 	private GameObject gameObj;
 	// The enemy properties component
-	private EnemyProperties enemyProps;
+	private EnemyProperties props;
 	
 	// States to transition to
 	private RunState runState;
@@ -67,36 +67,69 @@ public class StrafeState : IState
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
 
-	public StrafeState(EnemyMediumProperties enemyProps)
+	public StrafeState(EnemyMediumProperties props)
 	{
-		meleeRadius = enemyProps.MELEE_RADIUS;
-		rangedRadius = enemyProps.RANGED_RADIUS;
-		agent = enemyProps.agent;
-		animator = enemyProps.animator;
-		ragdollController = enemyProps.ragdollController;
-		obstacle = enemyProps.obstacle;
-		maxStrafeSpeed = enemyProps.MAX_STRAFE_SPEED; // todo add this functionality
-		debugNoWalk = enemyProps.debugNoWalk;
-		player = enemyProps.player;
-		playerPos = enemyProps.playerPos;
-		gameObj = enemyProps.gameObject;
-		this.enemyProps = enemyProps;
+		meleeRadius = props.MELEE_RADIUS;
+		rangedRadius = props.RANGED_RADIUS;
+		agent = props.agent;
+		animator = props.animator;
+		ragdollController = props.ragdollController;
+		obstacle = props.obstacle;
+		maxStrafeSpeed = props.MAX_STRAFE_SPEED; // todo add this functionality
+		debugNoWalk = props.debugNoWalk;
+		player = props.player;
+		playerPos = props.playerPos;
+		gameObj = props.gameObject;
+		this.props = props;
 		
 		// shooting variables
-		agentHead = enemyProps.agentHead;
-		fireRate = enemyProps.RANGED_DELAY; 
-		initialVelocityX = enemyProps.PROJECTILE_VEL_X;
+		agentHead = props.agentHead;
+		fireRate = props.RANGED_DELAY; 
+		initialVelocityX = props.PROJECTILE_VEL_X;
 
 		// strafing variables
-		strafeDistance = enemyProps.STRAFE_DIST; 
-		isStrafing = enemyProps.isStrafing;
-		lastPointIndex = enemyProps.lastPointIndex; 
-		isClockwise = enemyProps.isClockwise;
-		radiusReduction = enemyProps.RADIUS_REDUCTION;
+		strafeDistance = props.STRAFE_DIST; 
+		isStrafing = props.isStrafing;
+		lastPointIndex = props.lastPointIndex; 
+		isClockwise = props.isClockwise;
+		radiusReduction = props.RADIUS_REDUCTION;
 		totalCurrentReduction = 0;
 		
 		// shooting ability
 		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
+	}
+
+	public StrafeState(EnemyLightProperties props)
+	{
+//		meleeRadius = enemyProps.MELEE_RADIUS;
+		rangedRadius = props.RANGED_RADIUS;
+		agent = props.agent;
+		animator = props.animator;
+		ragdollController = props.ragdollController;
+		obstacle = props.obstacle;
+		maxStrafeSpeed = props.MAX_STRAFE_SPEED; // todo add this functionality
+		debugNoWalk = props.debugNoWalk;
+		player = props.player;
+		playerPos = props.playerPos;
+		gameObj = props.gameObject;
+		this.props = props;
+		
+		// shooting variables
+		agentHead = props.agentHead;
+		fireRate = props.RANGED_DELAY; 
+		initialVelocityX = props.PROJECTILE_VEL_X;
+
+		// strafing variables
+		strafeDistance = props.STRAFE_DIST; 
+		isStrafing = props.isStrafing;
+		lastPointIndex = props.lastPointIndex; 
+		isClockwise = props.isClockwise;
+		radiusReduction = 0;
+		totalCurrentReduction = 0;
+		
+		// shooting ability
+		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
+		
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -106,6 +139,15 @@ public class StrafeState : IState
 		runState = enemyProps.runState;
 		meleeState = enemyProps.meleeState;
 		ragdollState = enemyProps.ragdollState;
+		climbingState = enemyProps.climbingState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyLightProperties enemyProps)
+	{
+		runState = enemyProps.runState;
+		ragdollState = enemyProps.ragdollState;
 	}
 
 	// Called upon entering this state from anywhere
@@ -113,7 +155,7 @@ public class StrafeState : IState
 	{
 		// No longer obstacle
 		obstacle.enabled = false;
-		enemyProps.EnablePathfind();
+		props.EnablePathfind();
 		
 		// Settings for agent
 		agent.stoppingDistance = 0;
@@ -135,9 +177,6 @@ public class StrafeState : IState
 	// Called during Update while currently in this state
 	public void Action()
 	{
-		if (agent.isOnOffMeshLink) 
-			Debug.Log("im on nav mesh climbing");
-		
 		// Store transform variables for player and this enemy
 		playerPos = player.transform.position;
 		Vector3 enemyVelocity = agent.velocity;
@@ -149,7 +188,14 @@ public class StrafeState : IState
 		agentHead = gameObj.transform.position;
 		// todo change this, this is the head height value
 		agentHead.y = 2.5f;
+
+//		agent.SetDestination(playerPos);
+
 		
+//		// todo delete this
+//		if (agent.enabled && !debugNoWalk) 
+//			agent.SetDestination(playerPos);
+
 		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
 		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);
 		float strafeSpeedRight = Vector3.Dot(enemyVelocity, gameObj.transform.right);
@@ -159,7 +205,7 @@ public class StrafeState : IState
 		animator.SetFloat("StrafeSpeedRight", strafeSpeedRight);
 		
 		// Turn to player
-		enemyProps.TurnToPlayer();
+		props.TurnToPlayer();
 		
 		// Move to player if outside attack range, otherwise transition
 //		if (agent.enabled && !debugNoWalk)
@@ -172,7 +218,7 @@ public class StrafeState : IState
 //		}
 
 		// remaining distance to target
-		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
 //        Debug.Log("vector3 distance is " + distanceToPlayer);
 
 		// only enters here first time it enters te strafing state
@@ -191,7 +237,7 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-//			Debug.Log("my destination is " + circularPointDest);
+			Debug.Log("my destination is " + circularPointDest);
 		}
 		
 		
@@ -202,8 +248,8 @@ public class StrafeState : IState
 //			Debug.Log("Strafing mode / moving");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
-			float strafeRemainingDist = enemyProps.calculateDist(circularPointDest, gameObjPos);
-            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
+//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
@@ -221,7 +267,7 @@ public class StrafeState : IState
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
 //				Debug.Log("last point index: " + lastPointIndex);
-//                Debug.Log("moving towards " +circularPointDest);
+                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
@@ -247,6 +293,7 @@ public class StrafeState : IState
 				shootingAbility.Shoot(initialVelocityX, fireRate, animator);
 			}
 		}
+		
 	}
 	
 
@@ -261,7 +308,6 @@ public class StrafeState : IState
 			return ragdollState;
 		}
 		
-		// todo CONTINUE TESTING THIS
 		// Transition to climbing state if climbing
 		if (agent.isOnOffMeshLink)
 		{
@@ -273,7 +319,7 @@ public class StrafeState : IState
 		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
 //		Debug.Log(distanceToPlayer);
 
 		// If outside ranged radius, transition to run state
@@ -342,7 +388,7 @@ public class StrafeState : IState
 	private Vector3 closestPoint(Vector3 enemyPos, CircularCoord[] points)
 	{
 		// initialize temp variables to first value in array of points
-		float closestDist =  enemyProps.calculateDist(enemyPos, points[0].coord);	
+		float closestDist =  props.calculateDist(enemyPos, points[0].coord);	
 		Vector3 closestPoint = points[0].coord;
         
 		for(int i = 0; i < points.Length; i++)
@@ -353,7 +399,7 @@ public class StrafeState : IState
 				continue;
 			}
 			Vector3 point = points[i].coord;
-			float tempDist = enemyProps.calculateDist(enemyPos, point);
+			float tempDist = props.calculateDist(enemyPos, point);
 			if (tempDist < closestDist)
 			{
 				closestPoint = point;

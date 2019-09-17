@@ -12,9 +12,9 @@ NavMeshProjectSettings:
   - name: Jump
     cost: 1
   - name: Quicksand
-    cost: 5
-  - name: 
-    cost: 1
+    cost: 20
+  - name: Water
+    cost: 20
   - name: 
     cost: 1
   - name: 
@@ -105,4 +105,4 @@ NavMeshProjectSettings:
       m_Flags: 0
   m_SettingNames:
   - Humanoid
-  - Light Enemy
+  - Climber Enemy

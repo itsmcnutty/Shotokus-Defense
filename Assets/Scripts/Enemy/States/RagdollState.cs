@@ -31,7 +31,7 @@ public class RagdollState : IState
 		obstacle = enemyProps.obstacle;
 		gameObj = enemyProps.gameObject;
 	}
-	
+
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
@@ -42,6 +42,13 @@ public class RagdollState : IState
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyMediumProperties enemyProps)
+	{
+		resetState = enemyProps.runState;
+	}
+	
+	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+	// necessary states for the machine
+	public void InitializeStates(EnemyLightProperties enemyProps)
 	{
 		resetState = enemyProps.runState;
 	}
