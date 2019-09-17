@@ -116,10 +116,13 @@ public class GameController : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
-        SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
-        if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
+        if(currentWave != null)
         {
-            enemyProducer.Spawn(spawnInfo);      
+            SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
+            if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
+            {
+                enemyProducer.Spawn(spawnInfo);      
+            }
         }
     }
 
@@ -162,10 +165,9 @@ public class GameController : MonoBehaviour
         }
 
         // if there are no waves left, check if there are more locations
-        currentLocation = allLocationWaves.Dequeue();
-        if (currentLocation != null)
+        if(allLocationWaves.Count != 0)
         {
-            // todo move the player
+            currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
             return;
         }
