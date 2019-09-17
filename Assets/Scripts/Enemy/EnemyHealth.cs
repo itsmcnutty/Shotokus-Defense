@@ -49,6 +49,9 @@ public class EnemyHealth : CallParentCollision
 	// Player camera
 	private GameObject camera;
 
+	private bool isDead; // flag to keep prevent constant collision from spawning more enemies
+
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -65,6 +68,8 @@ public class EnemyHealth : CallParentCollision
 		healthBarBefore.maxValue = MAX_HEALTH;
 		healthBarBefore.SetValueWithoutNotify(MAX_HEALTH);
 		UpdateHealthString();
+		
+		isDead = false;
 	}
 
 	// Called by child when receiving a collision event or a collision from its child (used
@@ -108,8 +113,9 @@ public class EnemyHealth : CallParentCollision
 			ragdollController.StartRagdoll();
 		}
 
-		if (health <= 0f)
+		if (health <= 0f && !isDead)
 		{
+			isDead = true;
 			ragdollController.StartRagdoll();
 			KillEnemy();
 		}
@@ -130,6 +136,24 @@ public class EnemyHealth : CallParentCollision
 		
 		// Raw incoming damage
 		float damage = IMPULSE_MULTIPLIER * momentum;
+		
+		// Scale damage by weapon type
+		string tag = other.gameObject.tag;
+		switch (tag)
+		{
+			case "Rock":
+				damage *= 3;
+				break;
+			case "Wall":
+				damage *= 1;
+				break;
+			case "Spike":
+				damage *= 4;
+				break;
+			default:
+				damage *= 0;
+				break;
+		}
 
 		// Determine whether armor will reduce damage
 		if (damage < ARMOR_CUTOFF)
