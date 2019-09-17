@@ -8,6 +8,8 @@ public class EnemyHealth : CallParentCollision
 {
 	// Scalar value to compute damage from impulse
 	private static float IMPULSE_MULTIPLIER = 0.034f;
+	// Height at which to kill falling enemy
+	private static float DEATH_Y = -10.0f;
 	// A quaternion that rotates 180 degrees when multiplied
 	private static Quaternion QUIATERNION_180 = Quaternion.Euler(180 * Vector3.up);
 
@@ -46,13 +48,16 @@ public class EnemyHealth : CallParentCollision
 	private float healthBarBeforeDecRate;
 	// Enemy's health points
 	private float health;
+	// Enemy's ragdoll controller
+	private RagdollController ragdollController;
 
 
 	// Start is called before the first frame update
 	void Start()
 	{
+		// Instantiating stuff
 		health = MAX_HEALTH;
-		
+		ragdollController = GetComponent<RagdollController>();
 		camera = GameObject.FindGameObjectWithTag("MainCamera");
 		
 		// Setup health bars
@@ -101,19 +106,25 @@ public class EnemyHealth : CallParentCollision
 		healthBarBeforeDecRate = (health - healthBeforeDamage) / REMOVE_DAMAGE_DURATION;
 
 		// Begin ragdolling if taken enough damage and not already ragdolling
-		if (damage >= RAGDOLL_DMG_THRESHOLD && !GetComponent<RagdollController>().IsRagdolling())
+		if (damage >= RAGDOLL_DMG_THRESHOLD && !ragdollController.IsRagdolling())
 		{
-			GetComponent<RagdollController>().StartRagdoll();
+			ragdollController.StartRagdoll();
 		}
 
 		if (health <= 0f)
 		{
-			GetComponent<RagdollController>().StartRagdoll();
-			// Indicate the Game Controller that an enemy was destroyed
-			GameController.Instance.EnemyGotDestroyed();
-			// Check if round is over or not
-			GameController.Instance.OnEnemyDeathClear();
+			ragdollController.StartRagdoll();
+			KillEnemy();
 		}
+	}
+
+	// Removes enemy from game and checks for next round
+	private void KillEnemy()
+	{
+		// Indicate the Game Controller that an enemy was destroyed
+		GameController.Instance.EnemyGotDestroyed();
+		// Check if round is over or not
+		GameController.Instance.OnEnemyDeathClear();
 	}
 
 	private float CalculateDamage(Collision other)
@@ -154,9 +165,16 @@ public class EnemyHealth : CallParentCollision
 		}
 	}
 
-	// For controlling the animation of the "before" health bar
+	// Checks for death plane and controlls the animation of the "before" health bar
 	private void Update()
 	{
+		if (transform.position.y <= DEATH_Y)
+		{
+			// Passed death plane
+			KillEnemy();
+			ragdollController.StopRagdoll();
+		}
+		
 		timeSinceDamage += Time.deltaTime;
 
 		// Animation complete
