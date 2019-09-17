@@ -3,7 +3,8 @@ public class SpawnInfo {
         North,
         South,
         East,
-        West
+        West,
+        None
     }
 
     private SpawnLocation location;
@@ -18,6 +19,15 @@ public class SpawnInfo {
         this.numMedEnemies = numMedEnemies;
         this.numHeavyEnemies = numHeavyEnemies;
     }
+
+    public SpawnInfo()
+    {
+        this.location = SpawnLocation.None;
+        this.numLightEnemies = 0;
+        this.numMedEnemies = 0;
+        this.numHeavyEnemies = 0;
+    }
+    
 
     public SpawnLocation Location
     {

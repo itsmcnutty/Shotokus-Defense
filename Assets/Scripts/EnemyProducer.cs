@@ -1,11 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyProducer : MonoBehaviour
 {
+    private GameObject spawnLocationObject; // gameobject from spawner that will be used 
+    
     public bool shouldSpawn; // boolean to activate spawning
-    public GameObject[] prefab; // prefab to be spawned. Set prefab on the editor
+    public GameObject heavyEnemyPrefab; // prefab to be spawned. Set prefab on the editor
+    public GameObject mediumEnemyPrefab; // prefab to be spawned. Set prefab on the editor
+    public GameObject lightEnemyPrefab; // prefab to be spawned. Set prefab on the editor
     private Bounds spawnArea;
 
     // Start is called before the first frame update
@@ -26,20 +32,34 @@ public class EnemyProducer : MonoBehaviour
     // Function that instantiates enemies in spawn area
     // PARAM: Int numOfEnemies - specifies how many enemies to be spawned
     // this will be called by GameController.cs
-    public void SpawnEnemy(int numOfEnemies)
+    public void SpawnEnemy(int numOfEnemies, GameObject enemyPrefab)
     {
         if (!shouldSpawn)
         {
             return;
         }
-        spawnArea = this.GetComponent<BoxCollider>().bounds;
+        spawnArea = spawnLocationObject.GetComponent<BoxCollider>().bounds;
         
         // todo maybe use invoke for delay in between enemy spawning
         for (int i = 0; i < numOfEnemies; i++)
         {
-            Instantiate(prefab[i%prefab.Length], randomSpawnPosition(), Quaternion.identity);
+            Instantiate(enemyPrefab, randomSpawnPosition(), Quaternion.identity);
         }
+    }
+
+    public void Spawn(SpawnInfo spawnInfo)
+    {
+        string spawningLocation = spawnInfo.Location.ToString();
+        spawnLocationObject = GameObject.FindWithTag(spawningLocation);
+        SpawnEnemy(spawnInfo.NumHeavyEnemies, heavyEnemyPrefab);
+        SpawnEnemy(spawnInfo.NumMedEnemies, mediumEnemyPrefab);
+        SpawnEnemy(spawnInfo.NumLightEnemies, lightEnemyPrefab);
         
+        // update counter of enemies alive
+        GameController.Instance.EnemyAddNumAlive(spawnInfo.NumHeavyEnemies + spawnInfo.NumMedEnemies + spawnInfo.NumLightEnemies);
+        
+        //todo enemyProducer to singleton and own game object
+        //todo spawners shouldnt have the enemyProducen script
     }
     
     // Update is called once per frame

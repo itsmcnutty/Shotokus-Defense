@@ -27,30 +27,24 @@ public class Wave
 
     public SpawnInfo GetSpawnAtTime(float time)
     {
-        SpawnInfo info;
         float? minTime = waveSections.Min(key => key.Key);
         if(minTime != null && minTime.Value < time)
         {
             time = minTime.Value;
         }
 
-        if (waveSections.TryGetValue(time, out info))
+        if (waveSections.TryGetValue(time, out SpawnInfo info))
         {
             waveSections.Remove(time);
             return info;
         }
-
-        return null;
+        
+        return (waveSections.Count > 0) ? new SpawnInfo(): null;
     }
 
-    public SpawnInfo GetNextSpawnTimeInfo()
+    public SpawnInfo GetNextSpawnTimeInfo(out float? nextTime)
     {
-        float? minTime = waveSections.Min(key => key.Key);
-        if (minTime != null)
-        {
-            return GetSpawnAtTime(minTime.Value);
-        }
-
-        return null;
+        nextTime = waveSections.Min(key => key.Key);
+        return (nextTime != null)? GetSpawnAtTime(nextTime.Value) : null;
     }
 }
