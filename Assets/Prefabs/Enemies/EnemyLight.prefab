@@ -1541,7 +1541,6 @@ GameObject:
   - component: {fileID: 556872095284120024}
   - component: {fileID: 4828776817018062485}
   - component: {fileID: 1275101893616847299}
-  - component: {fileID: 7167125418838329711}
   - component: {fileID: 3515778109007016031}
   - component: {fileID: 8349702791707146258}
   m_Layer: 9
@@ -1599,9 +1598,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f741fb8cfac8ae84f832c430c2d050f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PHYSIC_MATERIAL: {fileID: 0}
+  PHYSIC_MATERIAL: {fileID: 13400000, guid: 81b937e17b207d747916c4de1da2d0c0, type: 2}
   resetPosition: 0
-  enemyDeathParticles: {fileID: 0}
+  enemyDeathParticles: {fileID: 6999368016778063326, guid: bb84722e45680e44f9cb4972adefbcec,
+    type: 3}
 --- !u!114 &4828776817018062485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1645,24 +1645,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7167125418838329711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7570988895621427575}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df8c3f21b6ab97449bef91710d43c082, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agent: {fileID: 1275101893616847299}
-  projectilePrefab: {fileID: 1921574221529877245, guid: 3df44a70a979b3c438c36dc9134397c8,
-    type: 3}
-  fireRate: 3
-  initialVelocityX: 15
-  distanceFromPlayer: 15
 --- !u!208 &3515778109007016031
 NavMeshObstacle:
   m_ObjectHideFlags: 0
