@@ -10,8 +10,6 @@ public class EnemyHealth : CallParentCollision
 	private static float IMPULSE_MULTIPLIER = 0.034f;
 	// Height at which to kill falling enemy
 	private static float DEATH_Y = -10.0f;
-	// A quaternion that rotates 180 degrees when multiplied
-	private static Quaternion QUIATERNION_180 = Quaternion.Euler(180 * Vector3.up);
 
 	// The enemy's max health
 	public float MAX_HEALTH;
@@ -38,8 +36,6 @@ public class EnemyHealth : CallParentCollision
 	// How long it takes to remove the damage that was dealt from the "before" health bar (seconds)
 	private float REMOVE_DAMAGE_DURATION = 0.8f;
 
-	private GameObject camera;
-	
 	// Seconds since last time enemy took damage
 	private float timeSinceDamage;
 	// HP before enemy took damage;
@@ -50,7 +46,8 @@ public class EnemyHealth : CallParentCollision
 	private float health;
 	// Enemy's ragdoll controller
 	private RagdollController ragdollController;
-
+	// Player camera
+	private GameObject camera;
 
 	// Start is called before the first frame update
 	void Start()
@@ -152,7 +149,7 @@ public class EnemyHealth : CallParentCollision
 		return obj.GetComponent<RockCollide>() != null;
 	}
 	
-	// Updates the text above the health bar based on the enemy's current heatlh
+	// Updates the text above the health bar based on the enemy's current health
 	private void UpdateHealthString()
 	{
 		if (debugShowHealthText)
@@ -190,6 +187,7 @@ public class EnemyHealth : CallParentCollision
 		}
 		
 		// Rotate health bar to face player
-		healthBarCanvas.transform.rotation = camera.transform.rotation * QUIATERNION_180;
+		Vector3 cameraEulers = camera.transform.rotation.eulerAngles;
+		healthBarCanvas.transform.rotation = Quaternion.Euler(cameraEulers.x, cameraEulers.y + 180, 0);
 	}
 }
