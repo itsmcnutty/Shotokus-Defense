@@ -10,6 +10,8 @@ public class EnemyHealth : CallParentCollision
 	private static float IMPULSE_MULTIPLIER = 0.034f;
 	// Height at which to kill falling enemy
 	private static float DEATH_Y = -10.0f;
+	// How much HP is represented by 1m (world space) of UI health bar
+	private static float HP_PER_METER = 5000;
 
 	// The enemy's max health
 	public float MAX_HEALTH;
@@ -64,12 +66,19 @@ public class EnemyHealth : CallParentCollision
 		hips = GetComponentInChildren<Rigidbody>().gameObject;
 		
 		// Setup health bars
+		Vector3 healthBarScale = new Vector3(MAX_HEALTH / HP_PER_METER, 1, 1);
+		
 		healthBarActual.minValue = 0f;
 		healthBarActual.maxValue = MAX_HEALTH;
 		healthBarActual.SetValueWithoutNotify(MAX_HEALTH);
+		healthBarActual.transform.localScale = healthBarScale;
+		
 		healthBarBefore.minValue = 0f;
 		healthBarBefore.maxValue = MAX_HEALTH;
 		healthBarBefore.SetValueWithoutNotify(MAX_HEALTH);
+		healthBarBefore.transform.localScale = healthBarScale;
+		
+		
 		UpdateHealthString();
 		
 		isDead = false;
