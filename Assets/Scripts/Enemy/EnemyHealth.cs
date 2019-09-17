@@ -48,6 +48,8 @@ public class EnemyHealth : CallParentCollision
 	private RagdollController ragdollController;
 	// Player camera
 	private GameObject camera;
+	// Enemy hip bone
+	private GameObject hips;
 
 	private bool isDead; // flag to keep prevent constant collision from spawning more enemies
 
@@ -59,6 +61,7 @@ public class EnemyHealth : CallParentCollision
 		health = MAX_HEALTH;
 		ragdollController = GetComponent<RagdollController>();
 		camera = GameObject.FindGameObjectWithTag("MainCamera");
+		hips = GetComponentInChildren<Rigidbody>().gameObject;
 		
 		// Setup health bars
 		healthBarActual.minValue = 0f;
@@ -211,7 +214,9 @@ public class EnemyHealth : CallParentCollision
 		}
 		
 		// Rotate health bar to face player
-		Vector3 cameraEulers = camera.transform.rotation.eulerAngles;
-		healthBarCanvas.transform.rotation = Quaternion.Euler(cameraEulers.x, cameraEulers.y + 180, 0);
+		Vector3 toPlayerVector = camera.transform.position - hips.transform.position;
+		Quaternion toPlayerQuat = (Quaternion.LookRotation(toPlayerVector));
+		double yRotation = 180.0 / Math.PI * Math.Atan2(toPlayerVector.x, toPlayerVector.z);
+		healthBarCanvas.transform.rotation = toPlayerQuat;
 	}
 }
