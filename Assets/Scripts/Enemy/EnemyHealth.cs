@@ -173,7 +173,7 @@ public class EnemyHealth : CallParentCollision
 		switch (tag)
 		{
 			case "Rock":
-				damage *= 3;
+				damage *= 3.5f;
 				break;
 			case "Wall":
 				damage *= 1;
