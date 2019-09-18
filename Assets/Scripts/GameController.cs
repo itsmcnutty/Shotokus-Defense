@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using File = System.IO.File;
-using Newtonsoft.Json;
+using System.IO;
 
 public class GameController : MonoBehaviour
 {
-    public int initialNumOfEnemies; // initial number of enemies to start a round with
-    public int increaseOfEnePerWave; // how many more enemies per wave
-    
     private static GameController instance; // instance for singleton pattern
     private GameObject enemyProducerObject; // EnemyProducer Object Instance
     private EnemyProducer enemyProducer; // EnemyProducer script functionality
     private PlayerHealth playerHealth; // controller for player health once round ends
 
 //    public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
-    public int enemiesAlive; // number of enemies alive in current Wave
-    
+    private int enemiesAlive; // number of enemies alive in current Wave
+
+    [Header("Wave Files")] 
+    public TextAsset location1WaveFile;
 
     // variables for teleport function
     private int caseSwitch;
@@ -36,24 +34,9 @@ public class GameController : MonoBehaviour
 
     private float currentTime;
         
-    [Header("North Spawner")] 
-    public int initialNumEnemiesNorth;
-    public int increasePerWaveNorth;
     [NonSerialized] private EnemyProducer northProducer;
-
-    [Header("West Spawner")] 
-    public int initialNumEnemiesWest;
-    public int increasePerWaveWest;
     [NonSerialized] private EnemyProducer westProducer;
-    
-    [Header("South Spawner")] 
-    public int initialNumEnemiesSouth;
-    public int increasePerWaveSouth;
     [NonSerialized] private EnemyProducer southProducer;
-
-    [Header("East Spawner")] 
-    public int initialNumEnemiesEast;
-    public int increasePerWaveEast;
     [NonSerialized] private EnemyProducer eastProducer;
     
     
@@ -100,8 +83,7 @@ public class GameController : MonoBehaviour
             
         // Parse json to get waves information
         // todo do this for every Location
-        allLocationWaves.Enqueue(JsonParser.parseJson("/Scripts/Waves/Wave Json Files/Location_1.json"));
-        Debug.Log(allLocationWaves);
+        allLocationWaves.Enqueue(JsonParser.parseJson(location1WaveFile));
     }
 
     // Start is called before the first frame update
