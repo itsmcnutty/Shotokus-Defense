@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
 
     [Header("Wave Files")]
     public TextAsset location1WaveFile;
+    public TextAsset location2WaveFile;
 
     // variables for teleport function
     private int caseSwitch;
@@ -75,6 +76,7 @@ public class GameController : MonoBehaviour
         // Parse json to get waves information
         // todo do this for every Location
         allLocationWaves.Enqueue(JsonParser.parseJson(location1WaveFile));
+        allLocationWaves.Enqueue(JsonParser.parseJson(location2WaveFile));
     }
 
     // Start is called before the first frame update
