@@ -18,9 +18,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;      
         healthBar.maxValue = maxHealth;
         healthBar.value = maxHealth;
-        SetHealthBarText(); 
-
-        TakeDamage(750);
+        SetHealthBarText();
     }
 
     // Update is called once per frame

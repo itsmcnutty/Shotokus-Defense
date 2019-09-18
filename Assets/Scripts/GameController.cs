@@ -31,6 +31,7 @@ public class GameController : MonoBehaviour
 
     private Queue<LocationWaves> allLocationWaves = new Queue<LocationWaves>();
     private LocationWaves currentLocation;
+    private LocationWaves resetLocation;
     private Wave currentWave;
 
     private float currentTime;
@@ -107,7 +108,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         currentTime = 0;
-        currentLocation = allLocationWaves.Dequeue();
+        currentLocation = resetLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         enemiesAlive = 0;
     }
@@ -200,8 +201,7 @@ public class GameController : MonoBehaviour
         
         // Reset values of wave
         enemiesAlive = 0;
-        // restart queue
-        // json stuff
+        currentLocation = resetLocation;
         playerHealth.RecoverAllHealth();
     }
     
