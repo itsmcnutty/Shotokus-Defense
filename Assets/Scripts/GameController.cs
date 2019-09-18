@@ -33,12 +33,6 @@ public class GameController : MonoBehaviour
     private Wave currentWave;
 
     private float currentTime;
-        
-    [NonSerialized] private EnemyProducer northProducer;
-    [NonSerialized] private EnemyProducer westProducer;
-    [NonSerialized] private EnemyProducer southProducer;
-    [NonSerialized] private EnemyProducer eastProducer;
-    
     
     // Constructor
     private GameController(){}
@@ -150,7 +144,7 @@ public class GameController : MonoBehaviour
         // if there are no waves left, check if there are more locations
         if(allLocationWaves.Count != 0)
         {
-            currentLocation = allLocationWaves.Dequeue();
+            currentLocation = resetLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
             return;
         }
