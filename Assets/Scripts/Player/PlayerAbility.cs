@@ -389,4 +389,9 @@ public class PlayerAbility : MonoBehaviour
             outlineObject.GetComponentInChildren<MeshRenderer>().material = invalidOutlineMat;
         }
     }
+
+    public void RepositionAbilityRing(Vector3 newPosition)
+    {
+        abilityRing.transform.position += newPosition;
+    }
 }

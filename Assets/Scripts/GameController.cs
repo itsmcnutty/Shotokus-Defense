@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
     private Wave currentWave;
 
     private float currentTime;
-    private bool pauseWaveSystem;
+    private bool pauseWaveSystem = true;
 
     // Constructor
     private GameController() { }
@@ -86,6 +86,7 @@ public class GameController : MonoBehaviour
         currentLocation = resetLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         enemiesAlive = 0;
+        Invoke("TogglePauseWaveSystem", 10);
     }
 
     // Update is called once per frame
@@ -259,6 +260,10 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
         //        playerObj.transform.position = destinationPos;
+
+        // Reposition the ability ring
+        GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing(translateVector);
+        GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing(translateVector);
 
         // Unpause the wave system
         Invoke("TogglePauseWaveSystem", 10);
