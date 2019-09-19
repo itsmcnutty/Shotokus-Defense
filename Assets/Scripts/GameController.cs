@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     private int enemiesAlive; // number of enemies alive in current Wave
 
     [Header("Wave Files")]
+    // todo put this stuff in an array
     public TextAsset location1WaveFile;
     public TextAsset location2WaveFile;
 
@@ -28,6 +29,7 @@ public class GameController : MonoBehaviour
 
     private Queue<LocationWaves> allLocationWaves = new Queue<LocationWaves>();
     private LocationWaves currentLocation;
+    private int currentLocationCounter; // used to keep track of teleportation 
 //    private LocationWaves resetLocation;
     private Queue<LocationWaves> resetLocation;
     private Wave currentWave;
@@ -80,6 +82,7 @@ public class GameController : MonoBehaviour
         // todo do this for every Location
         allLocationWaves.Enqueue(JsonParser.parseJson(location1WaveFile));
         allLocationWaves.Enqueue(JsonParser.parseJson(location2WaveFile));
+        // keep duplicate for reseting locations
     }
 
     // Start is called before the first frame update
@@ -87,7 +90,7 @@ public class GameController : MonoBehaviour
     {
         currentTime = 0;
         // todo fix this
-        resetLocation = new Queue<LocationWaves>(allLocationWaves);
+//        resetLocation = (Queue) allLocationWaves.Clone();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
 //        currentLocation = resetLocation = allLocationWaves.Dequeue();
@@ -158,6 +161,7 @@ public class GameController : MonoBehaviour
             currentLocation = allLocationWaves.Dequeue();
             
             currentWave = currentLocation.GetNextWave();
+            Teleport();
             TogglePauseWaveSystem();
             return;
         }
