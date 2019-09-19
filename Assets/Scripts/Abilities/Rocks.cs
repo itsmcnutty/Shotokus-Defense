@@ -154,7 +154,7 @@ public class Rocks : MonoBehaviour
             StartCoroutine(PlayerAbility.LongVibration(hand, 0.1f, 1000));
 
             // Uses power-up if enabled
-            if (PlayerAbility.RockClusterEnabled())
+            if (PlayerAbility.RockClusterEnabled)
             {
                 // Gets the speed of the rock at the time of release
                 Vector3 velocity, angularVelocity;
