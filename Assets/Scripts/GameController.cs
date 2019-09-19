@@ -271,8 +271,8 @@ public class GameController : MonoBehaviour
         //        playerObj.transform.position = destinationPos;
 
         // Reposition the ability ring
-        GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing(translateVector);
-        GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing(translateVector);
+        StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
+        StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
     }
 
     private void TogglePauseWaveSystem()

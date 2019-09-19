@@ -107,7 +107,7 @@ public class MenuUIController : MonoBehaviour
     // if pause menu active, delete it and unpause game
     public void pauseToggle()
     {
-        laserPointer.toggleLaser();
+        ToggleLaser();
         if (!isPauseMenuActive)
         {
             // menu is not active, so open it
@@ -124,6 +124,9 @@ public class MenuUIController : MonoBehaviour
         }
     }
     
-    
+    public void ToggleLaser()
+    {
+        laserPointer.toggleLaser();
+    }
     
 }

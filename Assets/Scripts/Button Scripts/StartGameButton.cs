@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class StartGameButton : MonoBehaviour
 {
+    public GameObject spawnArea;
+
     // Start is called before the first frame update
     void Start()
     {
-        MenuUIController.Instance.pauseToggle();
+        MenuUIController.Instance.ToggleLaser();
     }
 
     // Update is called once per frame
@@ -19,8 +21,8 @@ public class StartGameButton : MonoBehaviour
     public void StartGame()
     {
         GameController.Instance.StartGame();
-        MenuUIController.Instance.pauseToggle();
-        GameObject.Find("Spawn Area").SetActive(false);
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(false);
     }
     
 }

@@ -140,18 +140,6 @@ public class PlayerAbility : MonoBehaviour
         abilityRing = Instantiate(playerAbilityAreaPrefab);
         MeshRenderer meshRenderer = abilityRing.GetComponentInChildren<MeshRenderer>();
         abilityRing.transform.localScale = new Vector3(rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x));
-        abilityRing.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
-
-        // Changes height of the ability ring to be at the players feet
-        RaycastHit hit;
-        if (Physics.Raycast(abilityRing.transform.position, Vector3.down, out hit, 3f, outlineLayerMask))
-        {
-            abilityRing.transform.position += new Vector3(0, hit.point.y - abilityRing.transform.position.y, 0);
-        }
-        else
-        {
-            abilityRing.transform.position += new Vector3(0, -abilityRing.transform.position.y, 0);
-        }
     }
 
     // Update is called once per frame
@@ -456,8 +444,21 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    public void RepositionAbilityRing(Vector3 newPosition)
+    public IEnumerator RepositionAbilityRing()
     {
-        abilityRing.transform.position += newPosition;
+        yield return new WaitForEndOfFrame();
+        
+        abilityRing.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+
+        // Changes height of the ability ring to be at the players feet
+        RaycastHit hit;
+        if (Physics.Raycast(abilityRing.transform.position, Vector3.down, out hit, 3f, outlineLayerMask))
+        {
+            abilityRing.transform.position += new Vector3(0, hit.point.y - abilityRing.transform.position.y, 0);
+        }
+        else
+        {
+            abilityRing.transform.position += new Vector3(0, -abilityRing.transform.position.y, 0);
+        }
     }
 }
