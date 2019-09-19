@@ -22,14 +22,12 @@ public class GameOverProperties : MonoBehaviour
 
     private void OnDestroy()
     {
+        // active abilities and ability laser
         laserPointer.toggleLaser();
-                    
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
         PlayerAbility.ToggleQuicksandAbility();
         PlayerAbility.ToggleRockAbility();
-        
-        // detoggle abilities??
         Time.timeScale = 1;
     }
 }
