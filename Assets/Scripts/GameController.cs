@@ -86,7 +86,6 @@ public class GameController : MonoBehaviour
         currentLocation = resetLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         enemiesAlive = 0;
-        Invoke("TogglePauseWaveSystem", 10);
     }
 
     // Update is called once per frame
@@ -157,13 +156,20 @@ public class GameController : MonoBehaviour
         Debug.Log("YOU WIN");
     }
 
-    public void StartGame()
+    public void StartGameWithTutorial()
+    {
+        Teleport();
+        TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
+    }
+
+    public void StartGameWithoutTutorial()
     {
         Teleport();
         PlayerAbility.ToggleRockAbility();
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
         PlayerAbility.ToggleQuicksandAbility();
+        Invoke("TogglePauseWaveSystem", 10);
     }
 
     // Future: delete all other instances of objects in the scene
