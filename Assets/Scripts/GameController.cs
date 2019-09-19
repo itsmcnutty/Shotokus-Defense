@@ -89,7 +89,7 @@ public class GameController : MonoBehaviour
         // todo fix this
         resetLocation = new Queue<LocationWaves>(allLocationWaves);
         currentLocation = allLocationWaves.Dequeue();
-//        currentWave = currentLocation.GetNextWave();
+        currentWave = currentLocation.GetNextWave();
 //        currentLocation = resetLocation = allLocationWaves.Dequeue();
         enemiesAlive = 0;
         Invoke("TogglePauseWaveSystem", 0);
@@ -142,6 +142,7 @@ public class GameController : MonoBehaviour
         currentTime = 0;
         currentWave = currentLocation.GetNextWave();
 
+        // dont continue in the function if there are more waves in the current location
         if (currentWave != null)
         {
             TogglePauseWaveSystem();
