@@ -7,8 +7,8 @@ public class GameController : MonoBehaviour
     private GameObject enemyProducerObject; // EnemyProducer Object Instance
     private EnemyProducer enemyProducer; // EnemyProducer script functionality
     private PlayerHealth playerHealth; // controller for player health once round ends
+//    private PlayerEnergy playerEnergy; // controller for player energy
 
-    // public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
     private int enemiesAlive; // number of enemies alive in current Wave
 
     [Header("Wave Files")]
@@ -28,11 +28,16 @@ public class GameController : MonoBehaviour
 
     private Queue<LocationWaves> allLocationWaves = new Queue<LocationWaves>();
     private LocationWaves currentLocation;
-    private LocationWaves resetLocation;
+//    private LocationWaves resetLocation;
+    private Queue<LocationWaves> resetLocation;
     private Wave currentWave;
 
     private float currentTime;
     private bool pauseWaveSystem = true;
+    
+    // todo testing
+    private bool restarted = false;
+
 
     // Constructor
     private GameController() { }
@@ -63,10 +68,8 @@ public class GameController : MonoBehaviour
         {
             playerHealth = player.GetComponent<PlayerHealth>();
             // todo maybe restart enemy energy when restarting game
-            //            playerEnergy = player.GetComponent<PlayerEnergy> ();
+//            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
-
-        // todo fix this for multiple producers
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
 
@@ -83,10 +86,13 @@ public class GameController : MonoBehaviour
     void Start()
     {
         currentTime = 0;
-        currentLocation = resetLocation = allLocationWaves.Dequeue();
-        currentWave = currentLocation.GetNextWave();
+        // todo fix this
+        resetLocation = new Queue<LocationWaves>(allLocationWaves);
+        currentLocation = allLocationWaves.Dequeue();
+//        currentWave = currentLocation.GetNextWave();
+//        currentLocation = resetLocation = allLocationWaves.Dequeue();
         enemiesAlive = 0;
-        Invoke("TogglePauseWaveSystem", 10);
+        Invoke("TogglePauseWaveSystem", 0);
     }
 
     // Update is called once per frame
@@ -98,6 +104,11 @@ public class GameController : MonoBehaviour
         }
 
         currentTime += Time.deltaTime;
+        // todo remove this only testing
+        if (restarted)
+        {
+            // stop debugger
+        }
         if (currentWave != null)
         {
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
@@ -107,14 +118,6 @@ public class GameController : MonoBehaviour
             }
         }
     }
-
-    // This function starts a round and spawns the corresponding number of enemies
-    // Future: this function should keep track of which types enemies to spawn and how many
-    // Future: this function should keep track of the round number
-    //    void StartWave(SpawnInfo spawnInfo)
-    //    {
-    //        enemyProducer.Spawn(spawnInfo);
-    //    }
 
     // This function will be called when the player eliminates all the enemies in the wave
     // It starts a new wave, while incrementing the number of enemies that will appear
@@ -149,7 +152,10 @@ public class GameController : MonoBehaviour
         // if there are no waves left, check if there are more locations
         if (allLocationWaves.Count != 0)
         {
-            currentLocation = resetLocation = allLocationWaves.Dequeue();
+//            currentLocation = resetLocation = allLocationWaves.Dequeue();
+            resetLocation = new Queue<LocationWaves>(allLocationWaves);
+            currentLocation = allLocationWaves.Dequeue();
+            
             currentWave = currentLocation.GetNextWave();
             TogglePauseWaveSystem();
             return;
@@ -161,36 +167,67 @@ public class GameController : MonoBehaviour
     // delete walls, spikes, rocks
     public void RestartGame()
     {
+        // todo testing
+        restarted = true;
+        
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
-
-        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemies)
-        {
-            Destroy(enemy);
-        }
-
-        // destroy menu screens and unfreeze game 
-        var menus = GameObject.FindGameObjectsWithTag("Menu");
-        foreach (var menu in menus)
-        {
-            Destroy(menu);
-        }
-
-        // todo translate player to beginning position
-
+        
+        // destroy all objects in scene before restarting
+        destroyAll();
+        
         Debug.Log("Restarting game");
 
         // Reset values of wave
         enemiesAlive = 0;
-        currentLocation = resetLocation;
+        currentTime = 0;
+        // todo restart waves at current location
+//        currentLocation = resetLocation;
+        allLocationWaves = new Queue<LocationWaves>(resetLocation);
+        currentLocation = allLocationWaves.Dequeue();
+        currentWave = currentLocation.GetNextWave();
         playerHealth.RecoverAllHealth();
+        // todo restore all  energy
+    }
+
+    // this function destroys all the following game objects instances:
+    // rocks, walls, spikes, quicksand, menus, enemies, particles of the abilities
+    public void destroyAll()
+    {
+        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var enemy in enemies) 
+            Destroy(enemy);
+
+        // destroy menu screens and unfreeze game 
+        var menus = GameObject.FindGameObjectsWithTag("Menu");
+        foreach (var menu in menus) 
+            Destroy(menu);
+
+        // destroy rocks, spikes, walls, quicksand 
+        var rocks = GameObject.FindGameObjectsWithTag("Rock");
+        var spikes = GameObject.FindGameObjectsWithTag("Spike");
+        var walls = GameObject.FindGameObjectsWithTag("Wall");
+        var quicksands = GameObject.FindGameObjectsWithTag("Quicksand");
+        foreach (var rock in rocks) 
+            Destroy(rock);
+        foreach (var spike in spikes) 
+            Destroy(spike);
+        foreach (var wall in walls) 
+            Destroy(wall);
+        foreach (var quicksand in quicksands) 
+            Destroy(quicksand);
+
+        // destroy particles
+        var particles = GameObject.FindGameObjectsWithTag("Particle");
+        foreach (var particle in particles) 
+            Destroy(particle);
     }
 
     // This function is called when player looses
     // It will instantiate the game over menu and give the option to restart the game
     public void playerLost()
     {
+        destroyAll();
         gameOverController.GameOverScreen();
     }
 
@@ -216,15 +253,11 @@ public class GameController : MonoBehaviour
         caseSwitch += 1;
 
         // Get camera rig and head position
-        // Transform cameraRig = SteamVR_Render.Top().origin;
         Transform cameraRigT = cameraRig.transform;
-        // Vector3 headPosition = SteamVR_Render.Top().head.position;
         Vector3 headPosition = vrCamera.transform.position;
 
         Debug.Log("Teleport!");
         temp = temp % 5;
-        Debug.Log(temp);
-        Debug.Log(caseSwitch);
         switch (temp)
         {
             case 0:
