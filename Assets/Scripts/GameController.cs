@@ -7,13 +7,17 @@ public class GameController : MonoBehaviour
     private GameObject enemyProducerObject; // EnemyProducer Object Instance
     private EnemyProducer enemyProducer; // EnemyProducer script functionality
     private PlayerHealth playerHealth; // controller for player health once round ends
+//    private PlayerEnergy playerEnergy; // controller for player energy
 
-    // public int numOfEnemiesPerWave; // number of enemies to be spawned in one wave 
     private int enemiesAlive; // number of enemies alive in current Wave
 
+    [Header("Wait Times between Waves")] 
+    public float BEFORE_WAVE1;
+    public float BETWEEN_WAVES;
+    public float BETWEEN_LOCATIONS;
+
     [Header("Wave Files")]
-    public TextAsset location1WaveFile;
-    public TextAsset location2WaveFile;
+    public TextAsset[] locationWaveFiles; // array containing location wave files
 
     // variables for teleport function
     private int caseSwitch;
@@ -28,11 +32,13 @@ public class GameController : MonoBehaviour
 
     private Queue<LocationWaves> allLocationWaves = new Queue<LocationWaves>();
     private LocationWaves currentLocation;
-    private LocationWaves resetLocation;
+    private int currentLocationCounter; // used to keep track of teleportation 
+    private Queue<LocationWaves> resetLocation;
     private Wave currentWave;
 
     private float currentTime;
     private bool pauseWaveSystem = true;
+
 
     // Constructor
     private GameController() { }
@@ -63,27 +69,23 @@ public class GameController : MonoBehaviour
         {
             playerHealth = player.GetComponent<PlayerHealth>();
             // todo maybe restart enemy energy when restarting game
-            //            playerEnergy = player.GetComponent<PlayerEnergy> ();
+//            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
-
-        // todo fix this for multiple producers
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
 
         UIControllerObj = GameObject.FindWithTag("UIController");
         gameOverController = UIControllerObj.GetComponent<GameOverMenuController>();
 
-        // Parse json to get waves information
-        // todo do this for every Location
-        allLocationWaves.Enqueue(JsonParser.parseJson(location1WaveFile));
-        allLocationWaves.Enqueue(JsonParser.parseJson(location2WaveFile));
+        // Parse json to get waves information &  fill up AlllocationWave queue
+        restartQueue();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         currentTime = 0;
-        currentLocation = resetLocation = allLocationWaves.Dequeue();
+        currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         enemiesAlive = 0;
     }
@@ -95,8 +97,9 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-
+        
         currentTime += Time.deltaTime;
+
         if (currentWave != null)
         {
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
@@ -106,14 +109,6 @@ public class GameController : MonoBehaviour
             }
         }
     }
-
-    // This function starts a round and spawns the corresponding number of enemies
-    // Future: this function should keep track of which types enemies to spawn and how many
-    // Future: this function should keep track of the round number
-    //    void StartWave(SpawnInfo spawnInfo)
-    //    {
-    //        enemyProducer.Spawn(spawnInfo);
-    //    }
 
     // This function will be called when the player eliminates all the enemies in the wave
     // It starts a new wave, while incrementing the number of enemies that will appear
@@ -138,21 +133,28 @@ public class GameController : MonoBehaviour
         currentTime = 0;
         currentWave = currentLocation.GetNextWave();
 
+        // dont continue in the function if there are more waves in the current location
         if (currentWave != null)
         {
             TogglePauseWaveSystem();
-            Invoke("TogglePauseWaveSystem", 10);
+            Invoke("TogglePauseWaveSystem", BETWEEN_WAVES);
             return;
         }
 
         // if there are no waves left, check if there are more locations
         if (allLocationWaves.Count != 0)
         {
-            currentLocation = resetLocation = allLocationWaves.Dequeue();
+//            currentLocation = resetLocation = allLocationWaves.Dequeue();
+//            resetLocation = new Queue<LocationWaves>(allLocationWaves);
+            currentLocationCounter++;
+            currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
+            Teleport();
             TogglePauseWaveSystem();
+            Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
             return;
         }
+        // no more waves left so you win
         Debug.Log("YOU WIN");
     }
 
@@ -160,6 +162,16 @@ public class GameController : MonoBehaviour
     {
         Teleport();
         TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
+    }
+
+    // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location postion counter
+    public void restartQueue()
+    {
+        allLocationWaves = new Queue<LocationWaves>();
+        for (int i = currentLocationCounter; i < locationWaveFiles.Length; i++)
+        {
+            allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
+        }
     }
 
     public void StartGameWithoutTutorial()
@@ -178,34 +190,59 @@ public class GameController : MonoBehaviour
     {
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
+        
+        // destroy all objects in scene before restarting
+        destroyAll();
+        
+        Debug.Log("Restarting game");
 
+        // Reset values of wave (queue, timer, enemies counter)
+        enemiesAlive = 0;
+        restartQueue();
+        currentLocation = allLocationWaves.Dequeue();
+        currentWave = currentLocation.GetNextWave();
+        playerHealth.RecoverAllHealth();
+        // todo restore all  energy
+    }
+
+    // this function destroys all the following game objects instances:
+    // rocks, walls, spikes, quicksand, menus, enemies, particles of the abilities
+    public void destroyAll()
+    {
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemies)
-        {
+        foreach (var enemy in enemies) 
             Destroy(enemy);
-        }
 
         // destroy menu screens and unfreeze game 
         var menus = GameObject.FindGameObjectsWithTag("Menu");
-        foreach (var menu in menus)
-        {
+        foreach (var menu in menus) 
             Destroy(menu);
-        }
 
-        // todo translate player to beginning position
+        // destroy rocks, spikes, walls, quicksand 
+        var rocks = GameObject.FindGameObjectsWithTag("Rock");
+        var spikes = GameObject.FindGameObjectsWithTag("Spike");
+        var walls = GameObject.FindGameObjectsWithTag("Wall");
+        var quicksands = GameObject.FindGameObjectsWithTag("Quicksand");
+        foreach (var rock in rocks) 
+            Destroy(rock);
+        foreach (var spike in spikes) 
+            Destroy(spike);
+        foreach (var wall in walls) 
+            Destroy(wall);
+        foreach (var quicksand in quicksands) 
+            Destroy(quicksand);
 
-        Debug.Log("Restarting game");
-
-        // Reset values of wave
-        enemiesAlive = 0;
-        currentLocation = resetLocation;
-        playerHealth.RecoverAllHealth();
+        // destroy particles
+        var particles = GameObject.FindGameObjectsWithTag("Particle");
+        foreach (var particle in particles) 
+            Destroy(particle);
     }
 
     // This function is called when player looses
     // It will instantiate the game over menu and give the option to restart the game
     public void playerLost()
     {
+        destroyAll();
         gameOverController.GameOverScreen();
     }
 
@@ -231,15 +268,11 @@ public class GameController : MonoBehaviour
         caseSwitch += 1;
 
         // Get camera rig and head position
-        // Transform cameraRig = SteamVR_Render.Top().origin;
         Transform cameraRigT = cameraRig.transform;
-        // Vector3 headPosition = SteamVR_Render.Top().head.position;
         Vector3 headPosition = vrCamera.transform.position;
 
         Debug.Log("Teleport!");
         temp = temp % 5;
-        Debug.Log(temp);
-        Debug.Log(caseSwitch);
         switch (temp)
         {
             case 0:

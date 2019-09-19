@@ -57,7 +57,6 @@ public class MenuUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // todo - otherwise, close it
         if (PausePress())
         {
             pauseToggle();
