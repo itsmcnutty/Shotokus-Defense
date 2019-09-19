@@ -127,7 +127,16 @@ public class RagdollController : MonoBehaviour
         // Move to position where ragdoll was laying and re-enable pathfinding
         if (!resetPosition)
         {
-            transform.position = rigidbodies[0].transform.position;
+            Cloth cloth = GetComponentInChildren<Cloth>();
+            if (cloth)
+            {
+                cloth.enabled = false;
+                transform.position = rigidbodies[0].transform.position;
+                cloth.enabled = true;
+            }
+            else {
+                transform.position = rigidbodies[0].transform.position;
+            }
         }
         agent.enabled = true;
     }
