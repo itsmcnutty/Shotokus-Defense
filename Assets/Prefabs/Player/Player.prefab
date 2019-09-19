@@ -1474,7 +1474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5697528617248597526
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2581,6 +2581,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d73994f92dfdf446bcf3b9752b56ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rockClusterCanvas: {fileID: 5697528617399185357}
+  spikeChainCanvas: {fileID: 5697528617715303786}
+  earthquakeCanvas: {fileID: 5697528617248597527}
+  wallPushCanvas: {fileID: 5697528617605954438}
   rockClusterBar: {fileID: 3058137215145742812}
   spikeChainBar: {fileID: 3058137216040798068}
   earthquakeBar: {fileID: 3058137215862545778}
@@ -3356,7 +3360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5697528617399185356
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3610,7 +3614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5697528617605954433
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3647,7 +3651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5697528617715303781
 RectTransform:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         // teleport script
-        caseSwitch = 1;
+        caseSwitch = 0;
         playerObj = GameObject.FindGameObjectWithTag("Player");
         vrCamera = GameObject.FindGameObjectWithTag("MainCamera");
         cameraRig = GameObject.FindGameObjectWithTag("CameraRig");
@@ -162,6 +162,15 @@ public class GameController : MonoBehaviour
             return;
         }
         Debug.Log("YOU WIN");
+    }
+
+    public void StartGame()
+    {
+        Teleport();
+        PlayerAbility.ToggleRockAbility();
+        PlayerAbility.ToggleSpikeAbility();
+        PlayerAbility.ToggleWallAbility();
+        PlayerAbility.ToggleQuicksandAbility();
     }
 
     // Future: delete all other instances of objects in the scene
@@ -296,11 +305,8 @@ public class GameController : MonoBehaviour
         //        playerObj.transform.position = destinationPos;
 
         // Reposition the ability ring
-        GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing(translateVector);
-        GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing(translateVector);
-
-        // Unpause the wave system
-        Invoke("TogglePauseWaveSystem", 10);
+        StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
+        StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
     }
 
     private void TogglePauseWaveSystem()

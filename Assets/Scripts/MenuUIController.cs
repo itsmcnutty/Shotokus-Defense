@@ -7,6 +7,7 @@ using UnityEngine.AI;
 
 public class MenuUIController : MonoBehaviour
 {
+    private static MenuUIController instance; // instance for singleton pattern
     public SteamVR_Input_Sources rightHandInput;
     public SteamVR_Input_Sources leftHandInput;
     public SteamVR_Action_Boolean pauseAction;
@@ -25,6 +26,18 @@ public class MenuUIController : MonoBehaviour
 
     private InteractLaserButton laserPointer;
     
+    // Instance getter and initialization
+    public static MenuUIController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType(typeof(MenuUIController)) as MenuUIController;
+            }
+            return instance;
+        }
+    }
     
     private void Awake()
     {
@@ -93,7 +106,7 @@ public class MenuUIController : MonoBehaviour
     // if pause menu active, delete it and unpause game
     public void pauseToggle()
     {
-        laserPointer.toggleLaser();
+        ToggleLaser();
         if (!isPauseMenuActive)
         {
             // menu is not active, so open it
@@ -110,6 +123,9 @@ public class MenuUIController : MonoBehaviour
         }
     }
     
-    
+    public void ToggleLaser()
+    {
+        laserPointer.toggleLaser();
+    }
     
 }
