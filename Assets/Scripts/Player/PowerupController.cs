@@ -4,6 +4,11 @@ using UnityEngine.UI;
 
 public class PowerupController : MonoBehaviour
 {
+    [Header("Powerup Canvas")]
+    public GameObject rockClusterCanvas;
+    public GameObject spikeChainCanvas;
+    public GameObject earthquakeCanvas;
+    public GameObject wallPushCanvas;
 
     [Header("Powerup Bars")]
     public Image rockClusterBar;
@@ -23,10 +28,25 @@ public class PowerupController : MonoBehaviour
     public int earthquakeTime = 30;
     public int wallPushTime = 30;
 
+    public static PowerupController instance;
+
     private static float rockClusterBarCounter = 0;
     private static float spikeChainBarCounter = 0;
     private static float earthquakeBarCounter = 0;
     private static float wallPushBarCounter = 0;
+
+    // Instance getter and initialization
+    public static PowerupController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType(typeof(PowerupController)) as PowerupController;
+            }
+            return instance;
+        }
+    }
 
     void Start()
     {   
@@ -56,7 +76,7 @@ public class PowerupController : MonoBehaviour
             rockClusterBarCounter = 0;
             StartCoroutine(EndRockCluster());
         }
-        else if (!PlayerAbility.RockClusterEnabled())
+        else if (!PlayerAbility.RockClusterEnabled)
         {
             rockClusterBar.fillAmount = rockClusterBarCounter / pointsForRockCluster;
         }
@@ -67,7 +87,7 @@ public class PowerupController : MonoBehaviour
             spikeChainBarCounter = 0;
             StartCoroutine(EndSpikeChain());
         }
-        else if (!PlayerAbility.SpikeChainEnabled())
+        else if (!PlayerAbility.SpikeChainEnabled)
         {
             spikeChainBar.fillAmount = spikeChainBarCounter / pointsForSpikeChain;
         }
@@ -78,7 +98,7 @@ public class PowerupController : MonoBehaviour
             earthquakeBarCounter = 0;
             StartCoroutine(EndEarthquake());
         }
-        else if (!PlayerAbility.EarthquakeEnabled())
+        else if (!PlayerAbility.EarthquakeEnabled)
         {
             earthquakeBar.fillAmount = earthquakeBarCounter / pointsForEarthquake;
         }
@@ -89,7 +109,7 @@ public class PowerupController : MonoBehaviour
             wallPushBarCounter = 0;
             StartCoroutine(EndWallPush());
         }
-        else if (!PlayerAbility.WallPushEnabled())
+        else if (!PlayerAbility.WallPushEnabled)
         {
             wallPushBar.fillAmount = wallPushBarCounter / pointsForWallPush;
         }

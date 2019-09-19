@@ -160,6 +160,10 @@ public class GameController : MonoBehaviour
     public void StartGame()
     {
         Teleport();
+        PlayerAbility.ToggleRockAbility();
+        PlayerAbility.ToggleSpikeAbility();
+        PlayerAbility.ToggleWallAbility();
+        PlayerAbility.ToggleQuicksandAbility();
     }
 
     // Future: delete all other instances of objects in the scene
