@@ -11,9 +11,12 @@ public class GameController : MonoBehaviour
 
     private int enemiesAlive; // number of enemies alive in current Wave
 
+    [Header("Wait Times between Waves")] 
+    public float BEFORE_WAVE1;
+    public float BETWEEN_WAVES;
+    public float BETWEEN_LOCATIONS;
+
     [Header("Wave Files")]
-    public TextAsset location1WaveFile;
-    public TextAsset location2WaveFile;
     public TextAsset[] locationWaveFiles; // array containing location wave files
 
     // variables for teleport function
@@ -30,15 +33,11 @@ public class GameController : MonoBehaviour
     private Queue<LocationWaves> allLocationWaves = new Queue<LocationWaves>();
     private LocationWaves currentLocation;
     private int currentLocationCounter; // used to keep track of teleportation 
-//    private LocationWaves resetLocation;
     private Queue<LocationWaves> resetLocation;
     private Wave currentWave;
 
     private float currentTime;
     private bool pauseWaveSystem = true;
-    
-    // todo testing
-    private bool restarted = false;
 
 
     // Constructor
@@ -78,24 +77,18 @@ public class GameController : MonoBehaviour
         UIControllerObj = GameObject.FindWithTag("UIController");
         gameOverController = UIControllerObj.GetComponent<GameOverMenuController>();
 
-        // Parse json to get waves information
-        // todo do this for every Location
+        // Parse json to get waves information &  fill up AlllocationWave queue
         restartQueue();
-//        allLocationWaves.Enqueue(JsonParser.parseJson(location1WaveFile));
-//        allLocationWaves.Enqueue(JsonParser.parseJson(location2WaveFile));
     }
 
     // Start is called before the first frame update
     void Start()
     {
         currentTime = 0;
-        // todo fix this
-//        resetLocation = (Queue) allLocationWaves.Clone();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
-//        currentLocation = resetLocation = allLocationWaves.Dequeue();
         enemiesAlive = 0;
-        Invoke("TogglePauseWaveSystem", 0);
+        Invoke("TogglePauseWaveSystem", BEFORE_WAVE1);
     }
 
     // Update is called once per frame
@@ -105,13 +98,9 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-
+        
         currentTime += Time.deltaTime;
-        // todo remove this only testing
-        if (restarted)
-        {
-            // stop debugger
-        }
+
         if (currentWave != null)
         {
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
@@ -149,7 +138,7 @@ public class GameController : MonoBehaviour
         if (currentWave != null)
         {
             TogglePauseWaveSystem();
-            Invoke("TogglePauseWaveSystem", 10);
+            Invoke("TogglePauseWaveSystem", BETWEEN_WAVES);
             return;
         }
 
@@ -163,7 +152,7 @@ public class GameController : MonoBehaviour
             currentWave = currentLocation.GetNextWave();
             Teleport();
             TogglePauseWaveSystem();
-            Invoke("TogglePauseWaveSystem", 10);
+            Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
             return;
         }
         // no more waves left so you win
@@ -193,9 +182,6 @@ public class GameController : MonoBehaviour
     // delete walls, spikes, rocks
     public void RestartGame()
     {
-        // todo testing
-        restarted = true;
-        
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
         
@@ -204,12 +190,8 @@ public class GameController : MonoBehaviour
         
         Debug.Log("Restarting game");
 
-        // Reset values of wave
+        // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
-        currentTime = 0;
-        // todo restart waves at current location
-//        currentLocation = resetLocation;
-//        allLocationWaves = new Queue<LocationWaves>(resetLocation);
         restartQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
