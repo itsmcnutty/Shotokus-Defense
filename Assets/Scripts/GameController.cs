@@ -12,9 +12,9 @@ public class GameController : MonoBehaviour
     private int enemiesAlive; // number of enemies alive in current Wave
 
     [Header("Wave Files")]
-    // todo put this stuff in an array
     public TextAsset location1WaveFile;
     public TextAsset location2WaveFile;
+    public TextAsset[] locationWaveFiles; // array containing location wave files
 
     // variables for teleport function
     private int caseSwitch;
@@ -80,9 +80,9 @@ public class GameController : MonoBehaviour
 
         // Parse json to get waves information
         // todo do this for every Location
-        allLocationWaves.Enqueue(JsonParser.parseJson(location1WaveFile));
-        allLocationWaves.Enqueue(JsonParser.parseJson(location2WaveFile));
-        // keep duplicate for reseting locations
+        restartQueue();
+//        allLocationWaves.Enqueue(JsonParser.parseJson(location1WaveFile));
+//        allLocationWaves.Enqueue(JsonParser.parseJson(location2WaveFile));
     }
 
     // Start is called before the first frame update
@@ -157,15 +157,27 @@ public class GameController : MonoBehaviour
         if (allLocationWaves.Count != 0)
         {
 //            currentLocation = resetLocation = allLocationWaves.Dequeue();
-            resetLocation = new Queue<LocationWaves>(allLocationWaves);
+//            resetLocation = new Queue<LocationWaves>(allLocationWaves);
+            currentLocationCounter++;
             currentLocation = allLocationWaves.Dequeue();
-            
             currentWave = currentLocation.GetNextWave();
             Teleport();
             TogglePauseWaveSystem();
+            Invoke("TogglePauseWaveSystem", 10);
             return;
         }
+        // no more waves left so you win
         Debug.Log("YOU WIN");
+    }
+
+    // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location postion counter
+    public void restartQueue()
+    {
+        allLocationWaves = new Queue<LocationWaves>();
+        for (int i = currentLocationCounter; i < locationWaveFiles.Length; i++)
+        {
+            allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
+        }
     }
 
     public void StartGame()
@@ -197,7 +209,8 @@ public class GameController : MonoBehaviour
         currentTime = 0;
         // todo restart waves at current location
 //        currentLocation = resetLocation;
-        allLocationWaves = new Queue<LocationWaves>(resetLocation);
+//        allLocationWaves = new Queue<LocationWaves>(resetLocation);
+        restartQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         playerHealth.RecoverAllHealth();
