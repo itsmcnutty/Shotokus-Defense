@@ -11,9 +11,7 @@ public class GameOverMenuController : MonoBehaviour
     private GameObject player; // get coordinates of player, to instate menu in front of them
     private Camera vrCamera;
     private GameObject gameoverMenu;
-    private PlayerAbility playerAbilityR; // Right hand
-    private PlayerAbility playerAbilityL; // Left hand
-    
+
     private Vector3 playerPos; // player transform position
     private Quaternion playerRot; // player transform rotation
     private Vector3 playerFor; // player transform forward
@@ -24,8 +22,6 @@ public class GameOverMenuController : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindWithTag("MainCamera");
-        playerAbilityR = GameObject.FindGameObjectWithTag("Right Hand").GetComponent<PlayerAbility>();
-        playerAbilityL = GameObject.FindGameObjectWithTag("Left Hand").GetComponent<PlayerAbility>();
         vrCamera = player.GetComponent<Camera>();
         laserPointer = this.GetComponent<InteractLaserButton>();
     }
@@ -57,8 +53,11 @@ public class GameOverMenuController : MonoBehaviour
         gameoverMenu.transform.LookAt(player.transform.position);
 
         // freeze time, active menu laser pointers and cancel abilities
-        playerAbilityL.CancelAbility();
-        playerAbilityR.CancelAbility();
+        PlayerAbility.ToggleSpikeAbility();
+        PlayerAbility.ToggleWallAbility();
+        PlayerAbility.ToggleQuicksandAbility();
+        PlayerAbility.ToggleRockAbility();
+        
         Time.timeScale = 0;
         laserPointer.toggleLaser();
         // disable pause menu
