@@ -23,6 +23,13 @@ public class GameOverProperties : MonoBehaviour
     private void OnDestroy()
     {
         laserPointer.toggleLaser();
+                    
+        PlayerAbility.ToggleSpikeAbility();
+        PlayerAbility.ToggleWallAbility();
+        PlayerAbility.ToggleQuicksandAbility();
+        PlayerAbility.ToggleRockAbility();
+        
+        // detoggle abilities??
         Time.timeScale = 1;
     }
 }

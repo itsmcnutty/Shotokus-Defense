@@ -57,8 +57,14 @@ public class GameOverMenuController : MonoBehaviour
         gameoverMenu.transform.LookAt(player.transform.position);
 
         // freeze time, active menu laser pointers and cancel abilities
-        playerAbilityL.CancelAbility();
-        playerAbilityR.CancelAbility();
+//        playerAbilityL.CancelAbility();
+//        playerAbilityR.CancelAbility();
+        
+        PlayerAbility.ToggleSpikeAbility();
+        PlayerAbility.ToggleWallAbility();
+        PlayerAbility.ToggleQuicksandAbility();
+        PlayerAbility.ToggleRockAbility();
+        
         Time.timeScale = 0;
         laserPointer.toggleLaser();
         // disable pause menu
