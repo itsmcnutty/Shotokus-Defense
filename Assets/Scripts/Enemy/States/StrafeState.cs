@@ -255,7 +255,7 @@ public class StrafeState : IState
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
-//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)

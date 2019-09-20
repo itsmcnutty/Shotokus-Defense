@@ -42,7 +42,7 @@ public class EnemyLightProperties : EnemyProperties
         }
 
         // todo delete - just debugging
-//        isClockwise = false;
+//        isClockwise = true;
         
         // Instantiate states with the properties above
         runState = new RunState(this);
