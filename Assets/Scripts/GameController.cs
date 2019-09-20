@@ -160,9 +160,9 @@ public class GameController : MonoBehaviour
             currentLocationCounter++;
             currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
-            Teleport();
             TogglePauseWaveSystem();
             Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+            Teleport();
             return;
         }
         // no more waves left so you win
@@ -329,7 +329,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
     }
 
-    private void TogglePauseWaveSystem()
+    public void TogglePauseWaveSystem()
     {
         pauseWaveSystem = !pauseWaveSystem;
     }

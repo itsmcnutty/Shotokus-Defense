@@ -593,11 +593,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63eeff5079ca33d49a537f2881e0e41c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handType: 0
+  grabAction:
+    actionPath: 
+    needsReinit: 0
   tutorialText: {fileID: 6630058878556056888}
   nextSlideText: {fileID: 4463064078784024741}
   backSlideText: {fileID: 4173203675278517716}
   tutorialVideo: {fileID: 2653630063521516257}
   controllerVideo: {fileID: 3829211719538734441}
+  tutorialSlideWall: {fileID: 6051907515355814526}
+  showTutorialPillar: {fileID: 4093670212351893544}
+  startWavePillar: {fileID: 3325331267668009247}
   rockVideos:
   - slideTitle: Create Rock
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
@@ -1269,7 +1276,12 @@ PrefabInstance:
     - target: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
       propertyPath: m_Name
-      value: Interactable Pillar (1)
+      value: Start Wave Pillar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
@@ -1326,8 +1338,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1961733463270768661, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218780553099027259, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_Name
+      value: Start Wave Sphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529453671742475939, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_Text
+      value: Start Wave
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7810818544450934285, guid: 9f5e3e16629b135449de6d8cbe6967d0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9f5e3e16629b135449de6d8cbe6967d0, type: 3}
+--- !u!1 &3325331267668009247 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 931025043375386503}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7503112787056714253 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
@@ -1344,7 +1378,12 @@ PrefabInstance:
     - target: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
       propertyPath: m_Name
-      value: Interactable Pillar
+      value: Show Tutorial Pillar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
@@ -1401,8 +1440,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 1961733463270768661, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218780553099027259, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_Name
+      value: Show Tutorial Sphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529453671742475939, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_Text
+      value: Show Tutorial
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7810818544450934285, guid: 9f5e3e16629b135449de6d8cbe6967d0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9f5e3e16629b135449de6d8cbe6967d0, type: 3}
+--- !u!1 &4093670212351893544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1874053991150464688}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9136177631681061690 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
