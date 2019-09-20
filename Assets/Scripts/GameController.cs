@@ -39,6 +39,9 @@ public class GameController : MonoBehaviour
     private float currentTime;
     private bool pauseWaveSystem = true;
 
+//    // todo testing
+//    private bool restart= false;
+
 
     // Constructor
     private GameController() { }
@@ -97,6 +100,12 @@ public class GameController : MonoBehaviour
         {
             return;
         }
+//
+//        // todo testing
+//        if (restart)
+//        {
+//            //
+//        }
         
         currentTime += Time.deltaTime;
 
@@ -146,6 +155,8 @@ public class GameController : MonoBehaviour
         {
 //            currentLocation = resetLocation = allLocationWaves.Dequeue();
 //            resetLocation = new Queue<LocationWaves>(allLocationWaves);
+
+            currentTime = 0;
             currentLocationCounter++;
             currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
@@ -188,6 +199,9 @@ public class GameController : MonoBehaviour
     // delete walls, spikes, rocks
     public void RestartGame()
     {
+
+//        restart = true;
+        
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
         

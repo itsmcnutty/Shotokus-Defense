@@ -113,6 +113,12 @@ public class MenuUIController : MonoBehaviour
             isPauseMenuActive = true;
             PauseGame();
             Time.timeScale = 0;
+            
+            PlayerAbility.ToggleSpikeAbility();
+            PlayerAbility.ToggleWallAbility();
+            PlayerAbility.ToggleQuicksandAbility();
+            PlayerAbility.ToggleRockAbility();
+            
         }
         else
         {
@@ -120,6 +126,12 @@ public class MenuUIController : MonoBehaviour
             isPauseMenuActive = false;
             Destroy(pauseMenu);
             Time.timeScale = 1;
+            
+            PlayerAbility.ToggleSpikeAbility();
+            PlayerAbility.ToggleWallAbility();
+            PlayerAbility.ToggleQuicksandAbility();
+            PlayerAbility.ToggleRockAbility();
+            
         }
     }
     
