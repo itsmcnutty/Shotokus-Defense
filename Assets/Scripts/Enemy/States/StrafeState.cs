@@ -223,7 +223,7 @@ public class StrafeState : IState
 
 		// only enters here first time it enters te strafing state
 		// calculate points around center and set new destination to closest point to agent
-		if (!isStrafing)
+		if (!isStrafing && agent.enabled)
 		{
 //			Debug.Log("Strafing mode / calculations");
 			// do not enter here if already strafing
@@ -242,14 +242,17 @@ public class StrafeState : IState
 			circularPointDest = closestPoint(gameObjPos, pointsAroundTarget);
             
 			// change enemy agent target to the new point
+
+
 			agent.SetDestination(circularPointDest);
+
 			Debug.Log("my destination is " + circularPointDest);
 		}
 		
 		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
-		if (isStrafing)
+		if (isStrafing && agent.enabled)
 		{
 //			Debug.Log("Strafing mode / moving");
 			// do not change destination until current one is reached

@@ -35,10 +35,72 @@ public class PlayerAbility : MonoBehaviour
     private GameObject player;
     private GameObject abilityRing;
 
-    private static bool rockClusterEnabled = false;
-    private static bool wallPushEnabled = false;
-    private static bool spikeChainEnabled = false;
-    private static bool earthquakeEnabled = false;
+    private static bool rockAbilityEnabled;
+
+    public static bool RockAbilityEnabled
+    {
+        get
+        {
+            return rockAbilityEnabled;
+        }
+    }
+    private static bool spikeAbilityEnabled;
+    public static bool SpikeAbilityEnabled
+    {
+        get
+        {
+            return spikeAbilityEnabled;
+        }
+    }
+    private static bool quicksandAbilityEnabled;
+    public static bool QuicksandAbilityEnabled
+    {
+        get
+        {
+            return quicksandAbilityEnabled;
+        }
+    }
+    private static bool wallAbilityEnabled;
+    public static bool WallAbilityEnabled
+    {
+        get
+        {
+            return wallAbilityEnabled;
+        }
+    }
+
+    private static bool rockClusterEnabled;
+    public static bool RockClusterEnabled
+    {
+        get
+        {
+            return rockClusterEnabled;
+        }
+    }
+    private static bool wallPushEnabled;
+    public static bool WallPushEnabled
+    {
+        get
+        {
+            return wallPushEnabled;
+        }
+    }
+    private static bool spikeChainEnabled;
+    public static bool SpikeChainEnabled
+    {
+        get
+        {
+            return spikeChainEnabled;
+        }
+    }
+    private static bool earthquakeEnabled;
+    public static bool EarthquakeEnabled
+    {
+        get
+        {
+            return earthquakeEnabled;
+        }
+    }
 
     private Rocks rocks;
     public GameObject activeRock;
@@ -78,18 +140,6 @@ public class PlayerAbility : MonoBehaviour
         abilityRing = Instantiate(playerAbilityAreaPrefab);
         MeshRenderer meshRenderer = abilityRing.GetComponentInChildren<MeshRenderer>();
         abilityRing.transform.localScale = new Vector3(rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x));
-        abilityRing.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
-
-        // Changes height of the ability ring to be at the players feet
-        RaycastHit hit;
-        if (Physics.Raycast(abilityRing.transform.position, Vector3.down, out hit, 3f, outlineLayerMask))
-        {
-            abilityRing.transform.position += new Vector3(0, hit.point.y - abilityRing.transform.position.y, 0);
-        }
-        else
-        {
-            abilityRing.transform.position += new Vector3(0, -abilityRing.transform.position.y, 0);
-        }
     }
 
     // Update is called once per frame
@@ -119,7 +169,7 @@ public class PlayerAbility : MonoBehaviour
         }
 
         // Draw is trackpad: can only be activated with enough energy and no other active abilities
-        if (DrawRelease() && playerEnergy.EnergyAboveThreshold(100f) && !RockIsActive() && !SpikeQuicksandIsActive() && !walls.WallIsActive())
+        if (wallAbilityEnabled && DrawRelease() && playerEnergy.EnergyAboveThreshold(100f) && !RockIsActive() && !SpikeQuicksandIsActive() && !walls.WallIsActive())
         {
             if (!walls.WallOutlineIsActive())
             {
@@ -184,12 +234,12 @@ public class PlayerAbility : MonoBehaviour
             else if (arc.CanUseAbility())
             {
                 // Tries to create a new ability
-                if (arc.GetDistanceFromPlayer() <= rockCreationDistance)
+                if (rockAbilityEnabled && arc.GetDistanceFromPlayer() <= rockCreationDistance)
                 {
                     // Creates rock if within the radius
                     activeRock = rocks.CreateNewRock(hand, arc);
                 }
-                else if (playerEnergy.EnergyAboveThreshold(200f))
+                else if ((spikeAbilityEnabled || quicksandAbilityEnabled) && playerEnergy.EnergyAboveThreshold(200f))
                 {
                     // Creates a spike / quicksand outline when above the threshold
                     spikeQuicksandOutlines.Add(spikeQuicksand.IntializeOutline(hand, player, out startingSpikeHandHeight, out horizontalSpikeChainVelocity));
@@ -302,6 +352,30 @@ public class PlayerAbility : MonoBehaviour
     {
         return spikeQuicksandOutlines.Count != 0;
     }
+    
+    public static void ToggleRockAbility()
+    {
+        rockAbilityEnabled = !rockAbilityEnabled;
+        PowerupController.Instance.rockClusterCanvas.SetActive(!PowerupController.Instance.rockClusterCanvas.activeSelf);
+    }
+
+    public static void ToggleSpikeAbility()
+    {
+        spikeAbilityEnabled = !spikeAbilityEnabled;
+        PowerupController.Instance.spikeChainCanvas.SetActive(!PowerupController.Instance.spikeChainCanvas.activeSelf);
+    }
+
+    public static void ToggleWallAbility()
+    {
+        wallAbilityEnabled = !wallAbilityEnabled;
+        PowerupController.Instance.wallPushCanvas.SetActive(!PowerupController.Instance.wallPushCanvas.activeSelf);
+    }
+
+    public static void ToggleQuicksandAbility()
+    {
+        quicksandAbilityEnabled = !quicksandAbilityEnabled;
+        PowerupController.Instance.earthquakeCanvas.SetActive(!PowerupController.Instance.earthquakeCanvas.activeSelf);
+    }
 
     public static void ToggleRockCluster()
     {
@@ -321,26 +395,6 @@ public class PlayerAbility : MonoBehaviour
     public static void ToggleEarthquake()
     {
         earthquakeEnabled = !earthquakeEnabled;
-    }
-
-    public static bool RockClusterEnabled()
-    {
-        return rockClusterEnabled;
-    }
-
-    public static bool SpikeChainEnabled()
-    {
-        return spikeChainEnabled;
-    }
-
-    public static bool WallPushEnabled()
-    {
-        return wallPushEnabled;
-    }
-
-    public static bool EarthquakeEnabled()
-    {
-        return earthquakeEnabled;
     }
 
     public static IEnumerator LongVibration(Hand hand, float length, ushort strength)
@@ -390,8 +444,21 @@ public class PlayerAbility : MonoBehaviour
         }
     }
 
-    public void RepositionAbilityRing(Vector3 newPosition)
+    public IEnumerator RepositionAbilityRing()
     {
-        abilityRing.transform.position += newPosition;
+        yield return new WaitForEndOfFrame();
+        
+        abilityRing.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+
+        // Changes height of the ability ring to be at the players feet
+        RaycastHit hit;
+        if (Physics.Raycast(abilityRing.transform.position, Vector3.down, out hit, 3f, outlineLayerMask))
+        {
+            abilityRing.transform.position += new Vector3(0, hit.point.y - abilityRing.transform.position.y, 0);
+        }
+        else
+        {
+            abilityRing.transform.position += new Vector3(0, -abilityRing.transform.position.y, 0);
+        }
     }
 }
