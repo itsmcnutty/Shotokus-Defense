@@ -8,10 +8,7 @@ using UnityEngine.AI;
 struct CircularCoord
 {
 	public Vector3 coord; // point calculated around center for pointsAround() function
-	public int index; // keeping track of last position. Using the index replaces the need for keeping track of angles 
-	// todo maybe keep track of angle? although index is sufficient for now
 	public bool isReachable; // keeps track if the coordinate is reachable, false if path is invalid or partial
-	// todo maybe store the NavMesh path variable??
 }
 
 public class StrafeState : IState
@@ -63,6 +60,7 @@ public class StrafeState : IState
 	private bool isClockwise; // walk in a clockwise direction when strafying
 	private float radiusReduction; // float that will reduce the radius of points around center every time, the agent reaches a point
 	private float totalCurrentReduction; // float that will keep track of the increase in radiausReduction
+	private int AMOUNT_OF_CIRCLE_POINTS = 16; // this is the amount of points that will be calculated around a center
 	
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
@@ -75,7 +73,7 @@ public class StrafeState : IState
 		animator = props.animator;
 		ragdollController = props.ragdollController;
 		obstacle = props.obstacle;
-		maxStrafeSpeed = props.MAX_STRAFE_SPEED; // todo add this functionality
+		maxStrafeSpeed = props.MAX_STRAFE_SPEED;
 		debugNoWalk = props.debugNoWalk;
 		player = props.player;
 		playerPos = props.playerPos;
@@ -107,7 +105,7 @@ public class StrafeState : IState
 		animator = props.animator;
 		ragdollController = props.ragdollController;
 		obstacle = props.obstacle;
-		maxStrafeSpeed = props.MAX_STRAFE_SPEED; // todo add this functionality
+		maxStrafeSpeed = props.MAX_STRAFE_SPEED;
 		debugNoWalk = props.debugNoWalk;
 		player = props.player;
 		playerPos = props.playerPos;
@@ -188,10 +186,6 @@ public class StrafeState : IState
 		agentHead = gameObj.transform.position;
 		// todo change this, this is the head height value
 		agentHead.y = 2.5f;
-		
-//		// todo delete this
-//		if (agent.enabled && !debugNoWalk) 
-//			agent.SetDestination(playerPos);
 
 		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
 		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);
@@ -222,7 +216,6 @@ public class StrafeState : IState
 		// calculate points around center and set new destination to closest point to agent
 		if (!isStrafing && agent.enabled)
 		{
-			Debug.Log("Strafing mode / calculations");
 			// do not enter here if already strafing
 			isStrafing = true;
 			
@@ -239,8 +232,6 @@ public class StrafeState : IState
 			circularPointDest = closestPoint(gameObjPos, pointsAroundTarget);
             
 			// change enemy agent target to the new point
-
-
 			agent.SetDestination(circularPointDest);
 
 			Debug.Log("my destination is " + circularPointDest);
@@ -251,7 +242,6 @@ public class StrafeState : IState
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
-			Debug.Log("Strafing mode / moving");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
@@ -279,7 +269,6 @@ public class StrafeState : IState
 		}
 		
 		// SHOOTING STATE
-//		Debug.Log("Shooting mode");
 		// check for visibility to target through ray cast
 		RaycastHit hit;
 
@@ -326,7 +315,6 @@ public class StrafeState : IState
 		
 		// Calculate enemy distance
 		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
-//		Debug.Log(distanceToPlayer);
 
 		// If outside ranged radius, transition to run state
 		if (distanceToPlayer >  rangedRadius)
@@ -354,14 +342,16 @@ public class StrafeState : IState
 	// given a point and a radius, return points around the center with the input radius and every 45 degrees (pi/4 radians)
 	private CircularCoord[] pointsAround(Vector3 center, float radius)
 	{
+		AMOUNT_OF_CIRCLE_POINTS = 16;
+		int amountOfPoints = AMOUNT_OF_CIRCLE_POINTS; // amount of points around center (more points, more accurate)
 		float angle = 0;
-		CircularCoord[] points = new CircularCoord[8];
+		CircularCoord[] points = new CircularCoord[amountOfPoints];
 		Vector3 offset = new Vector3(center.x,0,center.z);
 		
 		// checking for navmesh status on points (if available or not)
 		NavMeshPath path = new NavMeshPath();
 		
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < amountOfPoints; i++)
 		{
 			// x is x and y is z, in 3D coordinates unity. For example, the 3D vector is represented as (x, 0, y).
 			float x = Mathf.Cos(angle) * radius;
@@ -375,15 +365,20 @@ public class StrafeState : IState
 			if (path.status != NavMeshPathStatus.PathComplete)
 			{
 				points[i].isReachable = false;
+				// if point is not valid, attemp to find a random point nearby in the navmesh
+				Vector3 temp;
+				if (RandomPoint(coord, 2f, out temp))
+				{
+					points[i].isReachable = true;
+					coord = temp;
+				}
 			}
 			else
 			{
 				points[i].isReachable = true;
 			}
-//			Debug.Log("My path status is: " + path.status);
-			angle += Mathf.PI / 4;
+			angle += (2* Mathf.PI) / AMOUNT_OF_CIRCLE_POINTS;
 			points[i].coord = coord;
-			points[i].index = i;
 		}
 		return points;
 	}
@@ -423,8 +418,6 @@ public class StrafeState : IState
 	// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
-		// todo remove this DEBUGGING ONLY
-//		isClockwise = true;
 		int newIndex = lastPointIndex;
 		
 		for (int i = 0; i < pointsAroundTarget.Length; i++)
@@ -438,7 +431,7 @@ public class StrafeState : IState
 			else
 			{
 				newIndex++;
-				newIndex %= 8;
+				newIndex %= pointsAroundTarget.Length;
 			}
 			if (pointsAroundTarget[newIndex].isReachable)
 			{
@@ -447,5 +440,32 @@ public class StrafeState : IState
 		}
 		return newIndex;
 	}
+	
+	
+	// input: Vector3 coordinate that is not valid on navmesh
+	// this function evaluates a invalid coordinate and tries to find a point around it that is active on the navmesh
+	// returns true if point found. Input Vector3 coordinate is updated if point found
+	bool RandomPoint(Vector3 center, float range, out Vector3 result)
+	{ 
+		// checking for navmesh status on points (if available or not)
+		NavMeshPath path = new NavMeshPath();
+		
+		for (int i = 0; i < 30; i++)
+		{
+			Vector3 randomPoint = center + UnityEngine.Random.insideUnitSphere * range;
+			randomPoint.y = center.y;
+			
+			agent.CalculatePath(randomPoint, path);
+			if (path.status == NavMeshPathStatus.PathComplete)
+			{
+				Debug.Log("random point found!!");
+				result = randomPoint;
+				return true;
+			}
+		}
+		result = Vector3.zero;
+		return false;
+	}
+	
 	
 }

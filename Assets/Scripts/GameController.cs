@@ -37,11 +37,8 @@ public class GameController : MonoBehaviour
     private Wave currentWave;
 
     private float currentTime;
-    private bool pauseWaveSystem = true;
-
-//    // todo testing
-//    private bool restart= false;
-
+    // todo put back to true - debugging
+    private bool pauseWaveSystem = false;
 
     // Constructor
     private GameController() { }
@@ -100,13 +97,7 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-//
-//        // todo testing
-//        if (restart)
-//        {
-//            //
-//        }
-        
+
         currentTime += Time.deltaTime;
 
         if (currentWave != null)
@@ -199,8 +190,6 @@ public class GameController : MonoBehaviour
     // delete walls, spikes, rocks
     public void RestartGame()
     {
-
-//        restart = true;
         
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
@@ -290,28 +279,22 @@ public class GameController : MonoBehaviour
         switch (temp)
         {
             case 0:
-                // playerObj.transform.position = new Vector3(9,0.25f,33);
                 destinationPos = new Vector3(9, 0.25f, 33);
                 break;
             case 1:
-                // playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
 //                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
                 destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
-                // playerObj.transform.position = new Vector3(-3f,0.25f,3.1f);
                 destinationPos = new Vector3(-3f, 0.75f, 3.1f);
                 break;
             case 3:
-                // playerObj.transform.position = new Vector3(26,0.25f,-22.8f);
                 destinationPos = new Vector3(26, 1f, -22.8f);
                 break;
             case 4:
-                // playerObj.transform.position = new Vector3(-1.5f,0.25f,-31.5f);
                 destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
                 break;
             default:
-                // playerObj.transform.position = new Vector3(0,0,0);
                 destinationPos = new Vector3(0, 0, 0);
                 break;
         }
@@ -322,7 +305,6 @@ public class GameController : MonoBehaviour
 
         // move
         cameraRigT.position += translateVector;
-        //        playerObj.transform.position = destinationPos;
 
         // Reposition the ability ring
         StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());

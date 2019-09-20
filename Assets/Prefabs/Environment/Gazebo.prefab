@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6111400725144611956}
   - component: {fileID: 2993495359713449538}
   - component: {fileID: 8842678505986321083}
+  - component: {fileID: 216413074934892117}
   m_Layer: 0
   m_Name: Gazebo
   m_TagString: Untagged
@@ -77,3 +78,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &216413074934892117
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7100865223990042215}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: -4252695718420628033, guid: 76e2ad64e4f54de469a4a9bd6d8e8f8e, type: 3}
