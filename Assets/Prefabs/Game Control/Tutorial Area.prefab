@@ -622,9 +622,41 @@ MonoBehaviour:
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
       type: 3}
-  spikeVideos: []
-  wallVideos: []
-  quicksandVideos: []
+  - slideTitle: Heal
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
+  spikeVideos:
+  - slideTitle: Create Spike
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
+  - slideTitle: Power-up
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
+  wallVideos:
+  - slideTitle: Draw Wall
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
+  - slideTitle: Create Wall
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
+  - slideTitle: Power-up
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
+  quicksandVideos:
+  - slideTitle: Create Quicksand
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
+  - slideTitle: Power-up
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+      type: 3}
   healVideos: []
 --- !u!1 &6189638627620216181
 GameObject:
@@ -1286,7 +1318,7 @@ PrefabInstance:
     - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
@@ -1388,7 +1420,7 @@ PrefabInstance:
     - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
         type: 3}
