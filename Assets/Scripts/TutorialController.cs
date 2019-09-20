@@ -20,6 +20,7 @@ public class TutorialController : MonoBehaviour
     public Text nextSlideText;
     public Text backSlideText;
     public VideoPlayer tutorialVideo;
+    public VideoPlayer controllerVideo;
 
     [Header("Tutorial Videos")]
     public List<TutorialSlide> rockVideos;
@@ -92,6 +93,7 @@ public class TutorialController : MonoBehaviour
     {
         TutorialSlide slide = currentSlideSet[currentSlide];
         tutorialVideo.clip = slide.video;
+        controllerVideo.clip = slide.controllerInstruction;
         tutorialText.text = slide.slideTitle;
 
         if ((currentSlide + 1) == currentSlideSet.Count)
