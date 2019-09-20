@@ -202,8 +202,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: StartGame
+      - m_Target: {fileID: 5451268461362919009}
+        m_MethodName: StartGameWithoutTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -252,8 +252,9 @@ GameObject:
   - component: {fileID: 2480471295951408147}
   - component: {fileID: 8023324135880350032}
   - component: {fileID: 965590190497775234}
+  - component: {fileID: 5451268461362919009}
   m_Layer: 0
-  m_Name: PauseMenu
+  m_Name: Start Menu
   m_TagString: Menu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,6 +332,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9dd58000eb093d4e9cbfaeb84845820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5451268461362919009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429978132607746869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3de5d4e1440e27d48af7ff6c04c5e14f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnArea: {fileID: 3815443949487970699}
 --- !u!1 &2451422366733824741
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,7 +664,6 @@ GameObject:
   - component: {fileID: 4564351639472757933}
   - component: {fileID: 8053022999526830934}
   - component: {fileID: 6315109811719123719}
-  - component: {fileID: 3126892644914165572}
   m_Layer: 0
   m_Name: NewGameButton
   m_TagString: Untagged
@@ -758,8 +771,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3126892644914165572}
-        m_MethodName: StartGame
+      - m_Target: {fileID: 5451268461362919009}
+        m_MethodName: StartGameWithTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -796,19 +809,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 160, y: 20, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3126892644914165572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4951766050342819563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3de5d4e1440e27d48af7ff6c04c5e14f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnArea: {fileID: 3815443949487970699}
 --- !u!1 &6902409894349927655
 GameObject:
   m_ObjectHideFlags: 0
