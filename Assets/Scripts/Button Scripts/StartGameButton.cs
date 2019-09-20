@@ -20,9 +20,9 @@ public class StartGameButton : MonoBehaviour
 
     public void StartGame()
     {
-        GameController.Instance.StartGame();
-        MenuUIController.Instance.ToggleLaser();
-        spawnArea.SetActive(false);
+//        GameController.Instance.StartGame();
+//        MenuUIController.Instance.ToggleLaser();
+//        spawnArea.SetActive(false);
     }
     
 }
