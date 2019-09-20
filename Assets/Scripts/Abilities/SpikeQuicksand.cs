@@ -86,7 +86,7 @@ public class SpikeQuicksand : MonoBehaviour
         spikeQuicksandOutline.transform.position = arc.GetEndPosition();
         startingSpikeHandHeight = hand.transform.position.y;
 
-        if (PlayerAbility.SpikeChainEnabled())
+        if (PlayerAbility.SpikeChainEnabled)
         {
             // Stores the direction that the spikes are facing at the time of creation
             Vector3 heading = spikeQuicksandOutline.transform.position - player.transform.position;
@@ -123,7 +123,7 @@ public class SpikeQuicksand : MonoBehaviour
         }
 
         // Resizes the rings in a growing circular motion
-        if (handDistance < 0 || !PlayerAbility.SpikeChainEnabled())
+        if (handDistance < 0 || !PlayerAbility.SpikeChainEnabled)
         {
             // Assures that only one outline exists (deletes any excess from the chain spike)
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
@@ -135,14 +135,14 @@ public class SpikeQuicksand : MonoBehaviour
             }
 
             // Calculates the new size and energy cost of the resized area
-            Vector3 newSize;
-            float energyCost;
-            if (handDistance < 0)
+            Vector3 newSize = new Vector3();
+            float energyCost = 0;
+            if (handDistance < 0 && PlayerAbility.QuicksandAbilityEnabled)
             {
                 newSize = new Vector3(size * quicksandSizeMultiplier, 1f, size * quicksandSizeMultiplier);
                 energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / (maxSpikeDiameter * quicksandSizeMultiplier);
             }
-            else
+            else if(PlayerAbility.SpikeAbilityEnabled)
             {
                 newSize = new Vector3(size, 1f, size);
                 energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
@@ -277,12 +277,12 @@ public class SpikeQuicksand : MonoBehaviour
             // Creates quicksand if the player lowered their hands and the area is valid
             StartCoroutine(CreateQuicksand(spikeQuicksandOutlines, hand, otherHand));
         }
-        else if (handPos > 0 && controllerVelocity > 0)
+        else if (handPos > 0 && controllerVelocity > 0 && PlayerAbility.QuicksandAbilityEnabled)
         {
             // Creates spikes if the player raised their hands and they have upward velocity
             CreateSpikes(spikeQuicksandOutlines, hand, arc, controllerPose, controllerVelocity, horizontalSpikeChainVelocity);
         }
-        else
+        else if(PlayerAbility.SpikeAbilityEnabled)
         {
             // Destroys the outline(s) if the movements are invalid
             CancelSpikes(spikeQuicksandOutlines);
@@ -318,7 +318,7 @@ public class SpikeQuicksand : MonoBehaviour
         // Adds the quicksand component to begin the death countdown and perform the earthquake if active
         QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration,
             destroyQuicksandParticles);
-        if (!PlayerAbility.EarthquakeEnabled())
+        if (!PlayerAbility.EarthquakeEnabled)
         {
             // Increments the earthquake counter if it's not active
             PowerupController.IncrementEarthquakeCounter();
@@ -351,7 +351,7 @@ public class SpikeQuicksand : MonoBehaviour
 
     private void CreateSpikes(List<GameObject> spikeQuicksandOutlines, Hand hand, ControllerArc arc, SteamVR_Behaviour_Pose controllerPose, float controllerVelocity, Vector2 horizontalSpikeChainVelocity)
     {
-        if (PlayerAbility.SpikeChainEnabled())
+        if (PlayerAbility.SpikeChainEnabled)
         {
             playerEnergy.UseEnergy(hand);
             float spikeVelocity = (controllerPose.GetVelocity().y / spikeSpeedReduction) + spikeMinSpeed;

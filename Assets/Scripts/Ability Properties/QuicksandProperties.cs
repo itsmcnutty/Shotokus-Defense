@@ -26,7 +26,7 @@ public class QuicksandProperties : MonoBehaviour
         // Invokes the method to destroy quicksand after the allotted time is up
         Invoke("DestroyQuicksand", quicksandLifetime);
 
-        if (PlayerAbility.EarthquakeEnabled())
+        if (PlayerAbility.EarthquakeEnabled)
         {
             // Applies earthquake effect to all enemies
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");

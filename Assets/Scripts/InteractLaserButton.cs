@@ -85,7 +85,7 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (button != null && selected)
         {
-            Debug.Log("Outside the button");
+//            Debug.Log("Outside the button");
             selected = false;
             // todo what is this for??
 //            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
@@ -95,10 +95,10 @@ public class InteractLaserButton : MonoBehaviour
     
     public void OnPointerClick(object sender, PointerEventArgs e)
     {
-        Debug.Log("Clicking somewhere");
+//        Debug.Log("Clicking somewhere");
         if (selected && button != null)
         {
-            Debug.Log("Clicking inside the button!");
+//            Debug.Log("Clicking inside the button!");
             button.onClick.Invoke();
         }
 
