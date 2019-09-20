@@ -100,7 +100,7 @@ public class Rocks : MonoBehaviour
         // Prevents resizing if the player doesn't have enough energy
         hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && rockEnergyCost < maxRockEnergyCost);
 
-        if (!currentRegrowthParticleSystem)
+        if (currentRegrowthParticleSystem == null)
         {
             // Creates a new regrowth particle system if one does not exist
             currentRegrowthParticleSystem = Instantiate(regrowRockParticles);
@@ -116,7 +116,7 @@ public class Rocks : MonoBehaviour
 
     public void StopRegrowthParticles()
     {
-        if (currentRegrowthParticleSystem)
+        if (currentRegrowthParticleSystem != null)
         {
             // Stops the particle animations when the player is not longer resizing the rock
             UnityEngine.ParticleSystem.MainModule particleMain = currentRegrowthParticleSystem.main;
