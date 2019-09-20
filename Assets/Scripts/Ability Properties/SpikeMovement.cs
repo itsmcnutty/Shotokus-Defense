@@ -78,6 +78,9 @@ public class SpikeMovement : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Disable obstacle for when this spike is re-created later
+        obstacle.enabled = false;
+        
         // Plays the particle effect on death
         ParticleSystem particleSystem = Instantiate(destroySpikeParticles);
         particleSystem.transform.position = transform.position;
