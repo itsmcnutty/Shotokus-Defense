@@ -188,9 +188,6 @@ public class StrafeState : IState
 		agentHead = gameObj.transform.position;
 		// todo change this, this is the head height value
 		agentHead.y = 2.5f;
-
-//		agent.SetDestination(playerPos);
-
 		
 //		// todo delete this
 //		if (agent.enabled && !debugNoWalk) 
@@ -225,7 +222,7 @@ public class StrafeState : IState
 		// calculate points around center and set new destination to closest point to agent
 		if (!isStrafing && agent.enabled)
 		{
-//			Debug.Log("Strafing mode / calculations");
+			Debug.Log("Strafing mode / calculations");
 			// do not enter here if already strafing
 			isStrafing = true;
 			
@@ -254,11 +251,11 @@ public class StrafeState : IState
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
-//			Debug.Log("Strafing mode / moving");
+			Debug.Log("Strafing mode / moving");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
-//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
@@ -275,13 +272,13 @@ public class StrafeState : IState
 				// update lastPointIndex to next circular point coordinate
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
-//				Debug.Log("last point index: " + lastPointIndex);
+				Debug.Log("last point index: " + lastPointIndex);
                 Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
 		
-		// todo SHOOTING STATE
+		// SHOOTING STATE
 //		Debug.Log("Shooting mode");
 		// check for visibility to target through ray cast
 		RaycastHit hit;
@@ -421,40 +418,33 @@ public class StrafeState : IState
 
 	// this function updates the lastPointIndex to indicate the agent which circular point to move towards 
 	// this function skips over circular points that are not valid or partial
+	// if there are three 
 	// todo if no points found, then recalculate more points with smaller radius!!
+	// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
 		// todo remove this DEBUGGING ONLY
 //		isClockwise = true;
 		int newIndex = lastPointIndex;
 		
-		if (isClockwise)
+		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
-			for (int i = newIndex; i > -1; i--)
+			if (isClockwise)
 			{
 				newIndex--;
 				if (newIndex < 0) 
 					newIndex = newIndex + pointsAroundTarget.Length;
-				newIndex %= 8;
-				if (pointsAroundTarget[newIndex].isReachable)
-				{
-					break;
-				}
 			}
-		}
-		else
-		{
-			for (int i = newIndex; i < pointsAroundTarget.Length; i++)
+			else
 			{
 				newIndex++;
 				newIndex %= 8;
-				if (pointsAroundTarget[newIndex].isReachable)
-				{
-					break;
-				}
+			}
+			if (pointsAroundTarget[newIndex].isReachable)
+			{
+				break;
 			}
 		}
-		// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 		return newIndex;
 	}
 	

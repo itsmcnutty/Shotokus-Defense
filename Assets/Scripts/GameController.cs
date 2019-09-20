@@ -192,7 +192,7 @@ public class GameController : MonoBehaviour
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
         PlayerAbility.ToggleQuicksandAbility();
-        Invoke("TogglePauseWaveSystem", 10);
+        Invoke("TogglePauseWaveSystem", BEFORE_WAVE1);
     }
 
     // Future: delete all other instances of objects in the scene
@@ -295,7 +295,8 @@ public class GameController : MonoBehaviour
                 break;
             case 1:
                 // playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
-                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
+//                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
+                destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
                 // playerObj.transform.position = new Vector3(-3f,0.25f,3.1f);
