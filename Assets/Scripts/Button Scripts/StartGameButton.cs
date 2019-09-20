@@ -5,6 +5,7 @@ using UnityEngine;
 public class StartGameButton : MonoBehaviour
 {
     public GameObject spawnArea;
+    public GameObject tutorialArea;
 
     // Start is called before the first frame update
     void Start()
@@ -18,11 +19,18 @@ public class StartGameButton : MonoBehaviour
         
     }
 
-    public void StartGame()
+    public void StartGameWithTutorial()
     {
-//        GameController.Instance.StartGame();
-//        MenuUIController.Instance.ToggleLaser();
-//        spawnArea.SetActive(false);
+        GameController.Instance.StartGameWithTutorial();
+        spawnArea.SetActive(false);
+    }
+
+    public void StartGameWithoutTutorial()
+    {
+        GameController.Instance.StartGameWithoutTutorial();
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(false);
+        tutorialArea.SetActive(false);
     }
     
 }
