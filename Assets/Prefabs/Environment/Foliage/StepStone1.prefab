@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5765921216717412300}
   - component: {fileID: 5791979933649027050}
   - component: {fileID: 5784872415558506316}
-  - component: {fileID: 5832229456187874034}
   m_Layer: 19
   m_Name: StepStone1
   m_TagString: Untagged
@@ -78,17 +77,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &5832229456187874034
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5769925659679211364}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300000, guid: 9610e9f82c2a94923b599b88400f3bb6, type: 3}
