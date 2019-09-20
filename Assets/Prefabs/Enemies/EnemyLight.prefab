@@ -83,7 +83,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 10bf8e022e155a04b8027de9aec6475c, type: 2}
+  - {fileID: 2100000, guid: d6dc03b520556994b97c6618b49fa7a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1643,7 +1643,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2.35
-  m_BaseOffset: -0.07
+  m_BaseOffset: -0.06
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!208 &3515778109007016031
@@ -2333,6 +2333,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyLightHeadbandStrips
       objectReference: {fileID: 0}
+    - target: {fileID: 4864268345319937164, guid: 2c0fd16f03fde7d40bde9b5ada3c326d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 8492103970031806111, guid: 2c0fd16f03fde7d40bde9b5ada3c326d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2593,6 +2598,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyHealthBar
       objectReference: {fileID: 0}
+    - target: {fileID: 7524114311264712760, guid: eb148d6af4a17514b825049307fa8696,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2740,6 +2750,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bow
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010475543785057643, guid: 270e1e50e63114d47abccf224a166c3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4010475543785057633, guid: 270e1e50e63114d47abccf224a166c3f,
         type: 3}

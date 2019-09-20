@@ -146,8 +146,20 @@ public class GameController : MonoBehaviour
         if (currentWave != null)
         {
             TogglePauseWaveSystem();
+            
+            if(TutorialController.Instance.TutorialWaveInProgress())
+            {
+                TutorialController.Instance.SetNextTutorial();
+                return;
+            }
+
             Invoke("TogglePauseWaveSystem", BETWEEN_WAVES);
             return;
+        }
+
+        if(TutorialController.Instance.TutorialWaveInProgress())
+        {
+            TutorialController.Instance.EndTutorial();
         }
 
         // if there are no waves left, check if there are more locations
@@ -160,9 +172,9 @@ public class GameController : MonoBehaviour
             currentLocationCounter++;
             currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
-            Teleport();
             TogglePauseWaveSystem();
             Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+            Teleport();
             return;
         }
         // no more waves left so you win
@@ -175,16 +187,6 @@ public class GameController : MonoBehaviour
         TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
     }
 
-    // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location postion counter
-    public void restartQueue()
-    {
-        allLocationWaves = new Queue<LocationWaves>();
-        for (int i = currentLocationCounter; i < locationWaveFiles.Length; i++)
-        {
-            allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
-        }
-    }
-
     public void StartGameWithoutTutorial()
     {
         Teleport();
@@ -193,6 +195,16 @@ public class GameController : MonoBehaviour
         PlayerAbility.ToggleWallAbility();
         PlayerAbility.ToggleQuicksandAbility();
         Invoke("TogglePauseWaveSystem", BEFORE_WAVE1);
+    }
+
+    // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location postion counter
+    public void restartQueue()
+    {
+        allLocationWaves = new Queue<LocationWaves>();
+        for (int i = currentLocationCounter; i < locationWaveFiles.Length; i++)
+        {
+            allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
+        }
     }
 
     // Future: delete all other instances of objects in the scene
@@ -329,7 +341,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
     }
 
-    private void TogglePauseWaveSystem()
+    public void TogglePauseWaveSystem()
     {
         pauseWaveSystem = !pauseWaveSystem;
     }
