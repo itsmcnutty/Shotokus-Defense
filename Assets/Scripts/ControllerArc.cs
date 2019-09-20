@@ -333,4 +333,9 @@ public class ControllerArc : MonoBehaviour
 	{
 		return pointerHitObject;
 	}
+
+	public void ClearPointerHitObject()
+	{
+		pointerHitObject = null;
+	}
 }

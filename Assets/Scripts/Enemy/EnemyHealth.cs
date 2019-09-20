@@ -257,8 +257,6 @@ public class EnemyHealth : CallParentCollision
 		// Fade in health bar if damaged
 		if (isDamaged && canvasRendererBackground.GetAlpha() < 0.9999)
 		{
-			Debug.Log("Fading in");
-			
 			lerpHealthBarAlpha(1.0f);
 		}
 		

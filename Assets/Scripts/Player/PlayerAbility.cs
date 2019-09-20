@@ -213,7 +213,16 @@ public class PlayerAbility : MonoBehaviour
 
     private void TriggerNewAbility()
     {
-        if (walls.WallOutlineIsActive())
+        GameObject hitObject = arc.GetPointerHitObject();
+        if(hitObject && hitObject.name.Equals("Show Tutorial Sphere"))
+        {
+            TutorialController.Instance.ShowTutorial();
+        }
+        else if(hitObject && hitObject.name.Equals("Start Wave Sphere"))
+        {
+            TutorialController.Instance.StartWave();
+        }
+        else if (walls.WallOutlineIsActive())
         {
             // Creates a new wall when wall outline is active
             walls.CreateNewWall(hand, otherHand);

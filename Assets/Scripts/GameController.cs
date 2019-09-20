@@ -91,7 +91,6 @@ public class GameController : MonoBehaviour
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         enemiesAlive = 0;
-        Invoke("TogglePauseWaveSystem", BEFORE_WAVE1);
     }
 
     // Update is called once per frame
@@ -161,13 +160,19 @@ public class GameController : MonoBehaviour
             currentLocationCounter++;
             currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
-            Teleport();
             TogglePauseWaveSystem();
             Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+            Teleport();
             return;
         }
         // no more waves left so you win
         Debug.Log("YOU WIN");
+    }
+
+    public void StartGameWithTutorial()
+    {
+        Teleport();
+        TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
     }
 
     // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location postion counter
@@ -180,13 +185,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void StartGameWithoutTutorial()
     {
         Teleport();
         PlayerAbility.ToggleRockAbility();
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
         PlayerAbility.ToggleQuicksandAbility();
+        Invoke("TogglePauseWaveSystem", BEFORE_WAVE1);
     }
 
     // Future: delete all other instances of objects in the scene
@@ -289,7 +295,8 @@ public class GameController : MonoBehaviour
                 break;
             case 1:
                 // playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
-                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
+//                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
+                destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
                 // playerObj.transform.position = new Vector3(-3f,0.25f,3.1f);
@@ -322,7 +329,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
     }
 
-    private void TogglePauseWaveSystem()
+    public void TogglePauseWaveSystem()
     {
         pauseWaveSystem = !pauseWaveSystem;
     }
