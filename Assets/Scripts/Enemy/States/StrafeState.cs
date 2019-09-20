@@ -420,6 +420,7 @@ public class StrafeState : IState
 	// this function skips over circular points that are not valid or partial
 	// if there are three 
 	// todo if no points found, then recalculate more points with smaller radius!!
+	// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
 		// todo remove this DEBUGGING ONLY
@@ -444,8 +445,6 @@ public class StrafeState : IState
 				break;
 			}
 		}
-		
-		// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 		return newIndex;
 	}
 	

@@ -192,7 +192,7 @@ public class GameController : MonoBehaviour
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
         PlayerAbility.ToggleQuicksandAbility();
-        Invoke("TogglePauseWaveSystem", 10);
+        Invoke("TogglePauseWaveSystem", BEFORE_WAVE1);
     }
 
     // Future: delete all other instances of objects in the scene
