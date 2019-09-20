@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
 using UnityEngine.AI;
+using Valve.VR;
 
 public class MenuUIController : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class MenuUIController : MonoBehaviour
     private Vector3 playerFor; // player transform forward
 
     private InteractLaserButton laserPointer;
-    
+
     // Instance getter and initialization
     public static MenuUIController Instance
     {
@@ -38,21 +38,20 @@ public class MenuUIController : MonoBehaviour
             return instance;
         }
     }
-    
+
     private void Awake()
     {
         player = GameObject.FindWithTag("MainCamera");
-        
+
         vrCamera = player.GetComponent<Camera>();
-        
+
         laserPointer = this.GetComponent<InteractLaserButton>();
         isPauseMenuActive = false;
     }
 
     // Start is called before the first frame update
     void Start()
-    {
-    }
+    { }
 
     // Update is called once per frame
     void Update()
@@ -61,24 +60,24 @@ public class MenuUIController : MonoBehaviour
         {
             pauseToggle();
         }
-        
+
     }
 
     public bool PausePress()
     {
         return PausePressLeft() || PausePressRight();
     }
-    
+
     public bool PausePressRight()
     {
         return pauseAction.GetStateDown(rightHandInput);
-    }    
-    
+    }
+
     public bool PausePressLeft()
     {
         return pauseAction.GetStateDown(leftHandInput);
     }
-    
+
     // Instantiates pause menu in the direction the player looks at
     public void PauseGame()
     {
@@ -86,20 +85,20 @@ public class MenuUIController : MonoBehaviour
         playerPos = player.transform.position;
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
-        Vector3 spawnPosition = playerPos + playerFor*5;
+        Vector3 spawnPosition = playerPos + playerFor * 5;
         spawnPosition.y = (float) 3; // todo test this out
-        
+
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
         pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
         pauseMenu.transform.LookAt(player.transform.position);
-        
+
         // todo fixes camera rotation but buttons are not detectable - do not delete
-//        pauseMenu = Instantiate(menuPrefab);
-//        pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
-//        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
-//        pauseMenu.transform.position = spawnPosition;
-//        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
-//        pauseMenu.transform.LookAt(targetPosition);
+        //        pauseMenu = Instantiate(menuPrefab);
+        //        pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
+        //        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
+        //        pauseMenu.transform.position = spawnPosition;
+        //        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
+        //        pauseMenu.transform.LookAt(targetPosition);
     }
 
     // if pause menu is not active, instantiate it and pause game
@@ -113,12 +112,6 @@ public class MenuUIController : MonoBehaviour
             isPauseMenuActive = true;
             PauseGame();
             Time.timeScale = 0;
-            
-            PlayerAbility.ToggleSpikeAbility();
-            PlayerAbility.ToggleWallAbility();
-            PlayerAbility.ToggleQuicksandAbility();
-            PlayerAbility.ToggleRockAbility();
-            
         }
         else
         {
@@ -126,18 +119,17 @@ public class MenuUIController : MonoBehaviour
             isPauseMenuActive = false;
             Destroy(pauseMenu);
             Time.timeScale = 1;
-            
-            PlayerAbility.ToggleSpikeAbility();
-            PlayerAbility.ToggleWallAbility();
-            PlayerAbility.ToggleQuicksandAbility();
-            PlayerAbility.ToggleRockAbility();
-            
         }
+
+        PlayerAbility.ToggleSpikeAbility();
+        PlayerAbility.ToggleWallAbility();
+        PlayerAbility.ToggleQuicksandAbility();
+        PlayerAbility.ToggleRockAbility();
     }
-    
+
     public void ToggleLaser()
     {
         laserPointer.toggleLaser();
     }
-    
+
 }

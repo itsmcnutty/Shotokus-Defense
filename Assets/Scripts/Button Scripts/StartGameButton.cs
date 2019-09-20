@@ -23,6 +23,7 @@ public class StartGameButton : MonoBehaviour
     {
         GameController.Instance.StartGameWithTutorial();
         spawnArea.SetActive(false);
+        Time.timeScale = 0;
     }
 
     public void StartGameWithoutTutorial()
