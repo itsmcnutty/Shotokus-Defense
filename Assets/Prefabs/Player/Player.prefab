@@ -2640,6 +2640,8 @@ MonoBehaviour:
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
     type: 3}
+  spikeMinHandMovement: 0.05
+  quicksandMinHandMovement: 0.05
   baseSpikeRadius: 0.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
@@ -2679,6 +2681,7 @@ MonoBehaviour:
   wallSizeMultiplier: 120
   wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
+  wallMinHandMovement: 0.06
   wallCreateParticles: {fileID: 337255554311895372, guid: 2ff8475a3164d2f46ba415899594db22,
     type: 3}
   wallDestroyParticles: {fileID: 8698782110496229370, guid: 8a2b51d9f3b5a284996419f0be37b58f,
