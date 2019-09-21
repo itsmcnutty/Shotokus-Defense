@@ -294,8 +294,8 @@ public class GameController : MonoBehaviour
                 destinationPos = new Vector3(9, 0.25f, 33);
                 break;
             case 1:
-//                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
-                destinationPos = new Vector3(26f, 0.5f, 18.8f);
+                destinationPos = new Vector3(22.6f, 0.5f, 23f);
+//                destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
                 destinationPos = new Vector3(-3f, 0.75f, 3.1f);

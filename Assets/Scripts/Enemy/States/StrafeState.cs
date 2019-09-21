@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Experimental.GlobalIllumination;
 
 // Struct to keep track of information for pointsAround() function
 struct CircularCoord
@@ -419,9 +420,10 @@ public class StrafeState : IState
 	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
 		int newIndex = lastPointIndex;
-		
+
 		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
+//			isClockwise = false;
 			if (isClockwise)
 			{
 				newIndex--;
