@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8131357052593351462}
   - component: {fileID: 8920490891688499034}
   - component: {fileID: -3223858348475271638}
-  m_Layer: 16
+  m_Layer: 19
   m_Name: Projectile
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -122,4 +122,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b38d2a0455df746a1382a372b3db17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileDamage: 100
+  projectileDamage: 20

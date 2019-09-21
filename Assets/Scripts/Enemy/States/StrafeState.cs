@@ -101,7 +101,7 @@ public class StrafeState : IState
 
 	public StrafeState(EnemyLightProperties props)
 	{
-//		meleeRadius = enemyProps.MELEE_RADIUS;
+		meleeRadius = -1; // The light enemy will never enter the melee state
 		rangedRadius = props.RANGED_RADIUS;
 		agent = props.agent;
 		animator = props.animator;
@@ -188,9 +188,6 @@ public class StrafeState : IState
 		agentHead = gameObj.transform.position;
 		// todo change this, this is the head height value
 		agentHead.y = 2.5f;
-
-//		agent.SetDestination(playerPos);
-
 		
 //		// todo delete this
 //		if (agent.enabled && !debugNoWalk) 
@@ -219,37 +216,38 @@ public class StrafeState : IState
 
 		// remaining distance to target
 		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
-//        Debug.Log("vector3 distance is " + distanceToPlayer);
 
 		// only enters here first time it enters te strafing state
 		// calculate points around center and set new destination to closest point to agent
-		if (!isStrafing)
+		if (!isStrafing && agent.enabled)
 		{
-//			Debug.Log("Strafing mode / calculations");
 			// do not enter here if already strafing
 			isStrafing = true;
+			
+			// recalculate the totalCurrentradiusReduction if the enemy is already inside the strafe Distance radius when entering strafe state
+			if (distanceToPlayer < strafeDistance)
+			{
+				totalCurrentReduction = strafeDistance - distanceToPlayer;
+			}
             
 			// Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
-			pointsAroundTarget = pointsAround(playerPos, strafeDistance);
+			pointsAroundTarget = pointsAround(playerPos, strafeDistance - totalCurrentReduction);
             
 			// pick the closest of these points that has a complete path to the enemy
 			circularPointDest = closestPoint(gameObjPos, pointsAroundTarget);
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-			Debug.Log("my destination is " + circularPointDest);
 		}
 		
 		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
-		if (isStrafing)
+		if (isStrafing && agent.enabled)
 		{
-//			Debug.Log("Strafing mode / moving");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
-//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
@@ -266,14 +264,11 @@ public class StrafeState : IState
 				// update lastPointIndex to next circular point coordinate
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
-//				Debug.Log("last point index: " + lastPointIndex);
-                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
 		
-		// todo SHOOTING STATE
-//		Debug.Log("Shooting mode");
+		// SHOOTING STATE
 		// check for visibility to target through ray cast
 		RaycastHit hit;
 
@@ -320,7 +315,6 @@ public class StrafeState : IState
 		
 		// Calculate enemy distance
 		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
-//		Debug.Log(distanceToPlayer);
 
 		// If outside ranged radius, transition to run state
 		if (distanceToPlayer >  rangedRadius)
@@ -361,9 +355,6 @@ public class StrafeState : IState
 			float x = Mathf.Cos(angle) * radius;
 			float y = Mathf.Sin(angle) * radius;
 			Vector3 coord = new Vector3(x, 0, y) + offset;
-//            Debug.Log("Iteration: " + i);
-//            Debug.Log("Angle: " + angle);
-//            Debug.Log(coord);
 			// check that path to circular coordinate can be completed. Invalid or partial points are not accepted.
 			agent.CalculatePath(coord, path);
 			if (path.status != NavMeshPathStatus.PathComplete)
@@ -374,7 +365,6 @@ public class StrafeState : IState
 			{
 				points[i].isReachable = true;
 			}
-//			Debug.Log("My path status is: " + path.status);
 			angle += Mathf.PI / 4;
 			points[i].coord = coord;
 			points[i].index = i;
@@ -412,40 +402,33 @@ public class StrafeState : IState
 
 	// this function updates the lastPointIndex to indicate the agent which circular point to move towards 
 	// this function skips over circular points that are not valid or partial
+	// if there are three 
 	// todo if no points found, then recalculate more points with smaller radius!!
+	// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 	private int GetNextCircularPointIndex(int lastPointIndex)
 	{
 		// todo remove this DEBUGGING ONLY
 //		isClockwise = true;
 		int newIndex = lastPointIndex;
 		
-		if (isClockwise)
+		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
-			for (int i = newIndex; i > -1; i--)
+			if (isClockwise)
 			{
 				newIndex--;
 				if (newIndex < 0) 
 					newIndex = newIndex + pointsAroundTarget.Length;
-				newIndex %= 8;
-				if (pointsAroundTarget[newIndex].isReachable)
-				{
-					break;
-				}
 			}
-		}
-		else
-		{
-			for (int i = newIndex; i < pointsAroundTarget.Length; i++)
+			else
 			{
 				newIndex++;
 				newIndex %= 8;
-				if (pointsAroundTarget[newIndex].isReachable)
-				{
-					break;
-				}
+			}
+			if (pointsAroundTarget[newIndex].isReachable)
+			{
+				break;
 			}
 		}
-		// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 		return newIndex;
 	}
 	

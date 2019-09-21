@@ -83,7 +83,8 @@ public class Rocks : MonoBehaviour
     {
         // Gets a rock from the stash and attaches it to the player's hand
         GameObject activeRock = GetNewRock();
-        activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
+        activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - minRockDiameter, arc.GetEndPosition().z);
+        activeRock.transform.localScale = new Vector3(minRockDiameter, minRockDiameter, minRockDiameter);
         hand.AttachObject(activeRock, GrabTypes.Scripted);
         playerEnergy.SetTempEnergy(hand, 0);
 
@@ -105,7 +106,7 @@ public class Rocks : MonoBehaviour
         // Prevents resizing if the player doesn't have enough energy
         hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && rockEnergyCost < maxRockEnergyCost);
 
-        if (!currentRegrowthParticleSystem)
+        if (currentRegrowthParticleSystem == null)
         {
             // Creates a new regrowth particle system if one does not exist
             currentRegrowthParticleSystem = Instantiate(regrowRockParticles);
@@ -121,7 +122,7 @@ public class Rocks : MonoBehaviour
 
     public void StopRegrowthParticles()
     {
-        if (currentRegrowthParticleSystem)
+        if (currentRegrowthParticleSystem != null)
         {
             // Stops the particle animations when the player is not longer resizing the rock
             UnityEngine.ParticleSystem.MainModule particleMain = currentRegrowthParticleSystem.main;
@@ -161,7 +162,7 @@ public class Rocks : MonoBehaviour
             rockThrow.PlayOneShot(rockThrow.clip);
 
             // Uses power-up if enabled
-            if (PlayerAbility.RockClusterEnabled())
+            if (PlayerAbility.RockClusterEnabled)
             {
                 // Gets the speed of the rock at the time of release
                 Vector3 velocity, angularVelocity;

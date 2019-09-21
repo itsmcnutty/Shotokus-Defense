@@ -12,6 +12,7 @@ public class Walls : MonoBehaviour
     public float wallSizeMultiplier = 120f;
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
+    public float wallMinHandMovement = .27f;
 
     [Header("Audio")]
     public AudioSource raiseWall;
@@ -152,7 +153,7 @@ public class Walls : MonoBehaviour
         float wallMoveSpeed = 0;
 
         playerEnergy.UseEnergy(firstHandHeld);
-        if (PlayerAbility.WallPushEnabled())
+        if (PlayerAbility.WallPushEnabled)
         {
             // Sets the velocity of the wall to the average of the velocities if wall push is enabled
             foreach (Vector3 velocity in previousVelocities)
@@ -170,10 +171,17 @@ public class Walls : MonoBehaviour
             PowerupController.IncrementWallPushCounter();
         }
 
-        // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
-        WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles, breakWall);
-        wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
-        surfaceWalls.BuildNavMesh();
+        if (finalHandHeight < wallMinHandMovement)
+        {
+            Destroy(wall);
+        }
+        else
+        {
+            // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
+            WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles, breakWall);
+            wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
+            surfaceWalls.BuildNavMesh();
+        }
         raiseWall.Stop();
         ResetWallInfo();
     }
@@ -229,7 +237,6 @@ public class Walls : MonoBehaviour
     public void ActiveDrawMode(ControllerArc arc, ControllerArc otherArc)
     {
         // Updates the wall location and material
-        playerEnergy.UpdateAbilityUseTime();
         SetWallLocation(arc, otherArc);
         PlayerAbility.SetOutlineMaterial(wallOutline, WallIsValid(arc, otherArc), validOutlineMat, invalidOutlineMat);
     }

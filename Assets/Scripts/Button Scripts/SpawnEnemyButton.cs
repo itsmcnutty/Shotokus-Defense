@@ -27,7 +27,7 @@ public class SpawnEnemyButton : MonoBehaviour
     
     public void spawnEnemy()
     {
-        enemyProducer.SpawnEnemy(numberOfEnemies);
+//        enemyProducer.SpawnEnemy(numberOfEnemies);
     }
     
 }

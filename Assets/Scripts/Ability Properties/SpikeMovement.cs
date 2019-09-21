@@ -84,6 +84,9 @@ public class SpikeMovement : MonoBehaviour
         spikeBreakSound.Play();
         gameObject.transform.position = new Vector3(0, -10, 0);
 
+        // Disable obstacle for when this spike is re-created later
+        obstacle.enabled = false;
+        
         // Plays the particle effect on death
         ParticleSystem particleSystem = Instantiate(destroySpikeParticles);
         particleSystem.transform.position = transform.position;

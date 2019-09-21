@@ -234,7 +234,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 8c30a81e5967d5e4590f66b3a275d145,
+  m_Motion: {fileID: -203655887218126122, guid: ae2c18cf6fb50934ba108ce1ef16e90f,
     type: 3}
   m_Tag: Movement
   m_SpeedParameter: WalkSpeed
@@ -324,7 +324,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Attack1
-  m_Speed: 1
+  m_Speed: 1.4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 6635355075087320098}
@@ -337,7 +337,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: cdcf247d8333515479a6e7113daf21be,
+  m_Motion: {fileID: -203655887218126122, guid: 9fa92f52b18362f4e8f048fadd94b175,
     type: 3}
   m_Tag: Swinging
   m_SpeedParameter: 
@@ -427,7 +427,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking
-  m_Speed: 0.4
+  m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5362596737695750494}
@@ -518,7 +518,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 58088193857e4724d8a7caa23ee3dc8a,
+  m_Motion: {fileID: -203655887218126122, guid: da549f169563b2e429ca157e7d07a661,
     type: 3}
   m_Tag: Swinging
   m_SpeedParameter: 
@@ -678,49 +678,49 @@ AnimatorController:
     m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: AttackNum
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Melee
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Advance
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Retreat
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Ragdoll
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Swing
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: NumAttacks
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 2
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -945,7 +945,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Retreating
-  m_Speed: -0.7438
+  m_Speed: -0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 6522475952051581499}
@@ -958,7 +958,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: bf42fff2758951f47944ea8fbe16d395,
+  m_Motion: {fileID: -203655887218126122, guid: 151669156bd171d4f8b32433c1c8e6f4,
     type: 3}
   m_Tag: 
   m_SpeedParameter: WalkSpeed
@@ -1070,9 +1070,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.4223342
   m_TransitionOffset: 0
-  m_ExitTime: 0.85
+  m_ExitTime: 0.7768885
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1102,7 +1102,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 8c30a81e5967d5e4590f66b3a275d145,
+  m_Motion: {fileID: -203655887218126122, guid: ae2c18cf6fb50934ba108ce1ef16e90f,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -1118,20 +1118,20 @@ BlendTree:
   m_Name: Idle-Walk-RunBlend
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: bf42fff2758951f47944ea8fbe16d395,
+    m_Motion: {fileID: -203655887218126122, guid: 151669156bd171d4f8b32433c1c8e6f4,
       type: 3}
     m_Threshold: 2.3
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1.8594974
+    m_TimeScale: 1.5177381
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 56f3a398f6adfe44893bb51cb30b8a02,
+    m_Motion: {fileID: -203655887218126122, guid: f7be3a1ac95e27a499bec9d2125113a0,
       type: 3}
     m_Threshold: 4
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.6838915
+    m_TimeScale: 0.7456427
     m_CycleOffset: 0
     m_DirectBlendParameter: WalkSpeed
     m_Mirror: 0

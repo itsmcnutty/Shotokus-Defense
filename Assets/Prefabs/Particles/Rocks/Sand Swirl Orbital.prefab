@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3608211169773213929}
   - component: {fileID: 8805389275881484677}
   - component: {fileID: 4986164762637184802}
+  - component: {fileID: 425398721216093186}
   m_Layer: 0
   m_Name: Sand Swirl Orbital
-  m_TagString: Untagged
+  m_TagString: Particle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4740,3 +4741,15 @@ WindZone:
   m_WindTurbulence: 10
   m_WindPulseMagnitude: 1
   m_WindPulseFrequency: 0.01
+--- !u!114 &425398721216093186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347612203780203313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69cad530c565c714491a326c21accb90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
