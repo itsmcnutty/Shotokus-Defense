@@ -12,7 +12,7 @@ public class TutorialController : MonoBehaviour
         Spike,
         Quicksand,
         Wall,
-        Heal
+        None
     }
 
     [Header("Steam VR")]
@@ -43,6 +43,7 @@ public class TutorialController : MonoBehaviour
 
     private Dictionary<TutorialSections, List<TutorialSlide>> allTutorialVideos = new Dictionary<TutorialSections, List<TutorialSlide>>();
 
+    private TutorialSections currentSlideType;
     private List<TutorialSlide> currentSlideSet;
     private int currentSlide;
     private bool tutorialWaveInProgress;
@@ -67,7 +68,6 @@ public class TutorialController : MonoBehaviour
         allTutorialVideos.Add(TutorialSections.Spike, spikeVideos);
         allTutorialVideos.Add(TutorialSections.Wall, wallVideos);
         allTutorialVideos.Add(TutorialSections.Quicksand, quicksandVideos);
-        allTutorialVideos.Add(TutorialSections.Heal, healVideos);
     }
 
     // Update is called once per frame
@@ -80,11 +80,13 @@ public class TutorialController : MonoBehaviour
         List<TutorialSlide> slides;
         if (allTutorialVideos.TryGetValue(slideSet, out slides))
         {
+            currentSlideType = slideSet;
             currentSlideSet = slides;
             currentSlide = 0;
 
             SetSlideInfo();
         }
+
         switch(slideSet)
         {
             case TutorialSections.Rock:
@@ -161,6 +163,38 @@ public class TutorialController : MonoBehaviour
         GameController.Instance.TogglePauseWaveSystem();
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         tutorialWaveInProgress = true;
+    }
+
+    public bool TutorialWaveInProgress()
+    {
+        return tutorialWaveInProgress;
+    }
+
+    public void SetNextTutorial()
+    {
+        switch(currentSlideType)
+        {
+            case TutorialSections.Rock:
+                SelectTutorial(TutorialSections.Spike);
+                break;
+            case TutorialSections.Spike:
+                SelectTutorial(TutorialSections.Quicksand);
+                break;
+            case TutorialSections.Quicksand:
+                SelectTutorial(TutorialSections.Wall);
+                break;
+        }
+
+        startWavePillar.SetActive(!startWavePillar.activeSelf);
+        tutorialWaveInProgress = false;
+    }
+
+    public void EndTutorial()
+    {
+        tutorialWaveInProgress = false;
+        tutorialSlideWall.SetActive(false);
+        showTutorialPillar.SetActive(false);
+        startWavePillar.SetActive(false);
     }
 
     private void ToggleTutorialOptions()

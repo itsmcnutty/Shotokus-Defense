@@ -272,17 +272,17 @@ public class SpikeQuicksand : MonoBehaviour
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
         float controllerVelocity = previousVelocities.Average();
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
-        if (handPos < 0 && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
+        if (handPos < 0 && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]) && PlayerAbility.QuicksandAbilityEnabled)
         {
             // Creates quicksand if the player lowered their hands and the area is valid
             StartCoroutine(CreateQuicksand(spikeQuicksandOutlines, hand, otherHand));
         }
-        else if (handPos > 0 && controllerVelocity > 0 && PlayerAbility.QuicksandAbilityEnabled)
+        else if (handPos > 0 && controllerVelocity > 0 && PlayerAbility.SpikeAbilityEnabled)
         {
             // Creates spikes if the player raised their hands and they have upward velocity
             CreateSpikes(spikeQuicksandOutlines, hand, arc, controllerPose, controllerVelocity, horizontalSpikeChainVelocity);
         }
-        else if(PlayerAbility.SpikeAbilityEnabled)
+        else
         {
             // Destroys the outline(s) if the movements are invalid
             CancelSpikes(spikeQuicksandOutlines);
