@@ -29,7 +29,7 @@ public class EnemyLightProperties : EnemyProperties
     [NonSerialized] public RagdollState ragdollState;
     
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
         base.Start();
         
