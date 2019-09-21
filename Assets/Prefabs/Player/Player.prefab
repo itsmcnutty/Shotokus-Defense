@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3443396, g: 0.4207454, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1154,7 +1154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1443,7 +1443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2612,7 +2612,7 @@ MonoBehaviour:
   rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
     type: 3}
   numberOfRocksInCluster: 4
-  minRockDiameter: 0.25
+  minRockDiameter: 0.4
   maxRockDimater: 1.5
   rockMassScale: 100
   maxRockEnergyCost: 200
@@ -2640,6 +2640,8 @@ MonoBehaviour:
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
     type: 3}
+  spikeMinHandMovement: 0.05
+  quicksandMinHandMovement: 0.05
   baseSpikeRadius: 0.5
   spikeSpeedReduction: 10
   spikeMinSpeed: 0.05
@@ -2679,6 +2681,7 @@ MonoBehaviour:
   wallSizeMultiplier: 120
   wallSpeedReduction: 50
   wallButtonClickDelay: 0.05
+  wallMinHandMovement: 0.06
   wallCreateParticles: {fileID: 337255554311895372, guid: 2ff8475a3164d2f46ba415899594db22,
     type: 3}
   wallDestroyParticles: {fileID: 8698782110496229370, guid: 8a2b51d9f3b5a284996419f0be37b58f,

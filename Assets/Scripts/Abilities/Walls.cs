@@ -12,6 +12,7 @@ public class Walls : MonoBehaviour
     public float wallSizeMultiplier = 120f;
     public float wallSpeedReduction = 50f;
     public float wallButtonClickDelay = 0.05f;
+    public float wallMinHandMovement = .27f;
 
     public ParticleSystem wallCreateParticles;
     public ParticleSystem wallDestroyParticles;
@@ -166,10 +167,17 @@ public class Walls : MonoBehaviour
             PowerupController.IncrementWallPushCounter();
         }
 
-        // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
-        WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles);
-        wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
-        surfaceWalls.BuildNavMesh();
+        if (finalHandHeight < wallMinHandMovement)
+        {
+            Destroy(wall);
+        }
+        else
+        {
+            // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
+            WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles);
+            wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
+            surfaceWalls.BuildNavMesh();
+        }
         ResetWallInfo();
     }
 
@@ -224,7 +232,6 @@ public class Walls : MonoBehaviour
     public void ActiveDrawMode(ControllerArc arc, ControllerArc otherArc)
     {
         // Updates the wall location and material
-        playerEnergy.UpdateAbilityUseTime();
         SetWallLocation(arc, otherArc);
         PlayerAbility.SetOutlineMaterial(wallOutline, WallIsValid(arc, otherArc), validOutlineMat, invalidOutlineMat);
     }
