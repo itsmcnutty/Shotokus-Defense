@@ -7,7 +7,7 @@ public class ShootingAbility : MonoBehaviour
 
     public GameObject projectilePrefab;
     private GameObject projectile;
-    private Rigidbody rigidbody;
+    private Rigidbody projectileRigidbody;
     private GameObject player;
     private float initialVelocityX;
     private float fireRate;
@@ -45,7 +45,7 @@ public class ShootingAbility : MonoBehaviour
     {
         // Instantiate and set position where projectile spawns
         projectile = Instantiate(projectilePrefab, transform);
-        rigidbody = projectile.GetComponent<Rigidbody>();
+        projectileRigidbody = projectile.GetComponent<Rigidbody>();
     }
 
 
@@ -76,7 +76,7 @@ public class ShootingAbility : MonoBehaviour
 
             // set rotation and add velocity vector to projectile
             projectile.transform.LookAt(playerPos);
-            rigidbody.velocity = velocity;
+            projectileRigidbody.velocity = velocity;
 
             // wait for fire rate timer
             StartCoroutine(Wait(fireRate));
@@ -96,8 +96,8 @@ public class ShootingAbility : MonoBehaviour
         if (projectile)
         {
             projectile.transform.parent = null;
-            rigidbody.isKinematic = false;
-            rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            projectileRigidbody.isKinematic = false;
+            projectileRigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
     }
     
