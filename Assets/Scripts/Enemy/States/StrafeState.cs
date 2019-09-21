@@ -368,7 +368,7 @@ public class StrafeState : IState
 				points[i].isReachable = false;
 				// if point is not valid, attemp to find a random point nearby in the navmesh
 				Vector3 temp;
-				if (RandomPoint(coord, 2f, out temp))
+				if (RandomPoint(coord, 0.5f, out temp))
 				{
 					points[i].isReachable = true;
 					coord = temp;
