@@ -60,7 +60,7 @@ public class StrafeState : IState
 	private bool isClockwise; // walk in a clockwise direction when strafying
 	private float radiusReduction; // float that will reduce the radius of points around center every time, the agent reaches a point
 	private float totalCurrentReduction; // float that will keep track of the increase in radiausReduction
-	private int AMOUNT_OF_CIRCLE_POINTS = 16; // this is the amount of points that will be calculated around a center
+	private int AMOUNT_OF_CIRCLE_POINTS = 8; // this is the amount of points that will be calculated around a center
 	
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
@@ -340,7 +340,6 @@ public class StrafeState : IState
 	// given a point and a radius, return points around the center with the input radius and every 45 degrees (pi/4 radians)
 	private CircularCoord[] pointsAround(Vector3 center, float radius)
 	{
-		AMOUNT_OF_CIRCLE_POINTS = 16;
 		int amountOfPoints = AMOUNT_OF_CIRCLE_POINTS; // amount of points around center (more points, more accurate)
 		float angle = 0;
 		CircularCoord[] points = new CircularCoord[amountOfPoints];
@@ -360,13 +359,13 @@ public class StrafeState : IState
 			if (path.status != NavMeshPathStatus.PathComplete)
 			{
 				points[i].isReachable = false;
-				// if point is not valid, attemp to find a random point nearby in the navmesh
-				Vector3 temp;
-				if (RandomPoint(coord, 0.5f, out temp))
-				{
-					points[i].isReachable = true;
-					coord = temp;
-				}
+//				// if point is not valid, attemp to find a random point nearby in the navmesh
+//				Vector3 temp;
+//				if (RandomPoint(coord, 0.5f, out temp))
+//				{
+//					points[i].isReachable = true;
+//					coord = temp;
+//				}
 			}
 			else
 			{
