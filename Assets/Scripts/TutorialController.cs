@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using Valve.VR;
 
 public class TutorialController : MonoBehaviour
 {
@@ -12,8 +12,12 @@ public class TutorialController : MonoBehaviour
         Spike,
         Quicksand,
         Wall,
-        Heal
+        None
     }
+
+    [Header("Steam VR")]
+    public SteamVR_Input_Sources handType;
+    public SteamVR_Action_Boolean grabAction;
 
     [Header("UI Elements")]
     public Text tutorialText;
@@ -21,6 +25,12 @@ public class TutorialController : MonoBehaviour
     public Text backSlideText;
     public VideoPlayer tutorialVideo;
     public VideoPlayer controllerVideo;
+
+    
+    [Header("Game Objects")]
+    public GameObject tutorialSlideWall;
+    public GameObject showTutorialPillar;
+    public GameObject startWavePillar;
 
     [Header("Tutorial Videos")]
     public List<TutorialSlide> rockVideos;
@@ -33,8 +43,10 @@ public class TutorialController : MonoBehaviour
 
     private Dictionary<TutorialSections, List<TutorialSlide>> allTutorialVideos = new Dictionary<TutorialSections, List<TutorialSlide>>();
 
+    private TutorialSections currentSlideType;
     private List<TutorialSlide> currentSlideSet;
     private int currentSlide;
+    private bool tutorialWaveInProgress;
 
     // Instance getter and initialization
     public static TutorialController Instance
@@ -56,13 +68,11 @@ public class TutorialController : MonoBehaviour
         allTutorialVideos.Add(TutorialSections.Spike, spikeVideos);
         allTutorialVideos.Add(TutorialSections.Wall, wallVideos);
         allTutorialVideos.Add(TutorialSections.Quicksand, quicksandVideos);
-        allTutorialVideos.Add(TutorialSections.Heal, healVideos);
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void SelectTutorial(TutorialSections slideSet)
@@ -70,10 +80,27 @@ public class TutorialController : MonoBehaviour
         List<TutorialSlide> slides;
         if (allTutorialVideos.TryGetValue(slideSet, out slides))
         {
+            currentSlideType = slideSet;
             currentSlideSet = slides;
             currentSlide = 0;
 
             SetSlideInfo();
+        }
+
+        switch(slideSet)
+        {
+            case TutorialSections.Rock:
+                PlayerAbility.ToggleRockAbility();
+                break;
+            case TutorialSections.Spike:
+                PlayerAbility.ToggleSpikeAbility();
+                break;
+            case TutorialSections.Quicksand:
+                PlayerAbility.ToggleQuicksandAbility();
+                break;
+            case TutorialSections.Wall:
+                PlayerAbility.ToggleWallAbility();
+                break;
         }
     }
 
@@ -81,11 +108,22 @@ public class TutorialController : MonoBehaviour
     {
         if ((currentSlide + 1) == currentSlideSet.Count)
         {
-            // Hide tutorial popup
+            ToggleTutorialOptions();
             return;
         }
 
         currentSlide++;
+        SetSlideInfo();
+    }
+
+    public void PreviousSlide()
+    {
+        if (currentSlide == 0)
+        {
+            ToggleTutorialOptions();
+            return;
+        }
+        currentSlide--;
         SetSlideInfo();
     }
 
@@ -115,14 +153,61 @@ public class TutorialController : MonoBehaviour
         }
     }
 
-    public void PreviousSlide()
+    public void ShowTutorial()
     {
-        if (currentSlide == 0)
+        ToggleTutorialOptions();
+    }
+
+    public void StartWave()
+    {
+        GameController.Instance.TogglePauseWaveSystem();
+        startWavePillar.SetActive(!startWavePillar.activeSelf);
+        tutorialWaveInProgress = true;
+    }
+
+    public bool TutorialWaveInProgress()
+    {
+        return tutorialWaveInProgress;
+    }
+
+    public void SetNextTutorial()
+    {
+        switch(currentSlideType)
         {
-            // Hide tutorial popup
-            return;
+            case TutorialSections.Rock:
+                SelectTutorial(TutorialSections.Spike);
+                break;
+            case TutorialSections.Spike:
+                SelectTutorial(TutorialSections.Quicksand);
+                break;
+            case TutorialSections.Quicksand:
+                SelectTutorial(TutorialSections.Wall);
+                break;
         }
-        currentSlide--;
+
+        startWavePillar.SetActive(!startWavePillar.activeSelf);
+        tutorialWaveInProgress = false;
+    }
+
+    public void EndTutorial()
+    {
+        tutorialWaveInProgress = false;
+        tutorialSlideWall.SetActive(false);
+        showTutorialPillar.SetActive(false);
+        startWavePillar.SetActive(false);
+    }
+
+    private void ToggleTutorialOptions()
+    {
+        tutorialSlideWall.SetActive(!tutorialSlideWall.activeSelf);
+        showTutorialPillar.SetActive(!showTutorialPillar.activeSelf);
+        if(!tutorialWaveInProgress)
+        {
+            startWavePillar.SetActive(!startWavePillar.activeSelf);
+        }
+        MenuUIController.Instance.ToggleLaser();
+        Time.timeScale = (Time.timeScale + 1) % 2;
+        currentSlide = 0;
         SetSlideInfo();
     }
 }

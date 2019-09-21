@@ -148,6 +148,8 @@ public class InteractLaserButton : MonoBehaviour
             leftArc.setCanUseAbility(false);
             rightArc.HidePointer();
             leftArc.HidePointer();
+            rightArc.ClearPointerHitObject();
+            leftArc.ClearPointerHitObject();
             rightArc.enabled = false;
             leftArc.enabled = false;
 
