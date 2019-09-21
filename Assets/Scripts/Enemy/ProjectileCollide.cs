@@ -29,7 +29,6 @@ public class ProjectileCollide : MonoBehaviour
         // todo in theory nothing else but the player should have the player collider tag, therefore i can be sure that inside this if statement i should damage the player
         if (other.gameObject.CompareTag("PlayerCollider"))
         {
-//            Debug.Log("Damaging the player");
             // Needed if doing non-VR mode
             if (playerHealth != null)
             {

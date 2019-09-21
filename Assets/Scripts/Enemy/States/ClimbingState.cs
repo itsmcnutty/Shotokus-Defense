@@ -44,10 +44,6 @@ public class ClimbingState : IState
     {
         // Not an obstacle
         obstacle.enabled = false;
-        
-//        enemyProps.EnablePathfind(); // todo ask if i need this??
-//        Debug.Log("I entered climbing state");
-        
     }
     
     // Called upon exiting this state
@@ -64,7 +60,6 @@ public class ClimbingState : IState
         // todo fill out
         // wait for climbing animation to be done??
         // set time for how long should it take??
-//        Debug.Log("IM CLIMBING ( ͡° ͜ʖ ͡°)");
     }
     
     // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition

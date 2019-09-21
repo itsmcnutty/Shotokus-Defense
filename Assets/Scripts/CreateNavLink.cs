@@ -55,10 +55,6 @@ public class CreateNavLink : MonoBehaviour
         Vector3 startPosF = wallPos - transform.forward; // position for navmesh link start point
 
         wallProperties = GetComponent<WallProperties>();
-        if (wallProperties == null)
-        {
-            Debug.Log("No wall properties");
-        }
 
         // Store the height of wall on front and back
         float wallHeightF = -10;
