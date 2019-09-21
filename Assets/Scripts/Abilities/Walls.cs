@@ -232,7 +232,6 @@ public class Walls : MonoBehaviour
     public void ActiveDrawMode(ControllerArc arc, ControllerArc otherArc)
     {
         // Updates the wall location and material
-        playerEnergy.UpdateAbilityUseTime();
         SetWallLocation(arc, otherArc);
         PlayerAbility.SetOutlineMaterial(wallOutline, WallIsValid(arc, otherArc), validOutlineMat, invalidOutlineMat);
     }

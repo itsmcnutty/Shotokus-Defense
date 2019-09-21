@@ -78,7 +78,8 @@ public class Rocks : MonoBehaviour
     {
         // Gets a rock from the stash and attaches it to the player's hand
         GameObject activeRock = GetNewRock();
-        activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - 0.25f, arc.GetEndPosition().z);
+        activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - minRockDiameter, arc.GetEndPosition().z);
+        activeRock.transform.localScale = new Vector3(minRockDiameter, minRockDiameter, minRockDiameter);
         hand.AttachObject(activeRock, GrabTypes.Scripted);
         playerEnergy.SetTempEnergy(hand, 0);
 
