@@ -34,8 +34,8 @@ RectTransform:
   - {fileID: 4840205358975156580}
   - {fileID: 4218024535544298090}
   - {fileID: 2796714111050505891}
-  - {fileID: 5799383279539780885}
   - {fileID: 6488953993356457371}
+  - {fileID: 5799383279539780885}
   m_Father: {fileID: 1327505551420086289}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -639,11 +639,11 @@ RectTransform:
   m_Children:
   - {fileID: 369621453345372200}
   m_Father: {fileID: 7075880467838428841}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -177.70801, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000008583069, y: -3.42}
+  m_AnchoredPosition: {x: -0.000008583069, y: -2.11}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &419423615329252131
@@ -1201,7 +1201,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Toggle Power Ups
+  m_Text: Quit Game
 --- !u!1 &8314846359941831845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,9 +1374,9 @@ GameObject:
   - component: {fileID: 3999725427895678652}
   - component: {fileID: 1192673049448666037}
   - component: {fileID: 9052247737031538181}
-  - component: {fileID: 6423189109055204508}
+  - component: {fileID: 1053217222857007601}
   m_Layer: 0
-  m_Name: Toogle Power Ups
+  m_Name: Quit Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1395,11 +1395,11 @@ RectTransform:
   m_Children:
   - {fileID: 4739173831014594965}
   m_Father: {fileID: 7075880467838428841}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -177.70801, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000005722046, y: -2.11}
+  m_AnchoredPosition: {x: -0, y: -3.42}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6534869347364900399
@@ -1482,8 +1482,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 852865213012374027}
-        m_MethodName: togglePowerUps
+      - m_Target: {fileID: 1053217222857007601}
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1520,7 +1520,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 160, y: 20, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6423189109055204508
+--- !u!114 &1053217222857007601
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1529,7 +1529,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8875620359305628430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a4c2625a24069741832db621008b1a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8abbb8882f7bd6b4bb5cf4b6374940be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfEnemies: 1
