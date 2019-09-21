@@ -297,6 +297,7 @@ public class GameController : MonoBehaviour
         Transform cameraRigT = cameraRig.transform;
         Vector3 headPosition = vrCamera.transform.position;
 
+        Debug.Log("Teleport!");
         temp = temp % 5;
         switch (temp)
         {

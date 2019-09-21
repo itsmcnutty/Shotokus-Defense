@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Valve.Newtonsoft.Json;
+using Newtonsoft.Json;
 
 public static class JsonParser
 {
