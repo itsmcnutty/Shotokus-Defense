@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Experimental.GlobalIllumination;
 
 // Struct to keep track of information for pointsAround() function
 struct CircularCoord
@@ -211,7 +210,6 @@ public class StrafeState : IState
 
 		// remaining distance to target
 		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
-//        Debug.Log("vector3 distance is " + distanceToPlayer);
 
 		// only enters here first time it enters te strafing state
 		// calculate points around center and set new destination to closest point to agent
@@ -234,8 +232,7 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-
-			Debug.Log("my destination is " + circularPointDest);
+//			Debug.Log("my destination is " + circularPointDest);
 		}
 		
 		
@@ -246,7 +243,7 @@ public class StrafeState : IState
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
-            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
@@ -263,8 +260,8 @@ public class StrafeState : IState
 				// update lastPointIndex to next circular point coordinate
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
-				Debug.Log("last point index: " + lastPointIndex);
-                Debug.Log("moving towards " +circularPointDest);
+//				Debug.Log("last point index: " + lastPointIndex);
+//                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
@@ -358,9 +355,6 @@ public class StrafeState : IState
 			float x = Mathf.Cos(angle) * radius;
 			float y = Mathf.Sin(angle) * radius;
 			Vector3 coord = new Vector3(x, 0, y) + offset;
-//            Debug.Log("Iteration: " + i);
-//            Debug.Log("Angle: " + angle);
-//            Debug.Log(coord);
 			// check that path to circular coordinate can be completed. Invalid or partial points are not accepted.
 			agent.CalculatePath(coord, path);
 			if (path.status != NavMeshPathStatus.PathComplete)

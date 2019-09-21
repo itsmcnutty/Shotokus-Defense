@@ -232,8 +232,6 @@ namespace UnityEditor.AI
 
         void DeleteStoredNavMeshDataAssetsForOwnedSurfaces(GameObject gameObjectInPrefab)
         {
-            // Debug.LogFormat("DeleteStoredNavMeshDataAsset() when saving prefab {0}", gameObjectInPrefab.name);
-
             var surfaces = gameObjectInPrefab.GetComponentsInChildren<NavMeshSurface>(true);
             foreach (var surface in surfaces)
                 DeleteStoredPrefabNavMeshDataAsset(surface);
@@ -267,8 +265,6 @@ namespace UnityEditor.AI
 
         void ForgetUnsavedNavMeshDataChanges(PrefabStage prefabStage)
         {
-            // Debug.Log("On prefab closing - forget about this object's surfaces and stop caring about prefab saving");
-
             if (prefabStage == null)
                 return;
 
@@ -285,8 +281,6 @@ namespace UnityEditor.AI
                     var storedPrefabInfo = m_PrefabNavMeshDataAssets[i];
                     if (storedPrefabInfo.surface == null)
                     {
-                        // Debug.LogFormat("A surface from the prefab got deleted after it has baked a new NavMesh but it hasn't saved it. Now the unsaved asset gets deleted. ({0})", storedPrefabInfo.navMeshData);
-
                         // surface got deleted, thus delete its initial NavMeshData asset
                         if (storedPrefabInfo.navMeshData != null)
                         {
@@ -298,16 +292,11 @@ namespace UnityEditor.AI
                     }
                     else if (surfaceInPrefab != null && storedPrefabInfo.surface == surfaceInPrefab)
                     {
-                        //Debug.LogFormat("The surface {0} from the prefab was storing the original navmesh data and now will be forgotten", surfaceInPrefab);
-
                         var baseSurface = PrefabUtility.GetCorrespondingObjectFromSource(surfaceInPrefab) as NavMeshSurface;
                         if (baseSurface == null || surfaceInPrefab.navMeshData != baseSurface.navMeshData)
                         {
                             var assetPath = AssetDatabase.GetAssetPath(surfaceInPrefab.navMeshData);
                             AssetDatabase.DeleteAsset(assetPath);
-
-                            //Debug.LogFormat("The surface {0} from the prefab has baked new NavMeshData but did not save this change so the asset has been now deleted. ({1})",
-                            //    surfaceInPrefab, assetPath);
                         }
 
                         m_PrefabNavMeshDataAssets.RemoveAt(i);
