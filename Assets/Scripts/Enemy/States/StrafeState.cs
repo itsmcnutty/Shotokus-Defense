@@ -62,6 +62,11 @@ public class StrafeState : IState
 	private float totalCurrentReduction; // float that will keep track of the increase in radiausReduction
 	private int AMOUNT_OF_CIRCLE_POINTS = 8; // this is the amount of points that will be calculated around a center
 	
+	// climbing variables
+	private float climbingTimer = 0; // keeps track of how much time has occured after climbing
+	private float climbingTimeout = 5; // once climbingTimer reaches this counter, agent can climb again
+	private bool canClimb = false; // if true, allow agent to climb
+
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
 
@@ -160,6 +165,10 @@ public class StrafeState : IState
 		agent.speed = maxStrafeSpeed;
 		agent.angularSpeed = 0;
 		
+		// everytime the agent enters the strafe state, it has to wait 5 seconds before being able to climb
+		// once the timeout happens, the agent can freely climb until entering the strafe state again
+		agent.autoTraverseOffMeshLink = false;
+		
 		// Restart radius reduction, to prevent enemy approaching you right away after being launched from ragdoll
 		totalCurrentReduction = 0;
 	}
@@ -197,6 +206,14 @@ public class StrafeState : IState
 		
 		// Turn to player
 		props.TurnToPlayer();
+		
+		// Update climbing counter
+		climbingTimer += Time.deltaTime;
+		// if enough time has passed, allow to climb again
+		if (climbingTimer > climbingTimeout) {
+			climbingTimer -= climbingTimeout;
+			agent.autoTraverseOffMeshLink = true;
+		}
 		
 		// Move to player if outside attack range, otherwise transition
 //		if (agent.enabled && !debugNoWalk)
