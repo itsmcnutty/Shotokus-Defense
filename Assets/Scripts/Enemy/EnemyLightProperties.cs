@@ -40,9 +40,6 @@ public class EnemyLightProperties : EnemyProperties
         {
             isClockwise = true;
         }
-
-        // todo delete - just debugging
-//        isClockwise = true;
         
         // Instantiate states with the properties above
         runState = new RunState(this);

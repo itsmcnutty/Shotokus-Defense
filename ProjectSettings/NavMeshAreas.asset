@@ -6,25 +6,25 @@ NavMeshProjectSettings:
   serializedVersion: 2
   areas:
   - name: Walkable
-    cost: 10
+    cost: 100
   - name: Not Walkable
     cost: 1
   - name: Jump
     cost: 1
   - name: Quicksand
-    cost: 20
+    cost: 300
   - name: Water
-    cost: 20
-  - name: 
+    cost: 500
+  - name: EncourageL
     cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
+  - name: EncourageM
+    cost: 30
+  - name: PlayerArea
+    cost: 200
+  - name: EncourageS
+    cost: 50
+  - name: Disencourage
+    cost: 300
   - name: 
     cost: 1
   - name: 
@@ -73,7 +73,7 @@ NavMeshProjectSettings:
   m_Settings:
   - serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.5
+    agentRadius: 0.25
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.5
@@ -89,7 +89,7 @@ NavMeshProjectSettings:
       m_Flags: 0
   - serializedVersion: 2
     agentTypeID: -1372625422
-    agentRadius: 0.2
+    agentRadius: 0.1
     agentHeight: 2
     agentSlope: 60
     agentClimb: 0.4
