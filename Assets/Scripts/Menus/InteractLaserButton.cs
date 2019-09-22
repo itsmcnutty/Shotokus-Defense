@@ -20,6 +20,11 @@ public class InteractLaserButton : MonoBehaviour
     
     private bool isEnabled; // true if lasers are enable, false otherwise
 
+    [Header("Sounds")]
+    
+    public AudioClip menuClick;
+    public AudioClip menuMisclick;
+
     private ControllerArc rightArc;
     private ControllerArc leftArc;
     private GameObject rightArcObject;
@@ -28,9 +33,12 @@ public class InteractLaserButton : MonoBehaviour
     private Hand leftHandComp;
     private GameObject rightHandHeld;
     private GameObject leftHandHeld;
+    
+    private AudioSource audioSource;
 
     private void Awake()
     {
+        // Instantiate stuff
         laserPointerR = rightHand.GetComponent<SteamVR_LaserPointer>();
         laserPointerL = leftHand.GetComponent<SteamVR_LaserPointer>();
         button = null;
@@ -45,6 +53,8 @@ public class InteractLaserButton : MonoBehaviour
         selected = false;
         laserPointerL.active = false;
         laserPointerR.active = false;
+        
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -91,7 +101,14 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (selected && button != null)
         {
+            // Play click sound
+            audioSource.PlayOneShot(menuClick);
             button.onClick.Invoke();
+        }
+        else
+        {
+            // Play misclick sound
+            audioSource.PlayOneShot(menuMisclick);
         }
 
     }
