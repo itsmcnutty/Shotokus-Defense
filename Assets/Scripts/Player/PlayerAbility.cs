@@ -222,6 +222,10 @@ public class PlayerAbility : MonoBehaviour
         {
             TutorialController.Instance.StartWave();
         }
+        else if(hitObject && hitObject.name.Equals("Teleport Sphere"))
+        {
+            GameController.Instance.Teleport();
+        }
         else if (walls.WallOutlineIsActive())
         {
             // Creates a new wall when wall outline is active
