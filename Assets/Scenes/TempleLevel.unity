@@ -6978,6 +6978,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8239775241267448033, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: m_Name
+      value: Damage Indicator
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422725219761959910, guid: c4b40cb2a53b607439da31578005b9cd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 270
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5697528617253961138, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4b40cb2a53b607439da31578005b9cd, type: 3}
@@ -7453,6 +7463,11 @@ PrefabInstance:
       propertyPath: teleportPillar
       value: 
       objectReference: {fileID: 1003513652}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: locationWaveFiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 4900000, guid: 38cbf59f2e0e0ca4fba4f63d0e056d6f, type: 3}
     - target: {fileID: 1512379628719005127, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10428,7 +10443,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: dd48f7ce91837f249bcb599b9c9be981,
+      objectReference: {fileID: 23800000, guid: 462e3ab6761af5d4b875568bdc6ea9ed,
         type: 2}
     - target: {fileID: 8618336351119341847, guid: f432ca6eb057f7148bc3fec9a3a8567d,
         type: 3}

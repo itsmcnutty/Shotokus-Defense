@@ -141,15 +141,31 @@ public class PlayerEnergy : MonoBehaviour
         }
     }
 
-    private void SetEnergyBarText ()
+//    private void SetEnergyBarText ()
+//    {
+//        if(debugShowEnergyText)
+//        {
+//            energyBarText.text = Math.Floor (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+//        }
+//        else
+//        {
+//            energyBarText.text = "Energy Level";
+//        }
+//    }
+
+    float deltaTime = 0;
+    private void SetEnergyBarText()
     {
-        if(debugShowEnergyText)
+        if (debugShowEnergyText)
         {
-            energyBarText.text = Math.Floor (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+            energyBarText.text = Math.Floor(currentEnergy - GetTotalEnergyUsage()) + " / " + maxEnergy;
         }
         else
         {
-            energyBarText.text = "Energy Level";
+            //energyBarText.text = "Energy Level";
+            deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+            float fps = 1.0f / deltaTime;
+            energyBarText.text = Mathf.Ceil(fps).ToString();
         }
     }
 
