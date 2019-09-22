@@ -7453,6 +7453,11 @@ PrefabInstance:
       propertyPath: teleportPillar
       value: 
       objectReference: {fileID: 1003513652}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: locationWaveFiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 4900000, guid: 38cbf59f2e0e0ca4fba4f63d0e056d6f, type: 3}
     - target: {fileID: 1512379628719005127, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10428,7 +10433,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: dd48f7ce91837f249bcb599b9c9be981,
+      objectReference: {fileID: 23800000, guid: 1d6245ff190ee4b4794b916eced7e324,
         type: 2}
     - target: {fileID: 8618336351119341847, guid: f432ca6eb057f7148bc3fec9a3a8567d,
         type: 3}
