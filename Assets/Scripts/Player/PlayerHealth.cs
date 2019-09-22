@@ -12,7 +12,6 @@ public class PlayerHealth : MonoBehaviour
     public float regenHealthRate;
     public bool debugShowHealthText = false;
     private float currentHealth;
-    private bool damageTaken = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,10 +32,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (currentHealth > 0)
         {
-            if (!damageTaken)
-            {
-                StartCoroutine(FlashDamageIndicator((health / 100) * 255));
-            }
+            StartCoroutine(FlashDamageIndicator((health / 100) * 255));
             currentHealth -= health;
             healthBar.value = currentHealth;
             SetHealthBarText();
@@ -94,20 +90,17 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator FlashDamageIndicator(float damagePercent)
     {
-        damageTaken = true;
         yield return FadeTo(4, 0.05f);
         yield return FadeTo(0, 0.45f);
-        damageTaken = false;
     }
 
     private IEnumerator FadeTo(float aValue, float aTime)
     {
-        Debug.Log("Fading to " + aValue);
-        float alpha = damageIndicator.material.color.a;
+        float alpha = damageIndicator.sharedMaterial.color.a;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
         {
             Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha,aValue,t));
-            damageIndicator.material.SetColor("_BaseColor", newColor);
+            damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
             yield return null;
         }
     }
