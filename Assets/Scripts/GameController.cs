@@ -7,17 +7,20 @@ public class GameController : MonoBehaviour
     private GameObject enemyProducerObject; // EnemyProducer Object Instance
     private EnemyProducer enemyProducer; // EnemyProducer script functionality
     private PlayerHealth playerHealth; // controller for player health once round ends
-//    private PlayerEnergy playerEnergy; // controller for player energy
+    //    private PlayerEnergy playerEnergy; // controller for player energy
 
     private int enemiesAlive; // number of enemies alive in current Wave
 
-    [Header("Wait Times between Waves")] 
+    [Header("Wait Times between Waves")]
     public float BEFORE_WAVE1;
     public float BETWEEN_WAVES;
     public float BETWEEN_LOCATIONS;
 
     [Header("Wave Files")]
     public TextAsset[] locationWaveFiles; // array containing location wave files
+
+    [Header("Miscellaneous")]
+    public GameObject teleportPillar;
 
     // variables for teleport function
     private int caseSwitch;
@@ -39,9 +42,8 @@ public class GameController : MonoBehaviour
     private float currentTime;
     private bool pauseWaveSystem = true;
 
-//    // todo testing
-//    private bool restart= false;
-
+    //    // todo testing
+    //    private bool restart= false;
 
     // Constructor
     private GameController() { }
@@ -72,7 +74,7 @@ public class GameController : MonoBehaviour
         {
             playerHealth = player.GetComponent<PlayerHealth>();
             // todo maybe restart enemy energy when restarting game
-//            playerEnergy = player.GetComponent<PlayerEnergy> ();
+            //            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
@@ -100,13 +102,13 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-//
-//        // todo testing
-//        if (restart)
-//        {
-//            //
-//        }
-        
+        //
+        //        // todo testing
+        //        if (restart)
+        //        {
+        //            //
+        //        }
+
         currentTime += Time.deltaTime;
 
         if (currentWave != null)
@@ -146,8 +148,8 @@ public class GameController : MonoBehaviour
         if (currentWave != null)
         {
             TogglePauseWaveSystem();
-            
-            if(TutorialController.Instance.TutorialWaveInProgress())
+
+            if (TutorialController.Instance.TutorialWaveInProgress())
             {
                 TutorialController.Instance.SetNextTutorial();
                 return;
@@ -157,7 +159,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if(TutorialController.Instance.TutorialWaveInProgress())
+        if (TutorialController.Instance.TutorialWaveInProgress())
         {
             TutorialController.Instance.EndTutorial();
         }
@@ -165,16 +167,15 @@ public class GameController : MonoBehaviour
         // if there are no waves left, check if there are more locations
         if (allLocationWaves.Count != 0)
         {
-//            currentLocation = resetLocation = allLocationWaves.Dequeue();
-//            resetLocation = new Queue<LocationWaves>(allLocationWaves);
+            //            currentLocation = resetLocation = allLocationWaves.Dequeue();
+            //            resetLocation = new Queue<LocationWaves>(allLocationWaves);
 
             currentTime = 0;
             currentLocationCounter++;
             currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
             TogglePauseWaveSystem();
-            Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
-            Teleport();
+            SpawnTeleportPillar();
             return;
         }
         // no more waves left so you win
@@ -194,7 +195,6 @@ public class GameController : MonoBehaviour
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
         PlayerAbility.ToggleQuicksandAbility();
-        Invoke("TogglePauseWaveSystem", BEFORE_WAVE1);
     }
 
     // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location postion counter
@@ -212,14 +212,14 @@ public class GameController : MonoBehaviour
     public void RestartGame()
     {
 
-//        restart = true;
-        
+        //        restart = true;
+
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
-        
+
         // destroy all objects in scene before restarting
         destroyAll();
-        
+
         Debug.Log("Restarting game");
 
         // Reset values of wave (queue, timer, enemies counter)
@@ -236,12 +236,12 @@ public class GameController : MonoBehaviour
     public void destroyAll()
     {
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemies) 
+        foreach (var enemy in enemies)
             Destroy(enemy);
 
         // destroy menu screens and unfreeze game 
         var menus = GameObject.FindGameObjectsWithTag("Menu");
-        foreach (var menu in menus) 
+        foreach (var menu in menus)
             Destroy(menu);
 
         // destroy rocks, spikes, walls, quicksand 
@@ -249,18 +249,18 @@ public class GameController : MonoBehaviour
         var spikes = GameObject.FindGameObjectsWithTag("Spike");
         var walls = GameObject.FindGameObjectsWithTag("Wall");
         var quicksands = GameObject.FindGameObjectsWithTag("Quicksand");
-        foreach (var rock in rocks) 
+        foreach (var rock in rocks)
             Destroy(rock);
-        foreach (var spike in spikes) 
+        foreach (var spike in spikes)
             Destroy(spike);
-        foreach (var wall in walls) 
+        foreach (var wall in walls)
             Destroy(wall);
-        foreach (var quicksand in quicksands) 
+        foreach (var quicksand in quicksands)
             Destroy(quicksand);
 
         // destroy particles
         var particles = GameObject.FindGameObjectsWithTag("Particle");
-        foreach (var particle in particles) 
+        foreach (var particle in particles)
             Destroy(particle);
     }
 
@@ -285,6 +285,20 @@ public class GameController : MonoBehaviour
         enemiesAlive += amount;
     }
 
+    public void SpawnTeleportPillar()
+    {
+        Vector3 playerPos = player.transform.position;
+        Vector3 playerDirection = player.transform.forward;
+        Quaternion playerRotation = player.transform.rotation;
+        float spawnDistance = 5;
+
+        Vector3 spawnPos = playerPos + playerDirection * spawnDistance;
+
+        teleportPillar.transform.position = spawnPos;
+        teleportPillar.transform.rotation = playerRotation;
+        teleportPillar.SetActive(true);
+    }
+
     // This function moves the player around the 5 wave zones
     // todo update player object position too
     public void Teleport()
@@ -306,7 +320,7 @@ public class GameController : MonoBehaviour
                 break;
             case 1:
                 // playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
-//                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
+                //                destinationPos = new Vector3(22.6f, 0.5f, 18.8f);
                 destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
@@ -334,6 +348,9 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
         //        playerObj.transform.position = destinationPos;
+
+        Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+        teleportPillar.SetActive(false);
 
         // Reposition the ability ring
         StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
