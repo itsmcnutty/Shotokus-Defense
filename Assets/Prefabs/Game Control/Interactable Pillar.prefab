@@ -366,6 +366,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1702220870442628939, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -435,6 +440,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1383354479478694716, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3, type: 3}

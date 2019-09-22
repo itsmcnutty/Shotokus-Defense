@@ -47,6 +47,7 @@ public class TutorialController : MonoBehaviour
     private List<TutorialSlide> currentSlideSet;
     private int currentSlide;
     private bool tutorialWaveInProgress;
+    private AudioSource audioSource;
 
     // Instance getter and initialization
     public static TutorialController Instance
@@ -68,6 +69,7 @@ public class TutorialController : MonoBehaviour
         allTutorialVideos.Add(TutorialSections.Spike, spikeVideos);
         allTutorialVideos.Add(TutorialSections.Wall, wallVideos);
         allTutorialVideos.Add(TutorialSections.Quicksand, quicksandVideos);
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -160,6 +162,10 @@ public class TutorialController : MonoBehaviour
 
     public void StartWave()
     {
+        // Play sound
+        audioSource.Play();
+        
+        // Begin wave
         GameController.Instance.TogglePauseWaveSystem();
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         tutorialWaveInProgress = true;
