@@ -208,11 +208,10 @@ public class StrafeState : IState
 //			agent.stoppingDistance = meleeRadius + enemyVelocity.magnitude * enemyVelocity.magnitude / (2 * agent.acceleration);
 //		}
 
-		// remaining distance to target
 		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
 
-		// only enters here first time it enters te strafing state
-		// calculate points around center and set new destination to closest point to agent
+		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
+
 		if (!isStrafing && agent.enabled)
 		{
 			// do not enter here if already strafing
@@ -248,16 +247,18 @@ public class StrafeState : IState
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1f)
 			{
-				// recalculate points around circle with smaller radius
-				totalCurrentReduction += radiusReduction; // reduce by 2f for next point
-				// this prevents the agent's strafing over shooting the player's melee range
-				if (totalCurrentReduction > strafeDistance)
+				// only recalculate points if you are medium enemy for smaller radius points
+				if (radiusReduction != 0)
 				{
-					totalCurrentReduction = strafeDistance;
+					// recalculate points around circle with smaller radius
+					totalCurrentReduction += radiusReduction;
+					// this prevents the agent's strafing over shooting the player's melee range
+					if (totalCurrentReduction > strafeDistance)
+					{
+						totalCurrentReduction = strafeDistance;
+					}
+					pointsAroundTarget = pointsAround(playerPos, strafeDistance - totalCurrentReduction);
 				}
-				pointsAroundTarget = pointsAround(playerPos, strafeDistance - totalCurrentReduction);
-				
-				// update lastPointIndex to next circular point coordinate
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
 //				Debug.Log("last point index: " + lastPointIndex);
@@ -407,7 +408,6 @@ public class StrafeState : IState
 
 	// this function updates the lastPointIndex to indicate the agent which circular point to move towards 
 	// this function skips over circular points that are not valid or partial
-	// if there are three 
 	// todo if no points found, then recalculate more points with smaller radius!!
 	// todo this will return the last number in the loop if none of the points are available probably causing the agent to stay still
 	private int GetNextCircularPointIndex(int lastPointIndex)
@@ -439,7 +439,7 @@ public class StrafeState : IState
 	
 	// input: Vector3 coordinate that is not valid on navmesh
 	// this function evaluates a invalid coordinate and tries to find a point around it that is active on the navmesh
-	// returns true if point found. Input Vector3 coordinate is updated if point found
+	// returns: true if point found. Input Vector3 coordinate is updated if point found
 	bool RandomPoint(Vector3 center, float range, out Vector3 result)
 	{ 
 		// checking for navmesh status on points (if available or not)
