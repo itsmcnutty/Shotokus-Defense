@@ -107,6 +107,15 @@ public class RagdollController : MonoBehaviour
             shape.rotation = skinnedMesh.transform.rotation.eulerAngles;
             shape.mesh = mesh;
 
+			// Indicate the Game Controller that an enemy was destroyed
+            if(gameObject.name != "EnemyTargetDummy")
+            {
+			    GameController.Instance.EnemyGotDestroyed();
+            }
+            else
+            {
+                TutorialController.Instance.SpawnNewDummy();
+            }
             Destroy(gameObject);
         }
 

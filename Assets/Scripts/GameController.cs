@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
         {
             playerHealth = player.GetComponent<PlayerHealth>();
             // todo maybe restart enemy energy when restarting game
-//            playerEnergy = player.GetComponent<PlayerEnergy> ();
+            //            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
@@ -202,10 +202,10 @@ public class GameController : MonoBehaviour
     // delete walls, spikes, rocks
     public void RestartGame()
     {
-        
+
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
-        
+
         // destroy all objects in scene before restarting
         destroyAll();
 
@@ -225,12 +225,12 @@ public class GameController : MonoBehaviour
     public void destroyAll()
     {
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemies) 
+        foreach (var enemy in enemies)
             Destroy(enemy);
 
         // destroy menu screens and unfreeze game 
         var menus = GameObject.FindGameObjectsWithTag("Menu");
-        foreach (var menu in menus) 
+        foreach (var menu in menus)
             Destroy(menu);
 
         // destroy rocks, spikes, walls, quicksand 
@@ -238,18 +238,18 @@ public class GameController : MonoBehaviour
         var spikes = GameObject.FindGameObjectsWithTag("Spike");
         var walls = GameObject.FindGameObjectsWithTag("Wall");
         var quicksands = GameObject.FindGameObjectsWithTag("Quicksand");
-        foreach (var rock in rocks) 
+        foreach (var rock in rocks)
             Destroy(rock);
-        foreach (var spike in spikes) 
+        foreach (var spike in spikes)
             Destroy(spike);
-        foreach (var wall in walls) 
+        foreach (var wall in walls)
             Destroy(wall);
-        foreach (var quicksand in quicksands) 
+        foreach (var quicksand in quicksands)
             Destroy(quicksand);
 
         // destroy particles
         var particles = GameObject.FindGameObjectsWithTag("Particle");
-        foreach (var particle in particles) 
+        foreach (var particle in particles)
             Destroy(particle);
     }
 
@@ -266,6 +266,8 @@ public class GameController : MonoBehaviour
     public void EnemyGotDestroyed()
     {
         enemiesAlive--;
+        // Check if round is over or not
+        OnEnemyDeathClear();
     }
 
     // Called in EnemyProducer, updates number of enemies alive
@@ -308,7 +310,7 @@ public class GameController : MonoBehaviour
                 break;
             case 1:
                 destinationPos = new Vector3(22.6f, 0.5f, 23f);
-//                destinationPos = new Vector3(26f, 0.5f, 18.8f);
+                //                destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
                 destinationPos = new Vector3(-3f, 0.75f, 3.1f);
@@ -331,7 +333,7 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
 
-        if(toggleWaves)
+        if (toggleWaves)
         {
             Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
         }

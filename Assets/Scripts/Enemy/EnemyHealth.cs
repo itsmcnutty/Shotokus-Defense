@@ -23,7 +23,7 @@ public class EnemyHealth : CallParentCollision
 	public float ARMOR_PROFICIENCY;
 	// How much damage a hit must deal to send the enemy ragdolling
 	public float RAGDOLL_DMG_THRESHOLD;
-	
+
 	// Show health value for debugging
 	public bool debugShowHealthText = false;
 	// UI canvas containing healthbar elements
@@ -65,7 +65,6 @@ public class EnemyHealth : CallParentCollision
 
 	private bool isDead; // flag to keep prevent constant collision from spawning more enemies
 
-
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -77,7 +76,7 @@ public class EnemyHealth : CallParentCollision
 		canvasRendererBackground = healthBarBackground.GetComponent<CanvasRenderer>();
 		canvasRendererBefore = healthBarBefore.GetComponentInChildren<CanvasRenderer>();
 		canvasRendererActual = healthBarActual.GetComponentInChildren<CanvasRenderer>();
-		
+
 		// Setup health bars
 
 		// Resize background and make health bar invisible
@@ -86,19 +85,19 @@ public class EnemyHealth : CallParentCollision
 		canvasRendererBackground.SetAlpha(0);
 		canvasRendererBefore.SetAlpha(0);
 		canvasRendererActual.SetAlpha(0);
-		
+
 		// Green health bar
 		healthBarActual.minValue = 0f;
 		healthBarActual.maxValue = MAX_HEALTH;
 		healthBarActual.SetValueWithoutNotify(MAX_HEALTH);
-		
+
 		// Red health bar
 		healthBarBefore.minValue = 0f;
 		healthBarBefore.maxValue = MAX_HEALTH;
 		healthBarBefore.SetValueWithoutNotify(MAX_HEALTH);
 
 		UpdateHealthString();
-		
+
 		isDead = false;
 	}
 
@@ -111,7 +110,7 @@ public class EnemyHealth : CallParentCollision
 		{
 			return;
 		}
-		
+
 		// Set HP before damage to actual health if health bar is finished animating
 		if (timeSinceDamage >= SHOW_DAMAGE_DURATION + REMOVE_DAMAGE_DURATION)
 		{
@@ -122,19 +121,19 @@ public class EnemyHealth : CallParentCollision
 		{
 			healthBeforeDamage = healthBarBefore.value;
 		}
-		
+
 		// Reset damage timer
 		timeSinceDamage = 0f;
 
 		// Calculate damage received
 		float damage = CalculateDamage(other);
-		
+
 		// Update health and health bar
 		health -= damage;
 		healthBarActual.SetValueWithoutNotify(health);
 		UpdateHealthString();
 		isDamaged = true;
-		
+
 		// Get linear rate of decrease for ghost damage
 		healthBarBeforeDecRate = (health - healthBeforeDamage) / REMOVE_DAMAGE_DURATION;
 
@@ -148,26 +147,16 @@ public class EnemyHealth : CallParentCollision
 		{
 			isDead = true;
 			ragdollController.StartRagdoll();
-			KillEnemy();
 		}
-	}
-
-	// Removes enemy from game and checks for next round
-	private void KillEnemy()
-	{
-		// Indicate the Game Controller that an enemy was destroyed
-		GameController.Instance.EnemyGotDestroyed();
-		// Check if round is over or not
-		GameController.Instance.OnEnemyDeathClear();
 	}
 
 	private float CalculateDamage(Collision other)
 	{
-		float momentum  = other.gameObject.GetComponent<RockCollide>().GetMomentum();
-		
+		float momentum = other.gameObject.GetComponent<RockCollide>().GetMomentum();
+
 		// Raw incoming damage
 		float damage = IMPULSE_MULTIPLIER * momentum;
-		
+
 		// Scale damage by weapon type
 		string tag = other.gameObject.tag;
 		switch (tag)
@@ -192,7 +181,7 @@ public class EnemyHealth : CallParentCollision
 			// Armor damage reduction
 			// actual_dmg = (1 / (cutoff ^ (prof - 1))) * raw_dmg ^ prof
 			return (1f / (float) Math.Pow(ARMOR_CUTOFF, ARMOR_PROFICIENCY - 1f)) *
-			       (float) Math.Pow(damage, ARMOR_PROFICIENCY);
+				(float) Math.Pow(damage, ARMOR_PROFICIENCY);
 		}
 
 		return damage;
@@ -203,19 +192,19 @@ public class EnemyHealth : CallParentCollision
 	{
 		return obj.GetComponent<RockCollide>() != null;
 	}
-	
+
 	// Lerps alpha value of all of the slider elements in the health bar UI to create a fade in effect when called repeatedly
 	private void lerpHealthBarAlpha(float alpha)
 	{
 		// Get next alpha value
 		float nextAlpha = Mathf.Lerp(canvasRendererBackground.GetAlpha(), alpha, FADE_SPEED);
-		
+
 		// Update alpha values
 		canvasRendererBackground.SetAlpha(nextAlpha);
 		canvasRendererBefore.SetAlpha(nextAlpha);
 		canvasRendererActual.SetAlpha(nextAlpha);
 	}
-	
+
 	// Updates the text above the health bar based on the enemy's current health
 	private void UpdateHealthString()
 	{
@@ -236,10 +225,18 @@ public class EnemyHealth : CallParentCollision
 		if (hips.transform.position.y <= DEATH_Y)
 		{
 			// Passed death plane
-			KillEnemy();
+			if (gameObject.name != "EnemyTargetDummy")
+			{
+				// Indicate the Game Controller that an enemy was destroyed
+				GameController.Instance.EnemyGotDestroyed();
+			}
+			else
+			{
+				TutorialController.Instance.SpawnNewDummy();
+			}
 			Destroy(gameObject);
 		}
-		
+
 		timeSinceDamage += Time.deltaTime;
 
 		// Animation complete
@@ -253,13 +250,13 @@ public class EnemyHealth : CallParentCollision
 			float decTime = timeSinceDamage - SHOW_DAMAGE_DURATION;
 			healthBarBefore.SetValueWithoutNotify(healthBeforeDamage + healthBarBeforeDecRate * decTime);
 		}
-		
+
 		// Fade in health bar if damaged
 		if (isDamaged && canvasRendererBackground.GetAlpha() < 0.9999)
 		{
 			lerpHealthBarAlpha(1.0f);
 		}
-		
+
 		// Rotate health bar to face player
 		Vector3 toPlayerVector = player.transform.position - healthBarBefore.transform.position;
 		healthBarCanvas.transform.rotation = Quaternion.LookRotation(toPlayerVector);
