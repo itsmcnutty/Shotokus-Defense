@@ -18,6 +18,9 @@ public class PlayerHeal : MonoBehaviour
     private PlayerEnergy playerEnergy;
     private const float HAND_DIST_Y = 0.1f;
     private const float HAND_DIST_XZ = 0.2f;
+    
+    // Set when playing the health full sound to make sure it only plays once per user input
+    private bool healthMaxed = false;
 
     private void Awake ()
     {
@@ -65,12 +68,20 @@ public class PlayerHeal : MonoBehaviour
                 }
                 else
                 {
+                    if (!healthMaxed && playerHealth.HealthIsMax())
+                    {
+                        // If health is maxed out and this is the first frame that is true, play the sound once
+                        healthMaxed = true;
+                        playerHealth.audioSource.PlayOneShot(playerHealth.healFull);
+                    }
                     playerEnergy.UpdateAbilityUseTime ();
                 }
             }
         }
         else
         {
+            // Grips have been released, ready health full sound to be played again
+            healthMaxed = false;
             firstTriggerHeld = null;
         }
     }

@@ -8,14 +8,22 @@ public class PlayerHealth : MonoBehaviour
     public Slider healthBar;
     public Text healthPointText;
     public MeshRenderer damageIndicator;
+    public AudioSource audioSource;
     public float maxHealth = 100;
     public float regenHealthRate;
     public bool debugShowHealthText = false;
+
+    [Header("Sounds")]
+    public AudioClip healLoop;
+    public AudioClip healFull;
+    
+    private float prevHealth; // For calculating change in health per frame
     private float currentHealth;
 
     // Start is called before the first frame update
     void Start()
     {
+        prevHealth = maxHealth;
         currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = maxHealth;
@@ -25,7 +33,22 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (currentHealth > prevHealth)
+        {
+            if (!audioSource.isPlaying)
+            {
+                // If healing and not playing loop, play loop
+                audioSource.Play();
+                
+                // Set pitch based on health (Range 0.6 to 1.2)
+                audioSource.pitch = 0.6f * (currentHealth / maxHealth) + 0.6f;
+            }
+        }
+        else if (audioSource.isPlaying)
+        {
+            // If not healing and is playing loop, stop playing loop
+            audioSource.Stop();
+        }
     }
 
     public void TakeDamage(float health)
@@ -55,6 +78,10 @@ public class PlayerHealth : MonoBehaviour
             }
             healthBar.value = currentHealth;
             SetHealthBarText();
+        }
+        else
+        {
+            audioSource.PlayOneShot(healFull);
         }
     }
 
