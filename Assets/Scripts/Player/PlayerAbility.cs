@@ -350,7 +350,7 @@ public class PlayerAbility : MonoBehaviour
     private void DestroyPointerHitObject()
     {
         GameObject hitObject = arc.GetPointerHitObject();
-        if (hitObject.CompareTag("Wall") || hitObject.CompareTag("Quicksand"))
+        if (hitObject.CompareTag("Wall"))
         {
             // Destroys the highlighted wall or quicksand
             Destroy(hitObject.transform.parent.gameObject);
