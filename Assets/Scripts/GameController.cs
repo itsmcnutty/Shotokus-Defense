@@ -71,8 +71,6 @@ public class GameController : MonoBehaviour
         if (player != null)
         {
             playerHealth = player.GetComponent<PlayerHealth>();
-            // todo maybe restart enemy energy when restarting game
-//            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
@@ -214,6 +212,7 @@ public class GameController : MonoBehaviour
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
+        currentTime = 0; // todo this should fix bug
         restartQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
