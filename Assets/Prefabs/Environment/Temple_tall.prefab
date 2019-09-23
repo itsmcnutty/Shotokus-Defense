@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4433430006455460702}
   - component: {fileID: 7978756153177677735}
   - component: {fileID: 407302436303368828}
+  - component: {fileID: 1883990116593866143}
   m_Layer: 0
   m_Name: Temple_tall
   m_TagString: Untagged
@@ -85,10 +86,26 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8540771570342964091}
-  m_Material: {fileID: 13400000, guid: dc24bce09ee2e1141af67800c406b9a1, type: 2}
+  m_Material: {fileID: 13400000, guid: c084b62037a9e6e488cfca0e71495117, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 9115949822402769546, guid: 196e2dd6c7babe843919c18b0f8e8b14, type: 3}
+--- !u!114 &1883990116593866143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540771570342964091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Size: {x: 12, y: 15, z: 10}
+  m_Center: {x: 0, y: 10, z: 0}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
