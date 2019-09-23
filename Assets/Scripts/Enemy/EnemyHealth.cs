@@ -212,6 +212,10 @@ public class EnemyHealth : CallParentCollision
 		{
 			healthBarText.text = String.Format("{0} / {1}", Math.Ceiling(health), Math.Ceiling(MAX_HEALTH));
 		}
+		else if (gameObject.name != "EnemyTargetDummy")
+		{
+			healthBarText.text = "Target Dummy";
+		}
 		else
 		{
 			healthBarText.text = "";
