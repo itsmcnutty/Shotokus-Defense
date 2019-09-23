@@ -1147,6 +1147,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1408587075238164166, guid: aa12d21d09b16c7498f3dd82859922e9,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: c084b62037a9e6e488cfca0e71495117,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa12d21d09b16c7498f3dd82859922e9, type: 3}
 --- !u!4 &67030880 stripped
@@ -1168,14 +1174,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67030881}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Size: {x: 16, y: 10, z: 15}
   m_Center: {x: 0, y: 7, z: 0}
-  m_Area: 1
+  m_Area: 0
   m_AffectedAgents: ffffffff
 --- !u!4 &74265257 stripped
 Transform:
@@ -7495,6 +7501,21 @@ PrefabInstance:
       propertyPath: locationWaveFiles.Array.data[0]
       value: 
       objectReference: {fileID: 4900000, guid: 38cbf59f2e0e0ca4fba4f63d0e056d6f, type: 3}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: BEFORE_WAVE1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: BETWEEN_LOCATIONS
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1512379628719005126, guid: b1dc17f4976431549a284f73babe35ae,
+        type: 3}
+      propertyPath: BETWEEN_WAVES
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1512379628719005127, guid: b1dc17f4976431549a284f73babe35ae,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1330007850976195488}
   - component: {fileID: 4704478697957183321}
   - component: {fileID: 1408587075238164166}
+  - component: {fileID: 3942764542006647447}
   m_Layer: 0
   m_Name: Temple_wide
   m_TagString: Untagged
@@ -85,10 +86,26 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6446195330725936005}
-  m_Material: {fileID: 13400000, guid: dc24bce09ee2e1141af67800c406b9a1, type: 2}
+  m_Material: {fileID: 13400000, guid: c084b62037a9e6e488cfca0e71495117, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: -7761058069799955656, guid: 071bb5c6523804143ac94a68b6eae7aa, type: 3}
+--- !u!114 &3942764542006647447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6446195330725936005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Size: {x: 16, y: 10, z: 15}
+  m_Center: {x: 0, y: 8, z: 0}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
