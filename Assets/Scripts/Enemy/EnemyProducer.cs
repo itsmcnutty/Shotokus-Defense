@@ -54,6 +54,9 @@ public class EnemyProducer : MonoBehaviour
         SpawnEnemy(spawnInfo.NumHeavyEnemies, heavyEnemyPrefab);
         SpawnEnemy(spawnInfo.NumMedEnemies, mediumEnemyPrefab);
         SpawnEnemy(spawnInfo.NumLightEnemies, lightEnemyPrefab);
+
+        // Play random beats
+        spawnLocationObject.GetComponent<WaveCuePlayer>().PlayCue();
         
         // update counter of enemies alive
         GameController.Instance.EnemyAddNumAlive(spawnInfo.NumHeavyEnemies + spawnInfo.NumMedEnemies + spawnInfo.NumLightEnemies);
