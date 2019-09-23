@@ -49,4 +49,9 @@ public class DebugFunctionality : MonoBehaviour
         menuUiController.pauseToggle();
     }
 
+    public void RestartGame()
+    {
+        gameController.RestartGame();
+    }
+
 }

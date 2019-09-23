@@ -195,24 +195,50 @@ public class GameController : MonoBehaviour
             allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
         }
     }
-
-    // Future: delete all other instances of objects in the scene
-    // delete walls, spikes, rocks
-    public void RestartGame()
+    
+    // deletes walls, spikes, rocks and restart the current wave in location
+    public void RestartWave()
     {
-        
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
         
         // destroy all objects in scene before restarting
         destroyAll();
 
-        Debug.Log("Restarting game");
+        Debug.Log("Restarting wave");
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0; // todo this should fix bug
         restartQueue();
+        currentLocation = allLocationWaves.Dequeue();
+        currentWave = currentLocation.GetNextWave();
+        playerHealth.RecoverAllHealth();
+    }
+    
+    // delete walls, spikes, rocks
+    // put player on location 1 and restart all the waves again
+    public void RestartGame()
+    {
+        // reactivate pause functionality
+        UIControllerObj.GetComponent<MenuUIController>().enabled = true;
+        
+        // destroy all objects in scene before restarting
+        destroyAll();
+
+        Debug.Log("Restarting wave");
+
+        // Reset values of wave (queue, timer, enemies counter)
+        enemiesAlive = 0;
+        currentTime = 0; // todo this should fix bug
+        
+        // restart queue to initial state (all waves from location 1)
+        allLocationWaves = new Queue<LocationWaves>();
+        for (int i = 0; i < locationWaveFiles.Length; i++)
+        {
+            allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
+        }
+
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         playerHealth.RecoverAllHealth();
@@ -306,7 +332,6 @@ public class GameController : MonoBehaviour
                 break;
             case 1:
                 destinationPos = new Vector3(22.6f, 0.5f, 23f);
-//                destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
                 destinationPos = new Vector3(-3f, 0.75f, 3.1f);
