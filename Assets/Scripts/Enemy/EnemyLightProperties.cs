@@ -29,7 +29,7 @@ public class EnemyLightProperties : EnemyProperties
     [NonSerialized] public RagdollState ragdollState;
     
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
         base.Start();
         
@@ -40,9 +40,6 @@ public class EnemyLightProperties : EnemyProperties
         {
             isClockwise = true;
         }
-
-        // todo delete - just debugging
-//        isClockwise = true;
         
         // Instantiate states with the properties above
         runState = new RunState(this);

@@ -59,7 +59,7 @@ public class EnemyHealth : CallParentCollision
 	// Enemy's ragdoll controller
 	private RagdollController ragdollController;
 	// Player camera
-	private GameObject camera;
+	private GameObject player;
 	// Enemy hip bone
 	private GameObject hips;
 
@@ -72,7 +72,7 @@ public class EnemyHealth : CallParentCollision
 		// Instantiating stuff
 		health = MAX_HEALTH;
 		ragdollController = GetComponent<RagdollController>();
-		camera = GameObject.FindGameObjectWithTag("MainCamera");
+		player = GameObject.FindGameObjectWithTag("MainCamera");
 		hips = GetComponentInChildren<Rigidbody>().gameObject;
 		canvasRendererBackground = healthBarBackground.GetComponent<CanvasRenderer>();
 		canvasRendererBefore = healthBarBefore.GetComponentInChildren<CanvasRenderer>();
@@ -261,7 +261,7 @@ public class EnemyHealth : CallParentCollision
 		}
 		
 		// Rotate health bar to face player
-		Vector3 toPlayerVector = camera.transform.position - healthBarBefore.transform.position;
+		Vector3 toPlayerVector = player.transform.position - healthBarBefore.transform.position;
 		healthBarCanvas.transform.rotation = Quaternion.LookRotation(toPlayerVector);
 	}
 }
