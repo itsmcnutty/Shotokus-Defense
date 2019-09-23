@@ -5,16 +5,10 @@
         "0": {
           "Location": "South",
           "NumLightEnemies":0,
-          "NumMedEnemies": 1,
-          "NumHeavyEnemies":0
+          "NumMedEnemies": 0,
+          "NumHeavyEnemies": 1
         },
         "120": {
-          "Location": "South",
-          "NumLightEnemies": 1,
-          "NumMedEnemies": 0,
-          "NumHeavyEnemies": 0
-        },
-        "240": {
           "Location": "South",
           "NumLightEnemies": 0,
           "NumMedEnemies": 0,
@@ -30,17 +24,21 @@
           "NumMedEnemies": 0,
           "NumHeavyEnemies": 1
         },
-        "120": {
+        "240": {
+          "Location": "South",
+          "NumLightEnemies": 0,
+          "NumMedEnemies": 0,
+          "NumHeavyEnemies": 1
+        }
+      }
+    },
+    {
+      "waveSections": {
+        "0": {
           "Location": "South",
           "NumLightEnemies": 0,
           "NumMedEnemies": 0,
           "NumHeavyEnemies": 2
-        },
-        "240": {
-          "Location": "South",
-          "NumLightEnemies": 0,
-          "NumMedEnemies": 1,
-          "NumHeavyEnemies": 1
         }
       }
     },
@@ -48,18 +46,8 @@
       "waveSections": {
         "0": {
           "Location": "South",
-          "NumLightEnemies": 0,
+          "NumLightEnemies": 1,
           "NumMedEnemies": 0,
-          "NumHeavyEnemies": 4
-        }
-      }
-    },
-    {
-      "waveSections": {
-        "0": {
-          "Location": "South",
-          "NumLightEnemies": 2,
-          "NumMedEnemies": 2,
           "NumHeavyEnemies": 1
         }
       }

@@ -15,7 +15,7 @@ public class ControllerArc : MonoBehaviour
 	public Color pointerLockedColor;
 
 	public float arcDistance = 10.0f;
-	
+
 	public Hand hand;
 
 	private LineRenderer pointerLineRenderer;
@@ -44,20 +44,20 @@ public class ControllerArc : MonoBehaviour
 		{
 			if (_instance == null)
 			{
-				_instance = GameObject.FindObjectOfType<ControllerArc> ();
+				_instance = GameObject.FindObjectOfType<ControllerArc>();
 			}
 
 			return _instance;
 		}
 	}
 
-	void Awake ()
+	void Awake()
 	{
 		_instance = this;
 
-		pointerLineRenderer = GetComponentInChildren<LineRenderer> ();
+		pointerLineRenderer = GetComponentInChildren<LineRenderer>();
 
-		arc = GetComponent<TeleportArc> ();
+		arc = GetComponent<TeleportArc>();
 		arc.traceLayerMask = traceLayerMask;
 
 		float invalidReticleStartingScale = invalidReticleTransform.localScale.x;
@@ -65,26 +65,26 @@ public class ControllerArc : MonoBehaviour
 		invalidReticleMaxScale *= invalidReticleStartingScale;
 	}
 
-	void Start ()
+	void Start()
 	{
-		HidePointer ();
+		HidePointer();
 
 		player = Valve.VR.InteractionSystem.Player.instance;
 
 		if (player == null)
 		{
-			Destroy (this.gameObject);
+			Destroy(this.gameObject);
 		}
 	}
 
-	void Update ()
+	void Update()
 	{
 		if (visible)
 		{
-			if (WasButtonReleased ()) { }
+			if (WasButtonReleased()) { }
 		}
 
-		if (IsButtonDown ())
+		if (IsButtonDown())
 		{
 			applyPoint = false;
 		}
@@ -95,22 +95,22 @@ public class ControllerArc : MonoBehaviour
 
 		if (!visible && applyPoint)
 		{
-			ShowPointer ();
+			ShowPointer();
 		}
 		else if (visible)
 		{
-			if (!applyPoint && IsButtonDown ())
+			if (!applyPoint && IsButtonDown())
 			{
-				HidePointer ();
+				HidePointer();
 			}
 			else
 			{
-				UpdatePointer ();
+				UpdatePointer();
 			}
 		}
 	}
 
-	private void UpdatePointer ()
+	private void UpdatePointer()
 	{
 		Vector3 pointerStart = hand.transform.position;
 		Vector3 pointerDir = hand.transform.forward;
@@ -120,8 +120,8 @@ public class ControllerArc : MonoBehaviour
 
 		AbilityUsageMarker hitMarker = null;
 
-		float dotUp = Vector3.Dot (pointerDir, Vector3.up);
-		float dotForward = Vector3.Dot (pointerDir, player.hmdTransform.forward);
+		float dotUp = Vector3.Dot(pointerDir, Vector3.up);
+		float dotForward = Vector3.Dot(pointerDir, player.hmdTransform.forward);
 		bool pointerAtBadAngle = false;
 		if ((dotForward > 0 && dotUp > 0.75f) || (dotForward < 0.0f && dotUp > 0.5f))
 		{
@@ -129,16 +129,17 @@ public class ControllerArc : MonoBehaviour
 		}
 
 		RaycastHit hitInfo;
-		arc.SetArcData (pointerStart, arcVelocity, true, pointerAtBadAngle);
-		if (arc.DrawArc (out hitInfo))
+		arc.SetArcData(pointerStart, arcVelocity, true, pointerAtBadAngle);
+		if (arc.DrawArc(out hitInfo))
 		{
 			hitSomething = true;
-			hitMarker = hitInfo.collider.GetComponentInParent<AbilityUsageMarker> ();
-			if(hitMarker == null)
+			hitMarker = hitInfo.collider.GetComponentInParent<AbilityUsageMarker>();
+			if (hitMarker == null)
 			{
-				hitMarker = hitInfo.collider.GetComponent<AbilityUsageMarker> ();
+				hitMarker = hitInfo.collider.GetComponent<AbilityUsageMarker>();
 			}
-			distanceFromPlayer = Vector3.Distance (hitInfo.point, player.hmdTransform.position);
+			Vector3 playerPosHitHeight = new Vector3(player.hmdTransform.position.x, hitInfo.point.y, player.hmdTransform.position.z);
+			distanceFromPlayer = Vector3.Distance(hitInfo.point, playerPosHitHeight);
 		}
 
 		if (pointerAtBadAngle)
@@ -146,42 +147,59 @@ public class ControllerArc : MonoBehaviour
 			hitMarker = null;
 		}
 
-		if (hitMarker != null)
+		bool validCollisionForAbility = false;
+
+		if(hitMarker != null)
+		{
+			validCollisionForAbility = true;
+			MeshRenderer meshRenderer = destinationReticleTransform.gameObject.GetComponent<MeshRenderer>();
+			Collider[] colliders = Physics.OverlapSphere(hitInfo.point, meshRenderer.bounds.size.x / 2, traceLayerMask);
+			foreach (Collider collider in colliders)
+			{
+				if (collider.tag != "Ground" && collider.gameObject.layer != 14)
+				{
+					validCollisionForAbility = false;
+					break;
+				}
+			}
+		}
+
+		if (validCollisionForAbility)
 		{
 			if (hitMarker.locked)
 			{
-				arc.SetColor (pointerLockedColor);
+				arc.SetColor(pointerLockedColor);
 				pointerLineRenderer.startColor = pointerLockedColor;
 				pointerLineRenderer.endColor = pointerLockedColor;
-				destinationReticleTransform.gameObject.SetActive (false);
+				destinationReticleTransform.gameObject.SetActive(false);
 
 				canUseAbility = false;
 			}
 			else
 			{
-				arc.SetColor (pointerValidColor);
+				arc.SetColor(pointerValidColor);
 				pointerLineRenderer.startColor = pointerValidColor;
 				pointerLineRenderer.endColor = pointerValidColor;
 
-				destinationReticleTransform.gameObject.SetActive (true);
+				destinationReticleTransform.gameObject.SetActive(true);
 
 				Vector3 normalToUse = hitInfo.normal;
-				float angle = Vector3.Angle (hitInfo.normal, Vector3.up);
+				float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
 				if (angle < 15.0f)
 				{
 					normalToUse = Vector3.up;
 				}
-				reticleTargetRotation = Quaternion.FromToRotation (Vector3.up, normalToUse);
-				destinationReticleTransform.rotation = Quaternion.Slerp (destinationReticleTransform.rotation, reticleTargetRotation, 0.1f);
+				reticleTargetRotation = Quaternion.FromToRotation(Vector3.up, normalToUse);
+				destinationReticleTransform.rotation = Quaternion.Slerp(destinationReticleTransform.rotation, reticleTargetRotation, 0.1f);
 
 				canUseAbility = true;
-				if(hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
+				if (hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
 				{
 					hand.hoveringInteractable = hitInfo.collider.gameObject.GetComponent<Interactable>();
 				}
 			}
 
-			invalidReticleTransform.gameObject.SetActive (false);
+			invalidReticleTransform.gameObject.SetActive(false);
 
 			pointerEnd = hitInfo.point;
 			pointerHitObject = hitInfo.collider.gameObject;
@@ -190,23 +208,23 @@ public class ControllerArc : MonoBehaviour
 		{
 			canUseAbility = false;
 
-			destinationReticleTransform.gameObject.SetActive (false);
+			destinationReticleTransform.gameObject.SetActive(false);
 
-			arc.SetColor (pointerInvalidColor);
+			arc.SetColor(pointerInvalidColor);
 			pointerLineRenderer.startColor = pointerInvalidColor;
 			pointerLineRenderer.endColor = pointerInvalidColor;
-			invalidReticleTransform.gameObject.SetActive (!pointerAtBadAngle);
+			invalidReticleTransform.gameObject.SetActive(!pointerAtBadAngle);
 
 			Vector3 normalToUse = hitInfo.normal;
-			float angle = Vector3.Angle (hitInfo.normal, Vector3.up);
+			float angle = Vector3.Angle(hitInfo.normal, Vector3.up);
 			if (angle < 15.0f)
 			{
 				normalToUse = Vector3.up;
 			}
-			reticleTargetRotation = Quaternion.FromToRotation (Vector3.up, normalToUse);
-			invalidReticleTransform.rotation = Quaternion.Slerp (invalidReticleTransform.rotation, reticleTargetRotation, 0.1f);
+			reticleTargetRotation = Quaternion.FromToRotation(Vector3.up, normalToUse);
+			invalidReticleTransform.rotation = Quaternion.Slerp(invalidReticleTransform.rotation, reticleTargetRotation, 0.1f);
 
-			float invalidReticleCurrentScale = Util.RemapNumberClamped (distanceFromPlayer, invalidReticleMinScaleDistance, invalidReticleMaxScaleDistance, invalidReticleMinScale, invalidReticleMaxScale);
+			float invalidReticleCurrentScale = Util.RemapNumberClamped(distanceFromPlayer, invalidReticleMinScaleDistance, invalidReticleMaxScaleDistance, invalidReticleMinScale, invalidReticleMaxScale);
 			reticleScale.x = invalidReticleCurrentScale;
 			reticleScale.y = invalidReticleCurrentScale;
 			reticleScale.z = invalidReticleCurrentScale;
@@ -216,14 +234,14 @@ public class ControllerArc : MonoBehaviour
 			{
 				pointerEnd = hitInfo.point;
 				pointerHitObject = hitInfo.collider.gameObject;
-				if(hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
+				if (hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
 				{
 					hand.hoveringInteractable = hitInfo.collider.gameObject.GetComponent<Interactable>();
 				}
 			}
 			else
 			{
-				pointerEnd = arc.GetArcPositionAtTime (arc.arcDuration);
+				pointerEnd = arc.GetArcPositionAtTime(arc.arcDuration);
 				pointerHitObject = null;
 			}
 		}
@@ -231,35 +249,35 @@ public class ControllerArc : MonoBehaviour
 		destinationReticleTransform.position = pointerEnd;
 		invalidReticleTransform.position = pointerEnd;
 
-		pointerLineRenderer.SetPosition (0, pointerStart);
-		pointerLineRenderer.SetPosition (1, pointerEnd);
+		pointerLineRenderer.SetPosition(0, pointerStart);
+		pointerLineRenderer.SetPosition(1, pointerEnd);
 	}
 
-	public void HidePointer ()
+	public void HidePointer()
 	{
 		visible = false;
 
-		arc.Hide ();
+		arc.Hide();
 
-		destinationReticleTransform.gameObject.SetActive (false);
-		invalidReticleTransform.gameObject.SetActive (false);
+		destinationReticleTransform.gameObject.SetActive(false);
+		invalidReticleTransform.gameObject.SetActive(false);
 
 		applyPoint = false;
 	}
 
-	public void ShowPointer ()
+	public void ShowPointer()
 	{
 		if (!visible)
 		{
 			visible = true;
 
-			arc.Show ();
+			arc.Show();
 		}
 
 		applyPoint = true;
 	}
 
-	public bool IsEligibleToUseAbility ()
+	public bool IsEligibleToUseAbility()
 	{
 		if (hand == null)
 		{
@@ -274,37 +292,37 @@ public class ControllerArc : MonoBehaviour
 		return true;
 	}
 
-	private bool WasButtonReleased ()
+	private bool WasButtonReleased()
 	{
-		if (IsEligibleToUseAbility ())
+		if (IsEligibleToUseAbility())
 		{
-			return grabAction.GetStateUp (hand.handType) && gripAction.GetStateUp (hand.handType);
+			return grabAction.GetStateUp(hand.handType) && gripAction.GetStateUp(hand.handType);
 		}
 
 		return false;
 	}
 
-	private bool IsButtonDown ()
+	private bool IsButtonDown()
 	{
-		if (IsEligibleToUseAbility ())
+		if (IsEligibleToUseAbility())
 		{
-			return grabAction.GetState (hand.handType) || gripAction.GetState (hand.handType);
+			return grabAction.GetState(hand.handType) || gripAction.GetState(hand.handType);
 		}
 
 		return false;
 	}
 
-	private bool WasButtonPressed ()
+	private bool WasButtonPressed()
 	{
-		if (IsEligibleToUseAbility ())
+		if (IsEligibleToUseAbility())
 		{
-			return grabAction.GetStateDown (hand.handType) || gripAction.GetStateDown (hand.handType);
+			return grabAction.GetStateDown(hand.handType) || gripAction.GetStateDown(hand.handType);
 		}
 
 		return false;
 	}
 
-	public bool CanUseAbility ()
+	public bool CanUseAbility()
 	{
 		return canUseAbility;
 	}

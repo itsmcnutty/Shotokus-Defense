@@ -190,9 +190,9 @@ public class TutorialController : MonoBehaviour
                 SelectTutorial(TutorialSections.Wall);
                 break;
         }
-
-        startWavePillar.SetActive(!startWavePillar.activeSelf);
         tutorialWaveInProgress = false;
+        startWavePillar.SetActive(!startWavePillar.activeSelf);
+        ToggleTutorialOptions();
     }
 
     public void EndTutorial()
@@ -211,8 +211,11 @@ public class TutorialController : MonoBehaviour
         {
             startWavePillar.SetActive(!startWavePillar.activeSelf);
         }
+        else
+        {
+            Time.timeScale = (Time.timeScale + 1) % 2;
+        }
         MenuUIController.Instance.ToggleLaser();
-        Time.timeScale = (Time.timeScale + 1) % 2;
         currentSlide = 0;
         SetSlideInfo();
     }
