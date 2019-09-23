@@ -217,7 +217,6 @@ public class GameController : MonoBehaviour
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         playerHealth.RecoverAllHealth();
-        // todo restore all  energy
     }
 
     // this function destroys all the following game objects instances:
