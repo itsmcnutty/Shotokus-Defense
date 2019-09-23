@@ -137,10 +137,10 @@ public class AdvanceState : IState
 		// Get enemy position with y = 0 for distance calculations
 		Vector3 gameObjPos = gameObj.transform.position;
 
-		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		float distanceToPlayer = enemyProps.calculateSqrDist(playerPos, gameObjPos);
 		
 		// If within melee range, transition to melee state
-		if (distanceToPlayer <= attackRadius)
+		if (distanceToPlayer <= attackRadius * attackRadius)
 		{
 			animator.SetTrigger("Melee");
 			return meleeState;

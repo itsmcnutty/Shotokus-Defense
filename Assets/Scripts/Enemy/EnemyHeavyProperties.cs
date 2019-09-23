@@ -43,8 +43,7 @@ public class EnemyHeavyProperties : EnemyProperties
 		ragdollState.InitializeStates(this);
 		
 		// Give FSM an initial state
-//		stateMachine.ChangeState(advanceState);
-		stateMachine.ChangeState(ragdollState);
+		stateMachine.ChangeState(advanceState);
 	}
 
 	public override float GetCurrentMaxSpeed()

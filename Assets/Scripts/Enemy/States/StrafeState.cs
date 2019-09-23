@@ -167,7 +167,9 @@ public class StrafeState : IState
 		
 		// everytime the agent enters the strafe state, it has to wait 5 seconds before being able to climb
 		// once the timeout happens, the agent can freely climb until entering the strafe state again
+		// todo enemies might get stuck on top, because they leave the climb state at the top of wall and then are unable to climb down
 		agent.autoTraverseOffMeshLink = false;
+//		canClimb = false;
 		
 		// Restart radius reduction, to prevent enemy approaching you right away after being launched from ragdoll
 		totalCurrentReduction = 0;
@@ -212,7 +214,8 @@ public class StrafeState : IState
 		// if enough time has passed, allow to climb again
 		if (climbingTimer > climbingTimeout) {
 			climbingTimer -= climbingTimeout;
-			agent.autoTraverseOffMeshLink = true;
+//			agent.autoTraverseOffMeshLink = true;
+//			canClimb = true;
 		}
 		
 		// Move to player if outside attack range, otherwise transition
@@ -225,19 +228,24 @@ public class StrafeState : IState
 //			agent.stoppingDistance = meleeRadius + enemyVelocity.magnitude * enemyVelocity.magnitude / (2 * agent.acceleration);
 //		}
 
-		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
+		// Squared variables
+		float sqrStrafeDistance = strafeDistance * strafeDistance;
+
+		
 
 		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 
 		if (!isStrafing && agent.enabled)
 		{
+			float distanceToPlayer = props.calculateSqrDist(playerPos, gameObjPos);
+
 			// do not enter here if already strafing
 			isStrafing = true;
 			
 			// recalculate the totalCurrentradiusReduction if the enemy is already inside the strafe Distance radius when entering strafe state
-			if (distanceToPlayer < strafeDistance)
+			if (distanceToPlayer < sqrStrafeDistance)
 			{
-				totalCurrentReduction = strafeDistance - distanceToPlayer;
+				totalCurrentReduction = sqrStrafeDistance - distanceToPlayer;
 			}
             
 			// Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
@@ -258,11 +266,12 @@ public class StrafeState : IState
 		{
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
-			float strafeRemainingDist = props.calculateDist(circularPointDest, gameObjPos);
+			
+			float strafeRemainingDist = props.calculateSqrDist(circularPointDest, gameObjPos);
 //            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
-			if (strafeRemainingDist < 1f)
+			if (strafeRemainingDist < 1.5f)
 			{
 				// only recalculate points if you are medium enemy for smaller radius points
 				if (radiusReduction != 0)
@@ -312,6 +321,7 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
+		Debug.Log("strafe");
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
@@ -322,6 +332,7 @@ public class StrafeState : IState
 		// Transition to climbing state if climbing
 		if (agent.isOnOffMeshLink)
 		{
+			Debug.Log("entering climb state");
 			// todo do something with animator
 			return climbingState;
 		}
@@ -330,17 +341,17 @@ public class StrafeState : IState
 		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float distanceToPlayer = props.calculateDist(playerPos, gameObjPos);
+		float distanceToPlayer = props.calculateSqrDist(playerPos, gameObjPos);
 
 		// If outside ranged radius, transition to run state
-		if (distanceToPlayer >  rangedRadius)
+		if (distanceToPlayer >  rangedRadius * rangedRadius)
 		{
 			animator.SetTrigger("Run");
 			return runState;
 		}
 		
 		// If within melee range, transition to melee state
-		if (distanceToPlayer < meleeRadius)
+		if (distanceToPlayer < meleeRadius * meleeRadius)
 		{
 			animator.SetTrigger("Melee");
 			return meleeState;
@@ -401,7 +412,7 @@ public class StrafeState : IState
 	private Vector3 closestPoint(Vector3 enemyPos, CircularCoord[] points)
 	{
 		// initialize temp variables to first value in array of points
-		float closestDist =  props.calculateDist(enemyPos, points[0].coord);	
+		float closestDist =  props.calculateSqrDist(enemyPos, points[0].coord);	
 		Vector3 closestPoint = points[0].coord;
         
 		for(int i = 0; i < points.Length; i++)
@@ -412,7 +423,7 @@ public class StrafeState : IState
 				continue;
 			}
 			Vector3 point = points[i].coord;
-			float tempDist = props.calculateDist(enemyPos, point);
+			float tempDist = props.calculateSqrDist(enemyPos, point);
 			if (tempDist < closestDist)
 			{
 				closestPoint = point;
