@@ -16,6 +16,8 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Color newColor = new Color(1, 1, 1, 0);
+        damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
         currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = maxHealth;
@@ -99,7 +101,7 @@ public class PlayerHealth : MonoBehaviour
         float alpha = damageIndicator.sharedMaterial.color.a;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
         {
-            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha,aValue,t));
+            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
             damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
             yield return null;
         }
