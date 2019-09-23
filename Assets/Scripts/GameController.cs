@@ -40,7 +40,6 @@ public class GameController : MonoBehaviour
     private Wave currentWave;
 
     private float currentTime;
-    // todo put back to true - debugging
     private bool pauseWaveSystem = true;
 
     // Constructor
@@ -146,8 +145,8 @@ public class GameController : MonoBehaviour
                 TutorialController.Instance.SetNextTutorial();
                 return;
             }
-
             Invoke("TogglePauseWaveSystem", BETWEEN_WAVES);
+
             return;
         }
 
@@ -176,13 +175,13 @@ public class GameController : MonoBehaviour
 
     public void StartGameWithTutorial()
     {
-        Teleport();
+        Teleport(false);
         TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
     }
 
     public void StartGameWithoutTutorial()
     {
-        Teleport();
+        Teleport(true);
         PlayerAbility.ToggleRockAbility();
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
@@ -279,8 +278,8 @@ public class GameController : MonoBehaviour
     {
         Vector3 playerPos = player.transform.position;
         Vector3 playerDirection = player.transform.forward;
-        Quaternion playerRotation = player.transform.rotation;
-        float spawnDistance = 5;
+        Quaternion playerRotation = new Quaternion(0, player.transform.rotation.y, 0, player.transform.rotation.w);
+        float spawnDistance = 3;
 
         Vector3 spawnPos = playerPos + playerDirection * spawnDistance;
 
@@ -291,7 +290,7 @@ public class GameController : MonoBehaviour
 
     // This function moves the player around the 5 wave zones
     // todo update player object position too
-    public void Teleport()
+    public void Teleport(bool toggleWaves)
     {
         Vector3 destinationPos;
         int temp = caseSwitch;
@@ -332,7 +331,10 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
 
-        Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+        if(toggleWaves)
+        {
+            Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+        }
         teleportPillar.SetActive(false);
 
         // Reposition the ability ring

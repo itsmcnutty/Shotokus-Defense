@@ -8,6 +8,7 @@ public class ProjectileCollide : MonoBehaviour
     private PlayerHealth playerHealth;
 
     public float projectileDamage = 100;
+    public TrailRenderer trail;
     private float WALL_LIFETIME = 3f;
 
     
@@ -26,6 +27,7 @@ public class ProjectileCollide : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        trail.enabled = false;
         // todo in theory nothing else but the player should have the player collider tag, therefore i can be sure that inside this if statement i should damage the player
         if (other.gameObject.CompareTag("PlayerCollider"))
         {
