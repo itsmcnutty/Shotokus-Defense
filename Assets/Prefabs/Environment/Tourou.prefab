@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3091471307488398075}
   - component: {fileID: 2505316471560262308}
+  - component: {fileID: 2214361990546828124}
   m_Layer: 0
   m_Name: Tourou
   m_TagString: Untagged
@@ -48,6 +49,26 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4734083234036246218, guid: 1cdd0d4d1cf19da4e88505252654f81d, type: 3}
+--- !u!114 &2214361990546828124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377305722480109068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07a0d756010dcdd46a91db6f4d3d1b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointLight: {fileID: 5504035498471188378}
+  color1: {r: 0.99215686, g: 0.7254902, b: 0.29411766, a: 1}
+  color2: {r: 1, g: 0.56188047, b: 0.18396229, a: 1}
+  intensity1: 5
+  intensity2: 6.2
+  FLICKER_RATE: 3.8
+  UPDATE_DIST: 12
+  CALC_FREQUENCY: 2
 --- !u!1 &8481883737335721412
 GameObject:
   m_ObjectHideFlags: 0
