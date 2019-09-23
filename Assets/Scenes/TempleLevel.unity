@@ -1087,6 +1087,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Temple_wide
       objectReference: {fileID: 0}
+    - target: {fileID: 6446195330725936005, guid: aa12d21d09b16c7498f3dd82859922e9,
+        type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8011382186716793238, guid: aa12d21d09b16c7498f3dd82859922e9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1150,6 +1155,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 67030879}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &67030881 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6446195330725936005, guid: aa12d21d09b16c7498f3dd82859922e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 67030879}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &67030882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67030881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Size: {x: 16, y: 10, z: 15}
+  m_Center: {x: 0, y: 7, z: 0}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
 --- !u!4 &74265257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4433883364020248, guid: 465cbb465c9880c45887d824bd1f720b,
