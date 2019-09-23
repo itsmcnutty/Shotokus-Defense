@@ -60,6 +60,7 @@ public class ClimbingState : IState
         // todo fill out
         // wait for climbing animation to be done??
         // set time for how long should it take??
+        Debug.Log("climbing");
     }
     
     // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -70,6 +71,7 @@ public class ClimbingState : IState
         // todo fill out
         if (!agent.isOnOffMeshLink)
         {
+            Debug.Log("leaving climb state");
             return resetState;
         }
 		

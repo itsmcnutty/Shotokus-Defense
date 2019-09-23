@@ -139,7 +139,8 @@ public class PlayerAbility : MonoBehaviour
         // Sets up the ring around the player
         abilityRing = Instantiate(playerAbilityAreaPrefab);
         MeshRenderer meshRenderer = abilityRing.GetComponentInChildren<MeshRenderer>();
-        abilityRing.transform.localScale = new Vector3(rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x));
+        float abilityRingSize = rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x);
+        abilityRing.transform.localScale = new Vector3(abilityRingSize, 0.01f, abilityRingSize);
     }
 
     // Update is called once per frame
@@ -224,7 +225,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if(hitObject && hitObject.name.Equals("Teleport Sphere"))
         {
-            GameController.Instance.Teleport();
+            GameController.Instance.Teleport(true);
         }
         else if (walls.WallOutlineIsActive())
         {
