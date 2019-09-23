@@ -41,16 +41,20 @@ public class PlayerHealth : MonoBehaviour
             {
                 // If healing and not playing loop, play loop
                 audioSource.Play();
-                
-                // Set pitch based on health (Range 0.6 to 1.2)
-                audioSource.pitch = 0.6f * (currentHealth / maxHealth) + 0.6f;
             }
+                
+            // Set pitch based on health (Range 0.75 to 1.0)
+            audioSource.pitch = 0.25f * (currentHealth / maxHealth) + 0.75f;
         }
-        else if (audioSource.isPlaying)
+        else if (audioSource.loop)
         {
+            Debug.Log("Stop loop4");
+
             // If not healing and is playing loop, stop playing loop
             audioSource.Stop();
         }
+
+        prevHealth = currentHealth;
     }
 
     public void TakeDamage(float health)
