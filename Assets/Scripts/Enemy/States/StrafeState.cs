@@ -194,7 +194,7 @@ public class StrafeState : IState
 		// Store position for agent's head, where the raycast for shooting visibility will come from
 		agentHead = gameObj.transform.position;
 		// todo change this, this is the head height value
-		agentHead.y = 2.5f;
+		agentHead.y = 2f;
 
 		// Dot product of world velocity and transform's forward/right vector gives local forward/right velocity
 		float strafeSpeedForward = Vector3.Dot(enemyVelocity, gameObj.transform.forward);

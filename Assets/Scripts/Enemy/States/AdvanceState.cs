@@ -24,10 +24,7 @@ public class AdvanceState : IState
 
 	// Allowed space around attack radius that enemy's can attack from
 	private float attackMargin;
-    
-	// Squared attack radius (for optimized calculations)
-//	private float sqrAttackRadius;
-    
+
 	// Player GameObject
 	private GameObject player;
 	// Player's head's world position
@@ -51,7 +48,6 @@ public class AdvanceState : IState
 		maxWalkSpeed = enemyProps.MAX_RUN_SPEED;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
-//		sqrAttackRadius = enemyProps.sqrAttackRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
@@ -68,7 +64,6 @@ public class AdvanceState : IState
 		obstacle = enemyProps.obstacle;
 		debugNoWalk = enemyProps.debugNoWalk;
 		attackMargin = enemyProps.ATTACK_MARGIN;
-//		sqrAttackRadius = enemyProps.sqrMeleeRadius;
 		player = enemyProps.player;
 		playerPos = enemyProps.playerPos;
 		gameObj = enemyProps.gameObject;
@@ -144,9 +139,6 @@ public class AdvanceState : IState
 
 		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
 		
-//		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
-//		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
-
 		// If within melee range, transition to melee state
 		if (distanceToPlayer <= attackRadius)
 		{
