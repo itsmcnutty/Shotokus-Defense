@@ -230,13 +230,12 @@ public class StrafeState : IState
 
 		// Squared variables
 		float sqrStrafeDistance = strafeDistance * strafeDistance;
-
 		
-
 		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 
 		if (!isStrafing && agent.enabled)
 		{
+			Debug.Log("first time in strafe state");
 			float distanceToPlayer = props.calculateSqrDist(playerPos, gameObjPos);
 
 			// do not enter here if already strafing
@@ -264,11 +263,12 @@ public class StrafeState : IState
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
+			Debug.Log("strafe state: moving in circles");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			
 			float strafeRemainingDist = props.calculateSqrDist(circularPointDest, gameObjPos);
-//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 				
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1.5f)
@@ -287,8 +287,8 @@ public class StrafeState : IState
 				}
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
-//				Debug.Log("last point index: " + lastPointIndex);
-//                Debug.Log("moving towards " +circularPointDest);
+				Debug.Log("last point index: " + lastPointIndex);
+                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
@@ -321,7 +321,7 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
-		Debug.Log("strafe");
+//		Debug.Log("strafe");
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
@@ -388,13 +388,13 @@ public class StrafeState : IState
 			if (path.status != NavMeshPathStatus.PathComplete)
 			{
 				points[i].isReachable = false;
-//				// if point is not valid, attemp to find a random point nearby in the navmesh
-//				Vector3 temp;
-//				if (RandomPoint(coord, 0.5f, out temp))
-//				{
-//					points[i].isReachable = true;
-//					coord = temp;
-//				}
+				// if point is not valid, attemp to find a random point nearby in the navmesh
+				Vector3 temp;
+				if (RandomPoint(coord, 1f, out temp))
+				{
+					points[i].isReachable = true;
+					coord = temp;
+				}
 			}
 			else
 			{
@@ -444,7 +444,8 @@ public class StrafeState : IState
 
 		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
-//			isClockwise = false;
+			// todo debug delete later
+			isClockwise = false;
 			if (isClockwise)
 			{
 				newIndex--;

@@ -221,7 +221,7 @@ public class GameController : MonoBehaviour
     public void RestartGame()
     {
         // reactivate pause functionality
-        UIControllerObj.GetComponent<MenuUIController>().enabled = true;
+//        UIControllerObj.GetComponent<MenuUIController>().enabled = false;
         
         // destroy all objects in scene before restarting
         destroyAll();
@@ -231,6 +231,9 @@ public class GameController : MonoBehaviour
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0; // todo this should fix bug
+        
+        // teleport the player
+        Teleport(false, 0);
         
         // restart queue to initial state (all waves from location 1)
         allLocationWaves = new Queue<LocationWaves>();
@@ -314,7 +317,7 @@ public class GameController : MonoBehaviour
 
     // This function moves the player around the 5 wave zones
     // todo update player object position too
-    public void Teleport(bool toggleWaves)
+    public void Teleport(bool toggleWaves, int location = -1)
     {
         Vector3 destinationPos;
         int temp = caseSwitch;
@@ -325,6 +328,13 @@ public class GameController : MonoBehaviour
         Vector3 headPosition = vrCamera.transform.position;
 
         temp = temp % 5;
+        
+        // optional parameter, input specific location to transport to
+        if (location > 0)
+        {
+            temp = location % 5;
+        }
+        
         switch (temp)
         {
             case 0:
