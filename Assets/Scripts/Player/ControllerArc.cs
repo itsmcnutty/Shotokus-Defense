@@ -138,7 +138,8 @@ public class ControllerArc : MonoBehaviour
 			{
 				hitMarker = hitInfo.collider.GetComponent<AbilityUsageMarker> ();
 			}
-			distanceFromPlayer = Vector3.Distance (hitInfo.point, player.hmdTransform.position);
+			Vector3 playerPosHitHeight = new Vector3(player.hmdTransform.position.x, hitInfo.point.y, player.hmdTransform.position.z);
+			distanceFromPlayer = Vector3.Distance (hitInfo.point, playerPosHitHeight);
 		}
 
 		if (pointerAtBadAngle)
