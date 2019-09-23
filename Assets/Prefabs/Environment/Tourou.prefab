@@ -64,8 +64,8 @@ MonoBehaviour:
   pointLight: {fileID: 5504035498471188378}
   color1: {r: 0.99215686, g: 0.7254902, b: 0.29411766, a: 1}
   color2: {r: 1, g: 0.56188047, b: 0.18396229, a: 1}
-  intensity1: 5
-  intensity2: 6.2
+  intensity1: 4
+  intensity2: 7.5
   FLICKER_RATE: 3.8
   UPDATE_DIST: 12
   CALC_FREQUENCY: 2
@@ -167,11 +167,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3091471307488398075}
     m_Modifications:
-    - target: {fileID: 2495132945478524263, guid: c8d5a6b70efe41746b32e025b4dddb9c,
-        type: 3}
-      propertyPath: m_Name
-      value: Light Flame
-      objectReference: {fileID: 0}
     - target: {fileID: 8275344913636734663, guid: c8d5a6b70efe41746b32e025b4dddb9c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -227,6 +222,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2495132945478524263, guid: c8d5a6b70efe41746b32e025b4dddb9c,
+        type: 3}
+      propertyPath: m_Name
+      value: Light Flame
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8d5a6b70efe41746b32e025b4dddb9c, type: 3}
 --- !u!4 &6744452204646181315 stripped
@@ -242,16 +242,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3091471307488398075}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 1cdd0d4d1cf19da4e88505252654f81d,
-        type: 3}
-      propertyPath: m_Name
-      value: Tourou
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 1cdd0d4d1cf19da4e88505252654f81d,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 1cdd0d4d1cf19da4e88505252654f81d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -321,6 +311,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1cdd0d4d1cf19da4e88505252654f81d,
+        type: 3}
+      propertyPath: m_Name
+      value: Tourou
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 1cdd0d4d1cf19da4e88505252654f81d,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cdd0d4d1cf19da4e88505252654f81d, type: 3}
