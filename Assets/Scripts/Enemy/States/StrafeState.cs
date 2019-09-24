@@ -39,6 +39,8 @@ public class StrafeState : IState
 	private GameObject gameObj;
 	// The enemy properties component
 	private EnemyProperties props;
+
+	private EnemyMediumProperties medEnemyProps;
 	
 	// States to transition to
 	private RunState runState;
@@ -99,7 +101,8 @@ public class StrafeState : IState
 		totalCurrentReduction = 0;
 		
 		// climbing variables
-//		canClimb = props.climbCounter;
+		canClimb = props.climbCounter;
+		medEnemyProps = props;
 		
 		// shooting ability
 		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
@@ -159,6 +162,9 @@ public class StrafeState : IState
 	// Called upon entering this state from anywhere
 	public void Enter()
 	{
+		// activate agent?
+		agent.enabled = true; //todo i added this not sure
+
 		// No longer obstacle
 		obstacle.enabled = false;
 		props.EnablePathfind();
@@ -170,6 +176,8 @@ public class StrafeState : IState
 
 		// Restart radius reduction, to prevent enemy approaching you right away after being launched from ragdoll
 		totalCurrentReduction = 0;
+		
+		
 	}
 
 	// Called upon exiting this state
@@ -206,21 +214,24 @@ public class StrafeState : IState
 		// Turn to player
 		props.TurnToPlayer();
 		
-		// if enemy has climbed twice, unable climbing
-		if (canClimb >= 2)
+
+		if (medEnemyProps.climbCounter >= 2)
 		{
 			// Disallow climbing
 			agent.autoTraverseOffMeshLink = false;
 			// Update climbing counter
 			climbingTimer += Time.deltaTime;
+//			Debug.Log("Agent cannot climb!");
 		}
 		
 		// if enough time has passed, allow to climb again
 		if (climbingTimer > climbingTimeout) {
 			climbingTimer -= climbingTimeout;
 			agent.autoTraverseOffMeshLink = true;
-			canClimb = 0;
+			medEnemyProps.climbCounter = 0;
+//			Debug.Log("agent can climb!!");
 		}
+//		Debug.Log("agent status: " + agent.enabled);
 		
 		// Move to player if outside attack range, otherwise transition
 //		if (agent.enabled && !debugNoWalk)
@@ -234,12 +245,11 @@ public class StrafeState : IState
 
 		// Squared variables
 		float sqrStrafeDistance = strafeDistance * strafeDistance;
-		
-		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 
+		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 		if (!isStrafing && agent.enabled)
 		{
-			Debug.Log("first time in strafe state");
+//			Debug.Log("first time in strafe state");
 			float distanceToPlayer = props.calculateSqrDist(playerPos, gameObjPos);
 
 			// do not enter here if already strafing
@@ -271,8 +281,11 @@ public class StrafeState : IState
 			// when destination is reached, move to next point 
 			
 			float strafeRemainingDist = props.calculateSqrDist(circularPointDest, gameObjPos);
-            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
-				
+//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+			
+            // todo remove later
+//            agent.SetDestination(circularPointDest);
+            
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1.5f)
 			{
@@ -324,20 +337,22 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
-//		Debug.Log("strafe");
+		Debug.Log("strafe");
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
+			Debug.Log("ragdoll");
 			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}
 		
 		// Transition to climbing state if climbing
-		if (agent.isOnOffMeshLink)
+		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink)
 		{
-			Debug.Log("entering climb state");
+//			Debug.Log("entering climb state");
 			// todo do something with animator
-			canClimb++;
+//			canClimb++;
+//			medEnemyProps.climbCounter++;
 			return climbingState;
 		}
 		
@@ -393,12 +408,12 @@ public class StrafeState : IState
 			{
 				points[i].isReachable = false;
 				// if point is not valid, attemp to find a random point nearby in the navmesh
-				Vector3 temp;
-				if (RandomPoint(coord, 1f, out temp))
-				{
-					points[i].isReachable = true;
-					coord = temp;
-				}
+//				Vector3 temp;
+//				if (RandomPoint(coord, 1f, out temp))
+//				{
+//					points[i].isReachable = true;
+//					coord = temp;
+//				}
 			}
 			else
 			{
@@ -449,7 +464,7 @@ public class StrafeState : IState
 		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
 			// todo debug delete later
-			isClockwise = false;
+//			isClockwise = false;
 			if (isClockwise)
 			{
 				newIndex--;
@@ -486,7 +501,6 @@ public class StrafeState : IState
 			agent.CalculatePath(randomPoint, path);
 			if (path.status == NavMeshPathStatus.PathComplete)
 			{
-				Debug.Log("random point found!!");
 				result = randomPoint;
 				return true;
 			}
@@ -494,6 +508,6 @@ public class StrafeState : IState
 		result = Vector3.zero;
 		return false;
 	}
-	
-	
+
+
 }

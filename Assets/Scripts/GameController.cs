@@ -206,11 +206,11 @@ public class GameController : MonoBehaviour
         // destroy all objects in scene before restarting
         destroyAll();
 
-        Debug.Log("Restarting wave");
+//        Debug.Log("Restarting wave");
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
-        currentTime = 0; // todo this should fix bug
+        currentTime = 0;
         restartQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
@@ -227,11 +227,11 @@ public class GameController : MonoBehaviour
         // destroy all objects in scene before restarting
         destroyAll();
 
-        Debug.Log("Restarting wave");
+//        Debug.Log("Restarting wave");
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
-        currentTime = 0; // todo this should fix bug
+        currentTime = 0; 
         
         // teleport the player
         Teleport(false, 0);
@@ -326,7 +326,7 @@ public class GameController : MonoBehaviour
     }
 
     // This function moves the player around the 5 wave zones
-    // todo update player object position too
+    // Input: location is an optional parameter to specify an specific location to teleport to
     public void Teleport(bool toggleWaves, int location = -1)
     {
         Vector3 destinationPos;
@@ -340,9 +340,10 @@ public class GameController : MonoBehaviour
         temp = temp % 5;
         
         // optional parameter, input specific location to transport to
-        if (location > 0)
+        if (location >= 0)
         {
             temp = location % 5;
+            caseSwitch = temp;
         }
         
         switch (temp)

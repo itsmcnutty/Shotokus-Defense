@@ -2182,6 +2182,7 @@ MonoBehaviour:
   ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 3
   RAGDOLL_DMG_THRESHOLD: 15
+  FULL_MASS_DAMAGE_PERC: 0.15
   debugShowHealthText: 0
   healthBarCanvas: {fileID: 3306772564097525140}
   healthBarText: {fileID: 5151154359119531753}
@@ -2209,7 +2210,7 @@ NavMeshAgent:
   m_Height: 1.8
   m_BaseOffset: -0.03
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!208 &4699850651619254656
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -2249,8 +2250,8 @@ MonoBehaviour:
   RANGED_DELAY: 3
   PROJECTILE_VEL_X: 12
   MAX_STRAFE_SPEED: 1.6
-  RANGED_RADIUS: 25
-  STRAFE_DIST: 10
+  RANGED_RADIUS: 23
+  STRAFE_DIST: 15
   RADIUS_REDUCTION: 2
   randomRadiusReduction: 1
   minRangeRadiusReduction: 3
@@ -2498,11 +2499,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7954220005177964977}
     m_Modifications:
-    - target: {fileID: 7051926668648841850, guid: d5bd64be0d9952c4cad0a5bd25633dcf,
-        type: 3}
-      propertyPath: m_Name
-      value: Sword
-      objectReference: {fileID: 0}
     - target: {fileID: 4687669883987991774, guid: d5bd64be0d9952c4cad0a5bd25633dcf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2558,6 +2554,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7051926668648841850, guid: d5bd64be0d9952c4cad0a5bd25633dcf,
+        type: 3}
+      propertyPath: m_Name
+      value: Sword
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5bd64be0d9952c4cad0a5bd25633dcf, type: 3}
 --- !u!4 &714798763404075633 stripped
@@ -2573,11 +2574,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 712821912855833194}
     m_Modifications:
-    - target: {fileID: 4010475543785057643, guid: 270e1e50e63114d47abccf224a166c3f,
-        type: 3}
-      propertyPath: m_Name
-      value: Bow
-      objectReference: {fileID: 0}
     - target: {fileID: 4010475543785156939, guid: 270e1e50e63114d47abccf224a166c3f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2632,6 +2628,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4010475543785057643, guid: 270e1e50e63114d47abccf224a166c3f,
+        type: 3}
+      propertyPath: m_Name
+      value: Bow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 270e1e50e63114d47abccf224a166c3f, type: 3}
