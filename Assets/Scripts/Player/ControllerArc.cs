@@ -153,12 +153,9 @@ public class ControllerArc : MonoBehaviour
 		{
 			validCollisionForAbility = true;
 			MeshRenderer meshRenderer = destinationReticleTransform.gameObject.GetComponent<MeshRenderer>();
-			Debug.Log("size=" + meshRenderer.bounds.size);
 			Collider[] colliders = Physics.OverlapSphere(hitInfo.point, meshRenderer.bounds.size.x / 2, traceLayerMask);
-			Debug.Log("Found colliders=" + colliders.Length);
 			foreach (Collider collider in colliders)
 			{
-				Debug.Log(collider.name);
 				if (collider.tag != "Ground" && collider.gameObject.layer != 14)
 				{
 					validCollisionForAbility = false;
