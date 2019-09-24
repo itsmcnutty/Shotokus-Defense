@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,7 +17,7 @@ public class RagdollController : MonoBehaviour
     public ParticleSystem enemyDeathParticles;
 
     // All Rigidbodies of the enemy's ragdoll
-    private Rigidbody[] rigidbodies;
+    private List<Rigidbody> rigidbodies = new List<Rigidbody>();
     // The enemy's Animator component
     private Animator animator;
     // The enemy's NavMeshAgent componenet
@@ -27,7 +28,7 @@ public class RagdollController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        rigidbodies = GetComponentsInChildren<Rigidbody>();
+        rigidbodies = GetComponentsInChildren<Rigidbody>().ToList();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
@@ -35,13 +36,16 @@ public class RagdollController : MonoBehaviour
         AddCPCToChildren(rigidbodies[0].gameObject);
 
         // Set physics material
-        for (int i = 0; i < rigidbodies.Length; i++)
+        for (int i = 0; i < rigidbodies.Count; i++)
         {
             if (rigidbodies[i].gameObject.layer == 16)
             {
+                rigidbodies.RemoveAt(i);
+                i--;
                 continue;
             }
             rigidbodies[i].gameObject.GetComponent<Collider>().material = PHYSIC_MATERIAL;
+            rigidbodies[i].isKinematic = true;
         }
     }
 
@@ -66,17 +70,21 @@ public class RagdollController : MonoBehaviour
     // Disables the Animator to allow Rigidbodies to obey physics
     public void StartRagdoll()
     {
-        ragdolling = true;
-
-        // Disable animation and pathfinding
-        animator.enabled = false;
-        agent.enabled = false;
-
-        // Zero velocity of all rigidbodies so they don't maintain this from the animation
-        foreach (var rigidbody in rigidbodies)
+        if (!ragdolling)
         {
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
+            ragdolling = true;
+
+            // Disable animation and pathfinding
+            animator.enabled = false;
+            agent.enabled = false;
+
+            // Zero velocity of all rigidbodies so they don't maintain this from the animation
+            foreach (var rigidbody in rigidbodies)
+            {
+                rigidbody.velocity = Vector3.zero;
+                rigidbody.angularVelocity = Vector3.zero;
+                rigidbody.isKinematic = false;
+            }
         }
     }
 
@@ -86,11 +94,11 @@ public class RagdollController : MonoBehaviour
         if (GetComponent<EnemyHealth>().healthBarActual.value <= 0)
         {
             SkinnedMeshRenderer skinnedMesh = new SkinnedMeshRenderer();
-            
+
             // Loop through children to find body skinned mesh
-            foreach(Transform child in transform)
+            foreach (Transform child in transform)
             {
-                if(child.CompareTag("EnemyBody"))
+                if (child.CompareTag("EnemyBody"))
                 {
                     skinnedMesh = child.GetComponent<SkinnedMeshRenderer>();
                     break;
@@ -107,9 +115,14 @@ public class RagdollController : MonoBehaviour
             shape.rotation = skinnedMesh.transform.rotation.eulerAngles;
             shape.mesh = mesh;
 
-			// Indicate the Game Controller that an enemy was destroyed
-			GameController.Instance.EnemyGotDestroyed(gameObject);
+            // Indicate the Game Controller that an enemy was destroyed
+            GameController.Instance.EnemyGotDestroyed(gameObject);
             Destroy(gameObject);
+        }
+
+        foreach (var rigidbody in rigidbodies)
+        {
+            rigidbody.isKinematic = true;
         }
 
         ragdolling = false;

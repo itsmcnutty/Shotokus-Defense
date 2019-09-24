@@ -47,6 +47,7 @@ public class Rocks : MonoBehaviour
     public GameObject PickupRock(GameObject pickup, Hand hand, Hand otherHand)
     {
         GameObject activeRock = null;
+        hand.DetachObject(pickup);
         // Trying to pick up a new object (not resizing)
         if (otherHand.currentAttachedObject == null)
         {
@@ -56,12 +57,12 @@ public class Rocks : MonoBehaviour
                 activeRock = pickup;
                 playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
                 hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
+                hand.AttachObject(activeRock, GrabTypes.Scripted);
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
             else
             {
                 // Prevents pickup if the player doesn't have enough energy
-                hand.DetachObject(pickup);
                 hand.hoveringInteractable = null;
             }
         }
@@ -71,6 +72,7 @@ public class Rocks : MonoBehaviour
             activeRock = pickup;
             playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
             hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
+            hand.AttachObject(activeRock, GrabTypes.Scripted);
             Destroy(activeRock.GetComponent<RockProperties>());
         }
         return activeRock;
@@ -202,13 +204,13 @@ public class Rocks : MonoBehaviour
     {
         GameObject newRock;
         if (availableRocks.Count != 0)
-        {       
+        {
             // Gets a rock from the stash if one is available
             newRock = availableRocks.Dequeue();
             newRock.SetActive(true);
         }
         else
-        {        
+        {
             // Creates a new rock if one is not available from the stash
             newRock = Instantiate(rockPrefab) as GameObject;
         }

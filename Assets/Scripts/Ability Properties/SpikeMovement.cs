@@ -12,6 +12,7 @@ public class SpikeMovement : MonoBehaviour
 
     private Vector3 startPos;
     private bool particleEffectPlayed = false;
+    private GameObject parentObject;
 
     // Start is called before the first frame update
     void Start()
@@ -24,17 +25,17 @@ public class SpikeMovement : MonoBehaviour
     void Update()
     {
         // Moves the spike towards the endPosition unless it hits something
-        Vector3 nextPos = Vector3.MoveTowards(transform.position, endPosition, speed);
+        Vector3 nextPos = Vector3.MoveTowards(parentObject.transform.position, endPosition, speed);
         if (!colliding)
         {
-            transform.position = nextPos;
+            parentObject.transform.position = nextPos;
         }
         else
         {
             colliding = false;
         }
 
-        if (transform.position.y >= endPosition.y * .9 && !particleEffectPlayed)
+        if (parentObject.transform.position.y >= endPosition.y * .9 && !particleEffectPlayed)
         {
             // Plays particle effect once after the given percentage of the way through the raising
             particleEffectPlayed = true;
@@ -49,7 +50,7 @@ public class SpikeMovement : MonoBehaviour
             velocityModule.speedModifierMultiplier = speed;
         }
 
-        if (transform.position == endPosition)
+        if (parentObject.transform.position == endPosition)
         {
             // Once it reaches the peak, destroy the object
             obstacle.enabled = true;
@@ -60,16 +61,17 @@ public class SpikeMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         // Enemies that get hit by the spike get a velocity added to them to make them fly away
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.layer == 9)
         {
             colliding = true;
-            other.rigidbody.velocity = speed / Time.deltaTime * Vector3.Normalize(endPosition - transform.position);
+            other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
         }
     }
 
     public static void CreateComponent(GameObject spike, float speed, Vector3 endPosition, ParticleSystem createSpikeEarthParticles, ParticleSystem destroySpikeParticles)
     {
-        SpikeMovement spikeMovement = spike.AddComponent<SpikeMovement>();
+        SpikeMovement spikeMovement = spike.transform.GetChild(0).gameObject.AddComponent<SpikeMovement>();
+        spikeMovement.parentObject = spike;
         spikeMovement.speed = speed;
         spikeMovement.endPosition = endPosition;
         spikeMovement.destroySpikeParticles = destroySpikeParticles;
