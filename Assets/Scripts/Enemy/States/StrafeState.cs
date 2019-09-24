@@ -215,22 +215,22 @@ public class StrafeState : IState
 		props.TurnToPlayer();
 		
 
-		if (medEnemyProps.climbCounter >= 2)
-		{
-			// Disallow climbing
-			agent.autoTraverseOffMeshLink = false;
-			// Update climbing counter
-			climbingTimer += Time.deltaTime;
-//			Debug.Log("Agent cannot climb!");
-		}
-		
-		// if enough time has passed, allow to climb again
-		if (climbingTimer > climbingTimeout) {
-			climbingTimer -= climbingTimeout;
-			agent.autoTraverseOffMeshLink = true;
-			medEnemyProps.climbCounter = 0;
-//			Debug.Log("agent can climb!!");
-		}
+//		if (medEnemyProps.climbCounter >= 2)
+//		{
+//			// Disallow climbing
+//			agent.autoTraverseOffMeshLink = false;
+//			// Update climbing counter
+//			climbingTimer += Time.deltaTime;
+////			Debug.Log("Agent cannot climb!");
+//		}
+//		
+//		// if enough time has passed, allow to climb again
+//		if (climbingTimer > climbingTimeout) {
+//			climbingTimer -= climbingTimeout;
+//			agent.autoTraverseOffMeshLink = true;
+//			medEnemyProps.climbCounter = 0;
+////			Debug.Log("agent can climb!!");
+//		}
 //		Debug.Log("agent status: " + agent.enabled);
 		
 		// Move to player if outside attack range, otherwise transition
