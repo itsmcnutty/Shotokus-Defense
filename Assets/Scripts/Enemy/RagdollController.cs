@@ -66,17 +66,20 @@ public class RagdollController : MonoBehaviour
     // Disables the Animator to allow Rigidbodies to obey physics
     public void StartRagdoll()
     {
-        ragdolling = true;
-
-        // Disable animation and pathfinding
-        animator.enabled = false;
-        agent.enabled = false;
-
-        // Zero velocity of all rigidbodies so they don't maintain this from the animation
-        foreach (var rigidbody in rigidbodies)
+        if(!ragdolling)
         {
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
+            ragdolling = true;
+
+            // Disable animation and pathfinding
+            animator.enabled = false;
+            agent.enabled = false;
+
+            // Zero velocity of all rigidbodies so they don't maintain this from the animation
+            foreach (var rigidbody in rigidbodies)
+            {
+                rigidbody.velocity = Vector3.zero;
+                rigidbody.angularVelocity = Vector3.zero;
+            }
         }
     }
 

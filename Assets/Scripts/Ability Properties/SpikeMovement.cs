@@ -64,6 +64,7 @@ public class SpikeMovement : MonoBehaviour
         {
             colliding = true;
             other.rigidbody.velocity = speed / Time.deltaTime * Vector3.Normalize(endPosition - transform.position);
+            other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
         }
     }
 
