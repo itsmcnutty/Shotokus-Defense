@@ -278,6 +278,7 @@ MonoBehaviour:
   ARMOR_CUTOFF: 0
   ARMOR_PROFICIENCY: 0
   RAGDOLL_DMG_THRESHOLD: 0
+  FULL_MASS_DAMAGE_PERC: 0.15
   debugShowHealthText: 0
   healthBarCanvas: {fileID: 4751925666564878191}
   healthBarText: {fileID: 3128502625371489298}
@@ -513,7 +514,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 563db7d72af97394382b9e58987ff042, type: 2}
+  - {fileID: 2100000, guid: dcfd31e942c7af9449f711f92124edc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -970,7 +971,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 563db7d72af97394382b9e58987ff042, type: 2}
+  - {fileID: 2100000, guid: dcfd31e942c7af9449f711f92124edc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1229,7 +1230,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aec011f9367e3784d8474d610cefc2c6, type: 2}
+  - {fileID: 2100000, guid: dcfd31e942c7af9449f711f92124edc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1455,7 +1456,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c25d761e94102804f83017c63727b518, type: 2}
+  - {fileID: 2100000, guid: dcfd31e942c7af9449f711f92124edc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1740,7 +1741,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7b3f9b190f8cea1479d569889a6b8835, type: 2}
+  - {fileID: 2100000, guid: dcfd31e942c7af9449f711f92124edc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3012,6 +3013,11 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.26508734
       objectReference: {fileID: 0}
+    - target: {fileID: 8836200976780689515, guid: 1bd99bc5a2b445349afd3b3c90f58479,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dcfd31e942c7af9449f711f92124edc0, type: 2}
     - target: {fileID: 989260871825468069, guid: 1bd99bc5a2b445349afd3b3c90f58479,
         type: 3}
       propertyPath: m_CapsuleColliders.Array.data[0]

@@ -93,8 +93,8 @@ public class SpikeMovement : MonoBehaviour
         shape.scale = transform.localScale;
 
         // Move the spike, disable it, and readd it to the stash
-        gameObject.transform.position = new Vector3(0, -10, 0);
-        gameObject.SetActive(false);
-        SpikeQuicksand.MakeSpikeAvailable(gameObject);
+        parentObject.transform.position = new Vector3(0, -10, 0);
+        parentObject.SetActive(false);
+        SpikeQuicksand.MakeSpikeAvailable(parentObject);
     }
 }
