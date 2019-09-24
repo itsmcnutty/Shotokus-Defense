@@ -4,6 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+// Struct to keep track of information for pointsAround() function
+struct EnemyInfo
+{
+    public GameObject Prefab; // prefab to spawn
+    public string SpawnLocation; // location to spawn the prefab
+
+    public EnemyInfo(GameObject prefab, string spawnLocation)
+    {
+        Prefab = prefab;
+        SpawnLocation = spawnLocation;
+    }
+}
+
+
 public class EnemyProducer : MonoBehaviour
 {
     private GameObject spawnLocationObject; // gameobject from spawner that will be used 
@@ -13,6 +27,7 @@ public class EnemyProducer : MonoBehaviour
     public GameObject mediumEnemyPrefab; // prefab to be spawned. Set prefab on the editor
     public GameObject lightEnemyPrefab; // prefab to be spawned. Set prefab on the editor
     private Bounds spawnArea;
+    private Queue<EnemyInfo> enemyQueue; // queue containing all enemies. This queue will take care of making enemies wait to spawn if Enemies alive is bigger than spawn limit
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +72,40 @@ public class EnemyProducer : MonoBehaviour
         
         // update counter of enemies alive
         GameController.Instance.EnemyAddNumAlive(spawnInfo.NumHeavyEnemies + spawnInfo.NumMedEnemies + spawnInfo.NumLightEnemies);
+    }
+
+    // this function takes a spawninfo and then add an EnemyInfo to the enemy queue
+    // 1 enemy is 1 enemy info, therefore if there is a spawnInfo with 3 Heavy enemies, all 3 will be added separately to queue
+    public void addToQueue(SpawnInfo spawnInfo)
+    {
+        string spawningLocation = spawnInfo.Location.ToString();
+        
+        for (int i = 0; i < spawnInfo.NumHeavyEnemies; i++)
+        {
+            EnemyInfo enemyInfo = new EnemyInfo(heavyEnemyPrefab, spawningLocation);
+            enemyQueue.Enqueue(enemyInfo);
+        }
+        for (int i = 0; i < spawnInfo.NumMedEnemies; i++)
+        {
+            EnemyInfo enemyInfo = new EnemyInfo(mediumEnemyPrefab, spawningLocation);
+            enemyQueue.Enqueue(enemyInfo);
+        }
+        for (int i = 0; i < spawnInfo.NumLightEnemies; i++)
+        {
+            EnemyInfo enemyInfo = new EnemyInfo(lightEnemyPrefab, spawningLocation);
+            enemyQueue.Enqueue(enemyInfo);
+        }
+    }
+    
+    // Spawn function that takes an number of enemies to be spawned form the queue
+    public void SpawnFromQueue(float spawningAmount)
+    {
+        for(float i = 0; i < spawningAmount;i++)
+        {
+            EnemyInfo enemy = enemyQueue.Dequeue();
+            spawnLocationObject = GameObject.FindWithTag(enemy.SpawnLocation);
+            SpawnEnemy(1, enemy.Prefab);
+        }
     }
     
     // Update is called once per frame

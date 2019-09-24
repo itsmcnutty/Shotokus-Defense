@@ -19,7 +19,8 @@ public class GameController : MonoBehaviour
     [Header("Wave Files")]
     public TextAsset[] locationWaveFiles; // array containing location wave files
 
-    [Header("Miscellaneous")]
+    [Header("Miscellaneous")] 
+    public float limitAmountEnemies; // maximum amount of enemies at one time in the game
     public GameObject teleportPillar;
 
     // variables for teleport function
@@ -41,6 +42,7 @@ public class GameController : MonoBehaviour
 
     private float currentTime;
     private bool pauseWaveSystem = true;
+    private float availableSpots; // keeps track of how many more enemies can be spawned in the scene
 
     // Constructor
     private GameController() { }
@@ -105,8 +107,20 @@ public class GameController : MonoBehaviour
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
             if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
             {
+                // add spawn info to enemy queue in enemy producer
+                enemyProducer.addToQueue(spawnInfo);
                 // check how many enemies are alive right now
-                enemyProducer.Spawn(spawnInfo);
+                availableSpots = limitAmountEnemies - enemiesAlive;
+                // count how enemies are going to be spawned
+                float count = spawnInfo.NumHeavyEnemies + spawnInfo.NumMedEnemies + spawnInfo.NumLightEnemies;
+                // select amount to spawn
+                if (availableSpots < count)
+                {
+                    enemyProducer.SpawnFromQueue(availableSpots);   
+                }else
+                {
+                    enemyProducer.SpawnFromQueue(count);
+                }
             }
         }
     }
