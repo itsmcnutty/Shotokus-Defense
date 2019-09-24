@@ -199,7 +199,6 @@ public class GameController : MonoBehaviour
     // deletes walls, spikes, rocks and restart the current wave in location
     public void RestartWave()
     {
-
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
 

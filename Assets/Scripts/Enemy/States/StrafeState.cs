@@ -65,7 +65,7 @@ public class StrafeState : IState
 	// climbing variables
 	private float climbingTimer = 0; // keeps track of how much time has occured after climbing
 	private float climbingTimeout = 5; // once climbingTimer reaches this counter, agent can climb again
-	private bool canClimb = false; // if true, allow agent to climb
+	private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
 
 	// get instance of right hand for shooting
 	private ShootingAbility shootingAbility;
@@ -97,6 +97,9 @@ public class StrafeState : IState
 		isClockwise = props.isClockwise;
 		radiusReduction = props.RADIUS_REDUCTION;
 		totalCurrentReduction = 0;
+		
+		// climbing variables
+//		canClimb = props.climbCounter;
 		
 		// shooting ability
 		shootingAbility = gameObj.GetComponentInChildren<ShootingAbility>();
@@ -164,13 +167,7 @@ public class StrafeState : IState
 		agent.stoppingDistance = 0;
 		agent.speed = maxStrafeSpeed;
 		agent.angularSpeed = 0;
-		
-		// everytime the agent enters the strafe state, it has to wait 5 seconds before being able to climb
-		// once the timeout happens, the agent can freely climb until entering the strafe state again
-		// todo enemies might get stuck on top, because they leave the climb state at the top of wall and then are unable to climb down
-		agent.autoTraverseOffMeshLink = false;
-//		canClimb = false;
-		
+
 		// Restart radius reduction, to prevent enemy approaching you right away after being launched from ragdoll
 		totalCurrentReduction = 0;
 	}
@@ -209,13 +206,20 @@ public class StrafeState : IState
 		// Turn to player
 		props.TurnToPlayer();
 		
-		// Update climbing counter
-		climbingTimer += Time.deltaTime;
+		// if enemy has climbed twice, unable climbing
+		if (canClimb >= 2)
+		{
+			// Disallow climbing
+			agent.autoTraverseOffMeshLink = false;
+			// Update climbing counter
+			climbingTimer += Time.deltaTime;
+		}
+		
 		// if enough time has passed, allow to climb again
 		if (climbingTimer > climbingTimeout) {
 			climbingTimer -= climbingTimeout;
-//			agent.autoTraverseOffMeshLink = true;
-//			canClimb = true;
+			agent.autoTraverseOffMeshLink = true;
+			canClimb = 0;
 		}
 		
 		// Move to player if outside attack range, otherwise transition
@@ -257,7 +261,6 @@ public class StrafeState : IState
 			agent.SetDestination(circularPointDest);
 //			Debug.Log("my destination is " + circularPointDest);
 		}
-		
 		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
@@ -334,6 +337,7 @@ public class StrafeState : IState
 		{
 			Debug.Log("entering climb state");
 			// todo do something with animator
+			canClimb++;
 			return climbingState;
 		}
 		
