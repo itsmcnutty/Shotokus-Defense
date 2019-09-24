@@ -87,6 +87,8 @@ public class Walls : MonoBehaviour
                 UnityEngine.ParticleSystem.EmissionModule emissionModule = currentParticles.emission;
                 emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
 
+                WallProperties.CreateComponent(wall, 0, wallDestroyParticles);
+
                 Destroy(wallOutline);
             }
             else
@@ -174,8 +176,8 @@ public class Walls : MonoBehaviour
         else
         {
             // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
-            WallProperties.CreateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed, wallDestroyParticles);
-            wall.GetComponent<CreateNavLink>().createLinks(wallMaxHeight);
+            wall.GetComponentInChildren<WallProperties>().UpdateComponent(finalHandHeight, finalVelocity, wallMoveSpeed);
+            wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
         ResetWallInfo();
@@ -189,7 +191,7 @@ public class Walls : MonoBehaviour
 
         // Calculates the final hand height and initializes the WallProperties component pn the wall
         float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
-        WallProperties.CreateComponent(wall, finalHandHeight, wallDestroyParticles);
+        wall.GetComponentInChildren<WallProperties>().UpdateComponent(finalHandHeight, Vector3.zero, 0);
         playerEnergy.UseEnergy(firstHandHeld);
         ResetWallInfo();
     }
