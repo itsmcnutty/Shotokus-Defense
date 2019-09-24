@@ -337,7 +337,7 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
-//		Debug.Log("strafe");
+		Debug.Log("strafe");
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
@@ -350,9 +350,9 @@ public class StrafeState : IState
 		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink)
 		{
 //			Debug.Log("entering climb state");
-			// todo do something with animator
 //			canClimb++;
 //			medEnemyProps.climbCounter++;
+			animator.SetTrigger("Climb");
 			return climbingState;
 		}
 		

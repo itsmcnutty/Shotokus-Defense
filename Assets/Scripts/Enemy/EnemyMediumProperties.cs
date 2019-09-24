@@ -50,7 +50,8 @@ public class EnemyMediumProperties : EnemyProperties
     [NonSerialized] public SwingState swingState;
     [NonSerialized] public RagdollState ragdollState;
     [NonSerialized] public ClimbingState climbingState;
-    
+    [NonSerialized] public AboveWallState aboveWallState;
+
     // Start is called before the first frame update
     new void Start()
     {
@@ -78,6 +79,7 @@ public class EnemyMediumProperties : EnemyProperties
         swingState = new SwingState(this);
         ragdollState = new RagdollState(this);
         climbingState = new ClimbingState(this);
+        aboveWallState = new AboveWallState(this);
 		
         // Initialize states within these state objects
         runState.InitializeStates(this);
@@ -88,6 +90,7 @@ public class EnemyMediumProperties : EnemyProperties
         swingState.InitializeStates(this);
         ragdollState.InitializeStates(this);
         climbingState.InitializeStates(this);
+        aboveWallState.InitializeStates(this);
 		
         // Give FSM an initial state
         stateMachine.ChangeState(runState);

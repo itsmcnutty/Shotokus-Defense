@@ -12,7 +12,9 @@ public class ClimbingState : IState
     private NavMeshAgent agent;
     // The NavMeshObstacle used to block enemies pathfinding when not moving
     private NavMeshObstacle obstacle;
-    
+    // The enemy's ragdoll controller
+    private RagdollController ragdollController;
+
     // This enemy's GameObject
     private GameObject gameObj;
     // The enemy properties component
@@ -21,7 +23,8 @@ public class ClimbingState : IState
     private EnemyMediumProperties medEnemyProps;
     
     // States to transition to
-    private IState resetState;
+    private IState aboveWallState;
+    private RagdollState ragdollState;
 
     public ClimbingState(EnemyMediumProperties enemyProps)
     {
@@ -30,6 +33,7 @@ public class ClimbingState : IState
         obstacle = enemyProps.obstacle;
         animator = enemyProps.animator;
         gameObj = enemyProps.gameObject;
+        ragdollController = enemyProps.ragdollController;
         this.enemyProps = enemyProps;
     }
     
@@ -37,8 +41,9 @@ public class ClimbingState : IState
     // necessary states for the machine
     public void InitializeStates(EnemyMediumProperties enemyProps)
     {
-        resetState = enemyProps.runState;
-        medEnemyProps = enemyProps;
+        aboveWallState = enemyProps.aboveWallState;
+        ragdollState = enemyProps.ragdollState;
+//        medEnemyProps = enemyProps;
     }
     
     // Called upon entering this state from anywhere
@@ -51,26 +56,31 @@ public class ClimbingState : IState
     // Called upon exiting this state
     public void Exit()
     {
-        medEnemyProps.climbCounter++;
-        // Restart animation in Walking state
-//        animator.SetTrigger("Ragdoll"); // todo change to climbing animation
+//        medEnemyProps.climbCounter++;
     }
 
     // Called during Update while currently in this state
     public void Action()
     {
-//        Debug.Log("climbing");
+        Debug.Log("climbing");
     }
     
     // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
     // is possible
     public IState Transition()
     {
-        // If the enemy can recover from ragdolling, transition to resetState
-        if (!agent.isOnOffMeshLink)
+        // when finish climbing transition to abovewall state
+        if (!agent.isOnOffMeshLink) // todo this if statement should ask if canClimb = 1? and a differente for canClimb = 2?
         {
-//            Debug.Log("leaving climb state");
-            return resetState;
+            animator.SetTrigger("ClimbEnd");
+            return aboveWallState;
+        }
+        
+        // Transition to ragdoll state if ragdolling
+        if (ragdollController.IsRagdolling())
+        {
+            animator.SetTrigger("Ragdoll");
+            return ragdollState;
         }
 		
         // Continue climbing
