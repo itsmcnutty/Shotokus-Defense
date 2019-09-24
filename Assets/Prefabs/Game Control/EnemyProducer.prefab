@@ -65,12 +65,12 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
+  Priority: 30
+  DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 200
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 1
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -103,7 +103,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.8
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 8549235811175301622}
-  NUM_BEATS: 4
+  NUM_BEATS: 6
   beats:
   - {fileID: 8300000, guid: c27eb7d7ca81bae42b5b418c2aec624b, type: 3}
   - {fileID: 8300000, guid: 04a3e5023ac29a14db682baf0c12a3cd, type: 3}
