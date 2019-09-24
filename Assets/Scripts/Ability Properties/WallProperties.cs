@@ -11,6 +11,7 @@ public class WallProperties : MonoBehaviour
 
     private float wallLifetime = 30.0f;
     private NavMeshSurface surfaceWalls;
+    private GameObject parentObject;
 
     // Start is called before the first frame update
     void Start()
@@ -29,19 +30,20 @@ public class WallProperties : MonoBehaviour
     {
         surfaceWalls.BuildNavMesh();
         ParticleSystem particleSystem = Instantiate(destroyWallParticles);
-        particleSystem.transform.position = transform.position;
-        particleSystem.transform.rotation = transform.rotation;
+        particleSystem.transform.position = parentObject.transform.position;
+        particleSystem.transform.rotation = parentObject.transform.rotation;
 
         UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
-        shape.scale = new Vector3(transform.localScale.x, transform.localScale.y * wallHeightPercent, transform.localScale.z);
+        shape.scale = new Vector3(parentObject.transform.localScale.x, parentObject.transform.localScale.y * wallHeightPercent, parentObject.transform.localScale.z);
 
         UnityEngine.ParticleSystem.EmissionModule emission = particleSystem.emission;
-        emission.rateOverTimeMultiplier = gameObject.transform.localScale.x * emission.rateOverTimeMultiplier;
+        emission.rateOverTimeMultiplier = parentObject.transform.localScale.x * emission.rateOverTimeMultiplier;
     }
 
     public static void CreateComponent (GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed, ParticleSystem destroyWallParticles)
     {
-        WallProperties wallProperties = wall.AddComponent<WallProperties> ();
+        WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties> ();
+        wallProperties.parentObject = wall;
         wallProperties.wallHeightPercent = wallHeightPercent;
         wallProperties.direction = direction;
         wallProperties.wallMoveSpeed = wallMoveSpeed;
@@ -50,11 +52,19 @@ public class WallProperties : MonoBehaviour
 
     public static void CreateComponent (GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles)
     {
-        WallProperties wallProperties = wall.AddComponent<WallProperties> ();
+        WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties> ();
+        wallProperties.parentObject = wall;
         wallProperties.wallHeightPercent = wallHeightPercent;
         wallProperties.direction = Vector3.zero;
         wallProperties.wallMoveSpeed = 0;
         wallProperties.destroyWallParticles = destroyWallParticles;
+    }
+
+    public void UpdateComponent(float wallHeightPercent, Vector3 direction, float wallMoveSpeed)
+    {
+        this.wallHeightPercent = wallHeightPercent;
+        this.direction = Vector3.zero;
+        this.wallMoveSpeed = 0;
     }
 
     private void MoveWall()
@@ -62,13 +72,17 @@ public class WallProperties : MonoBehaviour
         // Moves the wall if given a velocity from the move wall powerup
         if(wallMoveSpeed != 0)
         {
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, gameObject.transform.position + (direction * wallMoveSpeed), 1f);
+            parentObject.transform.position = Vector3.MoveTowards(parentObject.transform.position, parentObject.transform.position + (direction * wallMoveSpeed), 1f);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag != "Ground" && other.gameObject.layer != 9 && other.gameObject.layer != 11 && other.gameObject.layer != 17)
+        if(other.gameObject.layer == 9)
+        {
+            other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
+        }
+        if(other.gameObject.layer != 11 && other.gameObject.layer != 17)
         {
             // Stops the wall from moving when it collides with something it can't move through
             CancelInvoke("MoveWall");
