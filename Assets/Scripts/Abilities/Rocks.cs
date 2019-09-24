@@ -60,6 +60,7 @@ public class Rocks : MonoBehaviour
                 // Grabs the rock if the player's energy allows for it
                 activeRock = pickup;
                 playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
+                hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
                 Destroy(activeRock.GetComponent<RockProperties>());
             }
             else
@@ -74,6 +75,7 @@ public class Rocks : MonoBehaviour
             // Pickups rock when the other hand is holding one
             activeRock = pickup;
             playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
+            hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
             Destroy(activeRock.GetComponent<RockProperties>());
         }
         return activeRock;
@@ -140,7 +142,6 @@ public class Rocks : MonoBehaviour
     {
         // Detaches the rock from the player's hand
         hand.DetachObject(activeRock);
-        hand.SetAllowResize(true);
 
         if (otherHand.currentAttachedObject == activeRock)
         {
@@ -151,7 +152,9 @@ public class Rocks : MonoBehaviour
             otherHand.GetComponent<PlayerAbility>().activeRock = activeRock;
         }
         else
-        {   
+        {
+            hand.SetAllowResize(true);
+
             // Adds the RockProperties component to the rock to begin the death countdown
             RockProperties.CreateComponent(activeRock, destroyRockParticles, rockHit, rockBreak);
 
