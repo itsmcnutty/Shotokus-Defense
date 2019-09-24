@@ -1,16 +1,30 @@
 ﻿using UnityEngine;
+using Valve.VR.InteractionSystem;
 
 public class RockProperties : MonoBehaviour
 {
-    private AudioSource rockHit;
+    [Header("Audio")]
+    public AudioClip[] rockHitSolid;
+    public AudioClip[] rockHitFoliage;
+    public PhysicMaterial foliageMaterial;
+    
     private AudioSource rockBreak;
+    private SoundPlayOneshot randomizedAudioSource;
     private ParticleSystem destroyRockParticles;
+    
+    // Audio source for playing sounds out of rock itself
+    private AudioSource audioSource;
 
     private static float rockLifetime = 5.0f;
     // Start is called before the first frame update
     void Start()
     {
         Invoke("DestroyRock", rockLifetime);
+        audioSource = GetComponent<AudioSource>();
+        randomizedAudioSource = GetComponent<SoundPlayOneshot>();
+        
+        // Set loop to false because rock has left hand and can't be regrown
+        audioSource.loop = false;
     }
 
     // Update is called once per frame
@@ -21,12 +35,10 @@ public class RockProperties : MonoBehaviour
         CancelInvoke("DestroyRock");
     }
 
-    public static void CreateComponent(GameObject rock, ParticleSystem destroyRockParticles, AudioSource rockHit, AudioSource rockBreak)
+    public static void CreateComponent(GameObject rock, ParticleSystem destroyRockParticles)
     {
         RockProperties properties = rock.AddComponent<RockProperties>();
         properties.destroyRockParticles = destroyRockParticles;
-        properties.rockBreak = rockBreak;
-        properties.rockHit = rockHit;
     }
 
     public void DestroyRock ()
@@ -57,7 +69,16 @@ public class RockProperties : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        rockHit.PlayOneShot(rockHit.clip);
+        if (other.collider.material == foliageMaterial)
+        {
+            randomizedAudioSource.waveFiles = rockHitFoliage;
+        }
+        else
+        {
+            randomizedAudioSource.waveFiles = rockHitSolid;
+        }
+        
+        randomizedAudioSource.Play();
     }
 
 }

@@ -30,10 +30,21 @@ public class PowerupController : MonoBehaviour
 
     public static PowerupController instance;
 
+    [Header("Audio")] public AudioSource audioSource;
+    public AudioClip rockClusterSound;
+    public AudioClip spikeChainSound;
+    public AudioClip earthquakeSound;
+    public AudioClip wallPushSound;
+    
     private static float rockClusterBarCounter = 0;
     private static float spikeChainBarCounter = 0;
     private static float earthquakeBarCounter = 0;
     private static float wallPushBarCounter = 0;
+
+    // Duration of the timer audio clip for abilities
+    private float timerDuration;
+    // True when playing the powerup timer
+    private bool playingTimer = false;
 
     // Instance getter and initialization
     public static PowerupController Instance
@@ -55,6 +66,9 @@ public class PowerupController : MonoBehaviour
         spikeChainBar.material.SetColor("_EmissionColor", Color.white);
         earthquakeBar.material.SetColor("_EmissionColor", Color.white);
         wallPushBar.material.SetColor("_EmissionColor", Color.white);
+        
+        // Initialize audio stuff
+        timerDuration = audioSource.clip.length;
     }
 
     // Update is called once per frame
@@ -72,6 +86,9 @@ public class PowerupController : MonoBehaviour
         //      Reset ability counter
         if (rockClusterBarCounter >= pointsForRockCluster)
         {
+            // Audio
+            audioSource.PlayOneShot(rockClusterSound);
+            
             PlayerAbility.ToggleRockCluster();
             rockClusterBarCounter = 0;
             StartCoroutine(EndRockCluster());
@@ -83,6 +100,9 @@ public class PowerupController : MonoBehaviour
 
         if (spikeChainBarCounter >= pointsForSpikeChain)
         {
+            // Audio
+            audioSource.PlayOneShot(spikeChainSound);
+            
             PlayerAbility.ToggleSpikeChain();
             spikeChainBarCounter = 0;
             StartCoroutine(EndSpikeChain());
@@ -94,6 +114,9 @@ public class PowerupController : MonoBehaviour
 
         if (earthquakeBarCounter >= pointsForEarthquake)
         {
+            // Audio
+            audioSource.PlayOneShot(earthquakeSound);
+            
             PlayerAbility.ToggleEarthquake();
             earthquakeBarCounter = 0;
             StartCoroutine(EndEarthquake());
@@ -105,6 +128,9 @@ public class PowerupController : MonoBehaviour
 
         if (wallPushBarCounter >= pointsForWallPush)
         {
+            // Audio
+            audioSource.PlayOneShot(wallPushSound);
+            
             PlayerAbility.ToggleWallPush();
             wallPushBarCounter = 0;
             StartCoroutine(EndWallPush());
@@ -123,6 +149,9 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, rockClusterTime, rockClusterBar);
         }
+        
+        // Reset timer playing
+        playingTimer = false;
 
         // Resets power-up when time runs out
         rockClusterBar.fillAmount = 0;
@@ -137,6 +166,10 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, spikeChainTime, spikeChainBar);
         }
+        
+        // Reset timer playing
+        playingTimer = false;
+
         spikeChainBar.fillAmount = 0;
         spikeChainBar.material.SetColor("_EmissionColor", Color.white);
         PlayerAbility.ToggleSpikeChain();
@@ -149,6 +182,10 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, earthquakeTime, earthquakeBar);
         }
+        
+        // Reset timer playing
+        playingTimer = false;
+
         earthquakeBar.fillAmount = 0;
         earthquakeBar.material.SetColor("_EmissionColor", Color.white);
         PlayerAbility.ToggleEarthquake();
@@ -161,6 +198,10 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, wallPushTime, wallPushBar);
         }
+        
+        // Reset timer playing
+        playingTimer = false;
+
         wallPushBar.fillAmount = 0;
         wallPushBar.material.SetColor("_EmissionColor", Color.white);
         PlayerAbility.ToggleWallPush();
@@ -169,8 +210,17 @@ public class PowerupController : MonoBehaviour
     private IEnumerator DrainAbilityBar(float startTime, float abilityTime, Image bar)
     {
         // Gets the current status of the power-up drain
-        float barValuePercent = (abilityTime - (Time.time - startTime)) / abilityTime;
+        float timeRemaining = (abilityTime - (Time.time - startTime));
+        float barValuePercent = timeRemaining / abilityTime;
         bar.fillAmount = barValuePercent;
+        
+        // If low on time, play timer sound clip
+        if (!playingTimer && abilityTime - timeRemaining < timerDuration)
+        {
+            playingTimer = true;
+            audioSource.Play();
+            audioSource.time = timerDuration - timeRemaining;
+        }
 
         Color baseColor = Color.cyan;
         Color finalColor;
