@@ -31,6 +31,7 @@ public class TutorialController : MonoBehaviour
     public GameObject tutorialSlideWall;
     public GameObject showTutorialPillar;
     public GameObject startWavePillar;
+    public GameObject targetDummy;
 
     [Header("Tutorial Videos")]
     public List<TutorialSlide> rockVideos;
@@ -47,6 +48,8 @@ public class TutorialController : MonoBehaviour
     private List<TutorialSlide> currentSlideSet;
     private int currentSlide;
     private bool tutorialWaveInProgress;
+    private Transform dummyTransform;
+    private GameObject currentTargetDummy;
 
     // Instance getter and initialization
     public static TutorialController Instance
@@ -68,6 +71,9 @@ public class TutorialController : MonoBehaviour
         allTutorialVideos.Add(TutorialSections.Spike, spikeVideos);
         allTutorialVideos.Add(TutorialSections.Wall, wallVideos);
         allTutorialVideos.Add(TutorialSections.Quicksand, quicksandVideos);
+        dummyTransform = targetDummy.transform;
+        SpawnNewDummy();
+        currentTargetDummy.SetActive(false);
     }
 
     // Update is called once per frame
@@ -162,6 +168,7 @@ public class TutorialController : MonoBehaviour
     {
         GameController.Instance.TogglePauseWaveSystem();
         startWavePillar.SetActive(!startWavePillar.activeSelf);
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         tutorialWaveInProgress = true;
     }
 
@@ -186,6 +193,7 @@ public class TutorialController : MonoBehaviour
         }
         tutorialWaveInProgress = false;
         startWavePillar.SetActive(!startWavePillar.activeSelf);
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         ToggleTutorialOptions();
     }
 
@@ -196,11 +204,20 @@ public class TutorialController : MonoBehaviour
         showTutorialPillar.SetActive(false);
         startWavePillar.SetActive(false);
     }
-
+    
+    public void SpawnNewDummy()
+    {
+        currentTargetDummy = Instantiate(targetDummy);
+        currentTargetDummy.transform.position = dummyTransform.position;
+        currentTargetDummy.transform.rotation = dummyTransform.rotation;
+        currentTargetDummy.name = "Target Dummy";
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
+    }
     private void ToggleTutorialOptions()
     {
         tutorialSlideWall.SetActive(!tutorialSlideWall.activeSelf);
         showTutorialPillar.SetActive(!showTutorialPillar.activeSelf);
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         if(!tutorialWaveInProgress)
         {
             startWavePillar.SetActive(!startWavePillar.activeSelf);
