@@ -168,6 +168,7 @@ public class TutorialController : MonoBehaviour
     {
         GameController.Instance.TogglePauseWaveSystem();
         startWavePillar.SetActive(!startWavePillar.activeSelf);
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         tutorialWaveInProgress = true;
     }
 
@@ -192,6 +193,7 @@ public class TutorialController : MonoBehaviour
         }
         tutorialWaveInProgress = false;
         startWavePillar.SetActive(!startWavePillar.activeSelf);
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         ToggleTutorialOptions();
     }
 
