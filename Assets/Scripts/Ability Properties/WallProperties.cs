@@ -17,7 +17,7 @@ public class WallProperties : MonoBehaviour
     void Start()
     {
         surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
-        InvokeRepeating ("MoveWall", 0, 0.01f);
+        InvokeRepeating("MoveWall", 0, 0.01f);
     }
 
     // Update is called once per frame
@@ -40,9 +40,9 @@ public class WallProperties : MonoBehaviour
         emission.rateOverTimeMultiplier = parentObject.transform.localScale.x * emission.rateOverTimeMultiplier;
     }
 
-    public static void CreateComponent (GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed, ParticleSystem destroyWallParticles)
+    public static void CreateComponent(GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed, ParticleSystem destroyWallParticles)
     {
-        WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties> ();
+        WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties>();
         wallProperties.parentObject = wall;
         wallProperties.wallHeightPercent = wallHeightPercent;
         wallProperties.direction = direction;
@@ -50,9 +50,9 @@ public class WallProperties : MonoBehaviour
         wallProperties.destroyWallParticles = destroyWallParticles;
     }
 
-    public static void CreateComponent (GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles)
+    public static void CreateComponent(GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles)
     {
-        WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties> ();
+        WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties>();
         wallProperties.parentObject = wall;
         wallProperties.wallHeightPercent = wallHeightPercent;
         wallProperties.direction = Vector3.zero;
@@ -60,17 +60,21 @@ public class WallProperties : MonoBehaviour
         wallProperties.destroyWallParticles = destroyWallParticles;
     }
 
-    public void UpdateComponent(float wallHeightPercent, Vector3 direction, float wallMoveSpeed)
+    public static void UpdateComponent(GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed)
     {
-        this.wallHeightPercent = wallHeightPercent;
-        this.direction = Vector3.zero;
-        this.wallMoveSpeed = 0;
+        WallProperties wallProperties = wall.GetComponentInChildren<WallProperties>();
+        if (wallProperties)
+        {
+            wallProperties.wallHeightPercent = wallHeightPercent;
+            wallProperties.direction = direction;
+            wallProperties.wallMoveSpeed = wallMoveSpeed;
+        }
     }
 
     private void MoveWall()
     {
         // Moves the wall if given a velocity from the move wall powerup
-        if(wallMoveSpeed != 0)
+        if (wallMoveSpeed != 0)
         {
             parentObject.transform.position = Vector3.MoveTowards(parentObject.transform.position, parentObject.transform.position + (direction * wallMoveSpeed), 1f);
         }
@@ -78,17 +82,17 @@ public class WallProperties : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.layer == 9)
+        if (other.gameObject.layer == 9)
         {
             other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
         }
-        if(other.gameObject.layer != 11 && other.gameObject.layer != 17)
+        if (!other.CompareTag("Ground") && other.gameObject.layer != 11 && other.gameObject.layer != 17)
         {
             // Stops the wall from moving when it collides with something it can't move through
             CancelInvoke("MoveWall");
         }
 
-        if(other.gameObject.name == "Player Ability Area")
+        if (other.gameObject.name == "Player Ability Area")
         {
             // Destroys the wall if it enters the player's play area
             Destroy(gameObject);
