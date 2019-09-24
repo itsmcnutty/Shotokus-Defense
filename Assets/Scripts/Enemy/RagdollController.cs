@@ -43,8 +43,6 @@ public class RagdollController : MonoBehaviour
             }
             rigidbodies[i].gameObject.GetComponent<Collider>().material = PHYSIC_MATERIAL;
         }
-        // todo debugging only
-//        StartRagdoll();
     }
 
     // Adds a CallParentCollider component to this gameobject and all of its children recursively

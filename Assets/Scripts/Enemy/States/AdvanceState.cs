@@ -97,6 +97,7 @@ public class AdvanceState : IState
 		agent.stoppingDistance = attackRadius;
 		agent.speed = maxWalkSpeed;
 		agent.angularSpeed = 8000f;
+		
 	}
 
 	// Called upon exiting this state
