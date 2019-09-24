@@ -10,6 +10,9 @@ public class SpikeQuicksand : MonoBehaviour
 {
     public GameObject spikePrefab;
     public GameObject quicksandPrefab;
+    public Material validSpikeOutlineMat;
+    public Material validQuicksandOutlineMat;
+    public Material emptyAbilityOutlineMat;
 
     public float spikeMinHandMovement = 0.05f;
     public float quicksandMinHandMovement = 0.05f;
@@ -39,7 +42,6 @@ public class SpikeQuicksand : MonoBehaviour
 
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
-    private Material validOutlineMat;
     private Material invalidOutlineMat;
     private LayerMask outlineLayerMask;
 
@@ -48,14 +50,12 @@ public class SpikeQuicksand : MonoBehaviour
     private Queue<float> previousVelocities = new Queue<float>();
     private static List<GameObject> availableSpikes = new List<GameObject>();
 
-    public static SpikeQuicksand CreateComponent(GameObject player, GameObject areaOutlinePrefab, PlayerEnergy playerEnergy, Material validOutlineMat,
-        Material invalidOutlineMat, LayerMask outlineLayerMask)
+    public static SpikeQuicksand CreateComponent(GameObject player, GameObject areaOutlinePrefab, PlayerEnergy playerEnergy, Material invalidOutlineMat, LayerMask outlineLayerMask)
     {
         SpikeQuicksand spikes = player.GetComponent<SpikeQuicksand>();
 
         spikes.areaOutlinePrefab = areaOutlinePrefab;
         spikes.playerEnergy = playerEnergy;
-        spikes.validOutlineMat = validOutlineMat;
         spikes.invalidOutlineMat = invalidOutlineMat;
         spikes.outlineLayerMask = outlineLayerMask;
 
@@ -134,6 +134,7 @@ public class SpikeQuicksand : MonoBehaviour
         // Resizes the rings in a growing circular motion
         if (handDistance < 0 || !PlayerAbility.SpikeChainEnabled)
         {
+            Material validOutlineMat = emptyAbilityOutlineMat;
             // Assures that only one outline exists (deletes any excess from the chain spike)
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
             while (spikeQuicksandOutlines.Count > 1)
@@ -150,11 +151,13 @@ public class SpikeQuicksand : MonoBehaviour
             {
                 newSize = new Vector3(size * quicksandSizeMultiplier, 1f, size * quicksandSizeMultiplier);
                 energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / (maxSpikeDiameter * quicksandSizeMultiplier);
+                validOutlineMat = validQuicksandOutlineMat;
             }
             else if(PlayerAbility.SpikeAbilityEnabled)
             {
                 newSize = new Vector3(size, 1f, size);
                 energyCost = spikeQuicksandOutline.transform.localScale.x * playerEnergy.maxEnergy / maxSpikeDiameter;
+                validOutlineMat = validSpikeOutlineMat;
             }
             playerEnergy.SetTempEnergy(hand, energyCost);
 
@@ -191,7 +194,7 @@ public class SpikeQuicksand : MonoBehaviour
             // Sets the outline material for all spike areas
             foreach (GameObject outline in spikeQuicksandOutlines)
             {
-                PlayerAbility.SetOutlineMaterial(outline, SpikeQuicksandIsValid(arc, outline), validOutlineMat, invalidOutlineMat);
+                PlayerAbility.SetOutlineMaterial(outline, SpikeQuicksandIsValid(arc, outline), validSpikeOutlineMat, invalidOutlineMat);
             }
 
             // Calculates the size of the outline and the positional offset for all new ability areas
@@ -322,7 +325,6 @@ public class SpikeQuicksand : MonoBehaviour
         // Destroys the outline and uses the energy
         Destroy(spikeQuicksandOutline);
         spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
-        playerEnergy.UseEnergy(hand);
 
         // Adds the quicksand component to begin the death countdown and perform the earthquake if active
         QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, destroyQuicksandParticles,
@@ -330,7 +332,8 @@ public class SpikeQuicksand : MonoBehaviour
         if (!PlayerAbility.EarthquakeEnabled)
         {
             // Increments the earthquake counter if it's not active
-            PowerupController.IncrementEarthquakeCounter();
+            float quicksandEnergy = playerEnergy.GetEnergyForHand(hand);
+            PowerupController.IncrementEarthquakeCounter(quicksandEnergy);
             StartCoroutine(PlayerAbility.LongVibration(hand, 1f, 1500));
         }
         else
@@ -339,6 +342,7 @@ public class SpikeQuicksand : MonoBehaviour
             StartCoroutine(PlayerAbility.LongVibration(hand, 1.5f, 2500));
             StartCoroutine(PlayerAbility.LongVibration(otherHand, 1.5f, 2500));
         }
+        playerEnergy.UseEnergy(hand);
 
         // Wait .1 second (gives time for the particle effect to do something)
         yield return new WaitForSeconds(0.1f);
@@ -374,9 +378,6 @@ public class SpikeQuicksand : MonoBehaviour
         }
         else if (SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
-            // Adds to the spike counter if the ability is not active
-            PowerupController.IncrementSpikeChainCounter();
-
             // Calculates the distance for creating the triangle of spikes
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
             float finalSpikeRadius = baseSpikeRadius;

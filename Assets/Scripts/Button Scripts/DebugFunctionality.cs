@@ -38,17 +38,20 @@ public class DebugFunctionality : MonoBehaviour
         vrCamera.GetComponent<PlayerHealth>().TakeDamage(100);
     }
 
-    public void togglePowerUps()
-    {
-        Debug.Log("Toggle power ups");
-        PlayerAbility.ToggleRockCluster();
-        PlayerAbility.ToggleSpikeChain();
-        PlayerAbility.ToggleWallPush();
-    }
-
     public void teleport()
     {
-        gameController.Teleport();
+        gameController.Teleport(false);
+        menuUiController.pauseToggle();
+    }
+
+    public void ResumeGame()
+    {
+        menuUiController.pauseToggle();
+    }
+
+    public void RestartGame()
+    {
+        gameController.RestartGame();
         menuUiController.pauseToggle();
     }
 

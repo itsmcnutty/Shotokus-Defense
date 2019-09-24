@@ -32,7 +32,8 @@ public class WaveCuePlayer : MonoBehaviour
     // Play the randomized taiko drum sequence cue
     public void PlayCue()
     {
-        PlayBeats();
+        Debug.LogWarning("PlayCue");
+        StartCoroutine(PlayBeats());
     }
 
     private IEnumerator PlayBeats()

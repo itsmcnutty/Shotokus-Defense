@@ -23,6 +23,8 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Color newColor = new Color(1, 1, 1, 0);
+        damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
         prevHealth = maxHealth;
         currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
@@ -35,20 +37,26 @@ public class PlayerHealth : MonoBehaviour
     {
         if (currentHealth > prevHealth)
         {
-            if (!audioSource.isPlaying)
+            // Set pitch based on health (Range 0.5 to 0.8)
+            audioSource.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
+            
+            if (!audioSource.loop)
             {
                 // If healing and not playing loop, play loop
+                audioSource.loop = true;
                 audioSource.Play();
-                
-                // Set pitch based on health (Range 0.6 to 1.2)
-                audioSource.pitch = 0.6f * (currentHealth / maxHealth) + 0.6f;
             }
         }
-        else if (audioSource.isPlaying)
+        else if (audioSource.loop)
         {
+            Debug.Log("Stop loop");
+
             // If not healing and is playing loop, stop playing loop
+            audioSource.loop = false;
             audioSource.Stop();
         }
+
+        prevHealth = currentHealth;
     }
 
     public void TakeDamage(float health)
@@ -126,7 +134,7 @@ public class PlayerHealth : MonoBehaviour
         float alpha = damageIndicator.sharedMaterial.color.a;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
         {
-            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha,aValue,t));
+            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
             damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
             yield return null;
         }

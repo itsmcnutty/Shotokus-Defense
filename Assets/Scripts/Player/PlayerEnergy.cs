@@ -87,6 +87,16 @@ public class PlayerEnergy : MonoBehaviour
         UpdateAbilityUseTime ();
     }
 
+    public float GetEnergyForHand(Hand activeHand)
+    {
+        float energy;
+        if(activeAbilityEnergyCost.TryGetValue(activeHand, out energy))
+        {
+            return energy;
+        }
+        return 0;
+    }
+
     public void UseEnergy (Hand activeHand)
     {
         // Checks that infinite energy is disabled and that the hand isn't null
@@ -141,33 +151,34 @@ public class PlayerEnergy : MonoBehaviour
         }
     }
 
-//    private void SetEnergyBarText ()
+   private void SetEnergyBarText ()
+   {
+       if(debugShowEnergyText)
+       {
+           energyBarText.text = Math.Floor (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+       }
+       else
+       {
+           energyBarText.text = "Energy Level";
+       }
+   }
+//
+//    // todo debug take out
+//    float deltaTime = 0;
+//    private void SetEnergyBarText()
 //    {
-//        if(debugShowEnergyText)
+//        if (debugShowEnergyText)
 //        {
-//            energyBarText.text = Math.Floor (currentEnergy - GetTotalEnergyUsage ()) + " / " + maxEnergy;
+//            energyBarText.text = Math.Floor(currentEnergy - GetTotalEnergyUsage()) + " / " + maxEnergy;
 //        }
 //        else
 //        {
-//            energyBarText.text = "Energy Level";
+//            //energyBarText.text = "Energy Level";
+//            deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+//            float fps = 1.0f / deltaTime;
+//            energyBarText.text = Mathf.Ceil(fps).ToString();
 //        }
 //    }
-
-    float deltaTime = 0;
-    private void SetEnergyBarText()
-    {
-        if (debugShowEnergyText)
-        {
-            energyBarText.text = Math.Floor(currentEnergy - GetTotalEnergyUsage()) + " / " + maxEnergy;
-        }
-        else
-        {
-            //energyBarText.text = "Energy Level";
-            deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-            float fps = 1.0f / deltaTime;
-            energyBarText.text = Mathf.Ceil(fps).ToString();
-        }
-    }
 
     private void RegenEnergy ()
     {

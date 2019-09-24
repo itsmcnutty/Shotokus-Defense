@@ -20,7 +20,6 @@ public class PlayerAbility : MonoBehaviour
     public GameObject wallOutlinePrefab;
 
     [Header("Outline Materials")]
-    public Material validOutlineMat;
     public Material invalidOutlineMat;
 
     [Header("Ability Parameters")]
@@ -120,8 +119,8 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy>();
             rocks = Rocks.CreateComponent(player, playerEnergy);
-            spikeQuicksand = SpikeQuicksand.CreateComponent(player, areaOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, outlineLayerMask);
-            walls = Walls.CreateComponent(player, wallOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, rockCreationDistance, outlineLayerMask);
+            spikeQuicksand = SpikeQuicksand.CreateComponent(player, areaOutlinePrefab, playerEnergy, invalidOutlineMat, outlineLayerMask);
+            walls = Walls.CreateComponent(player, wallOutlinePrefab, playerEnergy, invalidOutlineMat, rockCreationDistance, outlineLayerMask);
         }
     }
 
@@ -139,7 +138,8 @@ public class PlayerAbility : MonoBehaviour
         // Sets up the ring around the player
         abilityRing = Instantiate(playerAbilityAreaPrefab);
         MeshRenderer meshRenderer = abilityRing.GetComponentInChildren<MeshRenderer>();
-        abilityRing.transform.localScale = new Vector3(rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x), 0.01f, rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x));
+        float abilityRingSize = rockCreationDistance * 2f * (1 / meshRenderer.bounds.size.x);
+        abilityRing.transform.localScale = new Vector3(abilityRingSize, 0.01f, abilityRingSize);
     }
 
     // Update is called once per frame
@@ -175,7 +175,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 walls.EnterDrawMode(hand, otherHand);
             }
-            else
+            else if(!walls.OneHandHeld())
             {
                 walls.ExitDrawMode(hand);
             }
@@ -224,7 +224,7 @@ public class PlayerAbility : MonoBehaviour
         }
         else if(hitObject && hitObject.name.Equals("Teleport Sphere"))
         {
-            GameController.Instance.Teleport();
+            GameController.Instance.Teleport(true);
         }
         else if (walls.WallOutlineIsActive())
         {
@@ -349,7 +349,7 @@ public class PlayerAbility : MonoBehaviour
     private void DestroyPointerHitObject()
     {
         GameObject hitObject = arc.GetPointerHitObject();
-        if (hitObject.CompareTag("Wall") || hitObject.CompareTag("Quicksand"))
+        if (hitObject.CompareTag("Wall"))
         {
             // Destroys the highlighted wall or quicksand
             Destroy(hitObject.transform.parent.gameObject);

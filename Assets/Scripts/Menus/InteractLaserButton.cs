@@ -80,6 +80,8 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (e.target.gameObject.GetComponent<Button>() != null && button == null)
         {
+            
+            Debug.Log("inside button");
             button = e.target.gameObject.GetComponent<Button>();
             button.Select();
             selected = true;
@@ -90,6 +92,8 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (button != null && selected)
         {
+            Debug.Log("outside button");
+
             selected = false;
             // todo what is this for??
 //            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
@@ -99,6 +103,8 @@ public class InteractLaserButton : MonoBehaviour
     
     public void OnPointerClick(object sender, PointerEventArgs e)
     {
+        Debug.Log("clicking inside button");
+
         if (selected && button != null)
         {
             // Play click sound
@@ -150,7 +156,7 @@ public class InteractLaserButton : MonoBehaviour
             // laser is not enabled, so enable it
             isEnabled = true;
             laserPointerR.active = true;
-            laserPointerL.active = true;
+            laserPointerL.active = false; // todo debugging make this true if you want both lasers back
             
             // disable abilities & controller arc
             rightArc.setCanUseAbility(false);

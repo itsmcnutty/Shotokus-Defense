@@ -70,9 +70,14 @@ public class PlayerHeal : MonoBehaviour
                 {
                     if (!healthMaxed && playerHealth.HealthIsMax())
                     {
+                        AudioSource audioSource = playerHealth.audioSource;
+                        
                         // If health is maxed out and this is the first frame that is true, play the sound once
                         healthMaxed = true;
-                        playerHealth.audioSource.PlayOneShot(playerHealth.healFull);
+                        audioSource.Stop();
+                        audioSource.loop = false;
+                        audioSource.pitch = 1.0f;
+                        audioSource.PlayOneShot(playerHealth.healFull);
                     }
                     playerEnergy.UpdateAbilityUseTime ();
                 }
@@ -82,6 +87,7 @@ public class PlayerHeal : MonoBehaviour
         {
             // Grips have been released, ready health full sound to be played again
             healthMaxed = false;
+            Debug.Log("Bool false");
             firstTriggerHeld = null;
         }
     }

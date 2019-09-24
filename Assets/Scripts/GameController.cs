@@ -40,7 +40,6 @@ public class GameController : MonoBehaviour
     private Wave currentWave;
 
     private float currentTime;
-    // todo put back to true - debugging
     private bool pauseWaveSystem = true;
 
     // Constructor
@@ -71,8 +70,6 @@ public class GameController : MonoBehaviour
         if (player != null)
         {
             playerHealth = player.GetComponent<PlayerHealth>();
-            // todo maybe restart enemy energy when restarting game
-//            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
@@ -108,6 +105,7 @@ public class GameController : MonoBehaviour
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
             if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
             {
+                // check how many enemies are alive right now
                 enemyProducer.Spawn(spawnInfo);
             }
         }
@@ -146,8 +144,8 @@ public class GameController : MonoBehaviour
                 TutorialController.Instance.SetNextTutorial();
                 return;
             }
-
             Invoke("TogglePauseWaveSystem", BETWEEN_WAVES);
+
             return;
         }
 
@@ -176,13 +174,13 @@ public class GameController : MonoBehaviour
 
     public void StartGameWithTutorial()
     {
-        Teleport();
+        Teleport(false);
         TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
     }
 
     public void StartGameWithoutTutorial()
     {
-        Teleport();
+        Teleport(true);
         PlayerAbility.ToggleRockAbility();
         PlayerAbility.ToggleSpikeAbility();
         PlayerAbility.ToggleWallAbility();
@@ -198,27 +196,56 @@ public class GameController : MonoBehaviour
             allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
         }
     }
-
-    // Future: delete all other instances of objects in the scene
-    // delete walls, spikes, rocks
-    public void RestartGame()
+    
+    // deletes walls, spikes, rocks and restart the current wave in location
+    public void RestartWave()
     {
-        
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
-        
+
         // destroy all objects in scene before restarting
         destroyAll();
 
-        Debug.Log("Restarting game");
+//        Debug.Log("Restarting wave");
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
+        currentTime = 0;
         restartQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         playerHealth.RecoverAllHealth();
-        // todo restore all  energy
+    }
+    
+    // delete walls, spikes, rocks
+    // put player on location 1 and restart all the waves again
+    public void RestartGame()
+    {
+        // reactivate pause functionality
+//        UIControllerObj.GetComponent<MenuUIController>().enabled = false;
+        
+        // destroy all objects in scene before restarting
+        destroyAll();
+
+//        Debug.Log("Restarting wave");
+
+        // Reset values of wave (queue, timer, enemies counter)
+        enemiesAlive = 0;
+        currentTime = 0; 
+        
+        // teleport the player
+        Teleport(false, 0);
+        
+        // restart queue to initial state (all waves from location 1)
+        allLocationWaves = new Queue<LocationWaves>();
+        for (int i = 0; i < locationWaveFiles.Length; i++)
+        {
+            allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
+        }
+
+        currentLocation = allLocationWaves.Dequeue();
+        currentWave = currentLocation.GetNextWave();
+        playerHealth.RecoverAllHealth();
     }
 
     // this function destroys all the following game objects instances:
@@ -264,9 +291,18 @@ public class GameController : MonoBehaviour
 
     // This function keeps track of destroyed enemies by updating enemiesDestroyed variable
     // To be called when an enemey is destroyed
-    public void EnemyGotDestroyed()
+    public void EnemyGotDestroyed(GameObject enemyDestroyed)
     {
-        enemiesAlive--;
+        if (enemyDestroyed.name != "Target Dummy")
+        {
+            enemiesAlive--;
+            // Check if round is over or not
+            OnEnemyDeathClear();
+        }
+        else
+        {
+            TutorialController.Instance.SpawnNewDummy();
+        }
     }
 
     // Called in EnemyProducer, updates number of enemies alive
@@ -279,8 +315,8 @@ public class GameController : MonoBehaviour
     {
         Vector3 playerPos = player.transform.position;
         Vector3 playerDirection = player.transform.forward;
-        Quaternion playerRotation = player.transform.rotation;
-        float spawnDistance = 5;
+        Quaternion playerRotation = new Quaternion(0, player.transform.rotation.y, 0, player.transform.rotation.w);
+        float spawnDistance = 3;
 
         Vector3 spawnPos = playerPos + playerDirection * spawnDistance;
 
@@ -290,8 +326,8 @@ public class GameController : MonoBehaviour
     }
 
     // This function moves the player around the 5 wave zones
-    // todo update player object position too
-    public void Teleport()
+    // Input: location is an optional parameter to specify an specific location to teleport to
+    public void Teleport(bool toggleWaves, int location = -1)
     {
         Vector3 destinationPos;
         int temp = caseSwitch;
@@ -302,6 +338,14 @@ public class GameController : MonoBehaviour
         Vector3 headPosition = vrCamera.transform.position;
 
         temp = temp % 5;
+        
+        // optional parameter, input specific location to transport to
+        if (location >= 0)
+        {
+            temp = location % 5;
+            caseSwitch = temp;
+        }
+        
         switch (temp)
         {
             case 0:
@@ -309,7 +353,6 @@ public class GameController : MonoBehaviour
                 break;
             case 1:
                 destinationPos = new Vector3(22.6f, 0.5f, 23f);
-//                destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
                 destinationPos = new Vector3(-3f, 0.75f, 3.1f);
@@ -332,7 +375,10 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
 
-        Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+        if (toggleWaves)
+        {
+            Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+        }
         teleportPillar.SetActive(false);
 
         // Reposition the ability ring

@@ -143,11 +143,11 @@ public class RetreatState : IState
 		gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		float distanceToPlayer = enemyProps.calculateSqrDist(playerPos, gameObjPos);
 //		float sqrDist = (float)(Math.Pow(playerPos.x - gameObjPos.x, 2) +
 //		                        Math.Pow(playerPos.z - gameObjPos.z, 2));
 		
-		if (distanceToPlayer > retreatRadius)
+		if (distanceToPlayer > retreatRadius * retreatRadius)
 		{
 			// Done retreating, attack
 			animator.SetTrigger("Melee");

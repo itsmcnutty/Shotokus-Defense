@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1338963299340672985
 Transform:
@@ -93,7 +93,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1338963299340672987
 Transform:
@@ -165,11 +165,11 @@ GameObject:
   - component: {fileID: 1338963299340672989}
   - component: {fileID: 1338963299353660285}
   m_Layer: 0
-  m_Name: Plant10
+  m_Name: Plant6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1338963299340672989
 Transform:
@@ -178,9 +178,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338963299340633085}
-  m_LocalRotation: {x: -0, y: 0.99352133, z: -0, w: 0.113646045}
+  m_LocalRotation: {x: 0, y: 0.9935214, z: 0, w: 0.113645464}
   m_LocalPosition: {x: -11.094576, y: 0.24619198, z: 43.133606}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.8144, y: 1.8144, z: 1.8144}
   m_Children:
   - {fileID: 1338963299340672991}
   - {fileID: 1338963299340672985}
@@ -202,11 +202,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.25
+  - screenRelativeHeight: 0.10172848
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1338963299338378557}
-  - screenRelativeHeight: 0.125
+  - screenRelativeHeight: 0.05078542
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1338963299338378559}
@@ -231,7 +231,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1338963299340672991
 Transform:

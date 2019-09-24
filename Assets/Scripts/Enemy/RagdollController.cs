@@ -43,6 +43,8 @@ public class RagdollController : MonoBehaviour
             }
             rigidbodies[i].gameObject.GetComponent<Collider>().material = PHYSIC_MATERIAL;
         }
+        // todo debugging only
+//        StartRagdoll();
     }
 
     // Adds a CallParentCollider component to this gameobject and all of its children recursively
@@ -107,6 +109,8 @@ public class RagdollController : MonoBehaviour
             shape.rotation = skinnedMesh.transform.rotation.eulerAngles;
             shape.mesh = mesh;
 
+			// Indicate the Game Controller that an enemy was destroyed
+			GameController.Instance.EnemyGotDestroyed(gameObject);
             Destroy(gameObject);
         }
 

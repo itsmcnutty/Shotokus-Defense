@@ -8,6 +8,7 @@ using Valve.VR.InteractionSystem;
 public class Walls : MonoBehaviour
 {
     public GameObject wallPrefab;
+    public Material validWallOutlineMat;
     public float wallMaxHeight = 2f;
     public float wallSizeMultiplier = 120f;
     public float wallSpeedReduction = 50f;
@@ -22,7 +23,6 @@ public class Walls : MonoBehaviour
 
     private GameObject wallOutlinePrefab;
     private PlayerEnergy playerEnergy;
-    private Material validOutlineMat;
     private Material invalidOutlineMat;
     private LayerMask outlineLayerMask;
     private GameObject player;
@@ -43,14 +43,13 @@ public class Walls : MonoBehaviour
     private NavMeshSurface surfaceLight;
     private NavMeshSurface surfaceWalls;
 
-    public static Walls CreateComponent(GameObject player, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy, Material validOutlineMat,
-        Material invalidOutlineMat, float rockCreationDistance, LayerMask outlineLayerMask)
+    public static Walls CreateComponent(GameObject player, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy, Material invalidOutlineMat,
+        float rockCreationDistance, LayerMask outlineLayerMask)
     {
         Walls walls = player.GetComponent<Walls>();
 
         walls.wallOutlinePrefab = wallOutlinePrefab;
         walls.playerEnergy = playerEnergy;
-        walls.validOutlineMat = validOutlineMat;
         walls.invalidOutlineMat = invalidOutlineMat;
         walls.rockCreationDistance = rockCreationDistance;
         walls.outlineLayerMask = outlineLayerMask;
@@ -152,7 +151,6 @@ public class Walls : MonoBehaviour
         Vector3 finalVelocity = Vector3.zero;
         float wallMoveSpeed = 0;
 
-        playerEnergy.UseEnergy(firstHandHeld);
         if (PlayerAbility.WallPushEnabled)
         {
             // Sets the velocity of the wall to the average of the velocities if wall push is enabled
@@ -168,8 +166,10 @@ public class Walls : MonoBehaviour
         else
         {
             // Increments wall push power-up when not enabled
-            PowerupController.IncrementWallPushCounter();
+            float wallEnergy = playerEnergy.GetEnergyForHand(firstHandHeld);
+            PowerupController.IncrementWallPushCounter(wallEnergy);
         }
+        playerEnergy.UseEnergy(firstHandHeld);
 
         if (finalHandHeight < wallMinHandMovement)
         {
@@ -238,7 +238,7 @@ public class Walls : MonoBehaviour
     {
         // Updates the wall location and material
         SetWallLocation(arc, otherArc);
-        PlayerAbility.SetOutlineMaterial(wallOutline, WallIsValid(arc, otherArc), validOutlineMat, invalidOutlineMat);
+        PlayerAbility.SetOutlineMaterial(wallOutline, WallIsValid(arc, otherArc), validWallOutlineMat, invalidOutlineMat);
     }
 
     public void ExitDrawMode(Hand hand)
@@ -336,5 +336,10 @@ public class Walls : MonoBehaviour
     public bool WallOutlineIsActive()
     {
         return wallOutline != null;
+    }
+
+    public bool OneHandHeld()
+    {
+        return firstHandHeld != null;
     }
 }
