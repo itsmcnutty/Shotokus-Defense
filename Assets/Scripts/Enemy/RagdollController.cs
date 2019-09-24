@@ -107,6 +107,8 @@ public class RagdollController : MonoBehaviour
             shape.rotation = skinnedMesh.transform.rotation.eulerAngles;
             shape.mesh = mesh;
 
+			// Indicate the Game Controller that an enemy was destroyed
+			GameController.Instance.EnemyGotDestroyed(gameObject);
             Destroy(gameObject);
         }
 
