@@ -37,20 +37,22 @@ public class PlayerHealth : MonoBehaviour
     {
         if (currentHealth > prevHealth)
         {
-            if (!audioSource.isPlaying)
+            // Set pitch based on health (Range 0.5 to 0.8)
+            audioSource.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
+            
+            if (!audioSource.loop)
             {
                 // If healing and not playing loop, play loop
+                audioSource.loop = true;
                 audioSource.Play();
             }
-                
-            // Set pitch based on health (Range 0.75 to 1.0)
-            audioSource.pitch = 0.25f * (currentHealth / maxHealth) + 0.75f;
         }
         else if (audioSource.loop)
         {
-            Debug.Log("Stop loop4");
+            Debug.Log("Stop loop");
 
             // If not healing and is playing loop, stop playing loop
+            audioSource.loop = false;
             audioSource.Stop();
         }
 

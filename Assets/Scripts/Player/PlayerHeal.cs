@@ -70,10 +70,14 @@ public class PlayerHeal : MonoBehaviour
                 {
                     if (!healthMaxed && playerHealth.HealthIsMax())
                     {
+                        AudioSource audioSource = playerHealth.audioSource;
+                        
                         // If health is maxed out and this is the first frame that is true, play the sound once
                         healthMaxed = true;
-                        Debug.LogWarning("Play full");
-                        playerHealth.audioSource.PlayOneShot(playerHealth.healFull);
+                        audioSource.Stop();
+                        audioSource.loop = false;
+                        audioSource.pitch = 1.0f;
+                        audioSource.PlayOneShot(playerHealth.healFull);
                     }
                     playerEnergy.UpdateAbilityUseTime ();
                 }
