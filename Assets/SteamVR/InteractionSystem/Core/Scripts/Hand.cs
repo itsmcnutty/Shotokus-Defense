@@ -38,7 +38,8 @@ namespace Valve.VR.InteractionSystem
             AttachmentFlags.DetachOthers |
             AttachmentFlags.DetachFromOtherHand |
             AttachmentFlags.SnapOnAttach |
-            AttachmentFlags.TurnOffGravity;
+            AttachmentFlags.TurnOffGravity |
+            AttachmentFlags.VelocityMovement;
 
         public Hand otherHand;
         public SteamVR_Input_Sources handType;
