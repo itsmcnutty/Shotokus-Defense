@@ -148,7 +148,6 @@ public class Walls : MonoBehaviour
         Vector3 finalVelocity = Vector3.zero;
         float wallMoveSpeed = 0;
 
-        playerEnergy.UseEnergy(firstHandHeld);
         if (PlayerAbility.WallPushEnabled)
         {
             // Sets the velocity of the wall to the average of the velocities if wall push is enabled
@@ -164,8 +163,10 @@ public class Walls : MonoBehaviour
         else
         {
             // Increments wall push power-up when not enabled
-            PowerupController.IncrementWallPushCounter();
+            float wallEnergy = playerEnergy.GetEnergyForHand(firstHandHeld);
+            PowerupController.IncrementWallPushCounter(wallEnergy);
         }
+        playerEnergy.UseEnergy(firstHandHeld);
 
         if (finalHandHeight < wallMinHandMovement)
         {
