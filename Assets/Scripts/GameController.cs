@@ -19,7 +19,8 @@ public class GameController : MonoBehaviour
     [Header("Wave Files")]
     public TextAsset[] locationWaveFiles; // array containing location wave files
 
-    [Header("Miscellaneous")]
+    [Header("Miscellaneous")] 
+    public float limitAmountEnemies; // maximum amount of enemies at one time in the game
     public GameObject teleportPillar;
 
     // variables for teleport function
@@ -41,6 +42,7 @@ public class GameController : MonoBehaviour
 
     private float currentTime;
     private bool pauseWaveSystem = true;
+    private float availableSpots; // keeps track of how many more enemies can be spawned in the scene
 
     // Constructor
     private GameController() { }
@@ -105,8 +107,20 @@ public class GameController : MonoBehaviour
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
             if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
             {
+                // add spawn info to enemy queue in enemy producer
+                enemyProducer.addToQueue(spawnInfo);
                 // check how many enemies are alive right now
-                enemyProducer.Spawn(spawnInfo);
+                availableSpots = limitAmountEnemies - enemiesAlive;
+                // count how enemies are going to be spawned
+                float count = spawnInfo.NumHeavyEnemies + spawnInfo.NumMedEnemies + spawnInfo.NumLightEnemies;
+                // select amount to spawn
+                if (availableSpots < count)
+                {
+                    enemyProducer.SpawnFromQueue(availableSpots);   
+                }else
+                {
+                    enemyProducer.SpawnFromQueue(count);
+                }
             }
         }
     }
@@ -118,19 +132,22 @@ public class GameController : MonoBehaviour
     {
         if (enemiesAlive != 0)
         {
-            // not all enemies have been destroyed, so don't do anything
+            // not all enemies have been destroyed, so check queue to spawn more enemies
+            availableSpots = limitAmountEnemies - enemiesAlive;
+            enemyProducer.SpawnFromQueue(availableSpots);
             return;
         }
 
+        // if all enemies have been killed before next wave time, then spawn early
         SpawnInfo spawnInfo = currentWave.GetNextSpawnTimeInfo(out float? newTime);
         if (spawnInfo != null)
         {
-            // if all enemies have been killed before next wave time, then spawn early
             currentTime = newTime.Value; // this moves foward time to spawnInfo time
             enemyProducer.Spawn(spawnInfo);
             return;
         }
-
+        
+        // if round has been completed, start new wave
         currentTime = 0;
         currentWave = currentLocation.GetNextWave();
 
@@ -149,6 +166,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
+        // all waves have been completed, so start new location
         if (TutorialController.Instance.TutorialWaveInProgress())
         {
             TutorialController.Instance.EndTutorial();
@@ -157,9 +175,6 @@ public class GameController : MonoBehaviour
         // if there are no waves left, check if there are more locations
         if (allLocationWaves.Count != 0)
         {
-            //            currentLocation = resetLocation = allLocationWaves.Dequeue();
-            //            resetLocation = new Queue<LocationWaves>(allLocationWaves);
-
             currentTime = 0;
             currentLocationCounter++;
             currentLocation = allLocationWaves.Dequeue();
@@ -168,7 +183,7 @@ public class GameController : MonoBehaviour
             SpawnTeleportPillar();
             return;
         }
-        // no more waves left so you win
+        // no more locations left so you win
         Debug.Log("YOU WIN");
     }
 
@@ -221,9 +236,6 @@ public class GameController : MonoBehaviour
     // put player on location 1 and restart all the waves again
     public void RestartGame()
     {
-        // reactivate pause functionality
-//        UIControllerObj.GetComponent<MenuUIController>().enabled = false;
-        
         // destroy all objects in scene before restarting
         destroyAll();
 

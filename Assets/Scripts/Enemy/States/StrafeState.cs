@@ -276,7 +276,7 @@ public class StrafeState : IState
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
-			Debug.Log("strafe state: moving in circles");
+//			Debug.Log("strafe state: moving in circles");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			
@@ -303,8 +303,8 @@ public class StrafeState : IState
 				}
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
-				Debug.Log("last point index: " + lastPointIndex);
-                Debug.Log("moving towards " +circularPointDest);
+//				Debug.Log("last point index: " + lastPointIndex);
+//                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
@@ -337,11 +337,11 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
-		Debug.Log("strafe");
+//		Debug.Log("strafe");
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
-			Debug.Log("ragdoll");
+//			Debug.Log("ragdoll");
 			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}

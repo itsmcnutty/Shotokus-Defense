@@ -33,7 +33,7 @@ public class DebugFunctionality : MonoBehaviour
 
     public void takeDamage()
     {
-        Debug.Log("Taking damage");
+//        Debug.Log("Taking damage");
         menuUiController.pauseToggle();
         vrCamera.GetComponent<PlayerHealth>().TakeDamage(100);
     }
