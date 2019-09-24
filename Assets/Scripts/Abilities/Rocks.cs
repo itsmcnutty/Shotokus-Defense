@@ -197,11 +197,6 @@ public class Rocks : MonoBehaviour
                     }
                 }
             }
-            else
-            {
-                // Increments counter to get cluster rocks if it's not already enabled
-                PowerupController.IncrementRockClusterCounter();
-            }
         }
     }
 
