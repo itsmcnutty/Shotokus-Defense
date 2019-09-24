@@ -20,7 +20,6 @@ public class PlayerAbility : MonoBehaviour
     public GameObject wallOutlinePrefab;
 
     [Header("Outline Materials")]
-    public Material validOutlineMat;
     public Material invalidOutlineMat;
 
     [Header("Ability Parameters")]
@@ -120,8 +119,8 @@ public class PlayerAbility : MonoBehaviour
         {
             playerEnergy = player.GetComponent<PlayerEnergy>();
             rocks = Rocks.CreateComponent(player, playerEnergy);
-            spikeQuicksand = SpikeQuicksand.CreateComponent(player, areaOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, outlineLayerMask);
-            walls = Walls.CreateComponent(player, wallOutlinePrefab, playerEnergy, validOutlineMat, invalidOutlineMat, rockCreationDistance, outlineLayerMask);
+            spikeQuicksand = SpikeQuicksand.CreateComponent(player, areaOutlinePrefab, playerEnergy, invalidOutlineMat, outlineLayerMask);
+            walls = Walls.CreateComponent(player, wallOutlinePrefab, playerEnergy, invalidOutlineMat, rockCreationDistance, outlineLayerMask);
         }
     }
 
@@ -176,7 +175,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 walls.EnterDrawMode(hand, otherHand);
             }
-            else
+            else if(!walls.OneHandHeld())
             {
                 walls.ExitDrawMode(hand);
             }
