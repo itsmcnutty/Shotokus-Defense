@@ -199,9 +199,10 @@ public class GameController : MonoBehaviour
     // deletes walls, spikes, rocks and restart the current wave in location
     public void RestartWave()
     {
+
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
-        
+
         // destroy all objects in scene before restarting
         destroyAll();
 
@@ -290,9 +291,18 @@ public class GameController : MonoBehaviour
 
     // This function keeps track of destroyed enemies by updating enemiesDestroyed variable
     // To be called when an enemey is destroyed
-    public void EnemyGotDestroyed()
+    public void EnemyGotDestroyed(GameObject enemyDestroyed)
     {
-        enemiesAlive--;
+        if (enemyDestroyed.name != "Target Dummy")
+        {
+            enemiesAlive--;
+            // Check if round is over or not
+            OnEnemyDeathClear();
+        }
+        else
+        {
+            TutorialController.Instance.SpawnNewDummy();
+        }
     }
 
     // Called in EnemyProducer, updates number of enemies alive
@@ -364,7 +374,7 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
 
-        if(toggleWaves)
+        if (toggleWaves)
         {
             Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
         }
