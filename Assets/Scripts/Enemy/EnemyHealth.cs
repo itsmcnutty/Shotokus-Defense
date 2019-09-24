@@ -138,6 +138,18 @@ public class EnemyHealth : CallParentCollision
 		// Calculate damage received
 		float damage = CalculateDamage(child, other);
 
+		// Increment player power-up counter based on the damage done by the given ability
+		string tag = other.gameObject.tag;
+		switch (tag)
+		{
+			case "Rock":
+				PowerupController.IncrementRockClusterCounter(damage);
+				break;
+			case "Spike":
+				PowerupController.IncrementSpikeChainCounter(damage);
+				break;
+		}
+
 		// Update health and health bar
 		health -= damage;
 		healthBarActual.SetValueWithoutNotify(health);

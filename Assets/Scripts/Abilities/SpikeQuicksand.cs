@@ -316,7 +316,6 @@ public class SpikeQuicksand : MonoBehaviour
         // Destroys the outline and uses the energy
         Destroy(spikeQuicksandOutline);
         spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
-        playerEnergy.UseEnergy(hand);
 
         // Adds the quicksand component to begin the death countdown and perform the earthquake if active
         QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration,
@@ -324,7 +323,8 @@ public class SpikeQuicksand : MonoBehaviour
         if (!PlayerAbility.EarthquakeEnabled)
         {
             // Increments the earthquake counter if it's not active
-            PowerupController.IncrementEarthquakeCounter();
+            float quicksandEnergy = playerEnergy.GetEnergyForHand(hand);
+            PowerupController.IncrementEarthquakeCounter(quicksandEnergy);
             StartCoroutine(PlayerAbility.LongVibration(hand, 1f, 1500));
         }
         else
@@ -333,6 +333,7 @@ public class SpikeQuicksand : MonoBehaviour
             StartCoroutine(PlayerAbility.LongVibration(hand, 1.5f, 2500));
             StartCoroutine(PlayerAbility.LongVibration(otherHand, 1.5f, 2500));
         }
+        playerEnergy.UseEnergy(hand);
 
         // Wait .1 second (gives time for the particle effect to do something)
         yield return new WaitForSeconds(0.1f);
@@ -368,9 +369,6 @@ public class SpikeQuicksand : MonoBehaviour
         }
         else if (SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]))
         {
-            // Adds to the spike counter if the ability is not active
-            PowerupController.IncrementSpikeChainCounter();
-
             // Calculates the distance for creating the triangle of spikes
             GameObject spikeQuicksandOutline = spikeQuicksandOutlines[0];
             float finalSpikeRadius = baseSpikeRadius;

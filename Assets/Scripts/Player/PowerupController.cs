@@ -190,23 +190,23 @@ public class PowerupController : MonoBehaviour
         yield return new WaitForEndOfFrame();
     }
 
-    public static void IncrementRockClusterCounter()
+    public static void IncrementRockClusterCounter(float damage)
     {
-        rockClusterBarCounter++;
+        rockClusterBarCounter += damage;
     }
 
-    public static void IncrementSpikeChainCounter()
+    public static void IncrementSpikeChainCounter(float damage)
     {
-        spikeChainBarCounter++;
+        spikeChainBarCounter += damage;
     }
 
-    public static void IncrementEarthquakeCounter()
+    public static void IncrementEarthquakeCounter(float energy)
     {
-        earthquakeBarCounter++;
+        earthquakeBarCounter += energy;
     }
 
-    public static void IncrementWallPushCounter()
+    public static void IncrementWallPushCounter(float energy)
     {
-        wallPushBarCounter++;
+        wallPushBarCounter += energy;
     }
 }
