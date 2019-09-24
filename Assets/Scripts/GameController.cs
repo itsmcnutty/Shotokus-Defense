@@ -263,11 +263,18 @@ public class GameController : MonoBehaviour
 
     // This function keeps track of destroyed enemies by updating enemiesDestroyed variable
     // To be called when an enemey is destroyed
-    public void EnemyGotDestroyed()
+    public void EnemyGotDestroyed(GameObject enemyDestroyed)
     {
-        enemiesAlive--;
-        // Check if round is over or not
-        OnEnemyDeathClear();
+        if (enemyDestroyed.name != "Target Dummy")
+        {
+            enemiesAlive--;
+            // Check if round is over or not
+            OnEnemyDeathClear();
+        }
+        else
+        {
+            TutorialController.Instance.SpawnNewDummy();
+        }
     }
 
     // Called in EnemyProducer, updates number of enemies alive

@@ -49,6 +49,7 @@ public class TutorialController : MonoBehaviour
     private int currentSlide;
     private bool tutorialWaveInProgress;
     private Transform dummyTransform;
+    private GameObject currentTargetDummy;
 
     // Instance getter and initialization
     public static TutorialController Instance
@@ -71,6 +72,8 @@ public class TutorialController : MonoBehaviour
         allTutorialVideos.Add(TutorialSections.Wall, wallVideos);
         allTutorialVideos.Add(TutorialSections.Quicksand, quicksandVideos);
         dummyTransform = targetDummy.transform;
+        SpawnNewDummy();
+        currentTargetDummy.SetActive(false);
     }
 
     // Update is called once per frame
@@ -202,15 +205,17 @@ public class TutorialController : MonoBehaviour
     
     public void SpawnNewDummy()
     {
-        GameObject newDummy = Instantiate(targetDummy);
-        newDummy.transform.position = dummyTransform.position;
-        newDummy.transform.rotation = dummyTransform.rotation;
+        currentTargetDummy = Instantiate(targetDummy);
+        currentTargetDummy.transform.position = dummyTransform.position;
+        currentTargetDummy.transform.rotation = dummyTransform.rotation;
+        currentTargetDummy.name = "Target Dummy";
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
     }
     private void ToggleTutorialOptions()
     {
         tutorialSlideWall.SetActive(!tutorialSlideWall.activeSelf);
         showTutorialPillar.SetActive(!showTutorialPillar.activeSelf);
-        targetDummy.SetActive(!targetDummy.activeSelf);
+        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         if(!tutorialWaveInProgress)
         {
             startWavePillar.SetActive(!startWavePillar.activeSelf);

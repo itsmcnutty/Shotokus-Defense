@@ -212,7 +212,7 @@ public class EnemyHealth : CallParentCollision
 		{
 			healthBarText.text = String.Format("{0} / {1}", Math.Ceiling(health), Math.Ceiling(MAX_HEALTH));
 		}
-		else if (gameObject.name != "EnemyTargetDummy")
+		else if (gameObject.name == "Target Dummy")
 		{
 			healthBarText.text = "Target Dummy";
 		}
@@ -228,16 +228,8 @@ public class EnemyHealth : CallParentCollision
 		// Check for death plane
 		if (hips.transform.position.y <= DEATH_Y)
 		{
-			// Passed death plane
-			if (gameObject.name != "EnemyTargetDummy")
-			{
-				// Indicate the Game Controller that an enemy was destroyed
-				GameController.Instance.EnemyGotDestroyed();
-			}
-			else
-			{
-				TutorialController.Instance.SpawnNewDummy();
-			}
+			// Indicate the Game Controller that an enemy was destroyed
+			GameController.Instance.EnemyGotDestroyed(gameObject);
 			Destroy(gameObject);
 		}
 

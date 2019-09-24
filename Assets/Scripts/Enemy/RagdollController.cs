@@ -108,14 +108,7 @@ public class RagdollController : MonoBehaviour
             shape.mesh = mesh;
 
 			// Indicate the Game Controller that an enemy was destroyed
-            if(gameObject.name != "EnemyTargetDummy")
-            {
-			    GameController.Instance.EnemyGotDestroyed();
-            }
-            else
-            {
-                TutorialController.Instance.SpawnNewDummy();
-            }
+			GameController.Instance.EnemyGotDestroyed(gameObject);
             Destroy(gameObject);
         }
 
