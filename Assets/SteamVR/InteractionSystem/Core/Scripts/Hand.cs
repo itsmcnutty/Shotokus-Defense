@@ -37,8 +37,8 @@ namespace Valve.VR.InteractionSystem
         public const AttachmentFlags defaultAttachmentFlags = AttachmentFlags.ParentToHand |
             AttachmentFlags.DetachOthers |
             AttachmentFlags.DetachFromOtherHand |
-            AttachmentFlags.TurnOnKinematic |
-            AttachmentFlags.SnapOnAttach;
+            AttachmentFlags.SnapOnAttach |
+            AttachmentFlags.TurnOffGravity;
 
         public Hand otherHand;
         public SteamVR_Input_Sources handType;
