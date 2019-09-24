@@ -27,6 +27,9 @@ public class Rocks : MonoBehaviour
     public AudioClip rockThrowSmall;
     public AudioClip rockThrowMedium;
     public AudioClip rockThrowLarge;
+    public AudioClip[] rockHitSolid;
+    public AudioClip[] rockHitFoliage;
+    public PhysicMaterial foliageMaterial;
 
     public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
@@ -169,7 +172,7 @@ public class Rocks : MonoBehaviour
             hand.SetAllowResize(true);
 
             // Adds the RockProperties component to the rock to begin the death countdown
-            RockProperties.CreateComponent(activeRock, destroyRockParticles);
+            RockProperties.CreateComponent(activeRock, destroyRockParticles, rockHitSolid, rockHitFoliage, foliageMaterial);
 
             // Gets the final mass of the rock
             activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
@@ -192,7 +195,7 @@ public class Rocks : MonoBehaviour
                     {
                         // Gets a rock from the stash and adds the RockProperties component
                         GameObject newRock = GetNewRock();
-                        RockProperties.CreateComponent(newRock, destroyRockParticles);
+                        RockProperties.CreateComponent(newRock, destroyRockParticles, rockHitSolid, rockHitFoliage, foliageMaterial);
 
                         // Mimics the data from the original rock to create a new one
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();

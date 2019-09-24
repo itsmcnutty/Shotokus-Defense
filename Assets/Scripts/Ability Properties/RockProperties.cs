@@ -3,10 +3,9 @@ using Valve.VR.InteractionSystem;
 
 public class RockProperties : MonoBehaviour
 {
-    [Header("Audio")]
-    public AudioClip[] rockHitSolid;
-    public AudioClip[] rockHitFoliage;
-    public PhysicMaterial foliageMaterial;
+    private AudioClip[] rockHitSolid;
+    private AudioClip[] rockHitFoliage;
+    private PhysicMaterial foliageMaterial;
     
     private AudioSource rockBreak;
     private SoundPlayOneshot randomizedAudioSource;
@@ -35,10 +34,14 @@ public class RockProperties : MonoBehaviour
         CancelInvoke("DestroyRock");
     }
 
-    public static void CreateComponent(GameObject rock, ParticleSystem destroyRockParticles)
+    public static void CreateComponent(GameObject rock, ParticleSystem destroyRockParticles, AudioClip[] rockHitSolid,
+        AudioClip[] rockHitFoliage, PhysicMaterial foliageMaterial)
     {
         RockProperties properties = rock.AddComponent<RockProperties>();
         properties.destroyRockParticles = destroyRockParticles;
+        properties.rockHitSolid = rockHitSolid;
+        properties.rockHitFoliage = rockHitFoliage;
+        properties.foliageMaterial = foliageMaterial;
     }
 
     public void DestroyRock ()

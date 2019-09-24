@@ -3,7 +3,17 @@ guid: 43879362bb244b34e80072110bd06122
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - rockPrefab: {fileID: 9120694383006430445, guid: af79f88860634f345a621441081f2c17,
+      type: 3}
+  - createRockParticles: {instanceID: 0}
+  - destroyRockParticles: {instanceID: 0}
+  - regrowRockParticles: {instanceID: 0}
+  - regrowRockSwirl: {instanceID: 0}
+  - rockThrowSmall: {fileID: 8300000, guid: 760c19cb2b40cf541ad3b02604b81efd, type: 3}
+  - rockThrowMedium: {fileID: 8300000, guid: 0d023d233685c9a4ab984ae0a5eb38f5, type: 3}
+  - rockThrowLarge: {fileID: 8300000, guid: fec314fad8e1e5e4b86d1f00eb591795, type: 3}
+  - foliageMaterial: {fileID: 13400000, guid: 23dd4ed5613fa71468340475110136ed, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

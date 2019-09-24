@@ -43,7 +43,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -7004990833320723430, guid: eb549c7c6d1a7ef4c8fe87d94bf6d2ef,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 02b4d821d5ec98b43a49ce3add59c958, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2752,9 +2752,6 @@ MonoBehaviour:
   minRockDiameter: 0.4
   maxRockDimater: 1.5
   rockMassScale: 100
-  rockThrow: {fileID: 0}
-  rockHit: {fileID: 0}
-  rockBreak: {fileID: 0}
   maxRockEnergyCost: 200
   createRockParticles: {fileID: 1358986761048532159, guid: d1f592a9713798948a2874bcf240ecca,
     type: 3}
@@ -2764,6 +2761,20 @@ MonoBehaviour:
     type: 3}
   regrowRockSwirl: {fileID: 3608211169773213929, guid: 82649a8d7ea1c7c4db3662068ebe412f,
     type: 3}
+  rockThrowSmall: {fileID: 8300000, guid: 760c19cb2b40cf541ad3b02604b81efd, type: 3}
+  rockThrowMedium: {fileID: 8300000, guid: 0d023d233685c9a4ab984ae0a5eb38f5, type: 3}
+  rockThrowLarge: {fileID: 8300000, guid: fec314fad8e1e5e4b86d1f00eb591795, type: 3}
+  rockHitSolid:
+  - {fileID: 8300000, guid: 1987e81d5f5d9e74292939c234f0e6ff, type: 3}
+  - {fileID: 8300000, guid: c86160fb09d191741a28f9b64ef6d8d1, type: 3}
+  - {fileID: 8300000, guid: 27ad62da06704084684cdef8c38ae12d, type: 3}
+  - {fileID: 8300000, guid: 018b52bb4afd5504ab3ea0c681fe8334, type: 3}
+  - {fileID: 8300000, guid: 277680e00c1af904ab0e95dde998f214, type: 3}
+  rockHitFoliage:
+  - {fileID: 8300000, guid: f4bd083be3fc97542ba500f415e54dc1, type: 3}
+  - {fileID: 8300000, guid: 351450c46d83f074e9482bc8939ad214, type: 3}
+  - {fileID: 8300000, guid: b7996aaf7ea9a6b4d850950de5293b3e, type: 3}
+  foliageMaterial: {fileID: 13400000, guid: 23dd4ed5613fa71468340475110136ed, type: 2}
 --- !u!114 &1156229015251733590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4493,6 +4504,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617253999912}
     m_Modifications:
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Name
+      value: Controller Arc
+      objectReference: {fileID: 0}
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_TagString
+      value: Arc
+      objectReference: {fileID: 0}
     - target: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.25
@@ -4540,18 +4563,6 @@ PrefabInstance:
     - target: {fileID: 450016, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Name
-      value: Controller Arc
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Layer
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_TagString
-      value: Arc
       objectReference: {fileID: 0}
     - target: {fileID: 180358, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Name
@@ -4632,6 +4643,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617254009054}
     m_Modifications:
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Name
+      value: Controller Arc
+      objectReference: {fileID: 0}
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4679,14 +4698,6 @@ PrefabInstance:
     - target: {fileID: 450016, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Name
-      value: Controller Arc
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Layer
-      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 180358, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Name
