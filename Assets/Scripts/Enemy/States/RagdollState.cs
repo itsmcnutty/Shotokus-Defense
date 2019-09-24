@@ -97,13 +97,19 @@ public class RagdollState : IState
 	private bool CanRecover()
 	{
 		Rigidbody hips = gameObj.GetComponentInChildren<Rigidbody>();
-		
+
 		// todo check if near enough to navmesh, then also add that to recover
 		// transform of parent stays in location before ragdolling -> use spine location (get game object)
-		
+		Vector3 hipsPosition = hips.gameObject.transform.position;
 
-		// If spine rigidbody is moving very slowly, enemy can recover
-		return hips.velocity.magnitude < 0.13f;
+		// check if position of hips is near navmesh. Returns true if its at least within a radius of 0.5
+		NavMeshHit hit;
+		if (NavMesh.SamplePosition(hipsPosition, out hit, 0.5f, NavMesh.AllAreas))
+		{
+			// If spine rigidbody is moving very slowly, enemy can recover
+			return hips.velocity.magnitude < 0.13f;	
+		}
+		return false;
 	}
 
 	public override string ToString()
