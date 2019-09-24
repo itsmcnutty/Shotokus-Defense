@@ -27,8 +27,9 @@ public class AboveWallState : IState
     private EnemyMediumProperties medEnemyProps;
     
     // States to transition to
-    private IState climbingState;
+    private ClimbingState climbingState;
     private RagdollState ragdollState;
+    private StrafeState strafeState; 
 
 
     public AboveWallState(EnemyMediumProperties enemyProps)
@@ -48,7 +49,7 @@ public class AboveWallState : IState
     // necessary states for the machine
     public void InitializeStates(EnemyMediumProperties enemyProps)
     {
-        climbingState = enemyProps.runState;
+        strafeState = enemyProps.strafeState;
         ragdollState = enemyProps.ragdollState;
     }
     
@@ -58,7 +59,8 @@ public class AboveWallState : IState
         // Not an obstacle
         obstacle.enabled = false;
 
-        agent.enabled = false; // todo testing
+//        agent.enabled = false; // todo testing
+// todo disable agent for a second before going to strafe
         
 //        animator.SetTrigger();
     }
@@ -81,8 +83,8 @@ public class AboveWallState : IState
         // If agent gets on top off an navmesh link from this state, agent should jump down
         if (agent.isOnOffMeshLink)
         {
-            animator.SetTrigger("Jump");
-            return climbingState;
+            animator.SetTrigger("Strafe");
+            return strafeState;
         }
         
         // Transition to ragdoll state if ragdolling

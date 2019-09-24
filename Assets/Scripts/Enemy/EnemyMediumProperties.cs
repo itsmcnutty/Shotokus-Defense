@@ -99,6 +99,7 @@ public class EnemyMediumProperties : EnemyProperties
     public void IncreaseClimbCount()
     {
 	    climbCounter++;
+	    Debug.Log("My climb Counter is: "+ climbCounter);
     }
 
     public override float GetCurrentMaxSpeed()

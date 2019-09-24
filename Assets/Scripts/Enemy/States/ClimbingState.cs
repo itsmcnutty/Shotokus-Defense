@@ -23,7 +23,7 @@ public class ClimbingState : IState
     private EnemyMediumProperties medEnemyProps;
     
     // States to transition to
-    private IState aboveWallState;
+    private StrafeState strafeState;
     private RagdollState ragdollState;
 
     public ClimbingState(EnemyMediumProperties enemyProps)
@@ -35,15 +35,15 @@ public class ClimbingState : IState
         gameObj = enemyProps.gameObject;
         ragdollController = enemyProps.ragdollController;
         this.enemyProps = enemyProps;
+        medEnemyProps = enemyProps;
     }
     
     // Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
     // necessary states for the machine
     public void InitializeStates(EnemyMediumProperties enemyProps)
     {
-        aboveWallState = enemyProps.aboveWallState;
+        strafeState = enemyProps.strafeState;
         ragdollState = enemyProps.ragdollState;
-//        medEnemyProps = enemyProps;
     }
     
     // Called upon entering this state from anywhere
@@ -56,7 +56,7 @@ public class ClimbingState : IState
     // Called upon exiting this state
     public void Exit()
     {
-//        medEnemyProps.climbCounter++;
+        medEnemyProps.IncreaseClimbCount();
     }
 
     // Called during Update while currently in this state
@@ -73,7 +73,7 @@ public class ClimbingState : IState
         if (!agent.isOnOffMeshLink) // todo this if statement should ask if canClimb = 1? and a differente for canClimb = 2?
         {
             animator.SetTrigger("ClimbEnd");
-            return aboveWallState;
+            return strafeState;
         }
         
         // Transition to ragdoll state if ragdolling
