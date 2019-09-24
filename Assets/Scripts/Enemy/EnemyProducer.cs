@@ -29,6 +29,12 @@ public class EnemyProducer : MonoBehaviour
     private Bounds spawnArea;
     private Queue<EnemyInfo> enemyQueue; // queue containing all enemies. This queue will take care of making enemies wait to spawn if Enemies alive is bigger than spawn limit
 
+    private void Awake()
+    {
+        enemyQueue = new Queue<EnemyInfo>();
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -100,11 +106,20 @@ public class EnemyProducer : MonoBehaviour
     // Spawn function that takes an number of enemies to be spawned form the queue
     public void SpawnFromQueue(float spawningAmount)
     {
+        // check that we dont try to spawn more enemies than the number of enemies queued (ex. lenght of queue = 2 and available spots = 3, that could break the loop)
+        if (enemyQueue.Count < spawningAmount)
+        {
+            spawningAmount = enemyQueue.Count;
+        }
+        
         for(float i = 0; i < spawningAmount;i++)
         {
+            
             EnemyInfo enemy = enemyQueue.Dequeue();
             spawnLocationObject = GameObject.FindWithTag(enemy.SpawnLocation);
             SpawnEnemy(1, enemy.Prefab);
+            // update enemiesAlive counter
+            GameController.Instance.EnemyAddNumAlive(1);
         }
     }
     
