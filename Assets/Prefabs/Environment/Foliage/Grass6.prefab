@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 812426579533001528}
   - component: {fileID: 812426579531674398}
   - component: {fileID: 812426579530707422}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Grass_d_03_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &812426579533001528
 Transform:
@@ -87,12 +87,12 @@ GameObject:
   m_Component:
   - component: {fileID: 812426579533001532}
   - component: {fileID: 812426579515320220}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Grass6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &812426579533001532
 Transform:
@@ -124,11 +124,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.097660415
+  - screenRelativeHeight: 0.04600318
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 812426579530707420}
-  - screenRelativeHeight: 0.017994493
+  - screenRelativeHeight: 0.009605093
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 812426579530707422}
@@ -144,12 +144,12 @@ GameObject:
   - component: {fileID: 812426579533001534}
   - component: {fileID: 812426579531674396}
   - component: {fileID: 812426579530707420}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Grass_d_03_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &812426579533001534
 Transform:

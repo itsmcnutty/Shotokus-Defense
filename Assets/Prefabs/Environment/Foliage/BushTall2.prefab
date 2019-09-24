@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8232497392148293040}
   - component: {fileID: 8232497392149095826}
   - component: {fileID: 8232497392150194002}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Bush_g_02_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8232497392148293042}
   - component: {fileID: 8232497392133009682}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: BushTall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,15 +126,15 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.10172848
+  - screenRelativeHeight: 0.047185604
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8232497392150194002}
-  - screenRelativeHeight: 0.04933695
+  - screenRelativeHeight: 0.021216346
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8232497392150194000}
-  - screenRelativeHeight: 0.017121304
+  - screenRelativeHeight: 0.008518143
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8232497392150194006}
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 8232497392148293044}
   - component: {fileID: 8232497392149095830}
   - component: {fileID: 8232497392150194006}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Bush_g_02_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 8232497392148293046}
   - component: {fileID: 8232497392149095824}
   - component: {fileID: 8232497392150194000}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Bush_g_02_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

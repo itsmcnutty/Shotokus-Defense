@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 1338963299340672985}
   - component: {fileID: 1338963299337248767}
   - component: {fileID: 1338963299338378559}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plant_d_03_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &1338963299340672985
 Transform:
@@ -88,12 +88,12 @@ GameObject:
   - component: {fileID: 1338963299340672987}
   - component: {fileID: 1338963299337248761}
   - component: {fileID: 1338963299338378553}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plant_d_03_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &1338963299340672987
 Transform:
@@ -164,12 +164,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1338963299340672989}
   - component: {fileID: 1338963299353660285}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plant6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &1338963299340672989
 Transform:
@@ -202,11 +202,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.10172848
+  - screenRelativeHeight: 0.05082101
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1338963299338378557}
-  - screenRelativeHeight: 0.05078542
+  - screenRelativeHeight: 0.020415822
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1338963299338378559}
@@ -226,12 +226,12 @@ GameObject:
   - component: {fileID: 1338963299340672991}
   - component: {fileID: 1338963299337248765}
   - component: {fileID: 1338963299338378557}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Plant_d_03_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &1338963299340672991
 Transform:

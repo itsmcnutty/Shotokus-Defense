@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 33217155622873222}
   - component: {fileID: 23268592809700726}
   - component: {fileID: 205959401620206746}
-  m_Layer: 20
+  m_Layer: 21
   m_Name: Flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &4766054471365538
 Transform:
@@ -93,7 +93,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.026219446
+  - screenRelativeHeight: 0.008775287
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23268592809700726}

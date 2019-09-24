@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 7409951773271991843}
   - component: {fileID: 7409951773270697477}
   - component: {fileID: 7409951773269566661}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Mushroom_d_b_02_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7409951773271991843
 Transform:
@@ -89,12 +89,12 @@ GameObject:
   - component: {fileID: 7409951773271991845}
   - component: {fileID: 7409951773270697479}
   - component: {fileID: 7409951773269566663}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Mushroom_d_b_02_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7409951773271991845
 Transform:
@@ -166,12 +166,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7409951773271991847}
   - component: {fileID: 7409951773287903879}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Mushroom1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7409951773271991847
 Transform:
@@ -203,11 +203,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.097660415
+  - screenRelativeHeight: 0.048382718
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7409951773269566663}
-  - screenRelativeHeight: 0.019802514
+  - screenRelativeHeight: 0.007996703
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7409951773269566661}
