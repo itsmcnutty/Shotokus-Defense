@@ -212,7 +212,7 @@ public class EnemyHealth : CallParentCollision
 	private float GetRockDamageScalar(GameObject child)
 	{
 		float damageScalar = 3.5f;
-		damageScalar = child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
+		damageScalar *= child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
 		if(child.name.Contains("Head"))
 		{
 			damageScalar *= 8;
