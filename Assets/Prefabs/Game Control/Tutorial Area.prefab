@@ -279,7 +279,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2891099172390841339}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343, type: 3}
+  m_VideoClip: {fileID: 0}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -611,54 +611,58 @@ MonoBehaviour:
   rockVideos:
   - slideTitle: Create Rock
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Resize Rock
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 0f026e8c156bfee49b3006351539c7fb,
       type: 3}
   - slideTitle: Throw rock
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Power-up
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Heal
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: f6c4833d1461f924bb786ec25931171d,
       type: 3}
   spikeVideos:
   - slideTitle: Create Spike
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Power-up
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   wallVideos:
   - slideTitle: Draw Wall
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: dcb45b25f465ac445abdfe1eded7e859,
       type: 3}
   - slideTitle: Create Wall
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 0f026e8c156bfee49b3006351539c7fb,
+      type: 3}
+  - slideTitle: Delete Wall
+    video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+    controllerInstruction: {fileID: 32900000, guid: c575be6a9cb370e40874dfc376a7faf2,
       type: 3}
   - slideTitle: Power-up
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 0f026e8c156bfee49b3006351539c7fb,
       type: 3}
   quicksandVideos:
   - slideTitle: Create Quicksand
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Power-up
     video: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
-    controllerInstruction: {fileID: 32900000, guid: 9a69841535c395a44b4501f78483b343,
+    controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   healVideos: []
 --- !u!82 &8215046981479653281
@@ -802,7 +806,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6189638627620216181}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 75abb6434f2b5684793cf622dc47322a, type: 3}
+  m_VideoClip: {fileID: 0}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}

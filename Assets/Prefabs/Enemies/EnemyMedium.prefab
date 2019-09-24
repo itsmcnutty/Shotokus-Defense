@@ -2310,7 +2310,7 @@ NavMeshAgent:
   m_Height: 1.8
   m_BaseOffset: -0.03
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!208 &4699850651619254656
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -2351,7 +2351,7 @@ MonoBehaviour:
   PROJECTILE_VEL_X: 12
   MAX_STRAFE_SPEED: 1.6
   RANGED_RADIUS: 23
-  STRAFE_DIST: 10
+  STRAFE_DIST: 15
   RADIUS_REDUCTION: 2
   randomRadiusReduction: 1
   minRangeRadiusReduction: 3
