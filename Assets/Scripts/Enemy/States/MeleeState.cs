@@ -134,6 +134,8 @@ public class MeleeState : IState
 	// is possible
 	public IState Transition()
 	{
+		Debug.Log("melee state");
+		
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
@@ -150,16 +152,19 @@ public class MeleeState : IState
 		
 		// Calculate enemy distance
 		Vector3 gameObjPos = gameObj.transform.position;
-		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		float distanceToPlayer = enemyProps.calculateSqrDist(playerPos, gameObjPos);
+		float sqrAttackRadius = attackRadius * attackRadius;
+		float sqrAttackMargin = attackMargin * attackMargin;
+		
 
 		// Continue to attack if within attack range, otherwise transition
-		if (distanceToPlayer > attackRadius + attackMargin)
+		if (distanceToPlayer > sqrAttackRadius + sqrAttackMargin)
 		{
 			// Too far, advance
 			animator.SetTrigger("Advance");
 			return advanceState;
 		}
-		if (distanceToPlayer < attackRadius - attackMargin)
+		if (distanceToPlayer < sqrAttackRadius - sqrAttackMargin)
 		{
 			// Too close, retreat
 			animator.SetTrigger("Retreat");

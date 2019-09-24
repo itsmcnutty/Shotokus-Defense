@@ -70,8 +70,6 @@ public class GameController : MonoBehaviour
         if (player != null)
         {
             playerHealth = player.GetComponent<PlayerHealth>();
-            // todo maybe restart enemy energy when restarting game
-            //            playerEnergy = player.GetComponent<PlayerEnergy> ();
         }
         enemyProducerObject = GameObject.FindWithTag("EnemyProducer");
         enemyProducer = enemyProducerObject.GetComponent<EnemyProducer>();
@@ -107,6 +105,7 @@ public class GameController : MonoBehaviour
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
             if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
             {
+                // check how many enemies are alive right now
                 enemyProducer.Spawn(spawnInfo);
             }
         }
@@ -197,27 +196,56 @@ public class GameController : MonoBehaviour
             allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
         }
     }
-
-    // Future: delete all other instances of objects in the scene
-    // delete walls, spikes, rocks
-    public void RestartGame()
+    
+    // deletes walls, spikes, rocks and restart the current wave in location
+    public void RestartWave()
     {
-
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
 
         // destroy all objects in scene before restarting
         destroyAll();
 
-        Debug.Log("Restarting game");
+//        Debug.Log("Restarting wave");
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
+        currentTime = 0;
         restartQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         playerHealth.RecoverAllHealth();
-        // todo restore all  energy
+    }
+    
+    // delete walls, spikes, rocks
+    // put player on location 1 and restart all the waves again
+    public void RestartGame()
+    {
+        // reactivate pause functionality
+//        UIControllerObj.GetComponent<MenuUIController>().enabled = false;
+        
+        // destroy all objects in scene before restarting
+        destroyAll();
+
+//        Debug.Log("Restarting wave");
+
+        // Reset values of wave (queue, timer, enemies counter)
+        enemiesAlive = 0;
+        currentTime = 0; 
+        
+        // teleport the player
+        Teleport(false, 0);
+        
+        // restart queue to initial state (all waves from location 1)
+        allLocationWaves = new Queue<LocationWaves>();
+        for (int i = 0; i < locationWaveFiles.Length; i++)
+        {
+            allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
+        }
+
+        currentLocation = allLocationWaves.Dequeue();
+        currentWave = currentLocation.GetNextWave();
+        playerHealth.RecoverAllHealth();
     }
 
     // this function destroys all the following game objects instances:
@@ -225,12 +253,12 @@ public class GameController : MonoBehaviour
     public void destroyAll()
     {
         var enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemies)
+        foreach (var enemy in enemies) 
             Destroy(enemy);
 
         // destroy menu screens and unfreeze game 
         var menus = GameObject.FindGameObjectsWithTag("Menu");
-        foreach (var menu in menus)
+        foreach (var menu in menus) 
             Destroy(menu);
 
         // destroy rocks, spikes, walls, quicksand 
@@ -238,18 +266,18 @@ public class GameController : MonoBehaviour
         var spikes = GameObject.FindGameObjectsWithTag("Spike");
         var walls = GameObject.FindGameObjectsWithTag("Wall");
         var quicksands = GameObject.FindGameObjectsWithTag("Quicksand");
-        foreach (var rock in rocks)
+        foreach (var rock in rocks) 
             Destroy(rock);
-        foreach (var spike in spikes)
+        foreach (var spike in spikes) 
             Destroy(spike);
-        foreach (var wall in walls)
+        foreach (var wall in walls) 
             Destroy(wall);
-        foreach (var quicksand in quicksands)
+        foreach (var quicksand in quicksands) 
             Destroy(quicksand);
 
         // destroy particles
         var particles = GameObject.FindGameObjectsWithTag("Particle");
-        foreach (var particle in particles)
+        foreach (var particle in particles) 
             Destroy(particle);
     }
 
@@ -298,8 +326,8 @@ public class GameController : MonoBehaviour
     }
 
     // This function moves the player around the 5 wave zones
-    // todo update player object position too
-    public void Teleport(bool toggleWaves)
+    // Input: location is an optional parameter to specify an specific location to teleport to
+    public void Teleport(bool toggleWaves, int location = -1)
     {
         Vector3 destinationPos;
         int temp = caseSwitch;
@@ -310,6 +338,14 @@ public class GameController : MonoBehaviour
         Vector3 headPosition = vrCamera.transform.position;
 
         temp = temp % 5;
+        
+        // optional parameter, input specific location to transport to
+        if (location >= 0)
+        {
+            temp = location % 5;
+            caseSwitch = temp;
+        }
+        
         switch (temp)
         {
             case 0:
@@ -317,7 +353,6 @@ public class GameController : MonoBehaviour
                 break;
             case 1:
                 destinationPos = new Vector3(22.6f, 0.5f, 23f);
-                //                destinationPos = new Vector3(26f, 0.5f, 18.8f);
                 break;
             case 2:
                 destinationPos = new Vector3(-3f, 0.75f, 3.1f);

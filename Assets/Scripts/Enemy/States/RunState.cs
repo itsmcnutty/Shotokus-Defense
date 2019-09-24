@@ -151,10 +151,10 @@ public class RunState : IState
 		Vector3 gameObjPos = gameObj.transform.position;
 		
 		// Calculate enemy distance
-		float distanceToPlayer = enemyProps.calculateDist(playerPos, gameObjPos);
+		float distanceToPlayer = enemyProps.calculateSqrDist(playerPos, gameObjPos);
 
 		// If within ranged attack range, transition to strafe state
-		if (distanceToPlayer < rangedRadius)
+		if (distanceToPlayer < rangedRadius * rangedRadius)
 		{
 			animator.SetTrigger("Strafe");
 			return strafeState;

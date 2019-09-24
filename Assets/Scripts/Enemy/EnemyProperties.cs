@@ -101,4 +101,13 @@ public abstract  class EnemyProperties : MonoBehaviour
 		return remainingDist;
 	}
 	
+	public float calculateSqrDist(Vector3 vector1, Vector3 vector2)
+	{
+		Vector3 v1 = new Vector3(vector1.x, 0,vector1.z);
+		Vector3 v2 = new Vector3(vector2.x, 0,vector2.z);
+
+		float remainingDist = Vector3.SqrMagnitude(v1 - v2);
+		return remainingDist;
+	}
+	
 }

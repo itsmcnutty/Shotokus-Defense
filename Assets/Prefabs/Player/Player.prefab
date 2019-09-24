@@ -1702,7 +1702,6 @@ MonoBehaviour:
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
-  validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 2
   outlineLayerMask:
@@ -1956,7 +1955,6 @@ MonoBehaviour:
     type: 3}
   wallOutlinePrefab: {fileID: 4777704666276339869, guid: 199e78aec15cfbb40b8ad50ae8c3b882,
     type: 3}
-  validOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   invalidOutlineMat: {fileID: 2100000, guid: 87ec725ecbb27e74a843085f17a3e9aa, type: 2}
   rockCreationDistance: 2
   outlineLayerMask:
@@ -2590,10 +2588,10 @@ MonoBehaviour:
   spikeChainBar: {fileID: 3058137216040798068}
   earthquakeBar: {fileID: 3058137215862545778}
   wallPushBar: {fileID: 3058137216310128169}
-  pointsForRockCluster: 10
-  pointsForSpikeChain: 10
-  pointsForEarthquake: 10
-  pointsForWallPush: 10
+  pointsForRockCluster: 50000
+  pointsForSpikeChain: 50000
+  pointsForEarthquake: 10000
+  pointsForWallPush: 10000
   rockClusterTime: 30
   spikeChainTime: 30
   earthquakeTime: 30
@@ -2641,6 +2639,12 @@ MonoBehaviour:
     type: 3}
   quicksandPrefab: {fileID: 6679887712108367644, guid: 9adfe1b0b583f63409934a9e317e1bd1,
     type: 3}
+  validSpikeOutlineMat: {fileID: 2100000, guid: 334c0e610cf287d4c88d7f951d2f79b7,
+    type: 2}
+  validQuicksandOutlineMat: {fileID: 2100000, guid: c633735ce86475b448f1ea76f61098ff,
+    type: 2}
+  emptyAbilityOutlineMat: {fileID: 2100000, guid: 1091aad86cc81974390f50cd3ad97479,
+    type: 2}
   spikeMinHandMovement: 0.05
   quicksandMinHandMovement: 0.05
   baseSpikeRadius: 0.5
@@ -2678,6 +2682,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
     type: 3}
+  validWallOutlineMat: {fileID: 2100000, guid: 64f054f5a18f4584faa058fc83e53cc8, type: 2}
   wallMaxHeight: 3
   wallSizeMultiplier: 120
   wallSpeedReduction: 25

@@ -38,7 +38,6 @@ public class TutorialController : MonoBehaviour
     public List<TutorialSlide> spikeVideos;
     public List<TutorialSlide> wallVideos;
     public List<TutorialSlide> quicksandVideos;
-    public List<TutorialSlide> healVideos;
 
     private static TutorialController instance; 
 
