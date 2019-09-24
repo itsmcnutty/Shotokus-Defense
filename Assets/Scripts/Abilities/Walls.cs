@@ -167,7 +167,6 @@ public class Walls : MonoBehaviour
             float wallEnergy = playerEnergy.GetEnergyForHand(firstHandHeld);
             PowerupController.IncrementWallPushCounter(wallEnergy);
         }
-        playerEnergy.UseEnergy(firstHandHeld);
 
         if (finalHandHeight < wallMinHandMovement)
         {
@@ -176,7 +175,8 @@ public class Walls : MonoBehaviour
         else
         {
             // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
-            wall.GetComponentInChildren<WallProperties>().UpdateComponent(finalHandHeight, finalVelocity, wallMoveSpeed);
+            WallProperties.UpdateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed);
+            playerEnergy.UseEnergy(firstHandHeld);
             wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
@@ -191,7 +191,7 @@ public class Walls : MonoBehaviour
 
         // Calculates the final hand height and initializes the WallProperties component pn the wall
         float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
-        wall.GetComponentInChildren<WallProperties>().UpdateComponent(finalHandHeight, Vector3.zero, 0);
+        WallProperties.UpdateComponent(wall, finalHandHeight, Vector3.zero, 0);
         playerEnergy.UseEnergy(firstHandHeld);
         ResetWallInfo();
     }
