@@ -109,8 +109,8 @@ public class CreateNavLink : MonoBehaviour
         navMeshLinkF.startPoint = startPosF;
         navMeshLinkB.endPoint = wallPosF;
         navMeshLinkF.endPoint = wallPosB;
-        navMeshLinkB.width = meshZ;
-        navMeshLinkF.width = meshZ;
+        navMeshLinkB.width = meshZ / 3; // todo testing smaller link
+        navMeshLinkF.width = meshZ / 3;
         
         navMeshLinkB.UpdateLink();
         navMeshLinkF.UpdateLink();

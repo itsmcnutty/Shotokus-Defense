@@ -18,11 +18,12 @@ public class ClimbingState : IState
     // The enemy properties component
     private EnemyProperties enemyProps;
 
+    private EnemyMediumProperties medEnemyProps;
     
     // States to transition to
     private IState resetState;
-    
-    public ClimbingState(EnemyProperties enemyProps)
+
+    public ClimbingState(EnemyMediumProperties enemyProps)
     {
         animator = enemyProps.animator;
         agent = enemyProps.agent;
@@ -37,6 +38,7 @@ public class ClimbingState : IState
     public void InitializeStates(EnemyMediumProperties enemyProps)
     {
         resetState = enemyProps.runState;
+        medEnemyProps = enemyProps;
     }
     
     // Called upon entering this state from anywhere
@@ -49,7 +51,7 @@ public class ClimbingState : IState
     // Called upon exiting this state
     public void Exit()
     {
-        // todo fill out
+        medEnemyProps.climbCounter++;
         // Restart animation in Walking state
 //        animator.SetTrigger("Ragdoll"); // todo change to climbing animation
     }
@@ -57,9 +59,7 @@ public class ClimbingState : IState
     // Called during Update while currently in this state
     public void Action()
     {
-        // todo fill out
-        // wait for climbing animation to be done??
-        // set time for how long should it take??
+//        Debug.Log("climbing");
     }
     
     // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -67,9 +67,9 @@ public class ClimbingState : IState
     public IState Transition()
     {
         // If the enemy can recover from ragdolling, transition to resetState
-        // todo fill out
         if (!agent.isOnOffMeshLink)
         {
+//            Debug.Log("leaving climb state");
             return resetState;
         }
 		
@@ -79,7 +79,7 @@ public class ClimbingState : IState
     
     public override string ToString()
     {
-        return "Climbing"; // todo is this correct??
+        return "Climbing";
     }
     
     

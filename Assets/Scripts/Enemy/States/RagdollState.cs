@@ -96,10 +96,14 @@ public class RagdollState : IState
 	// Returns true if the enemy is in a suitable situation to recover from ragdolling and re-attach to the navmesh
 	private bool CanRecover()
 	{
-		Rigidbody spine = gameObj.GetComponentInChildren<Rigidbody>();
+		Rigidbody hips = gameObj.GetComponentInChildren<Rigidbody>();
+		
+		// todo check if near enough to navmesh, then also add that to recover
+		// transform of parent stays in location before ragdolling -> use spine location (get game object)
+		
 
 		// If spine rigidbody is moving very slowly, enemy can recover
-		return spine.velocity.magnitude < 0.13f;
+		return hips.velocity.magnitude < 0.13f;
 	}
 
 	public override string ToString()

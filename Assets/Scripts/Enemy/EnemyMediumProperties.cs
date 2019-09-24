@@ -34,6 +34,9 @@ public class EnemyMediumProperties : EnemyProperties
     [NonSerialized] public bool isStrafing = false; // bool indicating if agent is in strafing state
     [NonSerialized] public int lastPointIndex; // last point index value in the pointsAroundTarget array
     [NonSerialized] public bool isClockwise = false; // walk in a clockwise direction when strafying
+    
+    // Climbing Variables
+    [NonSerialized] public float climbCounter = 0; // counter that keeps track of how many times the agent has climbed
 
     // Allowed space around attack radius that enemies can attack from
     [NonSerialized] public float ATTACK_MARGIN = 1f;
@@ -88,6 +91,11 @@ public class EnemyMediumProperties : EnemyProperties
 		
         // Give FSM an initial state
         stateMachine.ChangeState(runState);
+    }
+
+    public void IncreaseClimbCount()
+    {
+	    climbCounter++;
     }
 
     public override float GetCurrentMaxSpeed()
