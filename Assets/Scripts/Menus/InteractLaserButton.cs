@@ -55,9 +55,9 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerR.PointerOut += PointerOutside;
         laserPointerR.PointerClick += OnPointerClick;
         
-        laserPointerL.PointerIn += PointerInside;
-        laserPointerL.PointerOut += PointerOutside;
-        laserPointerL.PointerClick += OnPointerClick;
+//        laserPointerL.PointerIn += PointerInside;
+//        laserPointerL.PointerOut += PointerOutside;
+//        laserPointerL.PointerClick += OnPointerClick;
     }
 
     // Update is called once per frame
@@ -133,7 +133,7 @@ public class InteractLaserButton : MonoBehaviour
             // laser is not enabled, so enable it
             isEnabled = true;
             laserPointerR.active = true;
-            laserPointerL.active = true;
+            laserPointerL.active = false; // todo debugging make this true if you want both lasers back
             
             // disable abilities & controller arc
             rightArc.setCanUseAbility(false);

@@ -105,6 +105,7 @@ public class GameController : MonoBehaviour
             SpawnInfo spawnInfo = currentWave.GetSpawnAtTime(currentTime);
             if (spawnInfo != null && spawnInfo.Location != SpawnInfo.SpawnLocation.None)
             {
+                // check how many enemies are alive right now
                 enemyProducer.Spawn(spawnInfo);
             }
         }
