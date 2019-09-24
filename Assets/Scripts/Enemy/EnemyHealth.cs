@@ -172,7 +172,7 @@ public class EnemyHealth : CallParentCollision
 		switch (tag)
 		{
 			case "Rock":
-				damage *= 3.5f;
+				damage *= GetRockDamageScalar(child);
 				break;
 			case "Wall":
 				damage *= 0.5f;
@@ -184,8 +184,6 @@ public class EnemyHealth : CallParentCollision
 				damage *= 0;
 				break;
 		}
-
-		damage *= GetBodyPartDamageScalar(child);
 
 		// Determine whether armor will reduce damage
 		if (damage < ARMOR_CUTOFF)
@@ -199,15 +197,15 @@ public class EnemyHealth : CallParentCollision
 		return damage;
 	}
 
-	private float GetBodyPartDamageScalar(GameObject child)
+	private float GetRockDamageScalar(GameObject child)
 	{
-		float damage = 0;
-		damage = child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
+		float damageScalar = 3.5f;
+		damageScalar = child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
 		if(child.name.Contains("Head"))
 		{
-			damage *= 8;
+			damageScalar *= 8;
 		}
-		return damage;
+		return damageScalar;
 	}
 
 	// Returns true if the specified GameObject can damage the enemy
