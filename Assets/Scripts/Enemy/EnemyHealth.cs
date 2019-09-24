@@ -23,6 +23,8 @@ public class EnemyHealth : CallParentCollision
 	public float ARMOR_PROFICIENCY;
 	// How much damage a hit must deal to send the enemy ragdolling
 	public float RAGDOLL_DMG_THRESHOLD;
+	// The percentage of the total mass that would result in dealing 100% of damage
+	public float FULL_MASS_DAMAGE_PERC = 0.15f;
 
 	// Show health value for debugging
 	public bool debugShowHealthText = false;
@@ -64,6 +66,7 @@ public class EnemyHealth : CallParentCollision
 	private GameObject hips;
 
 	private bool isDead; // flag to keep prevent constant collision from spawning more enemies
+	private float totalEnemyMass = 0;
 
 	// Start is called before the first frame update
 	void Start()
@@ -96,6 +99,13 @@ public class EnemyHealth : CallParentCollision
 		healthBarBefore.maxValue = MAX_HEALTH;
 		healthBarBefore.SetValueWithoutNotify(MAX_HEALTH);
 
+		// Calculate the total mass of the enemy
+		Rigidbody[] enemyRigidBodies = gameObject.GetComponentsInChildren<Rigidbody>();
+		foreach(Rigidbody enemyRigidBody in enemyRigidBodies)
+		{
+			totalEnemyMass += enemyRigidBody.mass;
+		}
+
 		UpdateHealthString();
 
 		isDead = false;
@@ -126,7 +136,7 @@ public class EnemyHealth : CallParentCollision
 		timeSinceDamage = 0f;
 
 		// Calculate damage received
-		float damage = CalculateDamage(other);
+		float damage = CalculateDamage(child, other);
 
 		// Update health and health bar
 		health -= damage;
@@ -150,7 +160,7 @@ public class EnemyHealth : CallParentCollision
 		}
 	}
 
-	private float CalculateDamage(Collision other)
+	private float CalculateDamage(GameObject child, Collision other)
 	{
 		float momentum = other.gameObject.GetComponent<RockCollide>().GetMomentum();
 
@@ -162,10 +172,10 @@ public class EnemyHealth : CallParentCollision
 		switch (tag)
 		{
 			case "Rock":
-				damage *= 3.5f;
+				damage *= GetRockDamageScalar(child);
 				break;
 			case "Wall":
-				damage *= 1;
+				damage *= 0.5f;
 				break;
 			case "Spike":
 				damage *= 4;
@@ -185,6 +195,17 @@ public class EnemyHealth : CallParentCollision
 		}
 
 		return damage;
+	}
+
+	private float GetRockDamageScalar(GameObject child)
+	{
+		float damageScalar = 3.5f;
+		damageScalar = child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
+		if(child.name.Contains("Head"))
+		{
+			damageScalar *= 8;
+		}
+		return damageScalar;
 	}
 
 	// Returns true if the specified GameObject can damage the enemy
