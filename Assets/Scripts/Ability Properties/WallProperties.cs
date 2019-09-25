@@ -68,6 +68,7 @@ public class WallProperties : MonoBehaviour
             wallProperties.wallHeightPercent = wallHeightPercent;
             wallProperties.direction = direction;
             wallProperties.wallMoveSpeed = wallMoveSpeed;
+            wall.GetComponentInChildren<Rigidbody>().isKinematic = true;
         }
     }
 
