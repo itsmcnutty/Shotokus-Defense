@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         Color newColor = new Color(1, 1, 1, 0);
-        damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
+        damageIndicator.material.SetColor("_BaseColor", newColor);
         currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = maxHealth;
