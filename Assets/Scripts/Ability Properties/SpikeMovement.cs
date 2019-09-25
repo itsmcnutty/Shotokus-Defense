@@ -93,12 +93,12 @@ public class SpikeMovement : MonoBehaviour
         
         // Plays the particle effect on death
         ParticleSystem particleSystem = Instantiate(destroySpikeParticles);
-        particleSystem.transform.position = transform.position;
-        particleSystem.transform.rotation = transform.rotation;
+        particleSystem.transform.position = parentObject.transform.position;
+        particleSystem.transform.rotation = parentObject.transform.rotation;
 
         // Changes the shape to match the size of the spike
         UnityEngine.ParticleSystem.ShapeModule shape = particleSystem.shape;
-        shape.scale = transform.localScale;
+        shape.scale = parentObject.transform.localScale;
 
         // Move the spike, disable it, and readd it to the stash
         parentObject.transform.position = new Vector3(0, -10, 0);
