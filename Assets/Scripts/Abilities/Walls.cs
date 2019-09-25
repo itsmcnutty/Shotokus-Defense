@@ -16,8 +16,8 @@ public class Walls : MonoBehaviour
     public float wallMinHandMovement = .27f;
 
     [Header("Audio")]
-    public AudioSource raiseWall;
-    public AudioSource breakWall;
+    public AudioClip raiseWall;
+    public AudioClip breakWall;
     public ParticleSystem wallCreateParticles;
     public ParticleSystem wallDestroyParticles;
 
@@ -93,7 +93,7 @@ public class Walls : MonoBehaviour
                 WallProperties.CreateComponent(wall, 0, wallDestroyParticles, breakWall);
 
                 Destroy(wallOutline);
-                raiseWall.Play();
+                //raiseWall.Play();
             }
             else
             {
@@ -184,7 +184,7 @@ public class Walls : MonoBehaviour
             wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
-        raiseWall.Stop();
+        //raiseWall.Stop();
         ResetWallInfo();
     }
 

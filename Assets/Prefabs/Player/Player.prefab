@@ -2732,8 +2732,8 @@ MonoBehaviour:
   audioSource: {fileID: 7959512154588948159}
   rockClusterSound: {fileID: 8300000, guid: 5adae3964717560449946440113f234f, type: 3}
   spikeChainSound: {fileID: 8300000, guid: 9c607c277e097584291e0a65fc154eba, type: 3}
-  earthquakeSound: {fileID: 0}
-  wallPushSound: {fileID: 0}
+  earthquakeSound: {fileID: 8300000, guid: f926b590154b0f743ad14c9d547cf33b, type: 3}
+  wallPushSound: {fileID: 8300000, guid: f926b590154b0f743ad14c9d547cf33b, type: 3}
 --- !u!114 &7507517966833001625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2810,11 +2810,11 @@ MonoBehaviour:
   quicksandSizeMultiplier: 2
   maxEarthquakeDistance: 3
   earthquakeDuration: 10
-  spikeRaiseSound: {fileID: 0}
-  spikeBreakSound: {fileID: 0}
-  quicksandIdleSound: {fileID: 0}
-  quicksandSlowSound: {fileID: 0}
-  quicksandBreakSound: {fileID: 0}
+  spikeRaiseSound: {fileID: 8300000, guid: da17b5ec4ade5f54da14f142349298e1, type: 3}
+  spikeBreakSound: {fileID: 8300000, guid: f926b590154b0f743ad14c9d547cf33b, type: 3}
+  quicksandIdleSound: {fileID: 8300000, guid: f926b590154b0f743ad14c9d547cf33b, type: 3}
+  quicksandSlowSound: {fileID: 8300000, guid: f926b590154b0f743ad14c9d547cf33b, type: 3}
+  quicksandBreakSound: {fileID: 8300000, guid: 6b951e0e2961e5244a730bc44c1decde, type: 3}
   createSpikeRockParticles: {fileID: 1733587735037903036, guid: 7bafcabe383bf2349a1ca3922e8e8fb1,
     type: 3}
   createSpikeEarthParticles: {fileID: 7570106878498109240, guid: 9ca08e2de2c8144428a7c013e51e4526,
@@ -4770,6 +4770,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617254014728}
     m_Modifications:
+    - target: {fileID: 1363142310857160769, guid: 4c0cfd27864ee5c489fbe8811954d27e,
+        type: 3}
+      propertyPath: m_Name
+      value: AmbienceSource
+      objectReference: {fileID: 0}
     - target: {fileID: 3426617145420001564, guid: 4c0cfd27864ee5c489fbe8811954d27e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4824,11 +4829,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1363142310857160769, guid: 4c0cfd27864ee5c489fbe8811954d27e,
-        type: 3}
-      propertyPath: m_Name
-      value: AmbienceSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c0cfd27864ee5c489fbe8811954d27e, type: 3}

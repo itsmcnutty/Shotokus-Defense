@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class WallProperties : MonoBehaviour
 {
-    private AudioSource breakWall;
+    private AudioClip breakWall;
     private float wallLifetime = 30.0f;
     private float wallHeightPercent;
     private float wallMoveSpeed = 0f;
@@ -24,7 +24,7 @@ public class WallProperties : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        breakWall.Play();
+        //breakWall.Play();
         Destroy(gameObject, wallLifetime);
     }
 
@@ -43,7 +43,7 @@ public class WallProperties : MonoBehaviour
     }
 
     public static void CreateComponent(GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed,
-    ParticleSystem destroyWallParticles, AudioSource breakWall)
+    ParticleSystem destroyWallParticles, AudioClip breakWall)
     {
         WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties>();
         wallProperties.parentObject = wall;
@@ -54,7 +54,7 @@ public class WallProperties : MonoBehaviour
         wallProperties.breakWall = breakWall;
     }
 
-    public static void CreateComponent(GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles, AudioSource breakWall)
+    public static void CreateComponent(GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles, AudioClip breakWall)
     {
         WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties>();
         wallProperties.parentObject = wall;
