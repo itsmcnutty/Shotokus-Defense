@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(AudioSource))]
 
@@ -18,20 +19,13 @@ public class WaveCuePlayer : MonoBehaviour
     private const float BEAT_DURATION = 60f / 85f;
     
     // True when the drums are playing
-    public bool playing = false;
+    [NonSerialized] public bool playing = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     // Play the randomized taiko drum sequence cue
     public void PlayCue()
     {
