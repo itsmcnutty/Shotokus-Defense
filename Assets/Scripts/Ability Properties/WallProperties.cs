@@ -82,7 +82,7 @@ public class WallProperties : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 9)
+        if (other.gameObject.layer == 9 && wallHeightPercent == 0)
         {
             other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
         }
