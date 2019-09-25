@@ -68,7 +68,14 @@ public class WallProperties : MonoBehaviour
             wallProperties.wallHeightPercent = wallHeightPercent;
             wallProperties.direction = direction;
             wallProperties.wallMoveSpeed = wallMoveSpeed;
-            wall.GetComponentInChildren<Rigidbody>().isKinematic = true;
+            if(wallMoveSpeed == 0)
+            {
+                Rigidbody[] rigidbodyWalls = wall.GetComponentsInChildren<Rigidbody>();
+                foreach(Rigidbody rigidbodyWall in rigidbodyWalls)
+                {
+                    rigidbodyWall.isKinematic = true;
+                }
+            }
         }
     }
 
@@ -90,6 +97,8 @@ public class WallProperties : MonoBehaviour
         if (!other.CompareTag("Ground") && other.gameObject.layer != 11 && other.gameObject.layer != 17)
         {
             // Stops the wall from moving when it collides with something it can't move through
+            Rigidbody rigidbodyWall = gameObject.GetComponent<Rigidbody>();
+            rigidbodyWall.isKinematic = true;
             CancelInvoke("MoveWall");
         }
 
