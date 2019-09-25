@@ -54,6 +54,7 @@ public class SpikeMovement : MonoBehaviour
         {
             // Once it reaches the peak, destroy the object
             obstacle.enabled = true;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
             Destroy(this, 2.0f);
         }
     }
@@ -61,7 +62,7 @@ public class SpikeMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         // Enemies that get hit by the spike get a velocity added to them to make them fly away
-        if (other.gameObject.layer == 9)
+        if (other.gameObject.layer == 9 && obstacle.enabled == false)
         {
             colliding = true;
             other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
