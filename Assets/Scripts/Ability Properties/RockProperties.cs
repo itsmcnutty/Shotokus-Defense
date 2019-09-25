@@ -2,20 +2,26 @@
 
 public class RockProperties : MonoBehaviour
 {
-    private ParticleSystem destroyRockParticles;
+    public ParticleSystem destroyRockParticles;
 
     private static float rockLifetime = 5.0f;
+    private bool collidedWithEnemy;
+    private bool collidedWithNonEnemy;
     // Start is called before the first frame update
     void Start ()
     {
-        Invoke ("DestroyRock", rockLifetime);
     }
 
     // Update is called once per frame
     void Update ()
     { }
 
-    private void OnDestroy ()
+    public void StartDestructionTimer()
+    {
+        Invoke ("DestroyRock", rockLifetime);
+    }
+
+    public void CancelDestructionTimer ()
     {
         CancelInvoke ("DestroyRock");
     }
@@ -43,12 +49,32 @@ public class RockProperties : MonoBehaviour
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
         Rocks.MakeRockAvailable (gameObject);
-        Destroy(this);
     }
 
     public static float GetRockLifetime()
     {
         return rockLifetime;
+    }
+
+    public bool CollidedWithEnemy()
+    {
+        return collidedWithEnemy;
+    }
+
+    public bool CollidedWithNonEnemy()
+    {
+        return collidedWithNonEnemy;
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.layer == 9)
+        {
+            collidedWithEnemy = true;
+            collidedWithNonEnemy = false;
+            return;
+        }
+        collidedWithNonEnemy = true;
+        collidedWithEnemy = false;
     }
 
 }
