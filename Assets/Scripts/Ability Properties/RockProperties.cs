@@ -3,17 +3,21 @@ using Valve.VR.InteractionSystem;
 
 public class RockProperties : MonoBehaviour
 {
-    private AudioClip[] rockHitSolid;
-    private AudioClip[] rockHitFoliage;
-    private PhysicMaterial foliageMaterial;
+    public ParticleSystem destroyRockParticles;
+    
+    [Header("Audio")]
+    public AudioClip[] rockHitSolid;
+    public AudioClip[] rockHitFoliage;
+    public PhysicMaterial foliageMaterial;
     
     private SoundPlayOneshot randomizedAudioSource;
-    private ParticleSystem destroyRockParticles;
     
     // Audio source for playing sounds out of rock itself
     private AudioSource audioSource;
 
     private static float rockLifetime = 5.0f;
+    private bool collidedWithEnemy;
+    private bool collidedWithNonEnemy;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +32,12 @@ public class RockProperties : MonoBehaviour
     // Update is called once per frame
     void Update() { }
 
-    private void OnDestroy()
+    public void StartDestructionTimer()
+    {
+        Invoke ("DestroyRock", rockLifetime);
+    }
+
+    public void CancelDestructionTimer()
     {
         CancelInvoke("DestroyRock");
     }
@@ -63,7 +72,6 @@ public class RockProperties : MonoBehaviour
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
         Rocks.MakeRockAvailable(gameObject);
-        Destroy(this);
     }
 
     public static float GetRockLifetime()
@@ -71,8 +79,26 @@ public class RockProperties : MonoBehaviour
         return rockLifetime;
     }
 
-    private void OnCollisionEnter(Collision other)
+    public bool CollidedWithEnemy()
     {
+        return collidedWithEnemy;
+    }
+
+    public bool CollidedWithNonEnemy()
+    {
+        return collidedWithNonEnemy;
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        if(other.gameObject.layer == 9)
+        {
+            collidedWithEnemy = true;
+            collidedWithNonEnemy = false;
+            return;
+        }
+        collidedWithNonEnemy = true;
+        collidedWithEnemy = false;
+        
         if (other.collider.material == foliageMaterial)
         {
             randomizedAudioSource.waveFiles = rockHitFoliage;

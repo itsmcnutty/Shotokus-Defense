@@ -87,7 +87,6 @@ public class PlayerHeal : MonoBehaviour
         {
             // Grips have been released, ready health full sound to be played again
             healthMaxed = false;
-            Debug.Log("Bool false");
             firstTriggerHeld = null;
         }
     }

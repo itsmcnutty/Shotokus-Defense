@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 2275461595009873808}
   - component: {fileID: 1206463693456807234}
   - component: {fileID: 8739182245134505664}
+  - component: {fileID: 9071863582613428718}
   m_Layer: 11
   m_Name: Rock
   m_TagString: Rock
@@ -432,3 +433,28 @@ MonoBehaviour:
   pitchMin: 1
   pitchMax: 1.1
   playOnAwake: 0
+--- !u!114 &9071863582613428718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9120694383006430445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628578bd327dcda4ba957547243a3660, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyRockParticles: {fileID: 1358986761048532159, guid: eacf8c771fe64a84e91926fed70eb55f,
+    type: 3}
+  rockHitSolid:
+  - {fileID: 8300000, guid: 1987e81d5f5d9e74292939c234f0e6ff, type: 3}
+  - {fileID: 8300000, guid: c86160fb09d191741a28f9b64ef6d8d1, type: 3}
+  - {fileID: 8300000, guid: 27ad62da06704084684cdef8c38ae12d, type: 3}
+  - {fileID: 8300000, guid: 018b52bb4afd5504ab3ea0c681fe8334, type: 3}
+  - {fileID: 8300000, guid: 277680e00c1af904ab0e95dde998f214, type: 3}
+  rockHitFoliage:
+  - {fileID: 8300000, guid: f4bd083be3fc97542ba500f415e54dc1, type: 3}
+  - {fileID: 8300000, guid: 351450c46d83f074e9482bc8939ad214, type: 3}
+  - {fileID: 8300000, guid: b7996aaf7ea9a6b4d850950de5293b3e, type: 3}
+  foliageMaterial: {fileID: 13400000, guid: 23dd4ed5613fa71468340475110136ed, type: 2}

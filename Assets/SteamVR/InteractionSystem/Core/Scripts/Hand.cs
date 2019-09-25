@@ -142,6 +142,7 @@ namespace Valve.VR.InteractionSystem
         public bool twoHandGrab = false; // bool, so you know when grabbed with 2 hands
 
         private static bool allowSizeUp = true;
+        private bool velocityMovementEnabled = true;
 
         public bool isActive
         {
@@ -1195,7 +1196,7 @@ namespace Valve.VR.InteractionSystem
                 AttachedObject attachedInfo = currentAttachedObjectInfo.Value;
                 if (attachedInfo.attachedObject != null)
                 {
-                    if (attachedInfo.HasAttachFlag(AttachmentFlags.VelocityMovement))
+                    if (attachedInfo.HasAttachFlag(AttachmentFlags.VelocityMovement) && velocityMovementEnabled)
                     {
                         if (attachedInfo.interactable.attachEaseIn == false || attachedInfo.interactable.snapAttachEaseInCompleted)
                             UpdateAttachedVelocity(attachedInfo);
@@ -1721,6 +1722,16 @@ namespace Valve.VR.InteractionSystem
         public void SetAllowResize(bool isAllowed)
         {
             allowSizeUp = isAllowed;
+        }
+
+        public void TurnOffVelocityMovement()
+        {
+            velocityMovementEnabled = false;
+        }
+
+        public void TurnOnVelocityMovement()
+        {
+            velocityMovementEnabled = true;
         }
     }
 
