@@ -28,17 +28,20 @@ public class SpikeQuicksand : MonoBehaviour
     public float maxEarthquakeDistance = 3f;
     public float earthquakeDuration = 1f;
 
+    
     [Header("Audio")]
-    public AudioSource spikeRaiseSound;
-    public AudioSource spikeBreakSound;
-    public AudioSource quicksandIdleSound;
-    public AudioSource quicksandSlowSound;
-    public AudioSource quicksandBreakSound;
+    public AudioClip spikeRaiseSound;
+    public AudioClip spikeBreakSound;
+    public AudioClip quicksandIdleSound;
+    public AudioClip quicksandSlowSound;
+    public AudioClip quicksandBreakSound;
+    
     public ParticleSystem createSpikeRockParticles;
     public ParticleSystem createSpikeEarthParticles;
     public ParticleSystem destroySpikeParticles;
     public ParticleSystem createQuicksandParticles;
     public ParticleSystem destroyQuicksandParticles;
+    
 
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
@@ -426,7 +429,7 @@ public class SpikeQuicksand : MonoBehaviour
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
-                spikeRaiseSound.PlayOneShot(spikeRaiseSound.clip);
+                spike.GetComponent<AudioSource>().PlayOneShot(spikeRaiseSound);
 
                 // Plays the particle animation for creating spikes
                 ParticleSystem rockParticleSystem = Instantiate(createSpikeRockParticles);
@@ -474,7 +477,7 @@ public class SpikeQuicksand : MonoBehaviour
             Vector3 spikeEndPosition = spike.transform.position;
             spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
-            spikeRaiseSound.PlayOneShot(spikeRaiseSound.clip);
+            spike.GetComponent<AudioSource>().PlayOneShot(spikeRaiseSound);
 
             // Adds the SpikeMovement component to the spike
             SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles, spikeBreakSound);

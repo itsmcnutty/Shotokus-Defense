@@ -13,13 +13,14 @@ public class QuicksandProperties : MonoBehaviour
 
     private ParticleSystem destroyQuicksandParticles;
 
-    private AudioSource quicksandIdleSound;
-    private AudioSource quicksandSlowSound;
-    private AudioSource quicksandBreakSound;
+    private AudioSource audioSource;
+    private AudioClip quicksandIdleSound;
+    private AudioClip quicksandSlowSound;
+    private AudioClip quicksandBreakSound;
     private static Dictionary<NavMeshAgent, float> slowedEnemies = new Dictionary<NavMeshAgent, float>();
 
     public static void CreateComponent(GameObject quicksand, float maxEarthquakeDistance, float earthquakeDuration, ParticleSystem destroyQuicksandParticles,
-    AudioSource quicksandIdleSound, AudioSource quicksandSlowSound, AudioSource quicksandBreakSound)
+        AudioClip quicksandIdleSound, AudioClip quicksandSlowSound, AudioClip quicksandBreakSound)
     {
         QuicksandProperties properties = quicksand.AddComponent<QuicksandProperties>();
         properties.maxEarthquakeDistance = maxEarthquakeDistance;
@@ -33,7 +34,7 @@ public class QuicksandProperties : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        quicksandIdleSound.Play();
+        audioSource = GetComponent<AudioSource>();
         
         // Invokes the method to destroy quicksand after the allotted time is up
         Invoke("DestroyQuicksand", quicksandLifetime);
@@ -101,8 +102,7 @@ public class QuicksandProperties : MonoBehaviour
 
     private void DestroyQuicksand()
     {
-        quicksandBreakSound.Play();
-        quicksandIdleSound.Stop();
+        audioSource.PlayOneShot(quicksandBreakSound);
         Destroy(gameObject);
     }
 
@@ -119,7 +119,7 @@ public class QuicksandProperties : MonoBehaviour
             // Slows any object within the quicksand
             other.attachedRigidbody.velocity /= quicksandSpeedReduction;
         }
-        quicksandSlowSound.Play();
+        audioSource.PlayOneShot(quicksandSlowSound);
     }
 
     private void OnTriggerExit(Collider other)
@@ -130,7 +130,7 @@ public class QuicksandProperties : MonoBehaviour
         {
             UnslowAgent(agent);
         }
-        quicksandSlowSound.Stop();
+        //quicksandSlowSound.Stop();
     }
 
     private IEnumerator SlowEnemyForTime(NavMeshAgent agent, float slowRate, float duration)
