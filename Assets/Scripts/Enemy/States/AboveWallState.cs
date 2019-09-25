@@ -33,8 +33,8 @@ public class AboveWallState : IState
     
     // climbing variables
     private float waitTimer = 0; // keeps track of how much time has occured after climbing
-    private float waitTimeout = 5; // once climbingTimer reaches this counter, agent can climb again
-    private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
+    private float waitTimeout = 1.5f; // once climbingTimer reaches this counter, agent can climb again
+//    private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
 
 
     public AboveWallState(EnemyMediumProperties enemyProps)
@@ -70,8 +70,8 @@ public class AboveWallState : IState
         waitTimer = 0;
 
         // todo this breaks the pathfinding
-        agent.isStopped = false;
-        agent.enabled = false; 
+        agent.isStopped = true;
+//        agent.enabled = false; 
     }
     
     // Called upon exiting this state
@@ -101,8 +101,9 @@ public class AboveWallState : IState
 //            agent.autoTraverseOffMeshLink = true;
 
             // todo this breaks the pathfinding
-            agent.enabled = true;
-            enemyProps.EnablePathfind();
+//            agent.enabled = true;
+//            enemyProps.EnablePathfind();
+            agent.isStopped = false;
         }
     }
     
@@ -112,7 +113,7 @@ public class AboveWallState : IState
     {
         // If agent gets on top off an navmesh link from this state, agent should jump down
 //        if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink)
-        if (agent.isOnOffMeshLink)
+        if (agent.isOnOffMeshLink && !agent.isStopped)
         {
             animator.SetTrigger("Strafe");
             return strafeState;

@@ -373,8 +373,6 @@ public class StrafeState : IState
 			return climbingState;
 		}
 		
-		
-		
 		// Get enemy position
 		Vector3 gameObjPos = gameObj.transform.position;
 		
