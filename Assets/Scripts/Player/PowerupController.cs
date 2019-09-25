@@ -215,11 +215,11 @@ public class PowerupController : MonoBehaviour
         bar.fillAmount = barValuePercent;
         
         // If low on time, play timer sound clip
-        if (!playingTimer && abilityTime - timeRemaining < timerDuration)
+        if (!playingTimer && timeRemaining < timerDuration)
         {
             playingTimer = true;
             audioSource.Play();
-            audioSource.time = timerDuration - timeRemaining;
+            audioSource.time = Mathf.Clamp(timerDuration - timeRemaining, 0f, timerDuration);
         }
 
         Color baseColor = Color.cyan;
