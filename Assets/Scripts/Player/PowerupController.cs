@@ -242,21 +242,33 @@ public class PowerupController : MonoBehaviour
 
     public static void IncrementRockClusterCounter(float damage)
     {
-        rockClusterBarCounter += damage;
+        if(!PlayerAbility.RockClusterEnabled)
+        {
+            rockClusterBarCounter += damage;
+        }
     }
 
     public static void IncrementSpikeChainCounter(float damage)
     {
-        spikeChainBarCounter += damage;
+        if(!PlayerAbility.SpikeChainEnabled)
+        {
+            spikeChainBarCounter += damage;
+        }
     }
 
     public static void IncrementEarthquakeCounter(float energy)
     {
-        earthquakeBarCounter += energy;
+        if(!PlayerAbility.EarthquakeEnabled)
+        {
+            earthquakeBarCounter += energy;
+        }
     }
 
     public static void IncrementWallPushCounter(float energy)
     {
-        wallPushBarCounter += energy;
+        if(!PlayerAbility.WallPushEnabled)
+        {
+            wallPushBarCounter += energy;
+        }
     }
 }
