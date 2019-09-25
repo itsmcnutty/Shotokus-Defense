@@ -72,10 +72,16 @@ public class ClimbingState : IState
     public IState Transition()
     {
         // when finish climbing transition to abovewall state
-        if (!agent.isOnOffMeshLink) // todo this if statement should ask if canClimb = 1? and a differente for canClimb = 2?
+        if (!agent.isOnOffMeshLink && medEnemyProps.climbCounter == 0) // todo this if statement should ask if canClimb = 1? and a differente for canClimb = 2?
         {
             animator.SetTrigger("ClimbEnd");
             return aboveWallState;
+        }
+
+        if (!agent.isOnOffMeshLink && medEnemyProps.climbCounter == 1)
+        {
+            animator.SetTrigger("Strafe");
+            return strafeState;
         }
         
         // Transition to ragdoll state if ragdolling

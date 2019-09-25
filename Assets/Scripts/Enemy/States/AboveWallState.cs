@@ -65,12 +65,13 @@ public class AboveWallState : IState
         obstacle.enabled = false;
         
         // todo disable agent for a second before going to strafe
-        agent.autoTraverseOffMeshLink = false;
+//        agent.autoTraverseOffMeshLink = false;
 
         waitTimer = 0;
 
-//        agent.enabled = false; // todo testing
-//        animator.SetTrigger();
+        // todo this breaks the pathfinding
+        agent.isStopped = false;
+        agent.enabled = false; 
     }
     
     // Called upon exiting this state
@@ -80,7 +81,6 @@ public class AboveWallState : IState
     // Called during Update while currently in this state
     public void Action()
     {
-        Debug.Log("above wall");
         // todo delete -  agent is probably still moving towards player, no need to agent.dest()
         
 //        if (medEnemyProps.climbCounter >= 2)
@@ -93,11 +93,16 @@ public class AboveWallState : IState
 //        }
         
         waitTimer += Time.deltaTime;
+        Debug.Log("above wall : " + waitTimer);
         // if enough time has passed, allow to climb again
         if (waitTimer > waitTimeout)
         {
             waitTimer -= waitTimeout;
-            agent.autoTraverseOffMeshLink = true;
+//            agent.autoTraverseOffMeshLink = true;
+
+            // todo this breaks the pathfinding
+            agent.enabled = true;
+            enemyProps.EnablePathfind();
         }
     }
     
@@ -106,7 +111,8 @@ public class AboveWallState : IState
     public IState Transition()
     {
         // If agent gets on top off an navmesh link from this state, agent should jump down
-        if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink == true)
+//        if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink)
+        if (agent.isOnOffMeshLink)
         {
             animator.SetTrigger("Strafe");
             return strafeState;
@@ -125,7 +131,7 @@ public class AboveWallState : IState
     
     public override string ToString()
     {
-        // todoooooooooooooooooooooooo check this with will
+        // todo ooooooooooooooooooooooo check this with will
         return "ClimbingUp";
     }
     
