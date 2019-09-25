@@ -3,6 +3,8 @@ using UnityEngine.AI;
 
 public class SpikeMovement : MonoBehaviour
 {
+    private AudioSource audioSource;
+    private AudioClip spikeBreakSound;
     private ParticleSystem createSpikeEarthParticles;
     private ParticleSystem destroySpikeParticles;
     private float speed;
@@ -19,6 +21,7 @@ public class SpikeMovement : MonoBehaviour
     {
         obstacle = GetComponent<NavMeshObstacle>();
         startPos = transform.position;
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -69,7 +72,8 @@ public class SpikeMovement : MonoBehaviour
         }
     }
 
-    public static void CreateComponent(GameObject spike, float speed, Vector3 endPosition, ParticleSystem createSpikeEarthParticles, ParticleSystem destroySpikeParticles)
+    public static void CreateComponent(GameObject spike, float speed, Vector3 endPosition, ParticleSystem createSpikeEarthParticles,
+        ParticleSystem destroySpikeParticles, AudioClip spikeBreakSound)
     {
         SpikeMovement spikeMovement = spike.transform.GetChild(0).gameObject.AddComponent<SpikeMovement>();
         spikeMovement.parentObject = spike;
@@ -77,10 +81,14 @@ public class SpikeMovement : MonoBehaviour
         spikeMovement.endPosition = endPosition;
         spikeMovement.destroySpikeParticles = destroySpikeParticles;
         spikeMovement.createSpikeEarthParticles = createSpikeEarthParticles;
+        spikeMovement.spikeBreakSound = spikeBreakSound;
     }
 
     private void OnDestroy()
     {
+        //audioSource.PlayOneShot(spikeBreakSound);
+        gameObject.transform.position = new Vector3(0, -10, 0);
+
         // Disable obstacle for when this spike is re-created later
         obstacle.enabled = false;
         

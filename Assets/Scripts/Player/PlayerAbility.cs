@@ -285,7 +285,7 @@ public class PlayerAbility : MonoBehaviour
             }
             else
             {
-                rocks.StopRegrowthParticles();
+                rocks.StopRegrowthParticles(activeRock);
             }
             playerEnergy.UpdateAbilityUseTime();
         }

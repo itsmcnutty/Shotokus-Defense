@@ -15,6 +15,9 @@ public class Walls : MonoBehaviour
     public float wallButtonClickDelay = 0.05f;
     public float wallMinHandMovement = .27f;
 
+    [Header("Audio")]
+    public AudioClip raiseWall;
+    public AudioClip breakWall;
     public ParticleSystem wallCreateParticles;
     public ParticleSystem wallDestroyParticles;
 
@@ -87,9 +90,10 @@ public class Walls : MonoBehaviour
                 UnityEngine.ParticleSystem.EmissionModule emissionModule = currentParticles.emission;
                 emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
 
-                WallProperties.CreateComponent(wall, 0, wallDestroyParticles);
+                WallProperties.CreateComponent(wall, 0, wallDestroyParticles, breakWall);
 
                 Destroy(wallOutline);
+                //raiseWall.Play();
             }
             else
             {
@@ -180,6 +184,7 @@ public class Walls : MonoBehaviour
             wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
+        //raiseWall.Stop();
         ResetWallInfo();
     }
 
