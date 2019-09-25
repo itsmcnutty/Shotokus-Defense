@@ -222,6 +222,7 @@ public class TutorialController : MonoBehaviour
     
     private void ToggleTutorialOptions()
     {
+        GameController.Instance.destroyAll();
         tutorialSlideWall.SetActive(!tutorialSlideWall.activeSelf);
         showTutorialPillar.SetActive(!showTutorialPillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);

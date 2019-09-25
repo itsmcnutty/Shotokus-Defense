@@ -176,7 +176,7 @@ public class Walls : MonoBehaviour
         {
             Destroy(wall);
         }
-        else
+        else if(wall)
         {
             // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
             WallProperties.UpdateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed);
