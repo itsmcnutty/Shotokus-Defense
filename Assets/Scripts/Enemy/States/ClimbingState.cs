@@ -24,6 +24,7 @@ public class ClimbingState : IState
     
     // States to transition to
     private StrafeState strafeState;
+    private AboveWallState aboveWallState;
     private RagdollState ragdollState;
 
     public ClimbingState(EnemyMediumProperties enemyProps)
@@ -43,6 +44,7 @@ public class ClimbingState : IState
     public void InitializeStates(EnemyMediumProperties enemyProps)
     {
         strafeState = enemyProps.strafeState;
+        aboveWallState = enemyProps.aboveWallState;
         ragdollState = enemyProps.ragdollState;
     }
     
@@ -73,7 +75,7 @@ public class ClimbingState : IState
         if (!agent.isOnOffMeshLink) // todo this if statement should ask if canClimb = 1? and a differente for canClimb = 2?
         {
             animator.SetTrigger("ClimbEnd");
-            return strafeState;
+            return aboveWallState;
         }
         
         // Transition to ragdoll state if ragdolling

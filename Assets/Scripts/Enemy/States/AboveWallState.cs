@@ -30,6 +30,11 @@ public class AboveWallState : IState
     private ClimbingState climbingState;
     private RagdollState ragdollState;
     private StrafeState strafeState; 
+    
+    // climbing variables
+    private float waitTimer = 0; // keeps track of how much time has occured after climbing
+    private float waitTimeout = 5; // once climbingTimer reaches this counter, agent can climb again
+    private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
 
 
     public AboveWallState(EnemyMediumProperties enemyProps)
@@ -58,10 +63,13 @@ public class AboveWallState : IState
     {
         // Not an obstacle
         obstacle.enabled = false;
+        
+        // todo disable agent for a second before going to strafe
+        agent.autoTraverseOffMeshLink = false;
+
+        waitTimer = 0;
 
 //        agent.enabled = false; // todo testing
-// todo disable agent for a second before going to strafe
-        
 //        animator.SetTrigger();
     }
     
@@ -74,6 +82,23 @@ public class AboveWallState : IState
     {
         Debug.Log("above wall");
         // todo delete -  agent is probably still moving towards player, no need to agent.dest()
+        
+//        if (medEnemyProps.climbCounter >= 2)
+//        {
+//            // Disallow climbing
+//            agent.autoTraverseOffMeshLink = false;
+//            // Update climbing counter
+//            waitTimer += Time.deltaTime;
+//            Debug.Log("Agent cannot move! : " + waitTimer);
+//        }
+        
+        waitTimer += Time.deltaTime;
+        // if enough time has passed, allow to climb again
+        if (waitTimer > waitTimeout)
+        {
+            waitTimer -= waitTimeout;
+            agent.autoTraverseOffMeshLink = true;
+        }
     }
     
     // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -81,7 +106,7 @@ public class AboveWallState : IState
     public IState Transition()
     {
         // If agent gets on top off an navmesh link from this state, agent should jump down
-        if (agent.isOnOffMeshLink)
+        if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink == true)
         {
             animator.SetTrigger("Strafe");
             return strafeState;

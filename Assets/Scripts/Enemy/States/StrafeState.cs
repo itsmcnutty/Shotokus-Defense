@@ -66,7 +66,7 @@ public class StrafeState : IState
 	
 	// climbing variables
 	private float climbingTimer = 0; // keeps track of how much time has occured after climbing
-	private float climbingTimeout = 5; // once climbingTimer reaches this counter, agent can climb again
+	private float climbingTimeout = 3; // once climbingTimer reaches this counter, agent can climb again
 	private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
 
 	// get instance of right hand for shooting
@@ -224,7 +224,7 @@ public class StrafeState : IState
 				agent.autoTraverseOffMeshLink = false;
 				// Update climbing counter
 				climbingTimer += Time.deltaTime;
-				Debug.Log("Agent cannot climb!");
+				Debug.Log("Agent cannot climb! : " + climbingTimer);
 			}
 		
 			// if enough time has passed, allow to climb again
@@ -232,7 +232,7 @@ public class StrafeState : IState
 				climbingTimer -= climbingTimeout;
 				agent.autoTraverseOffMeshLink = true;
 				// todo bug fix - after activating trafversemeshlink on again, agent doestn wanna move
-				agent.SetDestination(playerPos);
+//				agent.SetDestination(playerPos);
 
 				medEnemyProps.climbCounter = 0;
 				Debug.Log("agent can climb!!");
@@ -252,7 +252,7 @@ public class StrafeState : IState
 
 		// Squared variables
 		float sqrStrafeDistance = strafeDistance * strafeDistance;
-
+		
 		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 		if (!isStrafing && agent.enabled)
 		{
