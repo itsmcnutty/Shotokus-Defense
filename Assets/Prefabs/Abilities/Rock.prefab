@@ -49,9 +49,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 00a4807aa51075f48ab6e01779c04865, type: 3}
   volMin: 1
   volMax: 1
-  pitchMin: 0
-  pitchMax: 0.1
-  playOnAwake: 1
+  pitchMin: 1
+  pitchMax: 1.1
+  playOnAwake: 0
 --- !u!1 &9120694383006430445
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,6 +429,6 @@ MonoBehaviour:
   waveFiles: []
   volMin: 1
   volMax: 1
-  pitchMin: 0
-  pitchMax: 0.1
+  pitchMin: 1
+  pitchMax: 1.1
   playOnAwake: 0

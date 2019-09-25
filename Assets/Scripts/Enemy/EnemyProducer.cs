@@ -66,6 +66,14 @@ public class EnemyProducer : MonoBehaviour
         {
             Instantiate(enemyPrefab, randomSpawnPosition(), Quaternion.identity);
         }
+                                                                     
+        // Play random beats                                         
+        WaveCuePlayer waveCuePlayer = spawnLocationObject.GetComponent<WaveCuePlayer>();
+
+        if (!waveCuePlayer.playing)
+        {
+            waveCuePlayer.PlayCue();
+        }
     }
 
     public void Spawn(SpawnInfo spawnInfo)
@@ -76,9 +84,6 @@ public class EnemyProducer : MonoBehaviour
         SpawnEnemy(spawnInfo.NumMedEnemies, mediumEnemyPrefab);
         SpawnEnemy(spawnInfo.NumLightEnemies, lightEnemyPrefab);
 
-        // Play random beats
-        spawnLocationObject.GetComponent<WaveCuePlayer>().PlayCue();
-        
         // update counter of enemies alive
         GameController.Instance.EnemyAddNumAlive(spawnInfo.NumHeavyEnemies + spawnInfo.NumMedEnemies + spawnInfo.NumLightEnemies);
     }

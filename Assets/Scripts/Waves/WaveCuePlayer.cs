@@ -16,6 +16,9 @@ public class WaveCuePlayer : MonoBehaviour
 
     // How many seconds are in one beat of the drum tracks
     private const float BEAT_DURATION = 60f / 85f;
+    
+    // True when the drums are playing
+    public bool playing = false;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +35,7 @@ public class WaveCuePlayer : MonoBehaviour
     // Play the randomized taiko drum sequence cue
     public void PlayCue()
     {
-        Debug.LogWarning("PlayCue");
+        playing = true;
         StartCoroutine(PlayBeats());
     }
 
@@ -43,5 +46,7 @@ public class WaveCuePlayer : MonoBehaviour
             audioSource.PlayOneShot(beats[Random.Range(0, beats.Length)]);
             yield return new WaitForSeconds(BEAT_DURATION);
         }
+
+        playing = false;
     }
 }

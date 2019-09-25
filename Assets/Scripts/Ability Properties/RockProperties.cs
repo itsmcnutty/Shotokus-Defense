@@ -7,7 +7,6 @@ public class RockProperties : MonoBehaviour
     private AudioClip[] rockHitFoliage;
     private PhysicMaterial foliageMaterial;
     
-    private AudioSource rockBreak;
     private SoundPlayOneshot randomizedAudioSource;
     private ParticleSystem destroyRockParticles;
     
@@ -42,6 +41,9 @@ public class RockProperties : MonoBehaviour
         properties.rockHitSolid = rockHitSolid;
         properties.rockHitFoliage = rockHitFoliage;
         properties.foliageMaterial = foliageMaterial;
+        
+        // Get the child which holds the audio component that plays the spawn sound and play it
+        properties.transform.GetChild(0).gameObject.GetComponent<SoundPlayOneshot>().Play();
     }
 
     public void DestroyRock ()
@@ -61,7 +63,6 @@ public class RockProperties : MonoBehaviour
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
         Rocks.MakeRockAvailable(gameObject);
-        rockBreak.Play();
         Destroy(this);
     }
 
