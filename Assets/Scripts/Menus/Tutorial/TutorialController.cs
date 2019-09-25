@@ -46,7 +46,7 @@ public class TutorialController : MonoBehaviour
     private TutorialSections currentSlideType;
     private List<TutorialSlide> currentSlideSet;
     private int currentSlide;
-    private bool tutorialWaveInProgress;
+    public static bool tutorialWaveInProgress;
     private Transform dummyTransform;
     private GameObject currentTargetDummy;
 
