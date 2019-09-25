@@ -3,11 +3,31 @@
     {
       "waveSections": {
         "0": {
+          "Location": "South",
+          "NumLightEnemies": 2,
+          "NumMedEnemies": 0,
+          "NumHeavyEnemies": 1
+        },
+        "10": {
           "Location": "North",
           "NumLightEnemies": 1,
-          "NumMedEnemies": 1,
+          "NumMedEnemies": 2,
           "NumHeavyEnemies": 1
+        },
+        "25": {
+          "Location": "East",
+          "NumLightEnemies": 2,
+          "NumMedEnemies": 0,
+          "NumHeavyEnemies": 0
+        },
+        "30": {
+          "Location": "West",
+          "NumLightEnemies": 2,
+          "NumMedEnemies": 0,
+          "NumHeavyEnemies": 0
         }
+
+
       }
     }
   ]
