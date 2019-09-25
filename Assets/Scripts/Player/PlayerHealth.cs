@@ -24,13 +24,12 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         Color newColor = new Color(1, 1, 1, 0);
-        damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
+        damageIndicator.material.SetColor("_BaseColor", newColor);
         prevHealth = maxHealth;
         currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = maxHealth;
         SetHealthBarText();
-        TakeDamage(500);
     }
 
     // Update is called once per frame
