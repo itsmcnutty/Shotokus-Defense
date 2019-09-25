@@ -477,7 +477,7 @@ public class SpikeQuicksand : MonoBehaviour
             Vector3 spikeEndPosition = spike.transform.position;
             spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
-            spike.GetComponent<AudioSource>().PlayOneShot(spikeRaiseSound);
+            //spike.GetComponent<AudioSource>().PlayOneShot(spikeRaiseSound);
 
             // Adds the SpikeMovement component to the spike
             SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles, spikeBreakSound);

@@ -102,7 +102,7 @@ public class QuicksandProperties : MonoBehaviour
 
     private void DestroyQuicksand()
     {
-        audioSource.PlayOneShot(quicksandBreakSound);
+        //audioSource.PlayOneShot(quicksandBreakSound);
         Destroy(gameObject);
     }
 
@@ -119,7 +119,7 @@ public class QuicksandProperties : MonoBehaviour
             // Slows any object within the quicksand
             other.attachedRigidbody.velocity /= quicksandSpeedReduction;
         }
-        audioSource.PlayOneShot(quicksandSlowSound);
+        //audioSource.PlayOneShot(quicksandSlowSound);
     }
 
     private void OnTriggerExit(Collider other)
