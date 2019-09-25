@@ -20,10 +20,9 @@ public class InteractLaserButton : MonoBehaviour
     
     private bool isEnabled; // true if lasers are enable, false otherwise
 
-    [Header("Sounds")]
-    
-    public AudioClip menuClick;
-    public AudioClip menuMisclick;
+    [Header("Audio Sources")]
+    public AudioSource menuClick;
+    public AudioSource menuMisclick;
 
     private ControllerArc rightArc;
     private ControllerArc leftArc;
@@ -69,12 +68,6 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerOut += PointerOutside;
         laserPointerL.PointerClick += OnPointerClick;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
     public void PointerInside(object sender, PointerEventArgs e)
     {
@@ -108,13 +101,13 @@ public class InteractLaserButton : MonoBehaviour
         if (selected && button != null)
         {
             // Play click sound
-            audioSource.PlayOneShot(menuClick);
+            menuClick.Play();
             button.onClick.Invoke();
         }
         else
         {
             // Play misclick sound
-            audioSource.PlayOneShot(menuMisclick);
+            menuMisclick.Play();
         }
 
     }
