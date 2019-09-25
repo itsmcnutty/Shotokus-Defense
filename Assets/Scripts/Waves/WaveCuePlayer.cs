@@ -21,16 +21,14 @@ public class WaveCuePlayer : MonoBehaviour
     // True when the drums are playing
     [NonSerialized] public bool playing = false;
 
-    private void Start()
-    {
-        
-    }
-
-    // Play the randomized taiko drum sequence cue
+    // If taiko drum sequence is not currently playing, play a randomized sequence
     public void PlayCue()
     {
-        playing = true;
-        StartCoroutine(PlayBeats());
+        if (!playing)
+        {
+            playing = true;
+            StartCoroutine(PlayBeats());
+        }
     }
 
     private IEnumerator PlayBeats()

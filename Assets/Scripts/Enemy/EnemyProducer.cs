@@ -33,13 +33,6 @@ public class EnemyProducer : MonoBehaviour
     {
         enemyQueue = new Queue<EnemyInfo>();
     }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
     
     // Function for spawning enemies in random location inside spawnArea
     // Returns: Vector3 coordinates
@@ -66,14 +59,9 @@ public class EnemyProducer : MonoBehaviour
         {
             Instantiate(enemyPrefab, randomSpawnPosition(), Quaternion.identity);
         }
-                                                                     
-        // Play random beats                                         
-        WaveCuePlayer waveCuePlayer = spawnLocationObject.GetComponent<WaveCuePlayer>();
-
-        if (!waveCuePlayer.playing)
-        {
-            waveCuePlayer.PlayCue();
-        }
+        
+        // Play random beats
+        spawnLocationObject.GetComponentInChildren<WaveCuePlayer>().PlayCue();
     }
 
     public void Spawn(SpawnInfo spawnInfo)
