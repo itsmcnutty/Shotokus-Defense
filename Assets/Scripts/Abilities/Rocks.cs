@@ -231,6 +231,9 @@ public class Rocks : MonoBehaviour
             // Gets a rock from the stash if one is available
             newRock = availableRocks.Dequeue();
             newRock.SetActive(true);
+            
+            // Get the child which holds the audio component that plays the spawn sound and play it
+            newRock.transform.GetChild(0).GetComponent<SoundPlayOneshot>().Play();
         }
         else
         {
