@@ -215,7 +215,7 @@ public class EnemyHealth : CallParentCollision
 		damageScalar *= child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
 		if(rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
 		{
-			if((damage * damageScalar) < 200)
+			if((damage * damageScalar) < 150)
 			{
 				damageScalar = 0;
 			}

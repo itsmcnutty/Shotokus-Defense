@@ -29,6 +29,7 @@ public class TutorialController : MonoBehaviour
     
     [Header("Game Objects")]
     public GameObject tutorialSlideWall;
+    public GameObject backSlideButton;
     public GameObject showTutorialPillar;
     public GameObject startWavePillar;
     public GameObject startTutorialPillar;
@@ -51,6 +52,7 @@ public class TutorialController : MonoBehaviour
     private Transform dummyTransform;
     private GameObject currentTargetDummy;
     private AudioSource audioSource;
+    private bool tutorialSlideDone;
 
     // Instance getter and initialization
     public static TutorialController Instance
@@ -117,6 +119,7 @@ public class TutorialController : MonoBehaviour
     {
         if ((currentSlide + 1) == currentSlideSet.Count)
         {
+            tutorialSlideDone = true;
             ToggleTutorialOptions();
             return;
         }
@@ -154,10 +157,18 @@ public class TutorialController : MonoBehaviour
 
         if (currentSlide == 0)
         {
-            backSlideText.text = "Close";
+            if(tutorialSlideDone)
+            {
+                backSlideText.text = "Close";
+            }
+            else
+            {
+                backSlideButton.SetActive(false);
+            }
         }
         else
         {
+            backSlideButton.SetActive(true);
             backSlideText.text = "Back";
         }
     }
@@ -198,6 +209,7 @@ public class TutorialController : MonoBehaviour
                 SelectTutorial(TutorialSections.Wall);
                 break;
         }
+        tutorialSlideDone = false;
         tutorialWaveInProgress = false;
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
