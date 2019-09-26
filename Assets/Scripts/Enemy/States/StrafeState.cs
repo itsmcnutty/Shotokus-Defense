@@ -224,21 +224,16 @@ public class StrafeState : IState
 				agent.autoTraverseOffMeshLink = false;
 				// Update climbing counter
 				climbingTimer += Time.deltaTime;
-				Debug.Log("Agent cannot climb! : " + climbingTimer);
 			}
 		
 			// if enough time has passed, allow to climb again
 			if (climbingTimer > climbingTimeout) {
 				climbingTimer -= climbingTimeout;
 				agent.autoTraverseOffMeshLink = true;
-				// todo bug fix - after activating trafversemeshlink on again, agent doestn wanna move
-//				agent.SetDestination(playerPos);
 
 				medEnemyProps.climbCounter = 0;
-				Debug.Log("agent can climb!!");
 			}
 		}
-//		Debug.Log("agent status: " + agent.enabled);
 		
 		// Move to player if outside attack range, otherwise transition
 //		if (agent.enabled && !debugNoWalk)
@@ -256,16 +251,23 @@ public class StrafeState : IState
 		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 		if (!isStrafing && agent.enabled)
 		{
-//			Debug.Log("first time in strafe state");
+			Debug.Log("first time in strafe state");
 			float distanceToPlayer = props.calculateSqrDist(playerPos, gameObjPos);
 
 			// do not enter here if already strafing
 			isStrafing = true;
 			
 			// recalculate the totalCurrentradiusReduction if the enemy is already inside the strafe Distance radius when entering strafe state
-			if (distanceToPlayer < sqrStrafeDistance)
+			if (radiusReduction == 0)
 			{
-				totalCurrentReduction = sqrStrafeDistance - distanceToPlayer;
+				// ignore light enemy
+				totalCurrentReduction = 0;
+			}
+			else if (distanceToPlayer < sqrStrafeDistance)
+			{
+				// todo fix bug, now this is broken because of square distance, medium enemies just walk straight to player if hit inside and land inside radius
+				float sqrTotalCurrentReduction = sqrStrafeDistance - distanceToPlayer;
+				totalCurrentReduction = (float) Math.Sqrt(sqrTotalCurrentReduction);
 			}
             
 			// Calculate points around the target (player) given a set radius, and every 45 degrees (pi/4 radians)
@@ -276,19 +278,19 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-//			Debug.Log("my destination is " + circularPointDest);
+			Debug.Log("my destination is " + circularPointDest);
 		}
 		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
-//			Debug.Log("strafe state: moving in circles");
+			Debug.Log("strafe state: moving in circles");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			
 			float strafeRemainingDist = props.calculateSqrDist(circularPointDest, gameObjPos);
-//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
 			
             // todo remove later
 //            agent.SetDestination(circularPointDest);
@@ -311,7 +313,7 @@ public class StrafeState : IState
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
 //				Debug.Log("last point index: " + lastPointIndex);
-//                Debug.Log("moving towards " +circularPointDest);
+                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 			}
 		}
@@ -344,11 +346,9 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
-		Debug.Log("strafe");
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
-//			Debug.Log("ragdoll");
 			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}
@@ -356,9 +356,6 @@ public class StrafeState : IState
 		// Transition into climbing up state
 		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink && medEnemyProps.climbCounter == 0)
 		{
-			Debug.Log("entering climb state");
-//			canClimb++;
-//			medEnemyProps.climbCounter++;
 			animator.SetTrigger("Climb");
 			return climbingState;
 		}
@@ -366,9 +363,6 @@ public class StrafeState : IState
 		// Transition to jumping down state
 		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink && medEnemyProps.climbCounter == 1)
 		{
-			Debug.Log("entering jump state");
-//			canClimb++;
-//			medEnemyProps.climbCounter++;
 			animator.SetTrigger("Jump");
 			return climbingState;
 		}
