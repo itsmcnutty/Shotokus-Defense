@@ -12,11 +12,13 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth = 100;
     public float regenHealthRate;
     public bool debugShowHealthText = false;
+    public float LOW_HEALTH_THRESHOLD;
 
     [Header("Sounds")]
     public AudioClip healLoop;
     public AudioClip healFull;
-    
+    public AudioSource lowHealth;
+
     private float prevHealth; // For calculating change in health per frame
     private float currentHealth;
 
@@ -67,6 +69,16 @@ public class PlayerHealth : MonoBehaviour
             currentHealth -= health;
             healthBar.value = currentHealth;
             SetHealthBarText();
+            
+            // Start low health loop
+            if (currentHealth / maxHealth > LOW_HEALTH_THRESHOLD)
+            {
+                lowHealth.Play();
+            }
+            else
+            {
+                lowHealth.Stop();
+            }
         }
         else
         {
@@ -90,6 +102,12 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             audioSource.PlayOneShot(healFull);
+        }
+        
+        // Stop low health loop
+        if (currentHealth / maxHealth > LOW_HEALTH_THRESHOLD)
+        {
+            lowHealth.Stop();
         }
     }
 
