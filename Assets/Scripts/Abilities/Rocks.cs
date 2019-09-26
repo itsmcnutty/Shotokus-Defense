@@ -195,7 +195,7 @@ public class Rocks : MonoBehaviour
                     {
                         // Gets a rock from the stash and adds the RockProperties component
                         GameObject newRock = GetNewRock();
-                        activeRock.GetComponent<RockProperties>().StartDestructionTimer();
+                        newRock.GetComponent<RockProperties>().StartDestructionTimer();
 
                         // Mimics the data from the original rock to create a new one
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
