@@ -31,6 +31,7 @@ public class TutorialController : MonoBehaviour
     public GameObject tutorialSlideWall;
     public GameObject showTutorialPillar;
     public GameObject startWavePillar;
+    public GameObject startTutorialPillar;
     public GameObject targetDummy;
 
     [Header("Tutorial Videos")]
@@ -203,12 +204,20 @@ public class TutorialController : MonoBehaviour
         ToggleTutorialOptions();
     }
 
+    public void StartTutorial()
+    {
+        MenuUIController.Instance.ToggleLaser();
+        startTutorialPillar.SetActive(false);
+        tutorialSlideWall.SetActive(true);
+    }
+
     public void EndTutorial()
     {
         tutorialWaveInProgress = false;
         tutorialSlideWall.SetActive(false);
         showTutorialPillar.SetActive(false);
         startWavePillar.SetActive(false);
+        startTutorialPillar.SetActive(false);
     }
     
     public void SpawnNewDummy()

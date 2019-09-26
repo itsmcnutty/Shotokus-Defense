@@ -174,6 +174,10 @@ public class ControllerArc : MonoBehaviour
 				destinationReticleTransform.gameObject.SetActive(false);
 
 				canUseAbility = false;
+				if (hitInfo.collider.gameObject.GetComponent<Interactable>() != null)
+				{
+					hand.hoveringInteractable = hitInfo.collider.gameObject.GetComponent<Interactable>();
+				}
 			}
 			else
 			{
