@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 5874246746427080137}
   - component: {fileID: 5874246746429980139}
   - component: {fileID: 5874246746428849963}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower_h_a_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &5874246746427080137
 Transform:
@@ -89,12 +89,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5874246746427080139}
   - component: {fileID: 5874246746413558123}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &5874246746427080139
 Transform:
@@ -127,15 +127,15 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.10172848
+  - screenRelativeHeight: 0.05331805
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5874246746428849963}
-  - screenRelativeHeight: 0.05225444
+  - screenRelativeHeight: 0.023706047
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5874246746428849961}
-  - screenRelativeHeight: 0.021692717
+  - screenRelativeHeight: 0.010750795
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5874246746428849967}
@@ -151,12 +151,12 @@ GameObject:
   - component: {fileID: 5874246746427080141}
   - component: {fileID: 5874246746429980143}
   - component: {fileID: 5874246746428849967}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower_h_a_01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &5874246746427080141
 Transform:
@@ -230,12 +230,12 @@ GameObject:
   - component: {fileID: 5874246746427080143}
   - component: {fileID: 5874246746429980137}
   - component: {fileID: 5874246746428849961}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower_h_a_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &5874246746427080143
 Transform:
