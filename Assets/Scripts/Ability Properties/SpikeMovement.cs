@@ -87,7 +87,7 @@ public class SpikeMovement : MonoBehaviour
     private void OnDestroy()
     {
         //audioSource.PlayOneShot(spikeBreakSound);
-        gameObject.transform.position = new Vector3(0, -10, 0);
+        parentObject.transform.position = new Vector3(0, -10, 0);
 
         // Disable obstacle for when this spike is re-created later
         obstacle.enabled = false;
@@ -104,6 +104,7 @@ public class SpikeMovement : MonoBehaviour
         // Move the spike, disable it, and readd it to the stash
         parentObject.transform.position = new Vector3(0, -10, 0);
         parentObject.SetActive(false);
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
         SpikeQuicksand.MakeSpikeAvailable(parentObject);
     }
 }
