@@ -21,16 +21,21 @@ public class StartGameButton : MonoBehaviour
 
     public void StartGameWithTutorial()
     {
+        StartGame();
         GameController.Instance.StartGameWithTutorial();
-        spawnArea.SetActive(false);
     }
 
     public void StartGameWithoutTutorial()
     {
+        StartGame();
         GameController.Instance.StartGameWithoutTutorial();
+        TutorialController.Instance.EndTutorial();
+    }
+
+    private void StartGame()
+    {
         MenuUIController.Instance.ToggleLaser();
         spawnArea.SetActive(false);
-        TutorialController.Instance.EndTutorial();
     }
     
 }
