@@ -107,7 +107,7 @@ public class WallProperties : MonoBehaviour
             CancelInvoke("MoveWall");
         }
 
-        if (other.gameObject.name == "Player Ability Area")
+        if (other.gameObject.name == "Player Ability Area" && wallHeightPercent != 0)
         {
             // Destroys the wall if it enters the player's play area
             Destroy(gameObject);
