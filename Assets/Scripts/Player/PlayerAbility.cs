@@ -175,7 +175,7 @@ public class PlayerAbility : MonoBehaviour
             {
                 walls.EnterDrawMode(hand, otherHand);
             }
-            else if(!walls.OneHandHeld())
+            else if (!walls.OneHandHeld())
             {
                 walls.ExitDrawMode(hand);
             }
@@ -183,6 +183,18 @@ public class PlayerAbility : MonoBehaviour
         else if (walls.WallOutlineIsActive())
         {
             walls.ActiveDrawMode(arc, otherArc);
+        }
+
+        if (RockIsActive())
+        {
+            if (activeRock.GetComponent<RockProperties>().CollidedWithEnemy())
+            {
+                hand.TurnOffVelocityMovement();
+            }
+            else if (activeRock.GetComponent<RockProperties>().CollidedWithNonEnemy())
+            {
+                hand.TurnOnVelocityMovement();
+            }
         }
     }
 
@@ -214,15 +226,15 @@ public class PlayerAbility : MonoBehaviour
     private void TriggerNewAbility()
     {
         GameObject hitObject = arc.GetPointerHitObject();
-        if(hitObject && hitObject.name.Equals("Show Tutorial Sphere"))
+        if (hitObject && hitObject.name.Equals("Show Tutorial Sphere"))
         {
             TutorialController.Instance.ShowTutorial();
         }
-        else if(hitObject && hitObject.name.Equals("Start Wave Sphere"))
+        else if (hitObject && hitObject.name.Equals("Start Wave Sphere"))
         {
             TutorialController.Instance.StartWave();
         }
-        else if(hitObject && hitObject.name.Equals("Teleport Sphere"))
+        else if (hitObject && hitObject.name.Equals("Teleport Sphere"))
         {
             GameController.Instance.Teleport(true);
         }
@@ -273,7 +285,7 @@ public class PlayerAbility : MonoBehaviour
             }
             else
             {
-                rocks.StopRegrowthParticles();
+                rocks.StopRegrowthParticles(activeRock);
             }
             playerEnergy.UpdateAbilityUseTime();
         }
@@ -365,7 +377,7 @@ public class PlayerAbility : MonoBehaviour
     {
         return spikeQuicksandOutlines.Count != 0;
     }
-    
+
     public static void ToggleRockAbility()
     {
         rockAbilityEnabled = !rockAbilityEnabled;
@@ -460,7 +472,7 @@ public class PlayerAbility : MonoBehaviour
     public IEnumerator RepositionAbilityRing()
     {
         yield return new WaitForEndOfFrame();
-        
+
         abilityRing.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
 
         // Changes height of the ability ring to be at the players feet

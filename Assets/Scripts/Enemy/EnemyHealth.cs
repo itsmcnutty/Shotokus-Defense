@@ -184,7 +184,7 @@ public class EnemyHealth : CallParentCollision
 		switch (tag)
 		{
 			case "Rock":
-				damage *= GetRockDamageScalar(child);
+				damage *= GetRockDamageScalar(child, other.gameObject, damage);
 				break;
 			case "Wall":
 				damage *= 0.5f;
@@ -209,11 +209,18 @@ public class EnemyHealth : CallParentCollision
 		return damage;
 	}
 
-	private float GetRockDamageScalar(GameObject child)
+	private float GetRockDamageScalar(GameObject child, GameObject rock, float damage)
 	{
 		float damageScalar = 3.5f;
 		damageScalar *= child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
-		if(child.name.Contains("Head"))
+		if(rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
+		{
+			if((damage * damageScalar) < 200)
+			{
+				damageScalar = 0;
+			}
+		}
+		else if(child.name.Contains("Head"))
 		{
 			damageScalar *= 8;
 		}

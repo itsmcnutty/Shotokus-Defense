@@ -4,12 +4,13 @@ using UnityEngine.AI;
 
 public class WallProperties : MonoBehaviour
 {
+    private AudioClip breakWall;
+    private float wallLifetime = 30.0f;
     private float wallHeightPercent;
     private float wallMoveSpeed = 0f;
     private Vector3 direction = new Vector3();
     private ParticleSystem destroyWallParticles;
 
-    private float wallLifetime = 30.0f;
     private NavMeshSurface surfaceWalls;
     private GameObject parentObject;
 
@@ -23,6 +24,7 @@ public class WallProperties : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //breakWall.Play();
         Destroy(gameObject, wallLifetime);
     }
 
@@ -40,7 +42,8 @@ public class WallProperties : MonoBehaviour
         emission.rateOverTimeMultiplier = parentObject.transform.localScale.x * emission.rateOverTimeMultiplier;
     }
 
-    public static void CreateComponent(GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed, ParticleSystem destroyWallParticles)
+    public static void CreateComponent(GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed,
+    ParticleSystem destroyWallParticles, AudioClip breakWall)
     {
         WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties>();
         wallProperties.parentObject = wall;
@@ -48,9 +51,10 @@ public class WallProperties : MonoBehaviour
         wallProperties.direction = direction;
         wallProperties.wallMoveSpeed = wallMoveSpeed;
         wallProperties.destroyWallParticles = destroyWallParticles;
+        wallProperties.breakWall = breakWall;
     }
 
-    public static void CreateComponent(GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles)
+    public static void CreateComponent(GameObject wall, float wallHeightPercent, ParticleSystem destroyWallParticles, AudioClip breakWall)
     {
         WallProperties wallProperties = wall.transform.GetChild(0).gameObject.AddComponent<WallProperties>();
         wallProperties.parentObject = wall;
@@ -58,6 +62,7 @@ public class WallProperties : MonoBehaviour
         wallProperties.direction = Vector3.zero;
         wallProperties.wallMoveSpeed = 0;
         wallProperties.destroyWallParticles = destroyWallParticles;
+        wallProperties.breakWall = breakWall;
     }
 
     public static void UpdateComponent(GameObject wall, float wallHeightPercent, Vector3 direction, float wallMoveSpeed)
@@ -68,6 +73,14 @@ public class WallProperties : MonoBehaviour
             wallProperties.wallHeightPercent = wallHeightPercent;
             wallProperties.direction = direction;
             wallProperties.wallMoveSpeed = wallMoveSpeed;
+            if(wallMoveSpeed == 0)
+            {
+                Rigidbody[] rigidbodyWalls = wall.GetComponentsInChildren<Rigidbody>();
+                foreach(Rigidbody rigidbodyWall in rigidbodyWalls)
+                {
+                    rigidbodyWall.isKinematic = true;
+                }
+            }
         }
     }
 
@@ -82,13 +95,15 @@ public class WallProperties : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 9)
+        if (other.gameObject.layer == 9 && wallHeightPercent == 0)
         {
             other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
         }
         if (!other.CompareTag("Ground") && other.gameObject.layer != 11 && other.gameObject.layer != 17)
         {
             // Stops the wall from moving when it collides with something it can't move through
+            Rigidbody rigidbodyWall = gameObject.GetComponent<Rigidbody>();
+            rigidbodyWall.isKinematic = true;
             CancelInvoke("MoveWall");
         }
 

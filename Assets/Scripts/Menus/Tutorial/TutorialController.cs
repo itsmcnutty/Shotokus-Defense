@@ -46,9 +46,10 @@ public class TutorialController : MonoBehaviour
     private TutorialSections currentSlideType;
     private List<TutorialSlide> currentSlideSet;
     private int currentSlide;
-    private bool tutorialWaveInProgress;
+    public static bool tutorialWaveInProgress;
     private Transform dummyTransform;
     private GameObject currentTargetDummy;
+    private AudioSource audioSource;
 
     // Instance getter and initialization
     public static TutorialController Instance
@@ -73,6 +74,8 @@ public class TutorialController : MonoBehaviour
         dummyTransform = targetDummy.transform;
         SpawnNewDummy();
         currentTargetDummy.SetActive(false);
+        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -165,6 +168,10 @@ public class TutorialController : MonoBehaviour
 
     public void StartWave()
     {
+        // Play sound
+        audioSource.Play();
+        
+        // Begin wave
         GameController.Instance.TogglePauseWaveSystem();
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
@@ -212,8 +219,10 @@ public class TutorialController : MonoBehaviour
         currentTargetDummy.name = "Target Dummy";
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
     }
+    
     private void ToggleTutorialOptions()
     {
+        GameController.Instance.destroyAll();
         tutorialSlideWall.SetActive(!tutorialSlideWall.activeSelf);
         showTutorialPillar.SetActive(!showTutorialPillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);

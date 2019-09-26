@@ -28,11 +28,20 @@ public class SpikeQuicksand : MonoBehaviour
     public float maxEarthquakeDistance = 3f;
     public float earthquakeDuration = 1f;
 
+    
+    [Header("Audio")]
+    public AudioClip spikeRaiseSound;
+    public AudioClip spikeBreakSound;
+    public AudioClip quicksandIdleSound;
+    public AudioClip quicksandSlowSound;
+    public AudioClip quicksandBreakSound;
+    
     public ParticleSystem createSpikeRockParticles;
     public ParticleSystem createSpikeEarthParticles;
     public ParticleSystem destroySpikeParticles;
     public ParticleSystem createQuicksandParticles;
     public ParticleSystem destroyQuicksandParticles;
+    
 
     private GameObject areaOutlinePrefab;
     private PlayerEnergy playerEnergy;
@@ -204,7 +213,7 @@ public class SpikeQuicksand : MonoBehaviour
             {
                 numOutlines++;
                 energyCost += energyPerSpikeInChain;
-                
+
                 // Checks that the new spike can be created
                 if (CanMakeSpikeChain(spikeQuicksandOutlines, numOutlines, energyCost))
                 {
@@ -216,7 +225,7 @@ public class SpikeQuicksand : MonoBehaviour
                     // Calculates the position of the new outline
                     float posX = arcPos.x + (i * spikeChainOffset.x) - (spikeChainOffset.x * spikeQuicksandOutlines.Count) / 2;
                     float posZ = arcPos.z + (i * spikeChainOffset.y) - (spikeChainOffset.y * spikeQuicksandOutlines.Count) / 2;
-                    
+
                     // Corrects the height of the new outline to be on the ground, starting from the previous outline's height
                     GameObject lastOutlinePlaced = spikeQuicksandOutlines[spikeQuicksandOutlines.Count - 1];
                     newOutline.transform.position = new Vector3(posX, lastOutlinePlaced.transform.position.y, posZ);
@@ -321,8 +330,8 @@ public class SpikeQuicksand : MonoBehaviour
         spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
 
         // Adds the quicksand component to begin the death countdown and perform the earthquake if active
-        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration,
-            destroyQuicksandParticles);
+        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, destroyQuicksandParticles,
+            quicksandIdleSound, quicksandSlowSound, quicksandBreakSound);
         if (!PlayerAbility.EarthquakeEnabled)
         {
             // Increments the earthquake counter if it's not active
@@ -420,13 +429,15 @@ public class SpikeQuicksand : MonoBehaviour
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
+                spike.GetComponent<AudioSource>().PlayOneShot(spikeRaiseSound);
+
                 // Plays the particle animation for creating spikes
                 ParticleSystem rockParticleSystem = Instantiate(createSpikeRockParticles);
                 rockParticleSystem.transform.position = spike.transform.position;
                 rockParticleSystem.transform.localScale = spike.transform.localScale;
 
                 // Adds the SpikeMovement component to the spike to start the death countdown once it reaches it's final height and play particles later in life
-                SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles);
+                SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles, spikeBreakSound);
             }
             // Removes all spike locations calculated
             allSpikes.Clear();
@@ -466,8 +477,10 @@ public class SpikeQuicksand : MonoBehaviour
             Vector3 spikeEndPosition = spike.transform.position;
             spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
+            //spike.GetComponent<AudioSource>().PlayOneShot(spikeRaiseSound);
+
             // Adds the SpikeMovement component to the spike
-            SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles);
+            SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles, spikeBreakSound);
             StartCoroutine(PlayerAbility.LongVibration(hand, .05f, 2000));
 
             // Repositions the outline to the next spike location
@@ -482,7 +495,7 @@ public class SpikeQuicksand : MonoBehaviour
                 break;
             }
             outline.transform.position += new Vector3(0, verticleCorrection, 0);
-            
+
             // Delays the next spike being created by .1 seconds
             yield return new WaitForSeconds(0.1f);
         }
