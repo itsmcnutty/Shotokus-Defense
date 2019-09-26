@@ -66,7 +66,7 @@ public class StrafeState : IState
 	
 	// climbing variables
 	private float climbingTimer = 0; // keeps track of how much time has occured after climbing
-	private float climbingTimeout = 5; // once climbingTimer reaches this counter, agent can climb again
+	private float climbingTimeout = 3; // once climbingTimer reaches this counter, agent can climb again
 	private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
 
 	// get instance of right hand for shooting
@@ -213,24 +213,31 @@ public class StrafeState : IState
 		
 		// Turn to player
 		props.TurnToPlayer();
-		
 
-//		if (medEnemyProps.climbCounter >= 2)
-//		{
-//			// Disallow climbing
-//			agent.autoTraverseOffMeshLink = false;
-//			// Update climbing counter
-//			climbingTimer += Time.deltaTime;
-////			Debug.Log("Agent cannot climb!");
-//		}
-//		
-//		// if enough time has passed, allow to climb again
-//		if (climbingTimer > climbingTimeout) {
-//			climbingTimer -= climbingTimeout;
-//			agent.autoTraverseOffMeshLink = true;
-//			medEnemyProps.climbCounter = 0;
-////			Debug.Log("agent can climb!!");
-//		}
+		// ignore light enemy
+		// todo come back to this
+		if (medEnemyProps != null)
+		{
+			if (medEnemyProps.climbCounter >= 2)
+			{
+				// Disallow climbing
+				agent.autoTraverseOffMeshLink = false;
+				// Update climbing counter
+				climbingTimer += Time.deltaTime;
+				Debug.Log("Agent cannot climb! : " + climbingTimer);
+			}
+		
+			// if enough time has passed, allow to climb again
+			if (climbingTimer > climbingTimeout) {
+				climbingTimer -= climbingTimeout;
+				agent.autoTraverseOffMeshLink = true;
+				// todo bug fix - after activating trafversemeshlink on again, agent doestn wanna move
+//				agent.SetDestination(playerPos);
+
+				medEnemyProps.climbCounter = 0;
+				Debug.Log("agent can climb!!");
+			}
+		}
 //		Debug.Log("agent status: " + agent.enabled);
 		
 		// Move to player if outside attack range, otherwise transition
@@ -245,7 +252,7 @@ public class StrafeState : IState
 
 		// Squared variables
 		float sqrStrafeDistance = strafeDistance * strafeDistance;
-
+		
 		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 		if (!isStrafing && agent.enabled)
 		{
@@ -337,7 +344,7 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
-//		Debug.Log("strafe");
+		Debug.Log("strafe");
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
@@ -346,13 +353,23 @@ public class StrafeState : IState
 			return ragdollState;
 		}
 		
-		// Transition to climbing state if climbing
-		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink)
+		// Transition into climbing up state
+		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink && medEnemyProps.climbCounter == 0)
 		{
-//			Debug.Log("entering climb state");
-			// todo do something with animator
+			Debug.Log("entering climb state");
 //			canClimb++;
 //			medEnemyProps.climbCounter++;
+			animator.SetTrigger("Climb");
+			return climbingState;
+		}
+		
+		// Transition to jumping down state
+		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink && medEnemyProps.climbCounter == 1)
+		{
+			Debug.Log("entering jump state");
+//			canClimb++;
+//			medEnemyProps.climbCounter++;
+			animator.SetTrigger("Jump");
 			return climbingState;
 		}
 		
@@ -370,7 +387,7 @@ public class StrafeState : IState
 		}
 		
 		// If within melee range, transition to melee state
-		if (distanceToPlayer < meleeRadius * meleeRadius)
+		if (distanceToPlayer < meleeRadius * meleeRadius && meleeState != null)
 		{
 			animator.SetTrigger("Melee");
 			return meleeState;

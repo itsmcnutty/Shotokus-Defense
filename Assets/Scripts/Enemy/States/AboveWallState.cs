@@ -1,0 +1,140 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class AboveWallState : IState
+{
+    // The enemy's animator component
+    private Animator animator;
+    
+    // This is the agent to move around by NavMesh
+    private NavMeshAgent agent;
+    // The NavMeshObstacle used to block enemies pathfinding when not moving
+    private NavMeshObstacle obstacle;
+    // The enemy's ragdoll controller
+    private RagdollController ragdollController;
+
+    // reference to player gameobject
+    private GameObject player;
+    // Player's head's world position
+    private Vector3 playerPos;
+    // This enemy's GameObject
+    private GameObject gameObj;
+    // The enemy properties component
+    private EnemyProperties enemyProps;
+
+    private EnemyMediumProperties medEnemyProps;
+    
+    // States to transition to
+    private ClimbingState climbingState;
+    private RagdollState ragdollState;
+    private StrafeState strafeState; 
+    
+    // climbing variables
+    private float waitTimer = 0; // keeps track of how much time has occured after climbing
+    private float waitTimeout = 1f; // once climbingTimer reaches this counter, agent can climb again
+//    private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
+
+
+    public AboveWallState(EnemyMediumProperties enemyProps)
+    {
+        animator = enemyProps.animator;
+        agent = enemyProps.agent;
+        obstacle = enemyProps.obstacle;
+        animator = enemyProps.animator;
+        gameObj = enemyProps.gameObject;
+        player = enemyProps.player;
+        playerPos = enemyProps.playerPos;
+        ragdollController = enemyProps.ragdollController;
+        this.enemyProps = enemyProps;
+    }
+    
+    // Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
+    // necessary states for the machine
+    public void InitializeStates(EnemyMediumProperties enemyProps)
+    {
+        strafeState = enemyProps.strafeState;
+        ragdollState = enemyProps.ragdollState;
+    }
+    
+    // Called upon entering this state from anywhere
+    public void Enter()
+    {
+        // Not an obstacle
+        obstacle.enabled = false;
+        
+        // todo disable agent for a second before going to strafe
+//        agent.autoTraverseOffMeshLink = false;
+
+        waitTimer = 0;
+
+        // todo this breaks the pathfinding
+        agent.isStopped = true;
+//        agent.enabled = false; 
+    }
+    
+    // Called upon exiting this state
+    public void Exit()
+    { }
+
+    // Called during Update while currently in this state
+    public void Action()
+    {
+        // todo delete -  agent is probably still moving towards player, no need to agent.dest()
+        
+//        if (medEnemyProps.climbCounter >= 2)
+//        {
+//            // Disallow climbing
+//            agent.autoTraverseOffMeshLink = false;
+//            // Update climbing counter
+//            waitTimer += Time.deltaTime;
+//            Debug.Log("Agent cannot move! : " + waitTimer);
+//        }
+        
+        waitTimer += Time.deltaTime;
+        Debug.Log("above wall : " + waitTimer);
+        // if enough time has passed, allow to climb again
+        if (waitTimer > waitTimeout)
+        {
+            waitTimer -= waitTimeout;
+//            agent.autoTraverseOffMeshLink = true;
+
+            // todo this breaks the pathfinding
+//            agent.enabled = true;
+//            enemyProps.EnablePathfind();
+            agent.isStopped = false;
+        }
+    }
+    
+    // Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
+    // is possible
+    public IState Transition()
+    {
+        // If agent gets on top off an navmesh link from this state, agent should jump down
+//        if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink)
+        if (agent.isOnOffMeshLink && !agent.isStopped)
+        {
+            animator.SetTrigger("Strafe");
+            return strafeState;
+        }
+        
+        // Transition to ragdoll state if ragdolling
+        if (ragdollController.IsRagdolling())
+        {
+            animator.SetTrigger("Ragdoll");
+            return ragdollState;
+        }
+		
+        // Continue on top of wall
+        return null;
+    }
+    
+    public override string ToString()
+    {
+        // todo ooooooooooooooooooooooo check this with will
+        return "ClimbingUp";
+    }
+    
+    
+}

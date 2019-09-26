@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 6559890376436609464}
   - component: {fileID: 6559890376440000922}
   - component: {fileID: 6559890376438903642}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower_e_01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &6559890376436609464
 Transform:
@@ -89,12 +89,12 @@ GameObject:
   - component: {fileID: 6559890376436609466}
   - component: {fileID: 6559890376440000924}
   - component: {fileID: 6559890376438903644}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower_e_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &6559890376436609466
 Transform:
@@ -167,12 +167,12 @@ GameObject:
   - component: {fileID: 6559890376436609468}
   - component: {fileID: 6559890376440000926}
   - component: {fileID: 6559890376438903646}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower_e_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &6559890376436609468
 Transform:
@@ -244,12 +244,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6559890376436609470}
   - component: {fileID: 6559890376423843102}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Flower2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &6559890376436609470
 Transform:
@@ -282,11 +282,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.097660415
+  - screenRelativeHeight: 0.05331805
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6559890376438903646}
-  - screenRelativeHeight: 0.045114808
+  - screenRelativeHeight: 0.022861458
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6559890376438903644}

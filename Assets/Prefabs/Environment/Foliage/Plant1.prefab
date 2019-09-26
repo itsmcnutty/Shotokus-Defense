@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 3570966385542929297}
   - component: {fileID: 3570966385541634995}
   - component: {fileID: 3570966385540503923}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant_a_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &3570966385542929297
 Transform:
@@ -87,12 +87,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3570966385542929299}
   - component: {fileID: 3570966385525477171}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &3570966385542929299
 Transform:
@@ -125,15 +125,15 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.099684164
+  - screenRelativeHeight: 0.052062184
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3570966385540503923}
-  - screenRelativeHeight: 0.05225444
+  - screenRelativeHeight: 0.022861458
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3570966385540503921}
-  - screenRelativeHeight: 0.017994493
+  - screenRelativeHeight: 0.009605093
     fadeTransitionWidth: 0
     renderers: []
   m_Enabled: 1
@@ -148,12 +148,12 @@ GameObject:
   - component: {fileID: 3570966385542929301}
   - component: {fileID: 3570966385541634999}
   - component: {fileID: 3570966385540503927}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant_a_01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &3570966385542929301
 Transform:
@@ -225,12 +225,12 @@ GameObject:
   - component: {fileID: 3570966385542929303}
   - component: {fileID: 3570966385541634993}
   - component: {fileID: 3570966385540503921}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant_a_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &3570966385542929303
 Transform:
