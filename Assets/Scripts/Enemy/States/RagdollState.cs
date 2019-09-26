@@ -104,7 +104,7 @@ public class RagdollState : IState
 
 		// check if position of hips is near navmesh. Returns true if its at least within a radius of 0.5
 		NavMeshHit hit;
-		if (NavMesh.SamplePosition(hipsPosition, out hit, 0.5f, NavMesh.AllAreas))
+		if (NavMesh.SamplePosition(hipsPosition, out hit, 1.5f, NavMesh.AllAreas))
 		{
 			// If spine rigidbody is moving very slowly, enemy can recover
 			return hips.velocity.magnitude < 0.13f;	

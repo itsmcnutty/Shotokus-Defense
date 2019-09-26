@@ -71,13 +71,9 @@ public class PlayerHealth : MonoBehaviour
             SetHealthBarText();
             
             // Start low health loop
-            if (currentHealth / maxHealth > LOW_HEALTH_THRESHOLD)
+            if (currentHealth / maxHealth < LOW_HEALTH_THRESHOLD)
             {
                 lowHealth.Play();
-            }
-            else
-            {
-                lowHealth.Stop();
             }
         }
         else
