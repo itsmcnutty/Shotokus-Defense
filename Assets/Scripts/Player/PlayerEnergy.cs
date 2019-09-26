@@ -15,6 +15,10 @@ public class PlayerEnergy : MonoBehaviour
     public float regenDelayInSec;
     public bool debugShowEnergyText = false;
 
+    [Header("Audio")]
+    public AudioSource useEnergyLoop;
+    public float ENERGY_LOOP_PITCH_RANGE;
+    
     private float currentEnergy;
     private float lastAbilityUsedTime;
     private Dictionary<Hand, float> activeAbilityEnergyCost;
@@ -65,6 +69,9 @@ public class PlayerEnergy : MonoBehaviour
             energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         }
         UpdateAbilityUseTime ();
+        
+        // Adjust sound pitch
+        useEnergyLoop.pitch = MapEnergyLevelToPitch(GetRemainingEnergy());
     }
 
     public void DrainRealEnergy (float energy)
@@ -108,6 +115,9 @@ public class PlayerEnergy : MonoBehaviour
             activeAbilityEnergyCost[activeHand] = 0;
             RemoveHandFromActive (activeHand);
         }
+        
+        // Stop looping sound
+        useEnergyLoop.Stop();
     }
 
     public void CancelEnergyUsage (Hand activeHand)
@@ -119,6 +129,9 @@ public class PlayerEnergy : MonoBehaviour
             activeAbilityEnergyCost[activeHand] = 0;
             RemoveHandFromActive (activeHand);
         }
+        
+        // Stop looping sound
+        useEnergyLoop.Stop();
     }
 
     public bool EnergyIsNotZero ()
@@ -219,4 +232,12 @@ public class PlayerEnergy : MonoBehaviour
         return totalEnergy;
     }
 
+    // Takes an amount of energy and return a pitch value for the energy audio loop
+    public float MapEnergyLevelToPitch(float energy)
+    {
+        // Map from -1 to 1
+        float normalized = energy / maxEnergy;
+        return 1 + normalized * ENERGY_LOOP_PITCH_RANGE;
+    }
+    
 }
