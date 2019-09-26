@@ -104,6 +104,7 @@ public class SpikeMovement : MonoBehaviour
         // Move the spike, disable it, and readd it to the stash
         parentObject.transform.position = new Vector3(0, -10, 0);
         parentObject.SetActive(false);
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
         SpikeQuicksand.MakeSpikeAvailable(parentObject);
     }
 }
