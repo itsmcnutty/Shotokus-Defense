@@ -155,7 +155,7 @@ public class PlayerAbility : MonoBehaviour
         }
 
         // Grab is trigger
-        if (GrabPress())
+        if (GrabPress() && !IsUIInteractable())
         {
             TriggerNewAbility();
         }
@@ -165,7 +165,14 @@ public class PlayerAbility : MonoBehaviour
         }
         else if (GrabRelease())
         {
-            EndAbility();
+            if(IsUIInteractable())
+            {
+                ActivateUIInteractable();
+            }
+            else
+            {
+                EndAbility();
+            }
         }
 
         // Draw is trackpad: can only be activated with enough energy and no other active abilities
@@ -225,24 +232,7 @@ public class PlayerAbility : MonoBehaviour
 
     private void TriggerNewAbility()
     {
-        GameObject hitObject = arc.GetPointerHitObject();
-        if (hitObject && hitObject.name.Equals("Show Tutorial Sphere"))
-        {
-            TutorialController.Instance.ShowTutorial();
-        }
-        else if (hitObject && hitObject.name.Equals("Start Wave Sphere"))
-        {
-            TutorialController.Instance.StartWave();
-        }
-        else if (hitObject && hitObject.name.Equals("Start Tutorial Sphere"))
-        {
-            TutorialController.Instance.StartTutorial();
-        }
-        else if (hitObject && hitObject.name.Equals("Teleport Sphere"))
-        {
-            GameController.Instance.Teleport(true);
-        }
-        else if (walls.WallOutlineIsActive())
+        if (walls.WallOutlineIsActive())
         {
             // Creates a new wall when wall outline is active
             walls.CreateNewWall(hand, otherHand);
@@ -369,6 +359,40 @@ public class PlayerAbility : MonoBehaviour
         {
             // Destroys the highlighted wall or quicksand
             Destroy(hitObject.transform.parent.gameObject);
+        }
+    }
+
+    private bool IsUIInteractable()
+    {
+        GameObject hitObject = arc.GetPointerHitObject();
+        if (hitObject && (hitObject.name.Equals("Show Tutorial Sphere") ||
+                hitObject.name.Equals("Start Wave Sphere") ||
+                hitObject.name.Equals("Start Tutorial Sphere") ||
+                hitObject.name.Equals("Teleport Sphere")))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void ActivateUIInteractable()
+    {
+        GameObject hitObject = arc.GetPointerHitObject();
+        if (hitObject && hitObject.name.Equals("Show Tutorial Sphere"))
+        {
+            TutorialController.Instance.ShowTutorial();
+        }
+        else if (hitObject && hitObject.name.Equals("Start Wave Sphere"))
+        {
+            TutorialController.Instance.StartWave();
+        }
+        else if (hitObject && hitObject.name.Equals("Start Tutorial Sphere"))
+        {
+            TutorialController.Instance.StartTutorial();
+        }
+        else if (hitObject && hitObject.name.Equals("Teleport Sphere"))
+        {
+            GameController.Instance.Teleport(true);
         }
     }
 
