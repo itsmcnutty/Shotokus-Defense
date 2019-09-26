@@ -234,6 +234,10 @@ public class PlayerAbility : MonoBehaviour
         {
             TutorialController.Instance.StartWave();
         }
+        else if (hitObject && hitObject.name.Equals("Start Tutorial Sphere"))
+        {
+            TutorialController.Instance.StartTutorial();
+        }
         else if (hitObject && hitObject.name.Equals("Teleport Sphere"))
         {
             GameController.Instance.Teleport(true);
