@@ -285,7 +285,15 @@ public class SpikeQuicksand : MonoBehaviour
     {
         // Calculates the height of the player's hands since the beginning of the ability and their velocity
         ControllerArc arc = hand.GetComponentInChildren<ControllerArc>();
-        float controllerVelocity = previousVelocities.Average();
+        float controllerVelocity;
+        if(previousVelocities.Count == 0)
+        {
+            controllerVelocity = 0;
+        }
+        else
+        {
+            controllerVelocity = previousVelocities.Average();   
+        }
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
         if (handPos < -quicksandMinHandMovement && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]) && PlayerAbility.QuicksandAbilityEnabled)
         {
