@@ -33,7 +33,7 @@ public class AboveWallState : IState
     
     // climbing variables
     private float waitTimer = 0; // keeps track of how much time has occured after climbing
-    private float waitTimeout = 1.5f; // once climbingTimer reaches this counter, agent can climb again
+    private float waitTimeout = 1f; // once climbingTimer reaches this counter, agent can climb again
 //    private float canClimb = 0; // counter that keeps track of amount of times the agent has climbed
 
 
