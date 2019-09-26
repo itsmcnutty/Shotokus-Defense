@@ -227,7 +227,7 @@ MonoBehaviour:
   invalidReticleTransform: {fileID: 3058137214681151014}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
   pointerInvalidColor: {r: 1, g: 0, b: 0, a: 0}
-  pointerLockedColor: {r: 0, g: 0, b: 0, a: 0}
+  pointerLockedColor: {r: 0, g: 0.04726863, b: 1, a: 0}
   arcDistance: 10
   hand: {fileID: 5697528617264122612}
 --- !u!1 &3058137214807582056
@@ -1221,7 +1221,7 @@ MonoBehaviour:
   invalidReticleTransform: {fileID: 5697528616445795326}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
   pointerInvalidColor: {r: 1, g: 0, b: 0, a: 0}
-  pointerLockedColor: {r: 0, g: 0, b: 0, a: 0}
+  pointerLockedColor: {r: 0, g: 0.04726863, b: 1, a: 0}
   arcDistance: 10
   hand: {fileID: 5697528617264073322}
 --- !u!1 &5697528616467324533
@@ -4770,11 +4770,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617254014728}
     m_Modifications:
-    - target: {fileID: 1363142310857160769, guid: 4c0cfd27864ee5c489fbe8811954d27e,
-        type: 3}
-      propertyPath: m_Name
-      value: AmbienceSource
-      objectReference: {fileID: 0}
     - target: {fileID: 3426617145420001564, guid: 4c0cfd27864ee5c489fbe8811954d27e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4829,6 +4824,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1363142310857160769, guid: 4c0cfd27864ee5c489fbe8811954d27e,
+        type: 3}
+      propertyPath: m_Name
+      value: AmbienceSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c0cfd27864ee5c489fbe8811954d27e, type: 3}

@@ -474,7 +474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8572780815898266857
 Transform:
   m_ObjectHideFlags: 0
@@ -579,6 +579,7 @@ Transform:
   - {fileID: 8572780815898266857}
   - {fileID: 9136177631681061690}
   - {fileID: 7503112787056714253}
+  - {fileID: 2354528789158421205}
   - {fileID: 3964420161442257670}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -607,6 +608,7 @@ MonoBehaviour:
   tutorialSlideWall: {fileID: 6051907515355814526}
   showTutorialPillar: {fileID: 4093670212351893544}
   startWavePillar: {fileID: 3325331267668009247}
+  startTutorialPillar: {fileID: 7397563767897907655}
   targetDummy: {fileID: 2962684539835844489}
   rockVideos:
   - slideTitle: Create Rock
@@ -664,7 +666,6 @@ MonoBehaviour:
     video: {fileID: 32900000, guid: 6da414632028d4144ac4a0f457bd501c, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
-  healVideos: []
 --- !u!82 &8215046981479653281
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1661,7 +1662,7 @@ PrefabInstance:
     - target: {fileID: 652715790023988770, guid: 8807e6be295af2c4087a8f76a7645afc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 652715790023988770, guid: 8807e6be295af2c4087a8f76a7645afc,
         type: 3}
@@ -1856,4 +1857,106 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 652715790023988770, guid: 8807e6be295af2c4087a8f76a7645afc,
     type: 3}
   m_PrefabInstance: {fileID: 4470555645329968420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4928966037218717535
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6055035620200350372}
+    m_Modifications:
+    - target: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_Name
+      value: Start Tutorial Pillar
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4218780553099027259, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_Name
+      value: Start Tutorial Sphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 6529453671742475939, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_Text
+      value: Click Here
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961733463270768661, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7810818544450934285, guid: 9f5e3e16629b135449de6d8cbe6967d0, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 9f5e3e16629b135449de6d8cbe6967d0, type: 3}
+--- !u!1 &7397563767897907655 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2508040394872721048, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 4928966037218717535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2354528789158421205 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7263113278314057098, guid: 9f5e3e16629b135449de6d8cbe6967d0,
+    type: 3}
+  m_PrefabInstance: {fileID: 4928966037218717535}
   m_PrefabAsset: {fileID: 0}
