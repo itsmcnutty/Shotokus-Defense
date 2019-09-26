@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class ProjectileCollide : MonoBehaviour
 {
@@ -9,6 +12,8 @@ public class ProjectileCollide : MonoBehaviour
 
     public float projectileDamage = 100;
     public TrailRenderer trail;
+
+    private Rigidbody rigidbody;
     private float WALL_LIFETIME = 3f;
 
     
@@ -17,12 +22,17 @@ public class ProjectileCollide : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("MainCamera");
         playerHealth = player.GetComponent<PlayerHealth>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (trail.enabled)
+        {
+            //TODO: look towards motion
+            //transform.rotation = Quaternion.LookRotation();
+        }
     }
 
     private void OnCollisionEnter(Collision other)

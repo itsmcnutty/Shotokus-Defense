@@ -8,16 +8,24 @@ public class PlayerHealth : MonoBehaviour
     public Slider healthBar;
     public Text healthPointText;
     public MeshRenderer damageIndicator;
+    public AudioSource audioSource;
     public float maxHealth = 100;
     public float regenHealthRate;
     public bool debugShowHealthText = false;
+
+    [Header("Sounds")]
+    public AudioClip healLoop;
+    public AudioClip healFull;
+    
+    private float prevHealth; // For calculating change in health per frame
     private float currentHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         Color newColor = new Color(1, 1, 1, 0);
-        damageIndicator.sharedMaterial.SetColor("_BaseColor", newColor);
+        damageIndicator.material.SetColor("_BaseColor", newColor);
+        prevHealth = maxHealth;
         currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = maxHealth;
@@ -27,7 +35,28 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentHealth > prevHealth)
+        {
+            // Set pitch based on health (Range 0.5 to 0.8)
+            audioSource.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
+            
+            if (!audioSource.loop)
+            {
+                // If healing and not playing loop, play loop
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+        }
+        else if (audioSource.loop)
+        {
+            Debug.Log("Stop loop");
 
+            // If not healing and is playing loop, stop playing loop
+            audioSource.loop = false;
+            audioSource.Stop();
+        }
+
+        prevHealth = currentHealth;
     }
 
     public void TakeDamage(float health)
@@ -57,6 +86,10 @@ public class PlayerHealth : MonoBehaviour
             }
             healthBar.value = currentHealth;
             SetHealthBarText();
+        }
+        else
+        {
+            audioSource.PlayOneShot(healFull);
         }
     }
 

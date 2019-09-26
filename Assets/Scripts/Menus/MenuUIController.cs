@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using Valve.VR;
 
+[RequireComponent(typeof(AudioSource))]
+
 public class MenuUIController : MonoBehaviour
 {
     private static MenuUIController instance; // instance for singleton pattern
@@ -14,9 +16,15 @@ public class MenuUIController : MonoBehaviour
 
     public GameObject menuPrefab;
 
+    [Header("Sounds")]
+    
+    public AudioClip menuShow;
+    public AudioClip menuHide;
+
     private GameObject player; // get coordinates of player, to instate menu in front of them
     private Camera vrCamera;
     private GameObject pauseMenu;
+    private AudioSource audioSource;
 
     private bool isPauseMenuActive; // true if player is on pause menu, false if not
 
@@ -41,9 +49,10 @@ public class MenuUIController : MonoBehaviour
 
     private void Awake()
     {
+        // Instantiate
         player = GameObject.FindWithTag("MainCamera");
-
         vrCamera = player.GetComponent<Camera>();
+        audioSource = GetComponent<AudioSource>();
 
         laserPointer = this.GetComponent<InteractLaserButton>();
         isPauseMenuActive = false;
@@ -108,14 +117,16 @@ public class MenuUIController : MonoBehaviour
         ToggleLaser();
         if (!isPauseMenuActive)
         {
-            // menu is not active, so open it
+            // menu is not active, so open it and play sonud effect
+            audioSource.PlayOneShot(menuShow);
             isPauseMenuActive = true;
             PauseGame();
             Time.timeScale = 0;
         }
         else
         {
-            // menu is active, so close it
+            // menu is active, so close it and play sound effect
+            audioSource.PlayOneShot(menuHide);
             isPauseMenuActive = false;
             Destroy(pauseMenu);
             Time.timeScale = 1;

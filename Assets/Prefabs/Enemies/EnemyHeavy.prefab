@@ -275,9 +275,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MAX_HEALTH: 10000
-  ARMOR_CUTOFF: 0
-  ARMOR_PROFICIENCY: 10
-  RAGDOLL_DMG_THRESHOLD: 25
+  ARMOR_CUTOFF: 100
+  ARMOR_PROFICIENCY: 7
+  RAGDOLL_DMG_THRESHOLD: 400
   FULL_MASS_DAMAGE_PERC: 0.05
   debugShowHealthText: 0
   healthBarCanvas: {fileID: 4751925666564878191}
@@ -342,7 +342,7 @@ MonoBehaviour:
   MAX_RUN_SPEED: 1.8
   debugNoWalk: 0
   ATTACK_DELAY: 0.9
-  ATTACK_RADIUS: 2.9
+  ATTACK_RADIUS: 1.5
 --- !u!1 &1747071536198977968
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,7 +393,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5092134, y: 0.43746996, z: 0.43651772}
+  m_Size: {x: 0.6, y: 0.43746996, z: 0.43651772}
   m_Center: {x: -9.928033e-14, y: 0.13940108, z: 0.025055766}
 --- !u!54 &3264599041198392089
 Rigidbody:
@@ -858,10 +858,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.12
-  m_Height: 0.3738865
+  m_Radius: 0.13992217
+  m_Height: 0.43858743
   m_Direction: 1
-  m_Center: {x: 0, y: 0.18694325, z: 0}
+  m_Center: {x: 0.000000013760418, y: 0.15459277, z: 0.019922165}
 --- !u!54 &6434016162477158468
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1299,9 +1299,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2341914298207799701}
-  - component: {fileID: 5542506188389995049}
   - component: {fileID: 1707423908194128194}
   - component: {fileID: 1412444408493275252}
+  - component: {fileID: 3634770144286214000}
   m_Layer: 9
   m_Name: mixamorig:Head
   m_TagString: Untagged
@@ -1325,19 +1325,6 @@ Transform:
   m_Father: {fileID: 6770926693150162677}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5542506188389995049
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778346567763102981}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.17
-  m_Center: {x: 0, y: 0.06, z: 0.03}
 --- !u!54 &1707423908194128194
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1399,6 +1386,20 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!136 &3634770144286214000
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778346567763102981}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 0.56
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3830724177981210784
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,8 +1522,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8434512, y: 0.376113, z: 0.40112236}
-  m_Center: {x: 1.6884817e-12, y: 0.24964984, z: 0.005447477}
+  m_Size: {x: 0.95, y: 0.376113, z: 0.45}
+  m_Center: {x: 1.6884817e-12, y: 0.24964984, z: 0.02}
 --- !u!54 &7434116837664696041
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1628,8 +1629,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.12
-  m_Height: 0.37349987
+  m_Radius: 0.1399222
+  m_Height: 0.4385874
   m_Direction: 1
   m_Center: {x: 0, y: 0.18674994, z: 0}
 --- !u!54 &5660433107852385686

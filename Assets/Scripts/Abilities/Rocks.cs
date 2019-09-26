@@ -23,6 +23,14 @@ public class Rocks : MonoBehaviour
     private static ParticleSystem currentRegrowthParticleSystem;
     private static ParticleSystem currentRegrowthSwirlSystem;
 
+    [Header("Audio")]
+    public AudioClip rockThrowSmall;
+    public AudioClip rockThrowMedium;
+    public AudioClip rockThrowLarge;
+    public AudioClip[] rockHitSolid;
+    public AudioClip[] rockHitFoliage;
+    public PhysicMaterial foliageMaterial;
+
     public static Rocks CreateComponent(GameObject player, PlayerEnergy playerEnergy)
     {
         Rocks rocks = player.GetComponent<Rocks>();
@@ -47,6 +55,7 @@ public class Rocks : MonoBehaviour
     public GameObject PickupRock(GameObject pickup, Hand hand, Hand otherHand)
     {
         GameObject activeRock = null;
+        hand.DetachObject(pickup);
         // Trying to pick up a new object (not resizing)
         if (otherHand.currentAttachedObject == null)
         {
@@ -56,12 +65,12 @@ public class Rocks : MonoBehaviour
                 activeRock = pickup;
                 playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
                 hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
-                Destroy(activeRock.GetComponent<RockProperties>());
+                hand.AttachObject(activeRock, GrabTypes.Scripted);
+                activeRock.GetComponent<RockProperties>().CancelDestructionTimer();
             }
             else
             {
                 // Prevents pickup if the player doesn't have enough energy
-                hand.DetachObject(pickup);
                 hand.hoveringInteractable = null;
             }
         }
@@ -71,7 +80,8 @@ public class Rocks : MonoBehaviour
             activeRock = pickup;
             playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
             hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
-            Destroy(activeRock.GetComponent<RockProperties>());
+            hand.AttachObject(activeRock, GrabTypes.Scripted);
+            activeRock.GetComponent<RockProperties>().CancelDestructionTimer();
         }
         return activeRock;
     }
@@ -95,6 +105,14 @@ public class Rocks : MonoBehaviour
 
     public void UpdateRock(GameObject activeRock, Hand hand)
     {
+        // Play regrowth audio if not looping it already
+        AudioSource activeRockAudio = activeRock.GetComponent<AudioSource>();
+        if (!activeRockAudio.isPlaying)
+        {
+            activeRockAudio.loop = true;
+            activeRockAudio.Play();
+        }
+        
         // Sets energy cost and mass of the rock
         float rockEnergyCost = GetRockEnergyCost(activeRock);
         rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
@@ -118,8 +136,11 @@ public class Rocks : MonoBehaviour
         currentRegrowthSwirlSystem.transform.position = skinnedMeshRenderer.bounds.center;
     }
 
-    public void StopRegrowthParticles()
+    public void StopRegrowthParticles(GameObject activeRock)
     {
+        // Stop regrowth audio on rock
+        activeRock.GetComponent<AudioSource>().Stop();
+
         if (currentRegrowthParticleSystem != null)
         {
             // Stops the particle animations when the player is not longer resizing the rock
@@ -151,12 +172,14 @@ public class Rocks : MonoBehaviour
             hand.SetAllowResize(true);
 
             // Adds the RockProperties component to the rock to begin the death countdown
-            RockProperties.CreateComponent(activeRock, destroyRockParticles);
+            activeRock.GetComponent<RockProperties>().StartDestructionTimer();
 
             // Gets the final mass of the rock
             activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
             playerEnergy.UseEnergy(hand);
             StartCoroutine(PlayerAbility.LongVibration(hand, 0.1f, 1000));
+
+            PlayThrowRockSound(activeRock);
 
             // Uses power-up if enabled
             if (PlayerAbility.RockClusterEnabled)
@@ -172,7 +195,7 @@ public class Rocks : MonoBehaviour
                     {
                         // Gets a rock from the stash and adds the RockProperties component
                         GameObject newRock = GetNewRock();
-                        RockProperties.CreateComponent(newRock, destroyRockParticles);
+                        activeRock.GetComponent<RockProperties>().StartDestructionTimer();
 
                         // Mimics the data from the original rock to create a new one
                         Rigidbody newRockRigidbody = newRock.GetComponent<Rigidbody>();
@@ -185,6 +208,8 @@ public class Rocks : MonoBehaviour
                         newRockRigidbody.velocity = velocity;
                         newRockRigidbody.velocity = Vector3.ProjectOnPlane(UnityEngine.Random.insideUnitSphere, velocity) * (.75f + activeRock.transform.localScale.x) + velocity;
                         newRockRigidbody.angularVelocity = newRock.transform.forward * angularVelocity.magnitude;
+
+                        PlayThrowRockSound(newRock);
                     }
                 }
             }
@@ -202,16 +227,17 @@ public class Rocks : MonoBehaviour
     {
         GameObject newRock;
         if (availableRocks.Count != 0)
-        {       
+        {
             // Gets a rock from the stash if one is available
             newRock = availableRocks.Dequeue();
             newRock.SetActive(true);
         }
         else
-        {        
+        {
             // Creates a new rock if one is not available from the stash
             newRock = Instantiate(rockPrefab) as GameObject;
         }
+        
         return newRock;
     }
 
@@ -219,5 +245,26 @@ public class Rocks : MonoBehaviour
     {
         // Re-adds the rock to the stash for later usage
         availableRocks.Enqueue(rock);
+    }
+    
+    // Plays a rock throw sound set in the inspector based on the size of the given active rock
+    void PlayThrowRockSound(GameObject activeRock)
+    {
+        // Play throw sound on audio component based on size of active rock
+        AudioSource activeRockAudio = activeRock.GetComponent<AudioSource>();
+        float sizePercentage = GetRockEnergyCost(activeRock) / maxRockEnergyCost;
+        
+        if (sizePercentage < 0.333f)
+        {
+            activeRockAudio.PlayOneShot(rockThrowSmall);
+        }
+        else if (sizePercentage < 0.666f)
+        {
+            activeRockAudio.PlayOneShot(rockThrowMedium);
+        }
+        else
+        {
+            activeRockAudio.PlayOneShot(rockThrowLarge);
+        }
     }
 }

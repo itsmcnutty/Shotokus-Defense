@@ -20,6 +20,11 @@ public class InteractLaserButton : MonoBehaviour
     
     private bool isEnabled; // true if lasers are enable, false otherwise
 
+    [Header("Sounds")]
+    
+    public AudioClip menuClick;
+    public AudioClip menuMisclick;
+
     private ControllerArc rightArc;
     private ControllerArc leftArc;
     private GameObject rightArcObject;
@@ -28,9 +33,12 @@ public class InteractLaserButton : MonoBehaviour
     private Hand leftHandComp;
     private GameObject rightHandHeld;
     private GameObject leftHandHeld;
+    
+    private AudioSource audioSource;
 
     private void Awake()
     {
+        // Instantiate stuff
         laserPointerR = rightHand.GetComponent<SteamVR_LaserPointer>();
         laserPointerL = leftHand.GetComponent<SteamVR_LaserPointer>();
         button = null;
@@ -45,6 +53,8 @@ public class InteractLaserButton : MonoBehaviour
         selected = false;
         laserPointerL.active = false;
         laserPointerR.active = false;
+        
+        audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -71,7 +81,7 @@ public class InteractLaserButton : MonoBehaviour
         if (e.target.gameObject.GetComponent<Button>() != null && button == null)
         {
             
-            Debug.Log("inside button");
+            //Debug.Log("inside button");
             button = e.target.gameObject.GetComponent<Button>();
             button.Select();
             selected = true;
@@ -82,7 +92,7 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (button != null && selected)
         {
-            Debug.Log("outside button");
+            //Debug.Log("outside button");
 
             selected = false;
             // todo what is this for??
@@ -93,11 +103,18 @@ public class InteractLaserButton : MonoBehaviour
     
     public void OnPointerClick(object sender, PointerEventArgs e)
     {
-        Debug.Log("clicking inside button");
+        //Debug.Log("clicking inside button");
 
         if (selected && button != null)
         {
+            // Play click sound
+            audioSource.PlayOneShot(menuClick);
             button.onClick.Invoke();
+        }
+        else
+        {
+            // Play misclick sound
+            audioSource.PlayOneShot(menuMisclick);
         }
 
     }
