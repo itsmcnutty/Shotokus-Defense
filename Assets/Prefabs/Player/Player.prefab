@@ -1834,7 +1834,7 @@ MonoBehaviour:
   rockCreationDistance: 2
   outlineLayerMask:
     serializedVersion: 2
-    m_Bits: 3190785
+    m_Bits: 2142209
   activeRock: {fileID: 0}
 --- !u!114 &5697528617253961032
 MonoBehaviour:
@@ -2087,7 +2087,7 @@ MonoBehaviour:
   rockCreationDistance: 2
   outlineLayerMask:
     serializedVersion: 2
-    m_Bits: 3190785
+    m_Bits: 2142209
   activeRock: {fileID: 0}
 --- !u!1 &5697528617253825732
 GameObject:
@@ -4591,6 +4591,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617253999912}
     m_Modifications:
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Name
+      value: Controller Arc
+      objectReference: {fileID: 0}
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_TagString
+      value: Arc
+      objectReference: {fileID: 0}
     - target: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.25
@@ -4638,18 +4650,6 @@ PrefabInstance:
     - target: {fileID: 450016, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Name
-      value: Controller Arc
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Layer
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_TagString
-      value: Arc
       objectReference: {fileID: 0}
     - target: {fileID: 180358, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Name
@@ -4730,6 +4730,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617254009054}
     m_Modifications:
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Name
+      value: Controller Arc
+      objectReference: {fileID: 0}
+    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 475244, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4777,14 +4785,6 @@ PrefabInstance:
     - target: {fileID: 450016, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Name
-      value: Controller Arc
-      objectReference: {fileID: 0}
-    - target: {fileID: 153878, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
-      propertyPath: m_Layer
-      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 180358, guid: 7a135b1a2cb9c8f488d4dd00c55ab283, type: 3}
       propertyPath: m_Name
@@ -4857,11 +4857,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617254014728}
     m_Modifications:
-    - target: {fileID: 1169895027615376396, guid: 2cfab48e5561e2a40aa1ee3853eab8e0,
-        type: 3}
-      propertyPath: m_Name
-      value: EneryUsageLoopSource
-      objectReference: {fileID: 0}
     - target: {fileID: 336208629459164366, guid: 2cfab48e5561e2a40aa1ee3853eab8e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4917,6 +4912,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1169895027615376396, guid: 2cfab48e5561e2a40aa1ee3853eab8e0,
+        type: 3}
+      propertyPath: m_Name
+      value: EneryUsageLoopSource
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2cfab48e5561e2a40aa1ee3853eab8e0, type: 3}
 --- !u!82 &1019440968139743217 stripped
@@ -4938,6 +4938,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617254014728}
     m_Modifications:
+    - target: {fileID: 1363142310857160769, guid: 4c0cfd27864ee5c489fbe8811954d27e,
+        type: 3}
+      propertyPath: m_Name
+      value: AmbienceSource
+      objectReference: {fileID: 0}
     - target: {fileID: 3426617145420001564, guid: 4c0cfd27864ee5c489fbe8811954d27e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4992,11 +4997,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1363142310857160769, guid: 4c0cfd27864ee5c489fbe8811954d27e,
-        type: 3}
-      propertyPath: m_Name
-      value: AmbienceSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c0cfd27864ee5c489fbe8811954d27e, type: 3}
