@@ -265,7 +265,7 @@ public class StrafeState : IState
 			}
 			else if (distanceToPlayer < sqrStrafeDistance)
 			{
-				// todo fix bug, now this is broken because of square distance, medium enemies just walk straight to player if hit inside and land inside radius
+				// todo make sure this works. It was broken because of square distance, medium enemies just walk straight to player if hit inside and land inside radius
 				float sqrTotalCurrentReduction = sqrStrafeDistance - distanceToPlayer;
 				totalCurrentReduction = (float) Math.Sqrt(sqrTotalCurrentReduction);
 			}
