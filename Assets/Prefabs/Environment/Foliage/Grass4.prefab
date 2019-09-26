@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 6410136232698308443}
   - component: {fileID: 6410136232699078525}
   - component: {fileID: 6410136232700077501}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Grass_c_04_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &6410136232698308443
 Transform:
@@ -88,12 +88,12 @@ GameObject:
   - component: {fileID: 6410136232698308445}
   - component: {fileID: 6410136232699078527}
   - component: {fileID: 6410136232700077503}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Grass_c_04_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &6410136232698308445
 Transform:
@@ -164,12 +164,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6410136232698308447}
   - component: {fileID: 6410136232682664959}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: Grass4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &6410136232698308447
 Transform:
@@ -201,11 +201,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.10172848
+  - screenRelativeHeight: 0.048382718
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6410136232700077503}
-  - screenRelativeHeight: 0.020737346
+  - screenRelativeHeight: 0.009054273
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6410136232700077501}

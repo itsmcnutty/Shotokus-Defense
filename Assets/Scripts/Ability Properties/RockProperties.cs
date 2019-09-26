@@ -21,7 +21,6 @@ public class RockProperties : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("DestroyRock", rockLifetime);
         audioSource = GetComponent<AudioSource>();
         randomizedAudioSource = GetComponent<SoundPlayOneshot>();
         

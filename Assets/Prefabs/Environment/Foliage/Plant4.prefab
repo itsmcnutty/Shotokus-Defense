@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 7926428618683643097}
   - component: {fileID: 7926428618682840319}
   - component: {fileID: 7926428618681873983}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant_c_03_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7926428618683643097
 Transform:
@@ -89,12 +89,12 @@ GameObject:
   - component: {fileID: 7926428618683643099}
   - component: {fileID: 7926428618682840313}
   - component: {fileID: 7926428618681873977}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant_c_03_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7926428618683643099
 Transform:
@@ -166,12 +166,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7926428618683643101}
   - component: {fileID: 7926428618700234877}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7926428618683643101
 Transform:
@@ -204,11 +204,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.25
+  - screenRelativeHeight: 0.04959452
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7926428618681873981}
-  - screenRelativeHeight: 0.125
+  - screenRelativeHeight: 0.022031559
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7926428618681873983}
@@ -228,12 +228,12 @@ GameObject:
   - component: {fileID: 7926428618683643103}
   - component: {fileID: 7926428618682840317}
   - component: {fileID: 7926428618681873981}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Plant_c_03_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7926428618683643103
 Transform:
