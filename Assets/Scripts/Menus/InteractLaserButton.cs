@@ -81,11 +81,6 @@ public class InteractLaserButton : MonoBehaviour
 
     private void Update()
     {
-//        if (eventSystem.currentSelectedGameObject != null)
-//        {
-//            string selectedObj = eventSystem.currentSelectedGameObject.name;
-//            Debug.Log(selectedObj);
-//        }
 
     }
 
@@ -105,39 +100,8 @@ public class InteractLaserButton : MonoBehaviour
         button = null;
         if (eventSystem.currentSelectedGameObject != null)
         {
-//            string selectedObj = eventSystem.currentSelectedGameObject.name;
             eventSystem.SetSelectedGameObject(null);
         }
-        
-//        if (lastButtonName == e.target.gameObject.name)
-//        {
-//            Debug.Log("Pointer out: lastname button = current target name + " + e.target.gameObject.name);
-//            eventSystem.SetSelectedGameObject(null);
-//            button = null;
-//        }
-//        
-//        if (e.target.gameObject.GetComponent<Button>() == null)
-//        {
-//            Debug.Log("Pointer out: Hitting something without a button + " + e.target.gameObject.name);
-//            if (button != null)
-//            {
-////                eventSystem.SetSelectedGameObject(null);
-////                button = null;
-//            }
-//        }
-//        else
-//        {
-//            Debug.Log("Pointer out: hitting something with a button + " + e.target.gameObject.name);
-////            button.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-//
-//            if (eventSystem.currentSelectedGameObject != null)
-//            {
-//                string selectedObj = eventSystem.currentSelectedGameObject.name;
-//                eventSystem.SetSelectedGameObject(null);
-//            }
-//            button = null;
-//        }
-//        
     }
     
     public void OnPointerClick(object sender, PointerEventArgs e)
@@ -153,19 +117,6 @@ public class InteractLaserButton : MonoBehaviour
             menuMisclick.Play();
         }
         
-
-//        if (selected && button != null)
-//        {
-//            // Play click sound
-//            menuClick.Play();
-//            button.onClick.Invoke();
-//        }
-//        else
-//        {
-//            // Play misclick sound
-//            menuMisclick.Play();
-//        }
-
     }
 
     // This function enables or disables (toggles on or off) the steamVR laser pointer component
