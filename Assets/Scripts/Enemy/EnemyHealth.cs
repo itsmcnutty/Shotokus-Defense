@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EnemyHealth : CallParentCollision
 {
 	// Scalar value to compute damage from impulse
-	private static float IMPULSE_MULTIPLIER = 0.034f;
+	private static float IMPULSE_MULTIPLIER = 0.1f;
 	// Height at which to kill falling enemy
 	private static float DEATH_Y = -10.0f;
 	// How much HP is represented by 1m (world space) of UI health bar
@@ -101,7 +101,7 @@ public class EnemyHealth : CallParentCollision
 
 		// Calculate the total mass of the enemy
 		Rigidbody[] enemyRigidBodies = gameObject.GetComponentsInChildren<Rigidbody>();
-		foreach(Rigidbody enemyRigidBody in enemyRigidBodies)
+		foreach (Rigidbody enemyRigidBody in enemyRigidBodies)
 		{
 			totalEnemyMass += enemyRigidBody.mass;
 		}
@@ -174,10 +174,14 @@ public class EnemyHealth : CallParentCollision
 
 	private float CalculateDamage(GameObject child, Collision other)
 	{
+		Debug.Log("------------------------ BEGIN DAMAGE CALCULATION ------------------------");
 		float momentum = other.gameObject.GetComponent<RockCollide>().GetMomentum();
+		//Debug.Log("Momentum = " + momentum);
 
 		// Raw incoming damage
 		float damage = IMPULSE_MULTIPLIER * momentum;
+		//float damage = momentum;
+		Debug.Log("Raw damage = " + damage);
 
 		// Scale damage by weapon type
 		string tag = other.gameObject.tag;
@@ -187,15 +191,16 @@ public class EnemyHealth : CallParentCollision
 				damage *= GetRockDamageScalar(child, other.gameObject, damage);
 				break;
 			case "Wall":
-				damage *= 0.5f;
+				damage *= 0.1f;
 				break;
 			case "Spike":
-				damage *= 4;
+				damage *= 2;
 				break;
 			default:
 				damage *= 0;
 				break;
 		}
+		Debug.Log("Damage after scale = " + damage);
 
 		// Determine whether armor will reduce damage
 		if (damage < ARMOR_CUTOFF)
@@ -211,20 +216,30 @@ public class EnemyHealth : CallParentCollision
 
 	private float GetRockDamageScalar(GameObject child, GameObject rock, float damage)
 	{
-		float damageScalar = 3.5f;
-		damageScalar *= child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
-		if(rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
+		RockProperties properties = rock.GetComponent<RockProperties>();
+		if (!properties.EnemyWasHit(gameObject.GetInstanceID()))
 		{
-			if((damage * damageScalar) < 150)
+			float damageScalar = 3.5f;
+			if (rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
 			{
-				damageScalar = 0;
+				if ((damage * damageScalar) < 150)
+				{
+					return 0;
+				}
 			}
+			else
+			{
+				properties.NewEnemyHit(gameObject.GetInstanceID());
+				if (child.name.Contains("Head"))
+				{
+					Debug.Log("Headshot!");
+					damageScalar *= 1.5f;
+				}
+			}
+			return damageScalar;
 		}
-		else if(child.name.Contains("Head"))
-		{
-			damageScalar *= 8;
-		}
-		return damageScalar;
+		Debug.Log("Enemy hit already");
+		return 0;
 	}
 
 	// Returns true if the specified GameObject can damage the enemy

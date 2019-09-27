@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Valve.VR.InteractionSystem;
 
 public class RockProperties : MonoBehaviour
@@ -18,6 +19,8 @@ public class RockProperties : MonoBehaviour
     private static float rockLifetime = 5.0f;
     private bool collidedWithEnemy;
     private bool collidedWithNonEnemy;
+
+    private List<int> enemiesHit = new List<int>();
     // Start is called before the first frame update
     void Start()
     {
@@ -33,11 +36,13 @@ public class RockProperties : MonoBehaviour
 
     public void StartDestructionTimer()
     {
+        enemiesHit = new List<int>();
         Invoke ("DestroyRock", rockLifetime);
     }
 
     public void CancelDestructionTimer()
     {
+        enemiesHit = new List<int>();
         CancelInvoke("DestroyRock");
     }
 
@@ -68,6 +73,7 @@ public class RockProperties : MonoBehaviour
         emission.rateOverTimeMultiplier = gameObject.transform.localScale.x * emission.rateOverTimeMultiplier;
 
         // Moves the rock out of the map and readds it to the stash of rocks
+        enemiesHit = new List<int>();
         gameObject.transform.position = new Vector3 (0, -10, 0);
         gameObject.SetActive(false);
         Rocks.MakeRockAvailable(gameObject);
@@ -86,6 +92,16 @@ public class RockProperties : MonoBehaviour
     public bool CollidedWithNonEnemy()
     {
         return collidedWithNonEnemy;
+    }
+
+    public void NewEnemyHit(int enemyId)
+    {
+        enemiesHit.Add(enemyId);
+    }
+
+    public bool EnemyWasHit(int enemyId)
+    {
+        return enemiesHit.Contains(enemyId);
     }
 
     private void OnCollisionEnter(Collision other) {
