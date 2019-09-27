@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class SpikeMovement : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class SpikeMovement : MonoBehaviour
     private Vector3 startPos;
     private bool particleEffectPlayed = false;
     private GameObject parentObject;
+
+    private List<int> enemiesHit = new List<int>();
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +85,16 @@ public class SpikeMovement : MonoBehaviour
         spikeMovement.destroySpikeParticles = destroySpikeParticles;
         spikeMovement.createSpikeEarthParticles = createSpikeEarthParticles;
         spikeMovement.spikeBreakSound = spikeBreakSound;
+    }
+
+    public void NewEnemyHit(int enemyId)
+    {
+        enemiesHit.Add(enemyId);
+    }
+
+    public bool EnemyWasHit(int enemyId)
+    {
+        return enemiesHit.Contains(enemyId);
     }
 
     private void OnDestroy()

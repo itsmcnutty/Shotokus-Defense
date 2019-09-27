@@ -194,7 +194,7 @@ public class EnemyHealth : CallParentCollision
 				damage *= 0.1f;
 				break;
 			case "Spike":
-				damage *= 1;
+				damage *= GetSpikeDamageScalar(other.gameObject);
 				break;
 			default:
 				damage *= 0;
@@ -240,6 +240,19 @@ public class EnemyHealth : CallParentCollision
 					damageScalar *= 1.5f;
 				}
 			}
+			return damageScalar;
+		}
+		Debug.Log("Enemy hit already");
+		return 0;
+	}
+
+	private float GetSpikeDamageScalar(GameObject spike)
+	{
+		SpikeMovement properties = spike.GetComponent<SpikeMovement>();
+		if (!properties.EnemyWasHit(gameObject.GetInstanceID()))
+		{
+			float damageScalar = .8f;
+			properties.NewEnemyHit(gameObject.GetInstanceID());
 			return damageScalar;
 		}
 		Debug.Log("Enemy hit already");
