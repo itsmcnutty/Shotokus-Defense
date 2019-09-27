@@ -19,7 +19,6 @@ public class InteractLaserButton : MonoBehaviour
     private Button button; // this will be the button that the laser points to
     
     private bool isEnabled; // true if lasers are enable, false otherwise
-    private string nameSelected; // name of gameobject selected by laserpointer
 
     [Header("Audio Sources")]
     public AudioSource menuClick;
@@ -38,6 +37,8 @@ public class InteractLaserButton : MonoBehaviour
 
     // event system to keep track of selected buttons
     private EventSystem eventSystem;
+    private string lastButtonName; // name of gameobject selected by laserpointer
+
 
     private void Awake()
     {
@@ -65,6 +66,8 @@ public class InteractLaserButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        lastButtonName = ""; // so its not null
+        
         laserPointerR.PointerIn += PointerInside;
         laserPointerR.PointerOut += PointerOutside;
         laserPointerR.PointerClick += OnPointerClick;
@@ -78,68 +81,63 @@ public class InteractLaserButton : MonoBehaviour
 
     private void Update()
     {
-        if (eventSystem.currentSelectedGameObject != null)
-        {
-            string selectedObj = eventSystem.currentSelectedGameObject.name;
-            Debug.Log(selectedObj);
-        }
+//        if (eventSystem.currentSelectedGameObject != null)
+//        {
+//            string selectedObj = eventSystem.currentSelectedGameObject.name;
+//            Debug.Log(selectedObj);
+//        }
 
     }
 
     public void PointerInside(object sender, PointerEventArgs e)
     {
-
         if (e.target.gameObject.GetComponent<Button>() != null)
         {
             Debug.Log("inside button + " + e.target.gameObject.name);
-//            Debug.Log(e.target.gameObject.name);
             button = e.target.gameObject.GetComponent<Button>();
             button.Select();
-//            selected = true;
+            lastButtonName = e.target.gameObject.name;
         }
-        
-//        if (e.target.gameObject.GetComponent<Button>() != null && button == null)
-//        {
-//            
-//            Debug.Log("inside button");
-//            button = e.target.gameObject.GetComponent<Button>();
-//            button.Select();
-//            selected = true;
-//        }
     }
     
     public void PointerOutside(object sender, PointerEventArgs e)
     {
-        if (e.target.gameObject.GetComponent<Button>() == null)
+        button = null;
+        if (eventSystem.currentSelectedGameObject != null)
         {
-            Debug.Log("Pointer outside button + " + e.target.gameObject.name);
-            if (button != null)
-            {
-//                button.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-//                EventSystem.current.SetSelectedGameObject(null);
-
-
-                
-//                eventSystem.SetSelectedGameObject(null);
-//                button = null;
-            }
-        }
-        else
-        {
-            Debug.Log("im outside but im still a button baby + " + e.target.gameObject.name);
-//            button.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-            button = null;
+//            string selectedObj = eventSystem.currentSelectedGameObject.name;
+            eventSystem.SetSelectedGameObject(null);
         }
         
-//        if (button != null && selected)
+//        if (lastButtonName == e.target.gameObject.name)
 //        {
-//            Debug.Log("outside button");
-//
-//            selected = false;
-//            // todo what is this for??
-////            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+//            Debug.Log("Pointer out: lastname button = current target name + " + e.target.gameObject.name);
+//            eventSystem.SetSelectedGameObject(null);
 //            button = null;
 //        }
+//        
+//        if (e.target.gameObject.GetComponent<Button>() == null)
+//        {
+//            Debug.Log("Pointer out: Hitting something without a button + " + e.target.gameObject.name);
+//            if (button != null)
+//            {
+////                eventSystem.SetSelectedGameObject(null);
+////                button = null;
+//            }
+//        }
+//        else
+//        {
+//            Debug.Log("Pointer out: hitting something with a button + " + e.target.gameObject.name);
+////            button.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+//
+//            if (eventSystem.currentSelectedGameObject != null)
+//            {
+//                string selectedObj = eventSystem.currentSelectedGameObject.name;
+//                eventSystem.SetSelectedGameObject(null);
+//            }
+//            button = null;
+//        }
+//        
     }
     
     public void OnPointerClick(object sender, PointerEventArgs e)
