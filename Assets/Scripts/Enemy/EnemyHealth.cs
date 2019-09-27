@@ -179,8 +179,8 @@ public class EnemyHealth : CallParentCollision
 		//Debug.Log("Momentum = " + momentum);
 
 		// Raw incoming damage
-		float damage = IMPULSE_MULTIPLIER * momentum;
-		//float damage = momentum;
+		//float damage = IMPULSE_MULTIPLIER * momentum;
+		float damage = momentum;
 		Debug.Log("Raw damage = " + damage);
 
 		// Scale damage by weapon type
@@ -219,7 +219,7 @@ public class EnemyHealth : CallParentCollision
 		RockProperties properties = rock.GetComponent<RockProperties>();
 		if (!properties.EnemyWasHit(gameObject.GetInstanceID()))
 		{
-			float damageScalar = 3.5f;
+			float damageScalar = 1f;
 			if (rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
 			{
 				if ((damage * damageScalar) < 150)
