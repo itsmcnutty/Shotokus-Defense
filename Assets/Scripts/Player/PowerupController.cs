@@ -35,7 +35,7 @@ public class PowerupController : MonoBehaviour
     public AudioClip spikeChainSound;
     public AudioClip earthquakeSound;
     public AudioClip wallPushSound;
-    
+
     private static float rockClusterBarCounter = 0;
     private static float spikeChainBarCounter = 0;
     private static float earthquakeBarCounter = 0;
@@ -60,13 +60,9 @@ public class PowerupController : MonoBehaviour
     }
 
     void Start()
-    {   
-        // Resets the color of the powerup material
-        rockClusterBar.material.SetColor("_EmissionColor", Color.white);
-        spikeChainBar.material.SetColor("_EmissionColor", Color.white);
-        earthquakeBar.material.SetColor("_EmissionColor", Color.white);
-        wallPushBar.material.SetColor("_EmissionColor", Color.white);
-        
+    {
+        ResetPowerupIconColor();
+
         // Initialize audio stuff
         timerDuration = audioSource.clip.length;
     }
@@ -88,7 +84,7 @@ public class PowerupController : MonoBehaviour
         {
             // Audio
             audioSource.PlayOneShot(rockClusterSound);
-            
+
             PlayerAbility.ToggleRockCluster();
             rockClusterBarCounter = 0;
             StartCoroutine(EndRockCluster());
@@ -102,7 +98,7 @@ public class PowerupController : MonoBehaviour
         {
             // Audio
             audioSource.PlayOneShot(spikeChainSound);
-            
+
             PlayerAbility.ToggleSpikeChain();
             spikeChainBarCounter = 0;
             StartCoroutine(EndSpikeChain());
@@ -116,7 +112,7 @@ public class PowerupController : MonoBehaviour
         {
             // Audio
             audioSource.PlayOneShot(earthquakeSound);
-            
+
             PlayerAbility.ToggleEarthquake();
             earthquakeBarCounter = 0;
             StartCoroutine(EndEarthquake());
@@ -130,7 +126,7 @@ public class PowerupController : MonoBehaviour
         {
             // Audio
             audioSource.PlayOneShot(wallPushSound);
-            
+
             PlayerAbility.ToggleWallPush();
             wallPushBarCounter = 0;
             StartCoroutine(EndWallPush());
@@ -149,7 +145,7 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, rockClusterTime, rockClusterBar);
         }
-        
+
         // Reset timer playing
         playingTimer = false;
 
@@ -166,7 +162,7 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, spikeChainTime, spikeChainBar);
         }
-        
+
         // Reset timer playing
         playingTimer = false;
 
@@ -182,7 +178,7 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, earthquakeTime, earthquakeBar);
         }
-        
+
         // Reset timer playing
         playingTimer = false;
 
@@ -198,7 +194,7 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, wallPushTime, wallPushBar);
         }
-        
+
         // Reset timer playing
         playingTimer = false;
 
@@ -213,7 +209,7 @@ public class PowerupController : MonoBehaviour
         float timeRemaining = (abilityTime - (Time.time - startTime));
         float barValuePercent = timeRemaining / abilityTime;
         bar.fillAmount = barValuePercent;
-        
+
         // If low on time, play timer sound clip
         if (!playingTimer && timeRemaining < timerDuration)
         {
@@ -225,7 +221,7 @@ public class PowerupController : MonoBehaviour
         Color baseColor = Color.cyan;
         Color finalColor;
         if (barValuePercent > 0.3f)
-        { 
+        {
             // Power-up gauge set to a normal color above 30% time remaining
             finalColor = baseColor * Mathf.LinearToGammaSpace(1);
         }
@@ -242,7 +238,7 @@ public class PowerupController : MonoBehaviour
 
     public static void IncrementRockClusterCounter(float damage)
     {
-        if(!PlayerAbility.RockClusterEnabled)
+        if (!PlayerAbility.RockClusterEnabled)
         {
             rockClusterBarCounter += damage;
         }
@@ -250,7 +246,7 @@ public class PowerupController : MonoBehaviour
 
     public static void IncrementSpikeChainCounter(float damage)
     {
-        if(!PlayerAbility.SpikeChainEnabled)
+        if (!PlayerAbility.SpikeChainEnabled)
         {
             spikeChainBarCounter += damage;
         }
@@ -258,7 +254,7 @@ public class PowerupController : MonoBehaviour
 
     public static void IncrementEarthquakeCounter(float energy)
     {
-        if(!PlayerAbility.EarthquakeEnabled)
+        if (!PlayerAbility.EarthquakeEnabled)
         {
             earthquakeBarCounter += energy;
         }
@@ -266,9 +262,45 @@ public class PowerupController : MonoBehaviour
 
     public static void IncrementWallPushCounter(float energy)
     {
-        if(!PlayerAbility.WallPushEnabled)
+        if (!PlayerAbility.WallPushEnabled)
         {
             wallPushBarCounter += energy;
+        }
+    }
+
+    public void ResetPowerupIconColor()
+    {
+        // Resets the color of the powerup material
+        rockClusterBar.material.SetColor("_EmissionColor", Color.white);
+        rockClusterBar.fillAmount = rockClusterBarCounter;
+        spikeChainBar.material.SetColor("_EmissionColor", Color.white);
+        spikeChainBar.fillAmount = spikeChainBarCounter;
+        earthquakeBar.material.SetColor("_EmissionColor", Color.white);
+        earthquakeBar.fillAmount = earthquakeBarCounter;
+        wallPushBar.material.SetColor("_EmissionColor", Color.white);
+        wallPushBar.fillAmount = wallPushBarCounter;
+    }
+
+    public void SetPowerupIconColor(TutorialController.TutorialSections section)
+    {
+        switch (section)
+        {
+            case TutorialController.TutorialSections.Rock:
+                rockClusterBar.fillAmount = 1;
+                rockClusterBar.material.SetColor("_EmissionColor", Color.cyan);
+                break;
+            case TutorialController.TutorialSections.Spike:
+                spikeChainBar.fillAmount = 1;
+                spikeChainBar.material.SetColor("_EmissionColor", Color.cyan);
+                break;
+            case TutorialController.TutorialSections.Quicksand:
+                earthquakeBar.fillAmount = 1;
+                earthquakeBar.material.SetColor("_EmissionColor", Color.cyan);
+                break;
+            case TutorialController.TutorialSections.Wall:
+                wallPushBar.fillAmount = 1;
+                wallPushBar.material.SetColor("_EmissionColor", Color.cyan);
+                break;
         }
     }
 }

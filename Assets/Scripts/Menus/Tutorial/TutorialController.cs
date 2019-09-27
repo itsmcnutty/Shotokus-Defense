@@ -146,6 +146,13 @@ public class TutorialController : MonoBehaviour
         controllerVideo.clip = slide.controllerInstruction;
         tutorialText.text = slide.slideTitle;
 
+        PlayerAbility.TurnOffAllPowerups();
+        PowerupController.Instance.ResetPowerupIconColor();
+        if(slide.slideTitle.Equals("Power-up"))
+        {
+            ToggleTutorialPowerups();
+        }
+
         if ((currentSlide + 1) == currentSlideSet.Count)
         {
             nextSlideText.text = "Practice";
@@ -249,6 +256,29 @@ public class TutorialController : MonoBehaviour
     }
 
     public void ToggleTutorialPowerups()
+    {
+        switch(currentSlideType)
+        {
+            case TutorialSections.Rock:
+                PlayerAbility.ToggleRockCluster();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Rock);
+                break;
+            case TutorialSections.Spike:
+                PlayerAbility.ToggleSpikeChain();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Spike);
+                break;
+            case TutorialSections.Quicksand:
+                PlayerAbility.ToggleEarthquake();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Quicksand);
+                break;
+            case TutorialSections.Wall:
+                PlayerAbility.ToggleWallPush();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Wall);
+                break;
+        }
+    }
+
+    public void ToggleTutorialAbilities()
     {
         switch(currentSlideType)
         {
