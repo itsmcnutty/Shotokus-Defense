@@ -226,7 +226,7 @@ public class EnemyHealth : CallParentCollision
 			}
 			else
 			{
-				properties.NewEnemyHit(gameObject.GetInstanceID());
+				StartCoroutine(properties.TempAddEnemy(gameObject.GetInstanceID()));
 				if (child.name.Contains("Head"))
 				{
 					damageScalar *= 1.5f;
