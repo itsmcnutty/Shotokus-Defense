@@ -36,6 +36,9 @@ public class InteractLaserButton : MonoBehaviour
     
     private AudioSource audioSource;
 
+    // event system to keep track of selected buttons
+    private EventSystem eventSystem;
+
     private void Awake()
     {
         // Instantiate stuff
@@ -55,6 +58,7 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerR.active = false;
         
         audioSource = GetComponent<AudioSource>();
+        eventSystem = GameController.Instance.GetComponent<EventSystem>();
     }
 
 
@@ -71,6 +75,16 @@ public class InteractLaserButton : MonoBehaviour
     }
     
     // todo button color select 6491FF
+
+    private void Update()
+    {
+        if (eventSystem.currentSelectedGameObject != null)
+        {
+            string selectedObj = eventSystem.currentSelectedGameObject.name;
+            Debug.Log(selectedObj);
+        }
+
+    }
 
     public void PointerInside(object sender, PointerEventArgs e)
     {
@@ -103,12 +117,17 @@ public class InteractLaserButton : MonoBehaviour
             {
 //                button.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
 //                EventSystem.current.SetSelectedGameObject(null);
-                button = null;
+
+
+                
+//                eventSystem.SetSelectedGameObject(null);
+//                button = null;
             }
         }
         else
         {
             Debug.Log("im outside but im still a button baby + " + e.target.gameObject.name);
+//            button.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
             button = null;
         }
         
