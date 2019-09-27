@@ -272,6 +272,7 @@ public class ControllerArc : MonoBehaviour
 		return !collider.CompareTag("Ground") &&
 			!collider.CompareTag("Rock") &&
 			!hitMarker.CompareTag("Rock") &&
+			!hitMarker.CompareTag("Wall") &&
 			collider.gameObject.layer != 14;
 	}
 
