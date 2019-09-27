@@ -13,7 +13,7 @@ public class ProjectileCollide : MonoBehaviour
     public float projectileDamage = 100;
     public TrailRenderer trail;
 
-    private Rigidbody rigidbody;
+    private Rigidbody projectileRigidbody;
     private float WALL_LIFETIME = 3f;
 
     
@@ -22,7 +22,7 @@ public class ProjectileCollide : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("MainCamera");
         playerHealth = player.GetComponent<PlayerHealth>();
-        rigidbody = GetComponent<Rigidbody>();
+        projectileRigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
