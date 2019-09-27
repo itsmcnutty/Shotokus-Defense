@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class EnemyHealth : CallParentCollision
 {
-	// Scalar value to compute damage from impulse
-	private static float IMPULSE_MULTIPLIER = 0.1f;
 	// Height at which to kill falling enemy
 	private static float DEATH_Y = -10.0f;
 	// How much HP is represented by 1m (world space) of UI health bar
@@ -174,14 +172,10 @@ public class EnemyHealth : CallParentCollision
 
 	private float CalculateDamage(GameObject child, Collision other)
 	{
-		Debug.Log("------------------------ BEGIN DAMAGE CALCULATION ------------------------");
 		float momentum = other.gameObject.GetComponent<RockCollide>().GetMomentum();
-		//Debug.Log("Momentum = " + momentum);
 
 		// Raw incoming damage
-		//float damage = IMPULSE_MULTIPLIER * momentum;
 		float damage = momentum;
-		Debug.Log("Raw damage = " + damage);
 
 		// Scale damage by weapon type
 		string tag = other.gameObject.tag;
@@ -200,7 +194,6 @@ public class EnemyHealth : CallParentCollision
 				damage *= 0;
 				break;
 		}
-		Debug.Log("Damage after scale = " + damage);
 
 		// Determine whether armor will reduce damage
 		if (damage < ARMOR_CUTOFF)
@@ -236,13 +229,11 @@ public class EnemyHealth : CallParentCollision
 				properties.NewEnemyHit(gameObject.GetInstanceID());
 				if (child.name.Contains("Head"))
 				{
-					Debug.Log("Headshot!");
 					damageScalar *= 1.5f;
 				}
 			}
 			return damageScalar;
 		}
-		Debug.Log("Enemy hit already");
 		return 0;
 	}
 
@@ -251,11 +242,10 @@ public class EnemyHealth : CallParentCollision
 		SpikeMovement properties = spike.GetComponent<SpikeMovement>();
 		if (!properties.EnemyWasHit(gameObject.GetInstanceID()))
 		{
-			float damageScalar = .8f;
+			float damageScalar = 0.8f;
 			properties.NewEnemyHit(gameObject.GetInstanceID());
 			return damageScalar;
 		}
-		Debug.Log("Enemy hit already");
 		return 0;
 	}
 
