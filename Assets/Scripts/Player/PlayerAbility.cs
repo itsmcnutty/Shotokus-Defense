@@ -25,6 +25,7 @@ public class PlayerAbility : MonoBehaviour
     [Header("Ability Parameters")]
 
     public float rockCreationDistance = 3f;
+    public static float RockCreationDistance = 0f;
     public LayerMask outlineLayerMask;
 
     private Hand hand;
@@ -130,6 +131,8 @@ public class PlayerAbility : MonoBehaviour
         // Initializes the rocks and spikes available to the player from the start to avoid mid-game performance issues
         rocks.InitRocks();
         spikeQuicksand.InitSpikes();
+
+        RockCreationDistance = rockCreationDistance;
 
         arc = GetComponentInChildren<ControllerArc>();
         otherArc = otherHand.GetComponentInChildren<ControllerArc>();
