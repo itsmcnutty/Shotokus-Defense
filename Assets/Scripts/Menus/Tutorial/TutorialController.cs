@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -21,6 +22,7 @@ public class TutorialController : MonoBehaviour
 
     [Header("UI Elements")]
     public Text tutorialText;
+    public Text captionText;
     public Text nextSlideText;
     public Text backSlideText;
     public VideoPlayer tutorialVideo;
@@ -145,6 +147,14 @@ public class TutorialController : MonoBehaviour
         tutorialVideo.clip = slide.video;
         controllerVideo.clip = slide.controllerInstruction;
         tutorialText.text = slide.slideTitle;
+        captionText.text = slide.captionText;
+
+        PlayerAbility.TurnOffAllPowerups();
+        PowerupController.Instance.ResetPowerupIconColor();
+        if(slide.slideTitle.Equals("Power-up"))
+        {
+            ToggleTutorialPowerups();
+        }
 
         if ((currentSlide + 1) == currentSlideSet.Count)
         {
@@ -249,6 +259,29 @@ public class TutorialController : MonoBehaviour
     }
 
     public void ToggleTutorialPowerups()
+    {
+        switch(currentSlideType)
+        {
+            case TutorialSections.Rock:
+                PlayerAbility.ToggleRockCluster();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Rock);
+                break;
+            case TutorialSections.Spike:
+                PlayerAbility.ToggleSpikeChain();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Spike);
+                break;
+            case TutorialSections.Quicksand:
+                PlayerAbility.ToggleEarthquake();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Quicksand);
+                break;
+            case TutorialSections.Wall:
+                PlayerAbility.ToggleWallPush();
+                PowerupController.Instance.SetPowerupIconColor(TutorialSections.Wall);
+                break;
+        }
+    }
+
+    public void ToggleTutorialAbilities()
     {
         switch(currentSlideType)
         {
