@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -21,6 +22,7 @@ public class TutorialController : MonoBehaviour
 
     [Header("UI Elements")]
     public Text tutorialText;
+    public Text captionText;
     public Text nextSlideText;
     public Text backSlideText;
     public VideoPlayer tutorialVideo;
@@ -145,6 +147,7 @@ public class TutorialController : MonoBehaviour
         tutorialVideo.clip = slide.video;
         controllerVideo.clip = slide.controllerInstruction;
         tutorialText.text = slide.slideTitle;
+        captionText.text = slide.captionText;
 
         PlayerAbility.TurnOffAllPowerups();
         PowerupController.Instance.ResetPowerupIconColor();
