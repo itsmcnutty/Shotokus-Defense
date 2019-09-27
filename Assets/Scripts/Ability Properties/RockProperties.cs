@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
 public class RockProperties : MonoBehaviour
 {
+    public float rockPunchTimeDelay = 0.25f;
     public ParticleSystem destroyRockParticles;
     
     [Header("Audio")]
@@ -102,6 +104,16 @@ public class RockProperties : MonoBehaviour
     public bool EnemyWasHit(int enemyId)
     {
         return enemiesHit.Contains(enemyId);
+    }
+
+    public IEnumerator TempAddEnemy(int enemyId)
+    {
+        enemiesHit.Add(enemyId);
+        yield return new WaitForSeconds(rockPunchTimeDelay);
+        if(enemiesHit.Contains(enemyId))
+        {
+            enemiesHit.Remove(enemyId);
+        }
     }
 
     private void OnCollisionEnter(Collision other) {

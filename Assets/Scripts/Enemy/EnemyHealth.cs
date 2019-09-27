@@ -194,7 +194,7 @@ public class EnemyHealth : CallParentCollision
 				damage *= 0.1f;
 				break;
 			case "Spike":
-				damage *= 2;
+				damage *= 1;
 				break;
 			default:
 				damage *= 0;
@@ -222,9 +222,13 @@ public class EnemyHealth : CallParentCollision
 			float damageScalar = 1f;
 			if (rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
 			{
-				if ((damage * damageScalar) < 150)
+				if ((damage * damageScalar) < 1000)
 				{
 					return 0;
+				}
+				else
+				{
+					StartCoroutine(properties.TempAddEnemy(gameObject.GetInstanceID()));
 				}
 			}
 			else
