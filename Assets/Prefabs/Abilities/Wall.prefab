@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 8948369971359048627}
   - component: {fileID: 9085450755121057}
   - component: {fileID: 336036684552750273}
+  - component: {fileID: 7253362671277876014}
   m_Layer: 12
   m_Name: Wall 3x7
   m_TagString: Wall
@@ -234,6 +235,19 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &7253362671277876014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383354479478694716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ad8a2bd8756c644b710b2ed8f19991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 1
 --- !u!1 &4777704666276339869
 GameObject:
   m_ObjectHideFlags: 0

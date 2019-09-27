@@ -5,7 +5,7 @@ using Valve.VR;
 
 public class GameOverMenuController : MonoBehaviour
 {
-    
+
     public GameObject gameoverMenuPrefab;
 
     private GameObject player; // get coordinates of player, to instate menu in front of them
@@ -18,7 +18,6 @@ public class GameOverMenuController : MonoBehaviour
 
     private InteractLaserButton laserPointer;
 
-
     private void Awake()
     {
         player = GameObject.FindWithTag("MainCamera");
@@ -28,15 +27,14 @@ public class GameOverMenuController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-    }
+    { }
 
     // Update is called once per frame
     void Update()
     {
 
     }
-    
+
     // Creates the game over screen and pauses the game
     public void GameOverScreen()
     {
@@ -44,7 +42,7 @@ public class GameOverMenuController : MonoBehaviour
         playerPos = player.transform.position;
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
-        Vector3 spawnPosition = playerPos + playerFor*5;
+        Vector3 spawnPosition = playerPos + playerFor * 5;
         spawnPosition.y = (float) 2.5; // todo test this out
 
         // instantiate menu
@@ -53,11 +51,19 @@ public class GameOverMenuController : MonoBehaviour
         gameoverMenu.transform.LookAt(player.transform.position);
 
         // freeze time, active menu laser pointers and cancel abilities
-        PlayerAbility.ToggleSpikeAbility();
-        PlayerAbility.ToggleWallAbility();
-        PlayerAbility.ToggleQuicksandAbility();
-        PlayerAbility.ToggleRockAbility();
-        
+        if (TutorialController.Instance.TutorialWaveInProgress())
+        {
+            TutorialController.Instance.ToggleTutorialPowerups();
+        }
+        else
+        {
+            PlayerAbility.ToggleSpikeAbility();
+            PlayerAbility.ToggleWallAbility();
+            PlayerAbility.ToggleQuicksandAbility();
+            PlayerAbility.ToggleRockAbility();
+        }
+        PlayerEnergy.Instance.CancelAllEnergyUsage();
+
         Time.timeScale = 0;
         laserPointer.toggleLaser();
         // disable pause menu

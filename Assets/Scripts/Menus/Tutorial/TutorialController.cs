@@ -240,10 +240,29 @@ public class TutorialController : MonoBehaviour
         currentTargetDummy.name = "Target Dummy";
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
     }
+
+    public void ToggleTutorialPowerups()
+    {
+        switch(currentSlideType)
+        {
+            case TutorialSections.Wall:
+                PlayerAbility.ToggleWallAbility();
+                goto case TutorialSections.Quicksand;
+            case TutorialSections.Quicksand:
+                PlayerAbility.ToggleQuicksandAbility();
+                goto case TutorialSections.Spike;
+            case TutorialSections.Spike:
+                PlayerAbility.ToggleSpikeAbility();
+                goto default;
+            default:
+                PlayerAbility.ToggleRockAbility();
+                break;
+        }
+    }
     
     private void ToggleTutorialOptions()
     {
-        GameController.Instance.destroyAll();
+        GameController.Instance.destroyAll(false);
         tutorialSlideWall.SetActive(!tutorialSlideWall.activeSelf);
         showTutorialPillar.SetActive(!showTutorialPillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);

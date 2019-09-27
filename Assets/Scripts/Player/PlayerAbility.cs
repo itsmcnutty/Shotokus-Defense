@@ -25,6 +25,7 @@ public class PlayerAbility : MonoBehaviour
     [Header("Ability Parameters")]
 
     public float rockCreationDistance = 3f;
+    public static float RockCreationDistance = 0f;
     public LayerMask outlineLayerMask;
 
     private Hand hand;
@@ -131,6 +132,8 @@ public class PlayerAbility : MonoBehaviour
         rocks.InitRocks();
         spikeQuicksand.InitSpikes();
 
+        RockCreationDistance = rockCreationDistance;
+
         arc = GetComponentInChildren<ControllerArc>();
         otherArc = otherHand.GetComponentInChildren<ControllerArc>();
         hand = GetComponent<Hand>();
@@ -176,7 +179,7 @@ public class PlayerAbility : MonoBehaviour
         }
 
         // Draw is trackpad: can only be activated with enough energy and no other active abilities
-        if (wallAbilityEnabled && DrawRelease() && playerEnergy.EnergyAboveThreshold(100f) && !RockIsActive() && !SpikeQuicksandIsActive() && !walls.WallIsActive())
+        if (DrawRelease() && wallAbilityEnabled && playerEnergy.EnergyAboveThreshold(100f) && !RockIsActive() && !SpikeQuicksandIsActive() && !walls.WallIsActive())
         {
             if (!walls.WallOutlineIsActive())
             {
