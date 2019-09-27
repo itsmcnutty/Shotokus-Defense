@@ -2571,6 +2571,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6535439384295204865}
     m_Modifications:
+    - target: {fileID: 7051926668648841850, guid: 544c19d7efdf56a41bb61fe15b8a6275,
+        type: 3}
+      propertyPath: m_Name
+      value: TekkoRight
+      objectReference: {fileID: 0}
     - target: {fileID: 4687669883987991774, guid: 544c19d7efdf56a41bb61fe15b8a6275,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2626,11 +2631,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90.00001
       objectReference: {fileID: 0}
-    - target: {fileID: 7051926668648841850, guid: 544c19d7efdf56a41bb61fe15b8a6275,
-        type: 3}
-      propertyPath: m_Name
-      value: TekkoRight
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 544c19d7efdf56a41bb61fe15b8a6275, type: 3}
 --- !u!4 &6920627594331257311 stripped
@@ -2646,6 +2646,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4410686828530744282}
     m_Modifications:
+    - target: {fileID: 7051926668648841850, guid: 544c19d7efdf56a41bb61fe15b8a6275,
+        type: 3}
+      propertyPath: m_Name
+      value: TekkoLeft
+      objectReference: {fileID: 0}
     - target: {fileID: 4687669883987991774, guid: 544c19d7efdf56a41bb61fe15b8a6275,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2701,11 +2706,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
-    - target: {fileID: 7051926668648841850, guid: 544c19d7efdf56a41bb61fe15b8a6275,
-        type: 3}
-      propertyPath: m_Name
-      value: TekkoLeft
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 544c19d7efdf56a41bb61fe15b8a6275, type: 3}
 --- !u!4 &1693393377215419666 stripped
@@ -2721,6 +2721,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5439729495763193316}
     m_Modifications:
+    - target: {fileID: 7524114311264712760, guid: eb148d6af4a17514b825049307fa8696,
+        type: 3}
+      propertyPath: m_Name
+      value: EnemyHealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9179866932452110010, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2826,21 +2841,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 7524114311264712760, guid: eb148d6af4a17514b825049307fa8696,
-        type: 3}
-      propertyPath: m_Name
-      value: EnemyHealthBar
-      objectReference: {fileID: 0}
-    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7543113781439491491, guid: eb148d6af4a17514b825049307fa8696,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2101433221096822567, guid: eb148d6af4a17514b825049307fa8696,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2914,6 +2914,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5439729495763193316}
     m_Modifications:
+    - target: {fileID: 7582323570255747004, guid: 1bd99bc5a2b445349afd3b3c90f58479,
+        type: 3}
+      propertyPath: m_Name
+      value: HeavyWaistArmor
+      objectReference: {fileID: 0}
     - target: {fileID: 7966215311762651940, guid: 1bd99bc5a2b445349afd3b3c90f58479,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2968,11 +2973,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7582323570255747004, guid: 1bd99bc5a2b445349afd3b3c90f58479,
-        type: 3}
-      propertyPath: m_Name
-      value: HeavyWaistArmor
       objectReference: {fileID: 0}
     - target: {fileID: 8836200976780689515, guid: 1bd99bc5a2b445349afd3b3c90f58479,
         type: 3}

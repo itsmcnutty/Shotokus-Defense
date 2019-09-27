@@ -265,7 +265,6 @@ public class StrafeState : IState
 			}
 			else if (distanceToPlayer < sqrStrafeDistance)
 			{
-				// todo make sure this works. It was broken because of square distance, medium enemies just walk straight to player if hit inside and land inside radius
 				float sqrTotalCurrentReduction = sqrStrafeDistance - distanceToPlayer;
 				totalCurrentReduction = (float) Math.Sqrt(sqrTotalCurrentReduction);
 			}
@@ -291,9 +290,7 @@ public class StrafeState : IState
 			
 			float strafeRemainingDist = props.calculateSqrDist(circularPointDest, gameObjPos);
             Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
-			
-            // todo remove later
-//            agent.SetDestination(circularPointDest);
+            
             
 			// if point reached, recalculate points around center and move to the next one
 			if (strafeRemainingDist < 1.5f)
