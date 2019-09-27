@@ -176,6 +176,12 @@ public class TutorialController : MonoBehaviour
     public void ShowTutorial()
     {
         ToggleTutorialOptions();
+        if(TutorialWaveInProgress())
+        {
+            GameController.Instance.RestartWave();
+            GameController.Instance.TogglePauseWaveSystem();
+            tutorialWaveInProgress = false;
+        }
     }
 
     public void StartWave()
@@ -188,6 +194,7 @@ public class TutorialController : MonoBehaviour
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         tutorialWaveInProgress = true;
+        showTutorialPillar.GetComponentInChildren<Text>().text = "Return to tutorial";
     }
 
     public bool TutorialWaveInProgress()
@@ -213,12 +220,12 @@ public class TutorialController : MonoBehaviour
         tutorialWaveInProgress = false;
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
+        showTutorialPillar.GetComponentInChildren<Text>().text = "Show Tutorial";
         ToggleTutorialOptions();
     }
 
     public void StartTutorial()
     {
-        MenuUIController.Instance.ToggleLaser();
         startTutorialPillar.SetActive(false);
         tutorialSlideWall.SetActive(true);
     }
@@ -262,19 +269,13 @@ public class TutorialController : MonoBehaviour
     
     private void ToggleTutorialOptions()
     {
-        GameController.Instance.destroyAll(false);
         tutorialSlideWall.SetActive(!tutorialSlideWall.activeSelf);
         showTutorialPillar.SetActive(!showTutorialPillar.activeSelf);
-        currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         if(!tutorialWaveInProgress)
         {
             startWavePillar.SetActive(!startWavePillar.activeSelf);
+            currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         }
-        else
-        {
-            Time.timeScale = (Time.timeScale + 1) % 2;
-        }
-        MenuUIController.Instance.ToggleLaser();
         currentSlide = 0;
         SetSlideInfo();
     }
