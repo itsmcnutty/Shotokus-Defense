@@ -218,7 +218,6 @@ public class TutorialController : MonoBehaviour
 
     public void StartTutorial()
     {
-        MenuUIController.Instance.ToggleLaser();
         startTutorialPillar.SetActive(false);
         tutorialSlideWall.SetActive(true);
     }
@@ -274,7 +273,6 @@ public class TutorialController : MonoBehaviour
         {
             Time.timeScale = (Time.timeScale + 1) % 2;
         }
-        MenuUIController.Instance.ToggleLaser();
         currentSlide = 0;
         SetSlideInfo();
     }
