@@ -240,6 +240,25 @@ public class TutorialController : MonoBehaviour
         currentTargetDummy.name = "Target Dummy";
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
     }
+
+    public void ToggleTutorialPowerups()
+    {
+        switch(currentSlideType)
+        {
+            case TutorialSections.Wall:
+                PlayerAbility.ToggleWallAbility();
+                goto case TutorialSections.Quicksand;
+            case TutorialSections.Quicksand:
+                PlayerAbility.ToggleQuicksandAbility();
+                goto case TutorialSections.Spike;
+            case TutorialSections.Spike:
+                PlayerAbility.ToggleSpikeAbility();
+                goto default;
+            default:
+                PlayerAbility.ToggleRockAbility();
+                break;
+        }
+    }
     
     private void ToggleTutorialOptions()
     {
