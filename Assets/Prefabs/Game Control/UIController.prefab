@@ -73,7 +73,7 @@ MonoBehaviour:
   rightHand: {fileID: 0}
   leftHand: {fileID: 0}
   menuClick: {fileID: 3793101032773956336}
-  menuMisclick: {fileID: 2163061883210190064}
+  menuMisclick: {fileID: 5075120637997076339}
 --- !u!114 &2555846467111406081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +241,12 @@ PrefabInstance:
 --- !u!4 &6201209245432496123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6670261219594757093, guid: 791e80aba0217a64dae0853d4fb88035,
+    type: 3}
+  m_PrefabInstance: {fileID: 765218075583536158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &5075120637997076339 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5544189104927576941, guid: 791e80aba0217a64dae0853d4fb88035,
     type: 3}
   m_PrefabInstance: {fileID: 765218075583536158}
   m_PrefabAsset: {fileID: 0}

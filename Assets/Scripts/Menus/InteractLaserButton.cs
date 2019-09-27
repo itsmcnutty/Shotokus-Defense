@@ -19,6 +19,7 @@ public class InteractLaserButton : MonoBehaviour
     private Button button; // this will be the button that the laser points to
     
     private bool isEnabled; // true if lasers are enable, false otherwise
+    private string nameSelected; // name of gameobject selected by laserpointer
 
     [Header("Audio Sources")]
     public AudioSource menuClick;
@@ -69,39 +70,64 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerClick += OnPointerClick;
     }
     
+    // todo button color select 6491FF
+
     public void PointerInside(object sender, PointerEventArgs e)
     {
-        if (e.target.gameObject.GetComponent<Button>() != null && button == null)
+
+        if (e.target.gameObject.GetComponent<Button>() != null)
         {
-            
-            //Debug.Log("inside button");
+            Debug.Log("inside button + " + e.target.gameObject.name);
+//            Debug.Log(e.target.gameObject.name);
             button = e.target.gameObject.GetComponent<Button>();
             button.Select();
-            selected = true;
+//            selected = true;
         }
+        
+//        if (e.target.gameObject.GetComponent<Button>() != null && button == null)
+//        {
+//            
+//            Debug.Log("inside button");
+//            button = e.target.gameObject.GetComponent<Button>();
+//            button.Select();
+//            selected = true;
+//        }
     }
     
     public void PointerOutside(object sender, PointerEventArgs e)
     {
-        if (button != null && selected)
+        if (e.target.gameObject.GetComponent<Button>() == null)
         {
-            //Debug.Log("outside button");
-
-            selected = false;
-            // todo what is this for??
-//            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+            Debug.Log("Pointer outside button + " + e.target.gameObject.name);
+            if (button != null)
+            {
+//                button.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+//                EventSystem.current.SetSelectedGameObject(null);
+                button = null;
+            }
+        }
+        else
+        {
+            Debug.Log("im outside but im still a button baby + " + e.target.gameObject.name);
             button = null;
         }
+        
+//        if (button != null && selected)
+//        {
+//            Debug.Log("outside button");
+//
+//            selected = false;
+//            // todo what is this for??
+////            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+//            button = null;
+//        }
     }
     
     public void OnPointerClick(object sender, PointerEventArgs e)
     {
-        //Debug.Log("clicking inside button");
-
-        if (selected && button != null)
+        if (e.target.gameObject.GetComponent<Button>() != null && button != null)
         {
-            // Play click sound
-            menuClick.Play();
+            Debug.Log("clicking inside button");
             button.onClick.Invoke();
         }
         else
@@ -109,6 +135,19 @@ public class InteractLaserButton : MonoBehaviour
             // Play misclick sound
             menuMisclick.Play();
         }
+        
+
+//        if (selected && button != null)
+//        {
+//            // Play click sound
+//            menuClick.Play();
+//            button.onClick.Invoke();
+//        }
+//        else
+//        {
+//            // Play misclick sound
+//            menuMisclick.Play();
+//        }
 
     }
 
