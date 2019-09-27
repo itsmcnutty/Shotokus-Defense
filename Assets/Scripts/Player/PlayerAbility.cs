@@ -179,7 +179,7 @@ public class PlayerAbility : MonoBehaviour
         }
 
         // Draw is trackpad: can only be activated with enough energy and no other active abilities
-        if (wallAbilityEnabled && DrawRelease() && playerEnergy.EnergyAboveThreshold(100f) && !RockIsActive() && !SpikeQuicksandIsActive() && !walls.WallIsActive())
+        if (DrawRelease() && wallAbilityEnabled && playerEnergy.EnergyAboveThreshold(100f) && !RockIsActive() && !SpikeQuicksandIsActive() && !walls.WallIsActive())
         {
             if (!walls.WallOutlineIsActive())
             {
