@@ -222,7 +222,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 2136343
+    m_Bits: 2144535
   destinationReticleTransform: {fileID: 3058137214681165042}
   invalidReticleTransform: {fileID: 3058137214681151014}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -1216,7 +1216,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 2136343
+    m_Bits: 2144535
   destinationReticleTransform: {fileID: 5697528616445673770}
   invalidReticleTransform: {fileID: 5697528616445795326}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -4857,6 +4857,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5697528617254014728}
     m_Modifications:
+    - target: {fileID: 1169895027615376396, guid: 2cfab48e5561e2a40aa1ee3853eab8e0,
+        type: 3}
+      propertyPath: m_Name
+      value: EneryUsageLoopSource
+      objectReference: {fileID: 0}
     - target: {fileID: 336208629459164366, guid: 2cfab48e5561e2a40aa1ee3853eab8e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4911,11 +4916,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1169895027615376396, guid: 2cfab48e5561e2a40aa1ee3853eab8e0,
-        type: 3}
-      propertyPath: m_Name
-      value: EneryUsageLoopSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2cfab48e5561e2a40aa1ee3853eab8e0, type: 3}

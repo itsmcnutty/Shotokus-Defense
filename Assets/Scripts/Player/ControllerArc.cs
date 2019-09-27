@@ -149,24 +149,34 @@ public class ControllerArc : MonoBehaviour
 
 		bool validCollisionForAbility = false;
 
-		if(hitMarker != null)
+		if (hitMarker != null)
 		{
 			validCollisionForAbility = true;
 			MeshRenderer meshRenderer = destinationReticleTransform.gameObject.GetComponent<MeshRenderer>();
 			Collider[] colliders = Physics.OverlapSphere(hitInfo.point, meshRenderer.bounds.size.x / 2, traceLayerMask);
 			foreach (Collider collider in colliders)
 			{
-				if (collider.tag != "Ground" && collider.gameObject.layer != 14)
+				if (InvalidPointerCollision(collider, hitMarker))
 				{
 					validCollisionForAbility = false;
 					break;
 				}
 			}
 		}
+		else if (hitSomething)
+		{
+
+			Vector3 playerPos = new Vector3(player.hmdTransform.position.x, hitInfo.point.y, player.hmdTransform.position.z);
+			float distToPlayer = Vector3.SqrMagnitude(playerPos - hitInfo.point);
+			if (distToPlayer < Mathf.Pow(PlayerAbility.RockCreationDistance, 2))
+			{
+				validCollisionForAbility = true;
+			}
+		}
 
 		if (validCollisionForAbility)
 		{
-			if (hitMarker.locked)
+			if (hitMarker != null && hitMarker.locked)
 			{
 				arc.SetColor(pointerLockedColor);
 				pointerLineRenderer.startColor = pointerLockedColor;
@@ -255,6 +265,15 @@ public class ControllerArc : MonoBehaviour
 
 		pointerLineRenderer.SetPosition(0, pointerStart);
 		pointerLineRenderer.SetPosition(1, pointerEnd);
+	}
+
+	private bool InvalidPointerCollision(Collider collider, AbilityUsageMarker hitMarker)
+	{
+		return !collider.CompareTag("Ground") &&
+			!collider.CompareTag("Rock") &&
+			!hitMarker.CompareTag("Rock") &&
+			!hitMarker.CompareTag("Wall") &&
+			collider.gameObject.layer != 14;
 	}
 
 	public void HidePointer()
