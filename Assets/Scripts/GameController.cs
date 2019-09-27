@@ -235,7 +235,7 @@ public class GameController : MonoBehaviour
         restartQueue();
         
         // destroy all objects in scene before restarting
-        destroyAll();
+        destroyAll(true);
 
         currentLocation = allLocationWaves.Dequeue();
         if (restartTutorialWave)
@@ -259,7 +259,7 @@ public class GameController : MonoBehaviour
     public void RestartGame()
     {
         // destroy all objects in scene before restarting
-        destroyAll();
+        destroyAll(true);
 
         //        Debug.Log("Restarting wave");
 
@@ -284,9 +284,9 @@ public class GameController : MonoBehaviour
 
     // this function destroys all the following game objects instances:
     // rocks, walls, spikes, quicksand, menus, enemies, particles of the abilities
-    public void destroyAll()
+    public void destroyAll(bool destroyEnemies)
     {
-        if (!TutorialController.Instance.TutorialWaveInProgress())
+        if (destroyEnemies)
         {
             var enemies = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (var enemy in enemies)
@@ -322,7 +322,7 @@ public class GameController : MonoBehaviour
     // It will instantiate the game over menu and give the option to restart the game
     public void playerLost()
     {
-        destroyAll();
+        destroyAll(true);
         gameOverController.GameOverScreen();
     }
 

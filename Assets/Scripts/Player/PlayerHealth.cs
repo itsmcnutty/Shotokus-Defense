@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
         {
             // Set pitch based on health (Range 0.5 to 0.8)
             audioSource.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
-            
+
             if (!audioSource.loop)
             {
                 // If healing and not playing loop, play loop
@@ -69,17 +69,18 @@ public class PlayerHealth : MonoBehaviour
             currentHealth -= health;
             healthBar.value = currentHealth;
             SetHealthBarText();
-            
+
             // Start low health loop
             if (currentHealth / maxHealth < LOW_HEALTH_THRESHOLD)
             {
                 lowHealth.Play();
             }
-        }
-        else
-        {
-            // restart game
-            GameController.Instance.playerLost();
+
+            if (currentHealth < 0)
+            {
+                // restart game
+                GameController.Instance.playerLost();
+            }
         }
     }
 
@@ -99,7 +100,7 @@ public class PlayerHealth : MonoBehaviour
         {
             audioSource.PlayOneShot(healFull);
         }
-        
+
         // Stop low health loop
         if (currentHealth / maxHealth > LOW_HEALTH_THRESHOLD)
         {
