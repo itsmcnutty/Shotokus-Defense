@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class EnemyHealth : CallParentCollision
 {
-	// Scalar value to compute damage from impulse
-	private static float IMPULSE_MULTIPLIER = 0.034f;
 	// Height at which to kill falling enemy
 	private static float DEATH_Y = -10.0f;
 	// How much HP is represented by 1m (world space) of UI health bar
@@ -101,7 +99,7 @@ public class EnemyHealth : CallParentCollision
 
 		// Calculate the total mass of the enemy
 		Rigidbody[] enemyRigidBodies = gameObject.GetComponentsInChildren<Rigidbody>();
-		foreach(Rigidbody enemyRigidBody in enemyRigidBodies)
+		foreach (Rigidbody enemyRigidBody in enemyRigidBodies)
 		{
 			totalEnemyMass += enemyRigidBody.mass;
 		}
@@ -177,7 +175,7 @@ public class EnemyHealth : CallParentCollision
 		float momentum = other.gameObject.GetComponent<RockCollide>().GetMomentum();
 
 		// Raw incoming damage
-		float damage = IMPULSE_MULTIPLIER * momentum;
+		float damage = momentum;
 
 		// Scale damage by weapon type
 		string tag = other.gameObject.tag;
@@ -187,10 +185,10 @@ public class EnemyHealth : CallParentCollision
 				damage *= GetRockDamageScalar(child, other.gameObject, damage);
 				break;
 			case "Wall":
-				damage *= 0.5f;
+				damage *= 0.1f;
 				break;
 			case "Spike":
-				damage *= 4;
+				damage *= GetSpikeDamageScalar(other.gameObject);
 				break;
 			default:
 				damage *= 0;
@@ -211,20 +209,44 @@ public class EnemyHealth : CallParentCollision
 
 	private float GetRockDamageScalar(GameObject child, GameObject rock, float damage)
 	{
-		float damageScalar = 3.5f;
-		damageScalar *= child.GetComponent<Rigidbody>().mass / (totalEnemyMass * FULL_MASS_DAMAGE_PERC);
-		if(rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
+		RockProperties properties = rock.GetComponent<RockProperties>();
+		if (!properties.EnemyWasHit(gameObject.GetInstanceID()))
 		{
-			if((damage * damageScalar) < 150)
+			float damageScalar = 1f;
+			if (rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
 			{
-				damageScalar = 0;
+				if ((damage * damageScalar) < 1000)
+				{
+					return 0;
+				}
+				else
+				{
+					StartCoroutine(properties.TempAddEnemy(gameObject.GetInstanceID()));
+				}
 			}
+			else
+			{
+				properties.NewEnemyHit(gameObject.GetInstanceID());
+				if (child.name.Contains("Head"))
+				{
+					damageScalar *= 1.5f;
+				}
+			}
+			return damageScalar;
 		}
-		else if(child.name.Contains("Head"))
+		return 0;
+	}
+
+	private float GetSpikeDamageScalar(GameObject spike)
+	{
+		SpikeMovement properties = spike.GetComponent<SpikeMovement>();
+		if (!properties.EnemyWasHit(gameObject.GetInstanceID()))
 		{
-			damageScalar *= 8;
+			float damageScalar = 0.8f;
+			properties.NewEnemyHit(gameObject.GetInstanceID());
+			return damageScalar;
 		}
-		return damageScalar;
+		return 0;
 	}
 
 	// Returns true if the specified GameObject can damage the enemy
