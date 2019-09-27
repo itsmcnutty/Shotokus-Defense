@@ -458,6 +458,14 @@ public class PlayerAbility : MonoBehaviour
         earthquakeEnabled = !earthquakeEnabled;
     }
 
+    public static void TurnOffAllPowerups()
+    {
+        rockClusterEnabled = false;
+        spikeChainEnabled = false;
+        wallPushEnabled = false;
+        earthquakeEnabled = false;
+    }
+
     public static IEnumerator LongVibration(Hand hand, float length, ushort strength)
     {
         for (float i = 0; i < length; i += Time.deltaTime)
