@@ -350,7 +350,7 @@ public class GameController : MonoBehaviour
 
     public void SpawnTeleportPillar()
     {
-        Vector3 playerPos = player.transform.position;
+        Vector3 playerPos = vrCamera.transform.position;
         Vector3 playerDirection = new Vector3(player.transform.forward.x, 0, player.transform.forward.z);
         Quaternion playerRotation = new Quaternion(0, player.transform.rotation.y, 0, player.transform.rotation.w);
         float spawnDistance = 2;

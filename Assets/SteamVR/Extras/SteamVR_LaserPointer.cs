@@ -27,6 +27,8 @@ namespace Valve.VR.Extras
         public event PointerEventHandler PointerOut;
         public event PointerEventHandler PointerClick;
 
+        public LayerMask UILayer; // select what interacts with laser pointer raycast
+
         Transform previousContact = null;
 
 
@@ -104,7 +106,7 @@ namespace Valve.VR.Extras
         
         private void Update()
         {
-            // toggle lasers
+            // code changed here - toggle lasers
             if(active != isActive)
             {
                 isActive = active;
@@ -114,10 +116,17 @@ namespace Valve.VR.Extras
                 return;
             
             float dist = 100f;
+//            Ray raycast = new Ray(transform.position, transform.forward);
+//            RaycastHit hit;
+//            bool bHit = Physics.Raycast(raycast, out hit);
+            
 
             Ray raycast = new Ray(transform.position, transform.forward);
+
             RaycastHit hit;
-            bool bHit = Physics.Raycast(raycast, out hit);
+            bool bHit = Physics.Raycast(raycast, out hit, dist, UILayer);
+
+            
 
             if (previousContact && previousContact != hit.transform)
             {

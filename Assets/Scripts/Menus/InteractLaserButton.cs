@@ -35,6 +35,11 @@ public class InteractLaserButton : MonoBehaviour
     
     private AudioSource audioSource;
 
+    // event system to keep track of selected buttons
+    private EventSystem eventSystem;
+    private string lastButtonName; // name of gameobject selected by laserpointer
+
+
     private void Awake()
     {
         // Instantiate stuff
@@ -54,12 +59,15 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerR.active = false;
         
         audioSource = GetComponent<AudioSource>();
+        eventSystem = GameController.Instance.GetComponent<EventSystem>();
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+        lastButtonName = ""; // so its not null
+        
         laserPointerR.PointerIn += PointerInside;
         laserPointerR.PointerOut += PointerOutside;
         laserPointerR.PointerClick += OnPointerClick;
@@ -69,39 +77,38 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.PointerClick += OnPointerClick;
     }
     
+    // todo button color select 6491FF
+
+    private void Update()
+    {
+
+    }
+
     public void PointerInside(object sender, PointerEventArgs e)
     {
-        if (e.target.gameObject.GetComponent<Button>() != null && button == null)
+        if (e.target.gameObject.GetComponent<Button>() != null)
         {
-            
-            //Debug.Log("inside button");
+            Debug.Log("inside button + " + e.target.gameObject.name);
             button = e.target.gameObject.GetComponent<Button>();
             button.Select();
-            selected = true;
+            lastButtonName = e.target.gameObject.name;
         }
     }
     
     public void PointerOutside(object sender, PointerEventArgs e)
     {
-        if (button != null && selected)
+        button = null;
+        if (eventSystem.currentSelectedGameObject != null)
         {
-            //Debug.Log("outside button");
-
-            selected = false;
-            // todo what is this for??
-//            myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-            button = null;
+            eventSystem.SetSelectedGameObject(null);
         }
     }
     
     public void OnPointerClick(object sender, PointerEventArgs e)
     {
-        //Debug.Log("clicking inside button");
-
-        if (selected && button != null)
+        if (e.target.gameObject.GetComponent<Button>() != null && button != null)
         {
-            // Play click sound
-            menuClick.Play();
+            Debug.Log("clicking inside button");
             button.onClick.Invoke();
         }
         else
@@ -109,7 +116,7 @@ public class InteractLaserButton : MonoBehaviour
             // Play misclick sound
             menuMisclick.Play();
         }
-
+        
     }
 
     // This function enables or disables (toggles on or off) the steamVR laser pointer component

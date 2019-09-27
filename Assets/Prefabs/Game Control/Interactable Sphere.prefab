@@ -125,9 +125,10 @@ GameObject:
   - component: {fileID: 533584575148267378}
   - component: {fileID: 6338923623262078405}
   - component: {fileID: 1132303073096112196}
+  - component: {fileID: 8419220236655996952}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +141,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5913090978784423813}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.55, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children: []
   m_Father: {fileID: 885055658085122356}
@@ -270,6 +271,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bobHeight: 0.04
   rotationDegree: 0.5
+--- !u!114 &8419220236655996952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5913090978784423813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ad8a2bd8756c644b710b2ed8f19991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 1
 --- !u!1 &8769377007706902440
 GameObject:
   m_ObjectHideFlags: 0
