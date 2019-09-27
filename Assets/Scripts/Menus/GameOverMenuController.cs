@@ -62,6 +62,7 @@ public class GameOverMenuController : MonoBehaviour
             PlayerAbility.ToggleQuicksandAbility();
             PlayerAbility.ToggleRockAbility();
         }
+        PlayerEnergy.Instance.CancelAllEnergyUsage();
 
         Time.timeScale = 0;
         laserPointer.toggleLaser();

@@ -7,6 +7,7 @@ using Valve.VR.InteractionSystem;
 
 public class PlayerEnergy : MonoBehaviour
 {
+    public static PlayerEnergy instance;
     public Slider energyBarBefore;
     public Slider energyBarAfter;
     public Text energyBarText;
@@ -23,6 +24,19 @@ public class PlayerEnergy : MonoBehaviour
     private float lastAbilityUsedTime;
     private Dictionary<Hand, float> activeAbilityEnergyCost;
     private bool infiniteEnergyDisabled = true;
+
+    // Instance getter and initialization
+    public static PlayerEnergy Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType(typeof(PlayerEnergy)) as PlayerEnergy;
+            }
+            return instance;
+        }
+    }
 
     // Start is called before the first frame update
     void Start ()
@@ -132,6 +146,12 @@ public class PlayerEnergy : MonoBehaviour
         
         // Stop looping sound
         useEnergyLoop.Stop();
+    }
+
+    public void CancelAllEnergyUsage()
+    {
+        energyBarAfter.value = currentEnergy;
+        activeAbilityEnergyCost.Clear();
     }
 
     public bool EnergyIsNotZero ()
