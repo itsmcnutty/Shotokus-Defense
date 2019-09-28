@@ -13,7 +13,6 @@ public class InteractLaserButton : MonoBehaviour
 {
     public GameObject rightHand; // right hand VR
     public GameObject leftHand; // right hand VR
-    private bool selected; 
     private SteamVR_LaserPointer laserPointerR; // Laser pointer for Right hand
     private SteamVR_LaserPointer laserPointerL; // Laser pointer for Left hand
     private Button button; // this will be the button that the laser points to
@@ -54,7 +53,6 @@ public class InteractLaserButton : MonoBehaviour
         leftHandComp = leftHand.GetComponent<Hand>();
         
         isEnabled = false;
-        selected = false;
         laserPointerL.active = false;
         laserPointerR.active = false;
         
@@ -88,7 +86,7 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (e.target.gameObject.GetComponent<Button>() != null)
         {
-            Debug.Log("inside button + " + e.target.gameObject.name);
+//            Debug.Log("inside button + " + e.target.gameObject.name);
             button = e.target.gameObject.GetComponent<Button>();
             button.Select();
             lastButtonName = e.target.gameObject.name;
@@ -108,7 +106,7 @@ public class InteractLaserButton : MonoBehaviour
     {
         if (e.target.gameObject.GetComponent<Button>() != null && button != null)
         {
-            Debug.Log("clicking inside button");
+//            Debug.Log("clicking inside button");
             button.onClick.Invoke();
         }
         else
@@ -156,7 +154,7 @@ public class InteractLaserButton : MonoBehaviour
             // laser is not enabled, so enable it
             isEnabled = true;
             laserPointerR.active = true;
-            laserPointerL.active = false; // todo debugging make this true if you want both lasers back
+            laserPointerL.active = false; // make this true if you want both lasers back
             
             // disable abilities & controller arc
             rightArc.setCanUseAbility(false);

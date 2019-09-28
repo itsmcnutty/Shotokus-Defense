@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1240465548013029506}
   - component: {fileID: 1132427360064084190}
   - component: {fileID: 807606563917222232}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,6 +276,7 @@ GameObject:
   - component: {fileID: 801056499150555068}
   - component: {fileID: 589378325294311882}
   - component: {fileID: 2099820546543878244}
+  - component: {fileID: 1743288064019595783}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -421,6 +422,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 160, y: 20, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!223 &1743288064019595783
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3353819076916809417}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &4684755444041184919
 GameObject:
   m_ObjectHideFlags: 0
