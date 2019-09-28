@@ -317,6 +317,24 @@ public class GameController : MonoBehaviour
         foreach (var particle in particles)
             Destroy(particle);
     }
+    
+    // this function hides/unhides all the enemies in the scene:
+    public void hideEnemies(bool hide)
+    {
+        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var enemy in enemies)
+        {
+            if (hide)
+            {
+                enemy.SetActive(false);
+            }
+            else
+            {
+                enemy.SetActive(true);
+            }
+        }
+    }
+
 
     // This function is called when player looses
     // It will instantiate the game over menu and give the option to restart the game
@@ -398,8 +416,7 @@ public class GameController : MonoBehaviour
                 destinationPos = new Vector3(26, 1f, -22.8f);
                 break;
             case 4:
-//                destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
-                destinationPos = new Vector3(-1.5f, 0.75f, -22.8f);
+                destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
                 break;
             default:
                 destinationPos = new Vector3(0, 0, 0);
