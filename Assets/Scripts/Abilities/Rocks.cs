@@ -150,6 +150,8 @@ public class Rocks : MonoBehaviour
 
             UnityEngine.ParticleSystem.MainModule swirlMain = currentRegrowthSwirlSystem.main;
             swirlMain.loop = false;
+
+            Destroy(currentRegrowthSwirlSystem.GetComponent<WindZone>());
             currentRegrowthSwirlSystem = null;
         }
     }
