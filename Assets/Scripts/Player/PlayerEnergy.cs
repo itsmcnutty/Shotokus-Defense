@@ -83,6 +83,9 @@ public class PlayerEnergy : MonoBehaviour
             {
                 activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
                 afterAbilityEnergy = currentEnergy;
+                
+                // Play out of energy sound
+                noEnergy.Play();
             }
             energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         }
