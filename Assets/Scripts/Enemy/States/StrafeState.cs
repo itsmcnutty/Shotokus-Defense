@@ -344,8 +344,11 @@ public class StrafeState : IState
 	public IState Transition()
 	{
 		// Transition to ragdoll state if ragdolling
-		if (ragdollController.IsRagdolling())
+		// todo debug only - delete later
+		if (true)
+//		if (ragdollController.IsRagdolling())
 		{
+			ragdollController.StartRagdoll();		// todo debug only - delete later
 			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}
