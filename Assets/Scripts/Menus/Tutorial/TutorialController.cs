@@ -190,6 +190,7 @@ public class TutorialController : MonoBehaviour
         {
             GameController.Instance.RestartWave();
             GameController.Instance.TogglePauseWaveSystem();
+            showTutorialPillar.GetComponentInChildren<Text>().text = "Show Tutorial";
             tutorialWaveInProgress = false;
         }
     }
