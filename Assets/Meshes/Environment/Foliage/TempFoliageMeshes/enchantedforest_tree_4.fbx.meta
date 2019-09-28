@@ -1,28 +1,71 @@
 fileFormatVersion: 2
 guid: d9c1ae3b8cdd64725a2b3e01dc735436
-timeCreated: 1498230581
-licenseType: Store
 ModelImporter:
-  serializedVersion: 21
-  fileIDToRecycleName:
-    100000: Cylinder.010
-    100002: //RootNode
-    100004: Icosphere.014
-    400000: Cylinder.010
-    400002: //RootNode
-    400004: Icosphere.014
-    2300000: Cylinder.010
-    2300002: Icosphere.014
-    3300000: Cylinder.010
-    3300002: Icosphere.014
-    4300000: Icosphere.014
-    4300002: Cylinder.010
-    6400000: Cylinder.010
-    6400002: Icosphere.014
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Cylinder.010
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      1: 100004
+    second: Icosphere.014
+  - first:
+      4: 400000
+    second: Cylinder.010
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      4: 400004
+    second: Icosphere.014
+  - first:
+      23: 2300000
+    second: Cylinder.010
+  - first:
+      23: 2300002
+    second: Icosphere.014
+  - first:
+      33: 3300000
+    second: Cylinder.010
+  - first:
+      33: 3300002
+    second: Icosphere.014
+  - first:
+      43: 4300000
+    second: Icosphere.014
+  - first:
+      43: 4300002
+    second: Cylinder.010
+  - first:
+      64: 6400000
+    second: Cylinder.010
+  - first:
+      64: 6400002
+    second: Icosphere.014
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaves1
+    second: {fileID: 2100000, guid: 5a76d2b202387b346ad310f7b06c97df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaves2
+    second: {fileID: 2100000, guid: 0b2bd319b0de581439ad540f87f999bb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood4
+    second: {fileID: 2100000, guid: 0b43ab3729e910a4b8fcef9fa5da3e31, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -35,6 +78,8 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -43,12 +88,13 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 1
+    useSRGBMaterialColor: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
@@ -56,9 +102,14 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 1
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -69,10 +120,14 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -82,8 +137,8 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
