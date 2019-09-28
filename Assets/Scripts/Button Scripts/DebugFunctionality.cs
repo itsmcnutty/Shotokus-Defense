@@ -49,6 +49,12 @@ public class DebugFunctionality : MonoBehaviour
         menuUiController.pauseToggle();
     }
 
+    public void RestartWave()
+    {
+        menuUiController.pauseToggle();
+        gameController.RestartWave();
+    }
+
     public void RestartGame()
     {
         menuUiController.pauseToggle();
