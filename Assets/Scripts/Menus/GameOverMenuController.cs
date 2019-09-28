@@ -53,7 +53,7 @@ public class GameOverMenuController : MonoBehaviour
         // freeze time, active menu laser pointers and cancel abilities
         if (TutorialController.Instance.TutorialWaveInProgress())
         {
-            TutorialController.Instance.ToggleTutorialPowerups();
+            TutorialController.Instance.ToggleTutorialAbilities();
         }
         else
         {
@@ -62,6 +62,7 @@ public class GameOverMenuController : MonoBehaviour
             PlayerAbility.ToggleQuicksandAbility();
             PlayerAbility.ToggleRockAbility();
         }
+        PlayerEnergy.Instance.CancelAllEnergyUsage();
 
         Time.timeScale = 0;
         laserPointer.toggleLaser();

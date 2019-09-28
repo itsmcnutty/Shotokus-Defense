@@ -368,10 +368,7 @@ public class PlayerAbility : MonoBehaviour
     private bool IsUIInteractable()
     {
         GameObject hitObject = arc.GetPointerHitObject();
-        if (hitObject && (hitObject.name.Equals("Show Tutorial Sphere") ||
-                hitObject.name.Equals("Start Wave Sphere") ||
-                hitObject.name.Equals("Start Tutorial Sphere") ||
-                hitObject.name.Equals("Teleport Sphere")))
+        if (hitObject && hitObject.GetComponent<FloatInteractable>())
         {
             return true;
         }
@@ -392,6 +389,14 @@ public class PlayerAbility : MonoBehaviour
         else if (hitObject && hitObject.name.Equals("Start Tutorial Sphere"))
         {
             TutorialController.Instance.StartTutorial();
+        }
+        else if (hitObject && hitObject.name.Equals("Next Slide Star"))
+        {
+            TutorialController.Instance.NextSlide();
+        }
+        else if (hitObject && hitObject.name.Equals("Back Slide Star"))
+        {
+            TutorialController.Instance.PreviousSlide();
         }
         else if (hitObject && hitObject.name.Equals("Teleport Sphere"))
         {
@@ -451,6 +456,14 @@ public class PlayerAbility : MonoBehaviour
     public static void ToggleEarthquake()
     {
         earthquakeEnabled = !earthquakeEnabled;
+    }
+
+    public static void TurnOffAllPowerups()
+    {
+        rockClusterEnabled = false;
+        spikeChainEnabled = false;
+        wallPushEnabled = false;
+        earthquakeEnabled = false;
     }
 
     public static IEnumerator LongVibration(Hand hand, float length, ushort strength)
