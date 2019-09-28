@@ -1,31 +1,77 @@
 fileFormatVersion: 2
 guid: a79996ba2a6fcd5419c6ea33366c5f63
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: Village_Firepit01_LOD01
-    100004: Village_Firepit01_LOD02
-    100006: Village_Firepit01_LOD03
-    400000: //RootNode
-    400002: Village_Firepit01_LOD01
-    400004: Village_Firepit01_LOD02
-    400006: Village_Firepit01_LOD03
-    2100000: Village_FirePit01
-    2100002: Village_FirePitWood02
-    2100004: Village_FirePit02
-    2100006: Village_FirePitWood01
-    2100008: Village_FirePitStones01
-    2300000: Village_Firepit01_LOD01
-    2300002: Village_Firepit01_LOD02
-    2300004: Village_Firepit01_LOD03
-    3300000: Village_Firepit01_LOD01
-    3300002: Village_Firepit01_LOD02
-    3300004: Village_Firepit01_LOD03
-    4300000: Village_Firepit01_LOD03
-    4300002: Village_Firepit01_LOD02
-    4300004: Village_Firepit01_LOD01
-    2186277476908879412: ImportLogs
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: Village_Firepit01_LOD01
+  - first:
+      1: 100004
+    second: Village_Firepit01_LOD02
+  - first:
+      1: 100006
+    second: Village_Firepit01_LOD03
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: Village_Firepit01_LOD01
+  - first:
+      4: 400004
+    second: Village_Firepit01_LOD02
+  - first:
+      4: 400006
+    second: Village_Firepit01_LOD03
+  - first:
+      21: 2100000
+    second: Village_FirePit01
+  - first:
+      21: 2100002
+    second: Village_FirePitWood02
+  - first:
+      21: 2100004
+    second: Village_FirePit02
+  - first:
+      21: 2100006
+    second: Village_FirePitWood01
+  - first:
+      21: 2100008
+    second: Village_FirePitStones01
+  - first:
+      23: 2300000
+    second: Village_Firepit01_LOD01
+  - first:
+      23: 2300002
+    second: Village_Firepit01_LOD02
+  - first:
+      23: 2300004
+    second: Village_Firepit01_LOD03
+  - first:
+      33: 3300000
+    second: Village_Firepit01_LOD01
+  - first:
+      33: 3300002
+    second: Village_Firepit01_LOD02
+  - first:
+      33: 3300004
+    second: Village_Firepit01_LOD03
+  - first:
+      43: 4300000
+    second: Village_Firepit01_LOD03
+  - first:
+      43: 4300002
+    second: Village_Firepit01_LOD02
+  - first:
+      43: 4300004
+    second: Village_Firepit01_LOD01
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -54,12 +100,13 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -67,10 +114,13 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
@@ -82,10 +132,14 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -95,8 +149,8 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
