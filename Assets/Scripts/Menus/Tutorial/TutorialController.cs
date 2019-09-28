@@ -253,7 +253,6 @@ public class TutorialController : MonoBehaviour
     public void RestartTutorial()
     {
         startTutorialPillar.SetActive(true);
-        PlayerAbility.TurnOffAllAbilities();
     }
     
     public void SpawnNewDummy()

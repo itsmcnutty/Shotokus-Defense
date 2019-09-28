@@ -236,8 +236,6 @@ public class GameController : MonoBehaviour
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
 
-        //        Debug.Log("Restarting wave");
-
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0;
@@ -269,20 +267,18 @@ public class GameController : MonoBehaviour
     {
         // destroy all objects in scene before restarting
         destroyAll(true);
-
-        //        Debug.Log("Restarting wave");
+        
+        // teleport the player
+        if (!gameWon)
+        {
+            Teleport(false, 5);
+        }
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0;
         caseSwitch = 0;
         pauseWaveSystem = true;
-
-        // teleport the player
-        if (!gameWon)
-        {
-            Teleport(false, 5);
-        }
 
         // restart queue to initial state (all waves from location 1)
         allLocationWaves = new Queue<LocationWaves>();
@@ -292,10 +288,12 @@ public class GameController : MonoBehaviour
         }
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
+        
         playerHealth.RecoverAllHealth();
         MenuUIController.Instance.ToggleLaser();
         spawnArea.SetActive(true);
         TutorialController.Instance.RestartTutorial();
+        PlayerAbility.TurnOffAllAbilities();
     }
 
     // this function destroys all the following game objects instances:
@@ -396,7 +394,7 @@ public class GameController : MonoBehaviour
 
         if (gameWon)
         {
-            teleportPillar.GetComponentInChildren<Text>().text = "You Win! \n Return to main menu";
+            teleportPillar.GetComponentInChildren<Text>().text = "Congratulations!";
         }
         else
         {
@@ -429,8 +427,7 @@ public class GameController : MonoBehaviour
             // optional parameter, input specific location to transport to
             if (location >= 0)
             {
-                temp = location % 5;
-                caseSwitch = temp;
+                temp = location;
             }
 
             switch (temp)
@@ -449,6 +446,9 @@ public class GameController : MonoBehaviour
                     break;
                 case 4:
                     destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
+                    break;
+                case 5:
+                    destinationPos = new Vector3(39.9f, 0, 16.9f);
                     break;
                 default:
                     destinationPos = new Vector3(0, 0, 0);
