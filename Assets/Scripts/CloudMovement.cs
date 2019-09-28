@@ -10,11 +10,13 @@ public class CloudMovement : MonoBehaviour
     public float sqrMetersBeforeFade = 100;
     private Renderer objectRenderer;
     private Color objectColor;
+    private MaterialPropertyBlock block;
     // Start is called before the first frame update
     void Start()
     {
         objectRenderer = gameObject.GetComponent<Renderer>();
         objectColor = objectRenderer.sharedMaterial.color;
+        block = new MaterialPropertyBlock();
     }
 
     // Update is called once per frame
@@ -27,7 +29,8 @@ public class CloudMovement : MonoBehaviour
         if(distanceToStart < sqrMetersBeforeFade)
         {
             objectColor.a = Mathf.Lerp(0, 1, distanceToStart / sqrMetersBeforeFade);
-            objectRenderer.sharedMaterial.color = objectColor;
+            block.SetColor("_BaseColor", objectColor);
+            objectRenderer.SetPropertyBlock(block);
         }
 
         Vector3 distanceToEndVector = endLoc - transform.position;
@@ -35,7 +38,8 @@ public class CloudMovement : MonoBehaviour
         if(distanceToEnd < sqrMetersBeforeFade)
         {
             objectColor.a = Mathf.Lerp(0, 1, distanceToEnd / sqrMetersBeforeFade);
-            objectRenderer.sharedMaterial.color = objectColor;
+            block.SetColor("_BaseColor", objectColor);
+            objectRenderer.SetPropertyBlock(block);
         }
 
         if(transform.position == endLoc)
