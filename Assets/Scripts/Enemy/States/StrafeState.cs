@@ -277,19 +277,19 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-			Debug.Log("my destination is " + circularPointDest);
+			//Debug.Log("my destination is " + circularPointDest);
 		}
 		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
-			Debug.Log("strafe state: moving in circles");
+			//Debug.Log("strafe state: moving in circles");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			
 			float strafeRemainingDist = props.calculateSqrDist(circularPointDest, gameObjPos);
-            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+            //Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
             
             
 			// if point reached, recalculate points around center and move to the next one
