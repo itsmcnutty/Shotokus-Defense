@@ -222,7 +222,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 2144535
+    m_Bits: 2144567
   destinationReticleTransform: {fileID: 3058137214681165042}
   invalidReticleTransform: {fileID: 3058137214681151014}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -1216,7 +1216,7 @@ MonoBehaviour:
     needsReinit: 0
   traceLayerMask:
     serializedVersion: 2
-    m_Bits: 2144535
+    m_Bits: 2144567
   destinationReticleTransform: {fileID: 5697528616445673770}
   invalidReticleTransform: {fileID: 5697528616445795326}
   pointerValidColor: {r: 0, g: 1, b: 0.055066347, a: 0}
@@ -1800,6 +1800,9 @@ MonoBehaviour:
   pointer: {fileID: 0}
   addRigidBody: 0
   reference: {fileID: 0}
+  UILayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &5697528617253961033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2032,6 +2035,9 @@ MonoBehaviour:
   pointer: {fileID: 0}
   addRigidBody: 0
   reference: {fileID: 0}
+  UILayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &5697528617253961136
 MonoBehaviour:
   m_ObjectHideFlags: 0

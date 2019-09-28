@@ -273,7 +273,8 @@ public class ControllerArc : MonoBehaviour
 			!collider.CompareTag("Rock") &&
 			!hitMarker.CompareTag("Rock") &&
 			!hitMarker.CompareTag("Wall") &&
-			collider.gameObject.layer != 14;
+			collider.gameObject.layer != 14 &&
+			collider.gameObject.layer != 5;
 	}
 
 	public void HidePointer()
