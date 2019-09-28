@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
     [Header("Miscellaneous")]
     public float limitAmountEnemies; // maximum amount of enemies at one time in the game
     public GameObject teleportPillar;
+    public GameObject spawnArea;
 
     // variables for teleport function
     private int caseSwitch;
@@ -196,12 +197,16 @@ public class GameController : MonoBehaviour
 
     public void StartGameWithTutorial()
     {
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(false);
         Teleport(false);
         TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
     }
 
     public void StartGameWithoutTutorial()
     {
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(false);
         Teleport(true);
         PlayerAbility.ToggleRockAbility();
         PlayerAbility.ToggleSpikeAbility();
@@ -270,9 +275,14 @@ public class GameController : MonoBehaviour
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0;
+        caseSwitch = 0;
+        pauseWaveSystem = true;
 
         // teleport the player
-        Teleport(false, 0);
+        if (!gameWon)
+        {
+            Teleport(false, 5);
+        }
 
         // restart queue to initial state (all waves from location 1)
         allLocationWaves = new Queue<LocationWaves>();
@@ -280,10 +290,12 @@ public class GameController : MonoBehaviour
         {
             allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
         }
-
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         playerHealth.RecoverAllHealth();
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(true);
+        TutorialController.Instance.RestartTutorial();
     }
 
     // this function destroys all the following game objects instances:
@@ -398,29 +410,29 @@ public class GameController : MonoBehaviour
     {
         Vector3 destinationPos;
         int temp = caseSwitch;
-        caseSwitch += 1;
 
         // Get camera rig and head position
         Transform cameraRigT = cameraRig.transform;
         Vector3 headPosition = vrCamera.transform.position;
 
-        temp = temp % 5;
-
-        // optional parameter, input specific location to transport to
-        if (location >= 0)
-        {
-            temp = location % 5;
-            caseSwitch = temp;
-        }
-
         if (gameWon)
         {
-            gameWon = false;
-            destinationPos = new Vector3(39.9f, 0, 16.9f);
             RestartGame();
+            destinationPos = new Vector3(39.9f, 0, 16.9f);
+            gameWon = false;
         }
         else
         {
+            caseSwitch += 1;
+            temp = temp % 5;
+
+            // optional parameter, input specific location to transport to
+            if (location >= 0)
+            {
+                temp = location % 5;
+                caseSwitch = temp;
+            }
+
             switch (temp)
             {
                 case 0:
@@ -442,9 +454,15 @@ public class GameController : MonoBehaviour
                     destinationPos = new Vector3(0, 0, 0);
                     break;
             }
+
             // Reposition the ability ring
             StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
             StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
+
+            if (toggleWaves)
+            {
+                Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+            }
         }
 
         // Calculate translation
@@ -454,10 +472,6 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
 
-        if (toggleWaves)
-        {
-            Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
-        }
         teleportPillar.SetActive(false);
     }
 

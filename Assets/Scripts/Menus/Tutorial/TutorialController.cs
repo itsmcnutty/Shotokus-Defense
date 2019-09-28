@@ -149,7 +149,7 @@ public class TutorialController : MonoBehaviour
         tutorialText.text = slide.slideTitle;
         captionText.text = slide.captionText;
 
-        PlayerAbility.TurnOffAllPowerups();
+        PlayerAbility.TurnOffAllPowerups(true, false);
         PowerupController.Instance.ResetPowerupIconColor();
         if(slide.slideTitle.Equals("Power-up"))
         {
@@ -248,6 +248,12 @@ public class TutorialController : MonoBehaviour
         showTutorialPillar.SetActive(false);
         startWavePillar.SetActive(false);
         startTutorialPillar.SetActive(false);
+    }
+
+    public void RestartTutorial()
+    {
+        startTutorialPillar.SetActive(true);
+        PlayerAbility.TurnOffAllAbilities();
     }
     
     public void SpawnNewDummy()
