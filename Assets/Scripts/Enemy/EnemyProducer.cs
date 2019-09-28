@@ -39,7 +39,8 @@ public class EnemyProducer : MonoBehaviour
     Vector3 randomSpawnPosition() {
         float x = Random.Range(spawnArea.min.x, spawnArea.max.x);
         float z = Random.Range(spawnArea.min.z, spawnArea.max.z);
-        float y = 0.5f;
+        float y = 0;
+//        float y = 0.5f;
         return new Vector3(x, y, z);
     }
     

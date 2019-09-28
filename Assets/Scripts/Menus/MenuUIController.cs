@@ -18,7 +18,7 @@ public class MenuUIController : MonoBehaviour
     public AudioSource menuShow;
     public AudioSource menuHide;
 
-    private GameObject playerObj; // this is the Player game object with tag "Player"
+    private GameObject cameraRig; // this is the Player game object with tag "Player"
     private GameObject player; // get coordinates of player, to instate menu in front of them. THIS IS NOT THE PLAYER, THIS IS THE PLAYER'S HEAD
     private Camera vrCamera;
     private GameObject pauseMenu;
@@ -48,7 +48,7 @@ public class MenuUIController : MonoBehaviour
     {
         // Instantiate
         player = GameObject.FindWithTag("MainCamera");
-        playerObj = GameObject.FindWithTag("Player");
+        cameraRig = GameObject.FindWithTag("CameraRig");
         vrCamera = player.GetComponent<Camera>();
 
         laserPointer = this.GetComponent<InteractLaserButton>();
@@ -91,9 +91,8 @@ public class MenuUIController : MonoBehaviour
         playerPos = player.transform.position;
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
-        Vector3 spawnPosition = playerPos + playerFor * 5;
-        Debug.Log("Heigh of player is: " + playerObj.transform.position.y);
-        spawnPosition.y = (float) 3; // todo test this out
+        Vector3 spawnPosition = playerPos + playerFor * 6.5f;
+        spawnPosition.y =  2.8f + cameraRig.transform.position.y; // todo test this out
 
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
         pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
@@ -117,6 +116,7 @@ public class MenuUIController : MonoBehaviour
             // menu is not active, so open it and play sonud effect
             menuShow.Play();
             isPauseMenuActive = true;
+            GameController.Instance.hideEnemies(true); // hide enemies
             PauseGame();
             Time.timeScale = 0;
         }
@@ -125,6 +125,7 @@ public class MenuUIController : MonoBehaviour
             // menu is active, so close it and play sound effect
             menuHide.Play();
             isPauseMenuActive = false;
+            GameController.Instance.hideEnemies(false); // show enemies
             Destroy(pauseMenu);
             Time.timeScale = 1;
         }
