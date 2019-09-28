@@ -15,6 +15,7 @@ public class ProjectileCollide : MonoBehaviour
 
     private Rigidbody projectileRigidbody;
     private float WALL_LIFETIME = 3f;
+    private Quaternion initialRotation;
 
     
     // Start is called before the first frame update
@@ -23,6 +24,8 @@ public class ProjectileCollide : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("MainCamera");
         playerHealth = player.GetComponent<PlayerHealth>();
         projectileRigidbody = GetComponent<Rigidbody>();
+        initialRotation = Quaternion.Euler(90, 0, 0);
+        trail.enabled = false;
     }
 
     // Update is called once per frame
@@ -30,9 +33,13 @@ public class ProjectileCollide : MonoBehaviour
     {
         if (trail.enabled)
         {
-            //TODO: look towards motion
-            //transform.rotation = Quaternion.LookRotation();
+            transform.rotation = Quaternion.LookRotation(projectileRigidbody.velocity) * initialRotation;
         }
+    }
+
+    public void StartRotation()
+    {
+        trail.enabled = true;
     }
 
     private void OnCollisionEnter(Collision other)

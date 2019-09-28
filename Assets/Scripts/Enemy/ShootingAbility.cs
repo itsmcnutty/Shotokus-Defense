@@ -91,6 +91,7 @@ public class ShootingAbility : MonoBehaviour
             // set rotation and add velocity vector to projectile
             projectile.transform.LookAt(playerPos);
             projectileRigidbody.velocity = velocity;
+            projectile.GetComponent<ProjectileCollide>().StartRotation();
 
             // wait for fire rate timer
             StartCoroutine(Wait(fireRate));
