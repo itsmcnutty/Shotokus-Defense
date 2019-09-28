@@ -458,12 +458,31 @@ public class PlayerAbility : MonoBehaviour
         earthquakeEnabled = !earthquakeEnabled;
     }
 
-    public static void TurnOffAllPowerups()
+    public static void TurnOffAllAbilities()
+    {
+        rockAbilityEnabled = false;
+        spikeAbilityEnabled = false;
+        wallAbilityEnabled = false;
+        quicksandAbilityEnabled = false;
+        TurnOffAllPowerups(true, true);
+    }
+
+    public static void TurnOffAllPowerups(bool resetCounter, bool turnCanvasOff)
     {
         rockClusterEnabled = false;
         spikeChainEnabled = false;
         wallPushEnabled = false;
         earthquakeEnabled = false;
+
+        if(resetCounter)
+        {
+            PowerupController.Instance.ResetCounters();
+        }
+
+        if(turnCanvasOff)
+        {
+            PowerupController.Instance.TurnCanvasOff();
+        }
     }
 
     public static IEnumerator LongVibration(Hand hand, float length, ushort strength)
