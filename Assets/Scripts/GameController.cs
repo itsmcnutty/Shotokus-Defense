@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class GameController : MonoBehaviour
     private float currentTime;
     private bool pauseWaveSystem = true;
     private float availableSpots; // keeps track of how many more enemies can be spawned in the scene
+    private bool gameWon;
 
     // Constructor
     private GameController() { }
@@ -183,11 +185,13 @@ public class GameController : MonoBehaviour
             currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
             TogglePauseWaveSystem();
-            SpawnTeleportPillar();
-            return;
+        }
+        else
+        {
+            gameWon = true;
         }
         // no more locations left so you win
-        Debug.Log("YOU WIN");
+        SpawnTeleportPillar();
     }
 
     public void StartGameWithTutorial()
@@ -220,7 +224,7 @@ public class GameController : MonoBehaviour
     public void RestartWave()
     {
         bool restartTutorialWave = false;
-        if(TutorialController.Instance.TutorialWaveInProgress())
+        if (TutorialController.Instance.TutorialWaveInProgress())
         {
             restartTutorialWave = true;
         }
@@ -233,7 +237,7 @@ public class GameController : MonoBehaviour
         enemiesAlive = 0;
         currentTime = 0;
         restartQueue();
-        
+
         // destroy all objects in scene before restarting
         destroyAll(true);
 
@@ -360,6 +364,15 @@ public class GameController : MonoBehaviour
         teleportPillar.transform.position = spawnPos;
         teleportPillar.transform.rotation = playerRotation;
         teleportPillar.SetActive(true);
+
+        if (gameWon)
+        {
+            teleportPillar.GetComponentInChildren<Text>().text = "You Win! \n Return to main menu";
+        }
+        else
+        {
+            teleportPillar.GetComponentInChildren<Text>().text = "Teleport";
+        }
     }
 
     // This function moves the player around the 5 wave zones
@@ -383,27 +396,39 @@ public class GameController : MonoBehaviour
             caseSwitch = temp;
         }
 
-        switch (temp)
+        if (gameWon)
         {
-            case 0:
-                destinationPos = new Vector3(9, 0.25f, 33);
-                break;
-            case 1:
-                destinationPos = new Vector3(22.6f, 0.5f, 23f);
-                break;
-            case 2:
-                destinationPos = new Vector3(-3f, 0.75f, 3.1f);
-                break;
-            case 3:
-                destinationPos = new Vector3(26, 1f, -22.8f);
-                break;
-            case 4:
-//                destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
-                destinationPos = new Vector3(-1.5f, 0.75f, -22.8f);
-                break;
-            default:
-                destinationPos = new Vector3(0, 0, 0);
-                break;
+            gameWon = false;
+            destinationPos = new Vector3(39.9f, 0, 16.9f);
+            RestartGame();
+        }
+        else
+        {
+            switch (temp)
+            {
+                case 0:
+                    destinationPos = new Vector3(9, 0.25f, 33);
+                    break;
+                case 1:
+                    destinationPos = new Vector3(22.6f, 0.5f, 23f);
+                    break;
+                case 2:
+                    destinationPos = new Vector3(-3f, 0.75f, 3.1f);
+                    break;
+                case 3:
+                    destinationPos = new Vector3(26, 1f, -22.8f);
+                    break;
+                case 4:
+                    //                destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
+                    destinationPos = new Vector3(-1.5f, 0.75f, -22.8f);
+                    break;
+                default:
+                    destinationPos = new Vector3(0, 0, 0);
+                    break;
+            }
+            // Reposition the ability ring
+            StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
+            StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
         }
 
         // Calculate translation
@@ -418,10 +443,6 @@ public class GameController : MonoBehaviour
             Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
         }
         teleportPillar.SetActive(false);
-
-        // Reposition the ability ring
-        StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
-        StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
     }
 
     public void TogglePauseWaveSystem()
