@@ -107,6 +107,9 @@ public class PlayerEnergy : MonoBehaviour
                 if (currentEnergy < 0)
                 {
                     currentEnergy = 0;
+                
+                    // Play out of energy sound
+                    noEnergy.Play();
                 }
                 energyBarBefore.value = currentEnergy;
                 energyBarAfter.value = currentEnergy;
