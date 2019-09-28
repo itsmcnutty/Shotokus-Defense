@@ -25,6 +25,7 @@ public class PlayerEnergy : MonoBehaviour
     private float lastAbilityUsedTime;
     private Dictionary<Hand, float> activeAbilityEnergyCost;
     private bool infiniteEnergyDisabled = true;
+    private bool hasPlayedNoEnergySound = false; // If player has already heard sound while trying to deplete energy
 
     // Instance getter and initialization
     public static PlayerEnergy Instance
@@ -85,7 +86,16 @@ public class PlayerEnergy : MonoBehaviour
                 afterAbilityEnergy = currentEnergy;
                 
                 // Play out of energy sound
-                noEnergy.Play();
+                if (!hasPlayedNoEnergySound)
+                {
+                    noEnergy.Play();
+                    hasPlayedNoEnergySound = true;
+                }
+            }
+            else
+            {
+                // No longer depleting energy
+                hasPlayedNoEnergySound = false;
             }
             energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         }
@@ -142,6 +152,9 @@ public class PlayerEnergy : MonoBehaviour
         
         // Stop looping sound
         useEnergyLoop.Stop();
+        
+        // No longer depleting energy
+        hasPlayedNoEnergySound = false;
     }
 
     public void CancelEnergyUsage (Hand activeHand)
