@@ -5,10 +5,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 
-public class PlayLoopWithFade : MonoBehaviour
+public class FadeAudioSource : MonoBehaviour
 {
     // The audio source with the loop
-    public AudioSource loopingAudioSource;
+    public AudioSource source;
 
     [Header("Fading variables")]
     // How long (in seconds) to spend on fade in
@@ -23,11 +23,11 @@ public class PlayLoopWithFade : MonoBehaviour
     // Returns false if the sound was already playing
     public bool Play()
     {
-        if (!loopingAudioSource.isPlaying)
+        if (!source.isPlaying)
         {
             // 0 volume and play
-            loopingAudioSource.volume = 0;
-            loopingAudioSource.Play();
+            source.volume = 0;
+            source.Play();
             
             // Calculate how much to update volume per second (regardless of current volume)
             volumeUpdatePerSecond = 1f / fadeInTime;
@@ -43,7 +43,7 @@ public class PlayLoopWithFade : MonoBehaviour
     // Returns false if the sound was not playing when called
     public bool Stop()
     {
-        if (loopingAudioSource.isPlaying)
+        if (source.isPlaying)
         {
             // Calculate how much to update volume per second (regardless of current volume)
             volumeUpdatePerSecond = -1f / fadeOutTime;
@@ -58,20 +58,20 @@ public class PlayLoopWithFade : MonoBehaviour
     void Update()
     {
         // Update volume if playing
-        if (loopingAudioSource.isPlaying)
+        if (source.isPlaying)
         {
-            loopingAudioSource.volume += volumeUpdatePerSecond * Time.deltaTime;
+            source.volume += volumeUpdatePerSecond * Time.deltaTime;
         }
 
-        if (loopingAudioSource.volume >= 1)
+        if (source.volume >= 1)
         {
             // Max volume achieved, stop updating volume
             volumeUpdatePerSecond = 0;
         }
-        else if (loopingAudioSource.volume <= 0)
+        else if (source.volume <= 0)
         {
             // Min volume achieved, stop updating volume
-            loopingAudioSource.Stop();
+            source.Stop();
             volumeUpdatePerSecond = 0;
         }
     }
