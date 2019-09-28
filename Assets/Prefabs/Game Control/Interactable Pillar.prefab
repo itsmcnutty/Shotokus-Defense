@@ -7,6 +7,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7263113278314057098}
     m_Modifications:
+    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+        type: 3}
+      propertyPath: m_Name
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1702220870442628939, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -77,35 +97,15 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.29999998
       objectReference: {fileID: 0}
-    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-        type: 3}
-      propertyPath: m_Name
-      value: Wall
-      objectReference: {fileID: 0}
-    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-        type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 4777704666276339869, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1383354479478694716, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
         type: 3}
       propertyPath: m_TagString
-      value: Ground
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 1383354479478694716, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7537630881562956401, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
         type: 3}
@@ -122,6 +122,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5354150033374577190, guid: 1c98d4ac3e1eef2428ccf648048398a8,
+        type: 3}
+      propertyPath: m_Name
+      value: Interactable Pillar
+      objectReference: {fileID: 0}
     - target: {fileID: 885055658085122356, guid: 1c98d4ac3e1eef2428ccf648048398a8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -176,16 +181,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5354150033374577190, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_Name
-      value: Interactable Pillar
-      objectReference: {fileID: 0}
-    - target: {fileID: 5913090978784423813, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_TagString
-      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 1383354479478694716, guid: 4e3a0243bd08f2c4495cdc5e563bb4e3,
         type: 3}
