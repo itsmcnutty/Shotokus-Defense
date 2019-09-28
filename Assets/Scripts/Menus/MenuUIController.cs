@@ -18,7 +18,8 @@ public class MenuUIController : MonoBehaviour
     public AudioSource menuShow;
     public AudioSource menuHide;
 
-    private GameObject player; // get coordinates of player, to instate menu in front of them
+    private GameObject playerObj; // this is the Player game object with tag "Player"
+    private GameObject player; // get coordinates of player, to instate menu in front of them. THIS IS NOT THE PLAYER, THIS IS THE PLAYER'S HEAD
     private Camera vrCamera;
     private GameObject pauseMenu;
 
@@ -47,6 +48,7 @@ public class MenuUIController : MonoBehaviour
     {
         // Instantiate
         player = GameObject.FindWithTag("MainCamera");
+        playerObj = GameObject.FindWithTag("Player");
         vrCamera = player.GetComponent<Camera>();
 
         laserPointer = this.GetComponent<InteractLaserButton>();
@@ -90,6 +92,7 @@ public class MenuUIController : MonoBehaviour
         playerRot = player.transform.rotation;
         playerFor = player.transform.forward;
         Vector3 spawnPosition = playerPos + playerFor * 5;
+        Debug.Log("Heigh of player is: " + playerObj.transform.position.y);
         spawnPosition.y = (float) 3; // todo test this out
 
         pauseMenu = Instantiate(menuPrefab, spawnPosition, playerRot);
@@ -97,12 +100,11 @@ public class MenuUIController : MonoBehaviour
         pauseMenu.transform.LookAt(player.transform.position);
 
         // todo fixes camera rotation but buttons are not detectable - do not delete
-        //        pauseMenu = Instantiate(menuPrefab);
-        //        pauseMenu.GetComponentInChildren<Canvas>().worldCamera = vrCamera;
-        //        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
-        //        pauseMenu.transform.position = spawnPosition;
-        //        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
-        //        pauseMenu.transform.LookAt(targetPosition);
+//        pauseMenu = Instantiate(menuPrefab);
+//        spawnPosition = new Vector3(spawnPosition.x,(float)1.9,spawnPosition.z);
+//        pauseMenu.transform.position = spawnPosition;
+//        Vector3 targetPosition =  new Vector3(playerPos.x, (float)1.9, playerPos.z);
+//        pauseMenu.transform.LookAt(targetPosition);
     }
 
     // if pause menu is not active, instantiate it and pause game
