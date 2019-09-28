@@ -100,8 +100,7 @@ public class SpikeMovement : MonoBehaviour
     private void OnDestroy()
     {
         //audioSource.PlayOneShot(spikeBreakSound);
-        parentObject.transform.position = new Vector3(0, -10, 0);
-
+        
         // Disable obstacle for when this spike is re-created later
         obstacle.enabled = false;
         

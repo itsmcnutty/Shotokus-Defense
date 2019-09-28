@@ -302,4 +302,20 @@ public class PowerupController : MonoBehaviour
                 break;
         }
     }
+
+    public void ResetCounters()
+    {
+        rockClusterBarCounter = 0;
+        spikeChainBarCounter = 0;
+        earthquakeBarCounter = 0;
+        wallPushBarCounter = 0;
+    }
+
+    public void TurnCanvasOff()
+    {
+        rockClusterCanvas.SetActive(false);
+        spikeChainCanvas.SetActive(false);
+        earthquakeCanvas.SetActive(false);
+        wallPushCanvas.SetActive(false);
+    }
 }

@@ -25,13 +25,14 @@ public class RestartButton : MonoBehaviour
 
     public void RestartGame()
     {
-        gameController.RestartWave();
         // if this object contains a gameover component then do not pause toggle
         if (GetComponentInParent<GameOverProperties>() != null)
         {
+            gameController.RestartWave();
             return;
         }
         menuUiController.pauseToggle();
+        gameController.RestartGame();
     }
     
 }
