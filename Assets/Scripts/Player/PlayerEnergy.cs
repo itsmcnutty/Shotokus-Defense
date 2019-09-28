@@ -86,7 +86,7 @@ public class PlayerEnergy : MonoBehaviour
                 afterAbilityEnergy = currentEnergy;
                 
                 // Play out of energy sound
-                if (!hasPlayedNoEnergySound)
+                if (!hasPlayedNoEnergySound && !noEnergy.isPlaying)
                 {
                     noEnergy.Play();
                     hasPlayedNoEnergySound = true;
