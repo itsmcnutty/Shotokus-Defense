@@ -86,6 +86,7 @@ public class RagdollState : IState
 		// If the enemy can recover from ragdolling, transition to resetState
 		if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
 		{
+//			animator.SetTrigger("Ragdoll");
 			return resetState;
 		}
 		
