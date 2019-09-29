@@ -63,15 +63,8 @@ public class AboveWallState : IState
     {
         // Not an obstacle
         obstacle.enabled = false;
-        
-        // todo disable agent for a second before going to strafe
-//        agent.autoTraverseOffMeshLink = false;
-
         waitTimer = 0;
-
-        // todo this breaks the pathfinding
         agent.isStopped = true;
-//        agent.enabled = false; 
     }
     
     // Called upon exiting this state
@@ -81,28 +74,12 @@ public class AboveWallState : IState
     // Called during Update while currently in this state
     public void Action()
     {
-        // todo delete -  agent is probably still moving towards player, no need to agent.dest()
-        
-//        if (medEnemyProps.climbCounter >= 2)
-//        {
-//            // Disallow climbing
-//            agent.autoTraverseOffMeshLink = false;
-//            // Update climbing counter
-//            waitTimer += Time.deltaTime;
-//            Debug.Log("Agent cannot move! : " + waitTimer);
-//        }
-        
         waitTimer += Time.deltaTime;
-        Debug.Log("above wall : " + waitTimer);
+//        Debug.Log("above wall : " + waitTimer);
         // if enough time has passed, allow to climb again
         if (waitTimer > waitTimeout)
         {
             waitTimer -= waitTimeout;
-//            agent.autoTraverseOffMeshLink = true;
-
-            // todo this breaks the pathfinding
-//            agent.enabled = true;
-//            enemyProps.EnablePathfind();
             agent.isStopped = false;
         }
     }
@@ -112,7 +89,6 @@ public class AboveWallState : IState
     public IState Transition()
     {
         // If agent gets on top off an navmesh link from this state, agent should jump down
-//        if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink)
         if (agent.isOnOffMeshLink && !agent.isStopped)
         {
             animator.SetTrigger("Strafe");

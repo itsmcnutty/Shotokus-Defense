@@ -113,7 +113,7 @@ public class PlayerEnergy : MonoBehaviour
             // Subtracts the given value from the energy, stopping at 0
             if (currentEnergy > 0)
             {
-                currentEnergy -= energy;
+                currentEnergy -= energy * Time.deltaTime;
                 if (currentEnergy < 0)
                 {
                     currentEnergy = 0;

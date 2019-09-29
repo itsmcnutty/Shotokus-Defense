@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -337,6 +338,10 @@ public class StrafeState : IState
 		}
 		
 	}
+
+
+	private float timer = 0;
+	private float timeout = 2;
 	
 
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
@@ -344,6 +349,19 @@ public class StrafeState : IState
 	public IState Transition()
 	{
 		// Transition to ragdoll state if ragdolling
+		
+//		// todo debug only - delete later
+//		timer += Time.deltaTime;
+//		if (timer > timeout)
+////		if (ragdollController.IsRagdolling())
+//		{
+//			timer = 0;
+//			ragdollController.StartRagdoll();		// todo debug only - delete later
+//			animator.SetTrigger("Ragdoll");
+//			return ragdollState;
+//		}
+
+
 		if (ragdollController.IsRagdolling())
 		{
 			animator.SetTrigger("Ragdoll");
