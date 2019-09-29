@@ -63,7 +63,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float health)
     {
-        if (currentHealth > 0)
+        if (currentHealth >= 0)
         {
             StartCoroutine(FlashDamageIndicator((health / 100) * 255));
             currentHealth -= health;
@@ -76,7 +76,7 @@ public class PlayerHealth : MonoBehaviour
                 lowHealth.Play();
             }
 
-            if (currentHealth < 0)
+            if (currentHealth <= 0)
             {
                 // restart game
                 GameController.Instance.playerLost();
