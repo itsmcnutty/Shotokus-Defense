@@ -88,7 +88,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (currentHealth < maxHealth)
         {
-            currentHealth += regenHealthRate;
+            currentHealth += regenHealthRate * Time.deltaTime;
             if (currentHealth > maxHealth)
             {
                 currentHealth = maxHealth;
