@@ -350,13 +350,20 @@ public class StrafeState : IState
 	{
 		// Transition to ragdoll state if ragdolling
 		
-		// todo debug only - delete later
-		timer += Time.deltaTime;
-		if (timer > timeout)
-//		if (ragdollController.IsRagdolling())
+//		// todo debug only - delete later
+//		timer += Time.deltaTime;
+//		if (timer > timeout)
+////		if (ragdollController.IsRagdolling())
+//		{
+//			timer = 0;
+//			ragdollController.StartRagdoll();		// todo debug only - delete later
+//			animator.SetTrigger("Ragdoll");
+//			return ragdollState;
+//		}
+
+
+		if (ragdollController.IsRagdolling())
 		{
-			timer = 0;
-			ragdollController.StartRagdoll();		// todo debug only - delete later
 			animator.SetTrigger("Ragdoll");
 			return ragdollState;
 		}

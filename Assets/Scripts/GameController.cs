@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameController : MonoBehaviour
     [Header("Miscellaneous")]
     public float limitAmountEnemies; // maximum amount of enemies at one time in the game
     public GameObject teleportPillar;
+    public GameObject spawnArea;
 
     // variables for teleport function
     private int caseSwitch;
@@ -44,6 +46,7 @@ public class GameController : MonoBehaviour
     private float currentTime;
     private bool pauseWaveSystem = true;
     private float availableSpots; // keeps track of how many more enemies can be spawned in the scene
+    private bool gameWon;
 
     // Constructor
     private GameController() { }
@@ -183,21 +186,27 @@ public class GameController : MonoBehaviour
             currentLocation = allLocationWaves.Dequeue();
             currentWave = currentLocation.GetNextWave();
             TogglePauseWaveSystem();
-            SpawnTeleportPillar();
-            return;
+        }
+        else
+        {
+            gameWon = true;
         }
         // no more locations left so you win
-        Debug.Log("YOU WIN");
+        SpawnTeleportPillar();
     }
 
     public void StartGameWithTutorial()
     {
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(false);
         Teleport(false);
         TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
     }
 
     public void StartGameWithoutTutorial()
     {
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(false);
         Teleport(true);
         PlayerAbility.ToggleRockAbility();
         PlayerAbility.ToggleSpikeAbility();
@@ -220,20 +229,18 @@ public class GameController : MonoBehaviour
     public void RestartWave()
     {
         bool restartTutorialWave = false;
-        if(TutorialController.Instance.TutorialWaveInProgress())
+        if (TutorialController.Instance.TutorialWaveInProgress())
         {
             restartTutorialWave = true;
         }
         // reactivate pause functionality
         UIControllerObj.GetComponent<MenuUIController>().enabled = true;
 
-        //        Debug.Log("Restarting wave");
-
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0;
         restartQueue();
-        
+
         // destroy all objects in scene before restarting
         destroyAll(true);
 
@@ -260,15 +267,18 @@ public class GameController : MonoBehaviour
     {
         // destroy all objects in scene before restarting
         destroyAll(true);
-
-        //        Debug.Log("Restarting wave");
+        
+        // teleport the player
+        if (!gameWon)
+        {
+            Teleport(false, 5);
+        }
 
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0;
-
-        // teleport the player
-        Teleport(false, 0);
+        caseSwitch = 0;
+        pauseWaveSystem = true;
 
         // restart queue to initial state (all waves from location 1)
         allLocationWaves = new Queue<LocationWaves>();
@@ -276,10 +286,14 @@ public class GameController : MonoBehaviour
         {
             allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
         }
-
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
+        
         playerHealth.RecoverAllHealth();
+        MenuUIController.Instance.ToggleLaser();
+        spawnArea.SetActive(true);
+        TutorialController.Instance.RestartTutorial();
+        PlayerAbility.TurnOffAllAbilities();
     }
 
     // this function destroys all the following game objects instances:
@@ -317,7 +331,7 @@ public class GameController : MonoBehaviour
         foreach (var particle in particles)
             Destroy(particle);
     }
-    
+
     // this function hides/unhides all the enemies in the scene:
     public void hideEnemies(bool hide)
     {
@@ -334,7 +348,6 @@ public class GameController : MonoBehaviour
             }
         }
     }
-
 
     // This function is called when player looses
     // It will instantiate the game over menu and give the option to restart the game
@@ -378,6 +391,15 @@ public class GameController : MonoBehaviour
         teleportPillar.transform.position = spawnPos;
         teleportPillar.transform.rotation = playerRotation;
         teleportPillar.SetActive(true);
+
+        if (gameWon)
+        {
+            teleportPillar.GetComponentInChildren<Text>().text = "Congratulations!";
+        }
+        else
+        {
+            teleportPillar.GetComponentInChildren<Text>().text = "Teleport";
+        }
     }
 
     // This function moves the player around the 5 wave zones
@@ -386,41 +408,61 @@ public class GameController : MonoBehaviour
     {
         Vector3 destinationPos;
         int temp = caseSwitch;
-        caseSwitch += 1;
 
         // Get camera rig and head position
         Transform cameraRigT = cameraRig.transform;
         Vector3 headPosition = vrCamera.transform.position;
 
-        temp = temp % 5;
-
-        // optional parameter, input specific location to transport to
-        if (location >= 0)
+        if (gameWon)
         {
-            temp = location % 5;
-            caseSwitch = temp;
+            RestartGame();
+            destinationPos = new Vector3(39.9f, 0, 16.9f);
+            gameWon = false;
         }
-
-        switch (temp)
+        else
         {
-            case 0:
-                destinationPos = new Vector3(9, 0.25f, 33);
-                break;
-            case 1:
-                destinationPos = new Vector3(22.6f, 0.5f, 23f);
-                break;
-            case 2:
-                destinationPos = new Vector3(-3f, 0.75f, 3.1f);
-                break;
-            case 3:
-                destinationPos = new Vector3(26, 1f, -22.8f);
-                break;
-            case 4:
-                destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
-                break;
-            default:
-                destinationPos = new Vector3(0, 0, 0);
-                break;
+            caseSwitch += 1;
+            temp = temp % 5;
+
+            // optional parameter, input specific location to transport to
+            if (location >= 0)
+            {
+                temp = location;
+            }
+
+            switch (temp)
+            {
+                case 0:
+                    destinationPos = new Vector3(9, 0.25f, 33);
+                    break;
+                case 1:
+                    destinationPos = new Vector3(22.6f, 0.5f, 23f);
+                    break;
+                case 2:
+                    destinationPos = new Vector3(-3f, 0.75f, 3.1f);
+                    break;
+                case 3:
+                    destinationPos = new Vector3(26, 1f, -22.8f);
+                    break;
+                case 4:
+                    destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
+                    break;
+                case 5:
+                    destinationPos = new Vector3(39.9f, 0, 16.9f);
+                    break;
+                default:
+                    destinationPos = new Vector3(0, 0, 0);
+                    break;
+            }
+
+            // Reposition the ability ring
+            StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
+            StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
+
+            if (toggleWaves)
+            {
+                Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
+            }
         }
 
         // Calculate translation
@@ -430,15 +472,7 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
 
-        if (toggleWaves)
-        {
-            Invoke("TogglePauseWaveSystem", BETWEEN_LOCATIONS);
-        }
         teleportPillar.SetActive(false);
-
-        // Reposition the ability ring
-        StartCoroutine(GameObject.FindWithTag("Right Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
-        StartCoroutine(GameObject.FindWithTag("Left Hand").GetComponent<PlayerAbility>().RepositionAbilityRing());
     }
 
     public void TogglePauseWaveSystem()
