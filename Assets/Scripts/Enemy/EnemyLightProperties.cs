@@ -27,6 +27,8 @@ public class EnemyLightProperties : EnemyProperties
     [NonSerialized] public RunState runState;
     [NonSerialized] public StrafeState strafeState;
     [NonSerialized] public RagdollState ragdollState;
+    [NonSerialized] public GetUpState getUpState;
+    
     
     // Start is called before the first frame update
     new void Start()
@@ -45,11 +47,13 @@ public class EnemyLightProperties : EnemyProperties
         runState = new RunState(this);
         strafeState = new StrafeState(this);
         ragdollState = new RagdollState(this);
+        getUpState = new GetUpState(this);
 		
         // Initialize states within these state objects
         runState.InitializeStates(this);
         strafeState.InitializeStates(this);
         ragdollState.InitializeStates(this);
+        getUpState.InitializeStates(this);
 		
         // Give FSM an initial state
         stateMachine.ChangeState(runState);

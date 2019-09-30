@@ -165,12 +165,16 @@ public class ControllerArc : MonoBehaviour
 		}
 		else if (hitSomething)
 		{
-
 			Vector3 playerPos = new Vector3(player.hmdTransform.position.x, hitInfo.point.y, player.hmdTransform.position.z);
 			float distToPlayer = Vector3.SqrMagnitude(playerPos - hitInfo.point);
 			if (distToPlayer < Mathf.Pow(PlayerAbility.RockCreationDistance, 2))
 			{
 				validCollisionForAbility = true;
+			}
+
+			if(hitInfo.transform.parent && hitInfo.transform.parent.GetComponent<Hand>())
+			{
+				hitMarker = hitInfo.transform.gameObject.GetComponent<AbilityUsageMarker>();
 			}
 		}
 

@@ -356,7 +356,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5a2659e84170eec4792f31ba832195c1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -456,7 +456,7 @@ MonoBehaviour:
   rockVideos:
   - slideTitle: Create Rock
     captionText: 
-    video: {fileID: 32900000, guid: 7ffa11d3952cb1744892cbb346bd5cac, type: 3}
+    video: {fileID: 32900000, guid: 0192e96bd10e3b5488e7d3825e25adbc, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Resize Rock
@@ -675,7 +675,7 @@ VideoPlayer:
   m_AspectRatio: 2
   m_DataSource: 0
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -997,7 +997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9245283, g: 0.06541473, b: 0.06541473, a: 1}
+  m_Color: {r: 0, g: 0.06541473, b: 0.06541473, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1025,6 +1025,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8572780815898266857}
     m_Modifications:
+    - target: {fileID: 5354150033374577190, guid: 1c98d4ac3e1eef2428ccf648048398a8,
+        type: 3}
+      propertyPath: m_Name
+      value: Back Slide Star
+      objectReference: {fileID: 0}
     - target: {fileID: 885055658085122356, guid: 1c98d4ac3e1eef2428ccf648048398a8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1095,25 +1100,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.6666545
       objectReference: {fileID: 0}
-    - target: {fileID: 7257719459340917173, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5354150033374577190, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_Name
-      value: Back Slide Star
-      objectReference: {fileID: 0}
     - target: {fileID: 5913090978784423813, guid: 1c98d4ac3e1eef2428ccf648048398a8,
         type: 3}
       propertyPath: m_Name
       value: Back Slide Star
-      objectReference: {fileID: 0}
-    - target: {fileID: 5079261999109946578, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_Name
-      value: Back Slide Text
       objectReference: {fileID: 0}
     - target: {fileID: 3611567905715290653, guid: 1c98d4ac3e1eef2428ccf648048398a8,
         type: 3}
@@ -1121,6 +1111,16 @@ PrefabInstance:
       value: 'Back
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257719459340917173, guid: 1c98d4ac3e1eef2428ccf648048398a8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079261999109946578, guid: 1c98d4ac3e1eef2428ccf648048398a8,
+        type: 3}
+      propertyPath: m_Name
+      value: Back Slide Text
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c98d4ac3e1eef2428ccf648048398a8, type: 3}
@@ -1712,6 +1712,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8572780815898266857}
     m_Modifications:
+    - target: {fileID: 5354150033374577190, guid: 1c98d4ac3e1eef2428ccf648048398a8,
+        type: 3}
+      propertyPath: m_Name
+      value: Next Slide Star
+      objectReference: {fileID: 0}
     - target: {fileID: 885055658085122356, guid: 1c98d4ac3e1eef2428ccf648048398a8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1782,25 +1787,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.6666545
       objectReference: {fileID: 0}
-    - target: {fileID: 7257719459340917173, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5354150033374577190, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_Name
-      value: Next Slide Star
-      objectReference: {fileID: 0}
     - target: {fileID: 5913090978784423813, guid: 1c98d4ac3e1eef2428ccf648048398a8,
         type: 3}
       propertyPath: m_Name
       value: Next Slide Star
-      objectReference: {fileID: 0}
-    - target: {fileID: 5079261999109946578, guid: 1c98d4ac3e1eef2428ccf648048398a8,
-        type: 3}
-      propertyPath: m_Name
-      value: Next Slide Text
       objectReference: {fileID: 0}
     - target: {fileID: 3611567905715290653, guid: 1c98d4ac3e1eef2428ccf648048398a8,
         type: 3}
@@ -1808,6 +1798,16 @@ PrefabInstance:
       value: 'Next
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7257719459340917173, guid: 1c98d4ac3e1eef2428ccf648048398a8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079261999109946578, guid: 1c98d4ac3e1eef2428ccf648048398a8,
+        type: 3}
+      propertyPath: m_Name
+      value: Next Slide Text
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c98d4ac3e1eef2428ccf648048398a8, type: 3}

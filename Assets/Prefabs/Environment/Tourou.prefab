@@ -167,6 +167,22 @@ MonoBehaviour:
   FLICKER_RATE: 3.8
   UPDATE_DIST: 12
   CALC_FREQUENCY: 2
+--- !u!114 &5812678348467115806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600688813269714156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &8481883737335721412
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,6 +443,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 079507c653a39554fb7f71e6cd49cb43, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cdd0d4d1cf19da4e88505252654f81d, type: 3}
+--- !u!1 &5600688813269714156 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 1cdd0d4d1cf19da4e88505252654f81d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4510436232336858597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8926975680787576575 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 1cdd0d4d1cf19da4e88505252654f81d,
