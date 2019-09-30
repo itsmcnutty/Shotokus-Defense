@@ -5,22 +5,15 @@ using UnityEngine.AI;
 
 public class GetUpState : IState
 {
-	// Minimum time to stay in ragdoll (seconds)
-	private float MINIMUM_DURATION = 1.5f;
 	
 	// The enemy's animator component
 	private Animator animator;
-	// The enemy's ragdoll controller
-	private RagdollController ragdollController;
 	// The NavMeshObstacle used to block enemies pathfinding when not moving
 	private NavMeshObstacle obstacle;
 	
 	// This enemy's GameObject
 	private GameObject gameObj;
-	
-	// Total time spent in animation (seconds)
-	private float timeRagdolling = 0f;
-	
+
 	// Timer variables to wait for getup animation
 	private float waitTimeOut = 2f;
 	private float waitTimer = 0;
@@ -31,7 +24,6 @@ public class GetUpState : IState
 	public GetUpState(EnemyProperties enemyProps)
 	{
 		animator = enemyProps.animator;
-		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		gameObj = enemyProps.gameObject;
 	}
@@ -70,11 +62,6 @@ public class GetUpState : IState
 	// Called upon exiting this state
 	public void Exit()
 	{
-//		// Stop ragdolling
-//		ragdollController.StopRagdoll();
-//        
-//		// Restart animation in Walking state
-//		animator.SetTrigger("Ragdoll");
 	}
 
 	// Called during Update while currently in this state
@@ -100,14 +87,9 @@ public class GetUpState : IState
 		return null;
 	}
 	
-	// this function starts the animator and stops the agent from moving while get up animation plays
-	private void getUpWait()
-	{
-		
-	}
 
 	public override string ToString()
 	{
-		return "Ragdoll";
+		return "GetUp";
 	}
 }
