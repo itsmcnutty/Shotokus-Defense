@@ -38,6 +38,7 @@ public class RagdollState : IState
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
 	{
 //		resetState = enemyProps.advanceState;
+		getUpState = enemyProps.getUpState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -45,6 +46,7 @@ public class RagdollState : IState
 	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 //		resetState = enemyProps.runState;
+		getUpState = enemyProps.getUpState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -73,7 +75,6 @@ public class RagdollState : IState
 		
 		// Start animation on Getup State
 		Rigidbody hips = gameObj.GetComponentInChildren<Rigidbody>();
-		Vector3 hipsPosition = hips.gameObject.transform.position;
 		// check if hips are pointing upwards or backwards
 		if (hips.transform.forward.y < 0)
 		{
@@ -103,7 +104,6 @@ public class RagdollState : IState
 		if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
 		{
 			Rigidbody hips = gameObj.GetComponentInChildren<Rigidbody>();
-			Vector3 hipsPosition = hips.gameObject.transform.position;
 			// check if hips are pointing upwards or backwards
 			if (hips.transform.forward.y > 0)
 			{
@@ -116,14 +116,7 @@ public class RagdollState : IState
 //			animator.SetTrigger("Ragdoll");
 			return getUpState;
 		}
-		
-//		// If the enemy can recover from ragdolling, transition to resetState
-//		if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
-//		{
-////			animator.SetTrigger("Ragdoll");
-//			return resetState;
-//		}
-		
+
 		// Continue ragdolling
 		return null;
 	}
@@ -146,14 +139,7 @@ public class RagdollState : IState
 		}
 		return false;
 	}
-
 	
-	
-	// this function starts the animator and stops the agent from moving while get up animation plays
-	private void getUpWait()
-	{
-		
-	}
 
 	public override string ToString()
 	{

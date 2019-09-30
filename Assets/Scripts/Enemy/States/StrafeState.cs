@@ -338,35 +338,31 @@ public class StrafeState : IState
 		}
 		
 	}
-
-
-	private float timer = 0;
-	private float timeout = 2;
 	
-
+	//		// todo debug getup animation only - delete later 
+//	private float timer = 0;
+//	private float timeout = 2;
+	
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
 	// is possible
 	public IState Transition()
 	{
-		// Transition to ragdoll state if ragdolling
-		
-//		// todo debug only - delete later
-		timer += Time.deltaTime;
-		if (timer > timeout)
-//		if (ragdollController.IsRagdolling())
-		{
-			timer = 0;
-			ragdollController.StartRagdoll();		// todo debug only - delete later
-			animator.SetTrigger("Ragdoll");
-			return ragdollState;
-		}
-
-//
-//		if (ragdollController.IsRagdolling())
+////		// todo debug getup animation only - delete later 
+//		timer += Time.deltaTime;
+//		if (timer > timeout)
 //		{
+//			timer = 0;
+//			ragdollController.StartRagdoll();
 //			animator.SetTrigger("Ragdoll");
 //			return ragdollState;
 //		}
+
+		// Transition to ragdoll state if ragdolling
+		if (ragdollController.IsRagdolling())
+		{
+			animator.SetTrigger("Ragdoll");
+			return ragdollState;
+		}
 		
 		// Transition into climbing up state
 		if (agent.isOnOffMeshLink && agent.autoTraverseOffMeshLink && medEnemyProps.climbCounter == 0)

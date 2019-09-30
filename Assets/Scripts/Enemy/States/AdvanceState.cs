@@ -123,7 +123,7 @@ public class AdvanceState : IState
 			agent.stoppingDistance = attackRadius + moveSpeed * moveSpeed / (2 * agent.acceleration) - attackMargin;
 		}
 	}
-
+	
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
 	// is possible
 	public IState Transition()
