@@ -128,6 +128,8 @@ public class AdvanceState : IState
 	// is possible
 	public IState Transition()
 	{
+		Debug.Log("im advancing");
+		
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
