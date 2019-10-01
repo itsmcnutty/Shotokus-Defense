@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
@@ -8,15 +9,14 @@ public class PlayerHealth : MonoBehaviour
     public Slider healthBar;
     public Text healthPointText;
     public MeshRenderer damageIndicator;
-    public AudioSource audioSource;
     public float maxHealth = 100;
     public float regenHealthRate;
     public bool debugShowHealthText = false;
     public float LOW_HEALTH_THRESHOLD;
 
     [Header("Sounds")]
-    public AudioClip healLoop;
-    public AudioClip healFull;
+    public AudioSource healLoop;
+    public AudioSource healFull;
     public AudioSource lowHealth;
 
     private float prevHealth; // For calculating change in health per frame
@@ -40,22 +40,18 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth > prevHealth)
         {
             // Set pitch based on health (Range 0.5 to 0.8)
-            audioSource.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
+            healLoop.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
 
-            if (!audioSource.loop)
+            if (!healLoop.isPlaying)
             {
                 // If healing and not playing loop, play loop
-                audioSource.loop = true;
-                audioSource.Play();
+                healLoop.Play();
             }
         }
-        else if (audioSource.loop)
+        else if (healLoop.isPlaying)
         {
-            Debug.Log("Stop loop");
-
             // If not healing and is playing loop, stop playing loop
-            audioSource.loop = false;
-            audioSource.Stop();
+            healLoop.Stop();
         }
 
         prevHealth = currentHealth;
@@ -98,7 +94,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            audioSource.PlayOneShot(healFull);
+            healFull.Play();
         }
 
         // Stop low health loop
