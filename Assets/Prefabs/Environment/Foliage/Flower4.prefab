@@ -57,9 +57,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ccc5915ea349e2e42bfcb492e538bb19, type: 2}
-  - {fileID: 2100000, guid: ccc5915ea349e2e42bfcb492e538bb19, type: 2}
   - {fileID: 2100000, guid: ff8245112f001cb40947d47d0abdbafb, type: 2}
+  - {fileID: 2100000, guid: cfcb8406b930b3247ae138b160a88926, type: 2}
+  - {fileID: 2100000, guid: cfcb8406b930b3247ae138b160a88926, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,8 +136,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ccc5915ea349e2e42bfcb492e538bb19, type: 2}
-  - {fileID: 2100000, guid: ccc5915ea349e2e42bfcb492e538bb19, type: 2}
+  - {fileID: 2100000, guid: cfcb8406b930b3247ae138b160a88926, type: 2}
+  - {fileID: 2100000, guid: cfcb8406b930b3247ae138b160a88926, type: 2}
   - {fileID: 2100000, guid: ff8245112f001cb40947d47d0abdbafb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -215,8 +215,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ccc5915ea349e2e42bfcb492e538bb19, type: 2}
-  - {fileID: 2100000, guid: ccc5915ea349e2e42bfcb492e538bb19, type: 2}
+  - {fileID: 2100000, guid: cfcb8406b930b3247ae138b160a88926, type: 2}
+  - {fileID: 2100000, guid: cfcb8406b930b3247ae138b160a88926, type: 2}
   - {fileID: 2100000, guid: ff8245112f001cb40947d47d0abdbafb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -285,15 +285,15 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.05082101
+  - screenRelativeHeight: 0.01622656
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3838951896436068391}
-  - screenRelativeHeight: 0.022031559
+  - screenRelativeHeight: 0.005944445
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3838951896436068389}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.0011006944
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3838951896436068387}

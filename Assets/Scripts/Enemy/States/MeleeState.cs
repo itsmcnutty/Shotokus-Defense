@@ -134,7 +134,7 @@ public class MeleeState : IState
 	// is possible
 	public IState Transition()
 	{
-//		Debug.Log("melee state");
+		Debug.Log("melee state");
 		
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())

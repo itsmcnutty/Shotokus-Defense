@@ -22,8 +22,8 @@
         },
         "30": {
           "Location": "North",
-          "NumLightEnemies": 2,
-          "NumMedEnemies": 0,
+          "NumLightEnemies": 0,
+          "NumMedEnemies": 2,
           "NumHeavyEnemies": 0
         },
         "55": {
@@ -34,7 +34,7 @@
         },
         "60": {
           "Location": "East",
-          "NumLightEnemies": 2,
+          "NumLightEnemies": 1,
           "NumMedEnemies": 0,
           "NumHeavyEnemies": 0
         },
@@ -43,6 +43,12 @@
           "NumLightEnemies": 0,
           "NumMedEnemies": 1,
           "NumHeavyEnemies": 0
+        },
+        "68": {
+          "Location": "West",
+          "NumLightEnemies": 0,
+          "NumMedEnemies": 0,
+          "NumHeavyEnemies": 1
         }
       }
     }
