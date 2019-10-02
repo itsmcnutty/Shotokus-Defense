@@ -19,19 +19,16 @@ public class FadeAudioSource : MonoBehaviour
     // How much volume should be modified by each second
     private float volumeUpdatePerSecond = 0;
 
-    // Plays the sound if not already looping
+    // Plays the sound if not already looping (Fades back in whether stopped or in middle of fade out)
     // Returns false if the sound was already playing
     public bool Play()
     {
+    // Calculate how much to update volume per second (regardless of current volume)
+        volumeUpdatePerSecond = 1f / fadeInTime;
+        
         if (!source.isPlaying)
         {
-            // 0 volume and play
-            source.volume = 0;
             source.Play();
-            
-            // Calculate how much to update volume per second (regardless of current volume)
-            volumeUpdatePerSecond = 1f / fadeInTime;
-
             return true;
         }
         
@@ -70,7 +67,7 @@ public class FadeAudioSource : MonoBehaviour
         }
         else if (source.volume <= 0)
         {
-            // Min volume achieved, stop updating volume
+            // Min volume achieved, stop updating volume and stop playing audio
             source.Stop();
             volumeUpdatePerSecond = 0;
         }

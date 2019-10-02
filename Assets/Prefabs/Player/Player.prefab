@@ -2599,7 +2599,7 @@ MonoBehaviour:
   regenHealthRate: 250
   debugShowHealthText: 0
   LOW_HEALTH_THRESHOLD: 0.2
-  healLoop: {fileID: 1069710500634557570}
+  healLoop: {fileID: 7064786889005971413}
   healFull: {fileID: 4295960866068445350}
   lowHealth: {fileID: 8720853922761985423}
 --- !u!114 &5697528617253961036
@@ -4814,12 +4814,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47786609282c10d42840b3bcf920d76b, type: 3}
---- !u!82 &1069710500634557570 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 1571267929351811957, guid: 47786609282c10d42840b3bcf920d76b,
+--- !u!114 &7064786889005971413 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8727142568843819042, guid: 47786609282c10d42840b3bcf920d76b,
     type: 3}
   m_PrefabInstance: {fileID: 1951786878548676599}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44bd4b5d00c384c4696a7f72fea99c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5868541693094790008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5361284944814771343, guid: 47786609282c10d42840b3bcf920d76b,

@@ -15,7 +15,7 @@ public class PlayerHealth : MonoBehaviour
     public float LOW_HEALTH_THRESHOLD;
 
     [Header("Sounds")]
-    public AudioSource healLoop;
+    public FadeAudioSource healLoop;
     public AudioSource healFull;
     public AudioSource lowHealth;
 
@@ -40,15 +40,15 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth > prevHealth)
         {
             // Set pitch based on health (Range 0.5 to 0.8)
-            healLoop.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
+            healLoop.source.pitch = 0.3f * (currentHealth / maxHealth) + 0.5f;
 
-            if (!healLoop.isPlaying)
+            if (!healLoop.source.isPlaying)
             {
                 // If healing and not playing loop, play loop
                 healLoop.Play();
             }
         }
-        else if (healLoop.isPlaying)
+        else if (healLoop.source.isPlaying)
         {
             // If not healing and is playing loop, stop playing loop
             healLoop.Stop();

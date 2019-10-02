@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5361284944814771343}
   - component: {fileID: 1571267929351811957}
+  - component: {fileID: 8727142568843819042}
   m_Layer: 0
   m_Name: HealLoopSource
   m_TagString: Untagged
@@ -119,3 +120,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8727142568843819042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7430431875796094147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44bd4b5d00c384c4696a7f72fea99c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 1571267929351811957}
+  fadeInTime: 0.1
+  fadeOutTime: 0.75
