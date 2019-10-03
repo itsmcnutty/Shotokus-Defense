@@ -103,7 +103,7 @@ public class PlayerAbility : MonoBehaviour
     }
 
     private Rocks rocks;
-    public GameObject activeRock;
+    public RockProperties activeRock;
 
     private SpikeQuicksand spikeQuicksand;
     private List<GameObject> spikeQuicksandOutlines = new List<GameObject>();
