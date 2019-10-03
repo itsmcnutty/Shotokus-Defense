@@ -18,7 +18,7 @@ public class GetUpState : IState
 
 
 	// Timer variables to wait for getup animation
-	private float waitTimeOut = 2f;
+	private float waitTimeOut = 0.5f;
 	private float waitTimer = 0;
 	
 	// States to transition to
