@@ -20,6 +20,7 @@ public class EnemyHeavyProperties : EnemyProperties
 	[NonSerialized] public RetreatState retreatState;
 	[NonSerialized] public SwingState swingState;
 	[NonSerialized] public RagdollState ragdollState;
+	[NonSerialized] public GetUpState getUpState;
 
 	// Start is called before the first frame update
 	new void Start()
@@ -34,6 +35,7 @@ public class EnemyHeavyProperties : EnemyProperties
 		retreatState = new RetreatState(this);
 		swingState = new SwingState(this);
 		ragdollState = new RagdollState(this);
+		getUpState = new GetUpState(this);
 		
 		// Initialize states within these state objects
 		advanceState.InitializeStates(this);
@@ -41,6 +43,7 @@ public class EnemyHeavyProperties : EnemyProperties
 		retreatState.InitializeStates(this);
 		swingState.InitializeStates(this);
 		ragdollState.InitializeStates(this);
+		getUpState.InitializeStates(this);
 		
 		// Give FSM an initial state
 		stateMachine.ChangeState(advanceState);

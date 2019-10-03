@@ -73,6 +73,8 @@ public class RagdollController : MonoBehaviour
         if (!ragdolling)
         {
             ragdolling = true;
+            
+//            animator.SetTrigger("GetUpFront");
 
             // Disable animation and pathfinding
             animator.enabled = false;
@@ -138,12 +140,18 @@ public class RagdollController : MonoBehaviour
                 animator.ResetTrigger(trigger.name);
             }
         }
-
+        
         // Move to position where ragdoll was laying and re-enable pathfinding
         if (!resetPosition)
         {
             transform.position = rigidbodies[0].transform.position;
+            // todo fix this
+//            transform.rotation = rigidbodies[0].transform.rotation;
         }
         agent.enabled = true;
+//        
+//        animator.SetTrigger("GetUpFront");
+//        animator.Update(0.1f);
+
     }
 }
