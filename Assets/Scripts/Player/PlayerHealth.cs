@@ -51,8 +51,6 @@ public class PlayerHealth : MonoBehaviour
         }
         else if (audioSource.loop)
         {
-            Debug.Log("Stop loop");
-
             // If not healing and is playing loop, stop playing loop
             audioSource.loop = false;
             audioSource.Stop();
