@@ -166,7 +166,7 @@ public class Rocks : MonoBehaviour
         // Detaches the rock from the player's hand
         hand.DetachObject(activeRockObject);
 
-        if (otherHand.currentAttachedObject == activeRock)
+        if (otherHand.currentAttachedObject == activeRockObject)
         {
             // Rebases the rock to the other hand if it's still holding the rock at the time of release
             float rockSize = (float) Math.Pow(Math.Floor(activeRock.transform.localScale.x * activeRock.transform.localScale.y * activeRock.transform.localScale.z), 3);
