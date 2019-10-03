@@ -17,6 +17,9 @@ public class RockProperties : MonoBehaviour
     
     // Audio source for playing sounds out of rock itself
     private AudioSource audioSource;
+    private AudioSource activeRockAudioSource;
+    private Rigidbody rockRigidbody;
+    private SkinnedMeshRenderer rockMesh;
 
     private static float rockLifetime = 5.0f;
     private bool collidedWithEnemy;
@@ -28,6 +31,9 @@ public class RockProperties : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         randomizedAudioSource = GetComponent<SoundPlayOneshot>();
+        rockRigidbody = GetComponent<Rigidbody>();
+        rockMesh = GetComponent<SkinnedMeshRenderer>();
+        activeRockAudioSource = GetComponent<AudioSource>();
         
         // Set loop to false because rock has left hand and can't be regrown
         audioSource.loop = false;
@@ -114,6 +120,21 @@ public class RockProperties : MonoBehaviour
         {
             enemiesHit.Remove(enemyId);
         }
+    }
+
+    public Rigidbody GetRigidbody()
+    {
+        return rockRigidbody;
+    }
+
+    public SkinnedMeshRenderer GetMeshRenderer()
+    {
+        return rockMesh;
+    }
+
+    public AudioSource GetActiveRockAudioSource()
+    {
+        return activeRockAudioSource;
     }
 
     private void OnCollisionEnter(Collision other) {
