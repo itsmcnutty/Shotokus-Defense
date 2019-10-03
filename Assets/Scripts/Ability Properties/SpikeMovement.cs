@@ -31,7 +31,7 @@ public class SpikeMovement : MonoBehaviour
     void Update()
     {
         // Moves the spike towards the endPosition unless it hits something
-        Vector3 nextPos = Vector3.MoveTowards(parentObject.transform.position, endPosition, speed);
+        Vector3 nextPos = Vector3.MoveTowards(parentObject.transform.position, endPosition, speed * Time.deltaTime);
         if (!colliding)
         {
             parentObject.transform.position = nextPos;
@@ -53,7 +53,7 @@ public class SpikeMovement : MonoBehaviour
 
             // The speed if the particle effect depends on the speed of the play's hands
             UnityEngine.ParticleSystem.VelocityOverLifetimeModule velocityModule = earthParticleSystem.velocityOverLifetime;
-            velocityModule.speedModifierMultiplier = speed;
+            velocityModule.speedModifierMultiplier = speed * Time.deltaTime;
         }
 
         if (parentObject.transform.position == endPosition)

@@ -30,11 +30,13 @@ public class PowerupController : MonoBehaviour
 
     public static PowerupController instance;
 
-    [Header("Audio")] public AudioSource audioSource;
-    public AudioClip rockClusterSound;
-    public AudioClip spikeChainSound;
-    public AudioClip earthquakeSound;
-    public AudioClip wallPushSound;
+    [Header("Audio")]
+    public AudioSource powerupTimer;
+    public AudioSource powerupEnd;
+    public AudioSource rockClusterTrigger;
+    public AudioSource spikeChainTrigger;
+    public AudioSource earthquakeTrigger;
+    public AudioSource wallPushTrigger;
 
     private static float rockClusterBarCounter = 0;
     private static float spikeChainBarCounter = 0;
@@ -43,8 +45,6 @@ public class PowerupController : MonoBehaviour
 
     // Duration of the timer audio clip for abilities
     private float timerDuration;
-    // True when playing the powerup timer
-    private bool playingTimer = false;
 
     // Instance getter and initialization
     public static PowerupController Instance
@@ -64,7 +64,7 @@ public class PowerupController : MonoBehaviour
         ResetPowerupIconColor();
 
         // Initialize audio stuff
-        timerDuration = audioSource.clip.length;
+        timerDuration = powerupTimer.clip.length;
     }
 
     // Update is called once per frame
@@ -83,7 +83,7 @@ public class PowerupController : MonoBehaviour
         if (rockClusterBarCounter >= pointsForRockCluster)
         {
             // Audio
-            audioSource.PlayOneShot(rockClusterSound);
+            rockClusterTrigger.Play();
 
             PlayerAbility.ToggleRockCluster();
             rockClusterBarCounter = 0;
@@ -97,7 +97,7 @@ public class PowerupController : MonoBehaviour
         if (spikeChainBarCounter >= pointsForSpikeChain)
         {
             // Audio
-            audioSource.PlayOneShot(spikeChainSound);
+            spikeChainTrigger.Play();
 
             PlayerAbility.ToggleSpikeChain();
             spikeChainBarCounter = 0;
@@ -111,7 +111,7 @@ public class PowerupController : MonoBehaviour
         if (earthquakeBarCounter >= pointsForEarthquake)
         {
             // Audio
-            audioSource.PlayOneShot(earthquakeSound);
+            earthquakeTrigger.Play();
 
             PlayerAbility.ToggleEarthquake();
             earthquakeBarCounter = 0;
@@ -125,7 +125,7 @@ public class PowerupController : MonoBehaviour
         if (wallPushBarCounter >= pointsForWallPush)
         {
             // Audio
-            audioSource.PlayOneShot(wallPushSound);
+            wallPushTrigger.Play();
 
             PlayerAbility.ToggleWallPush();
             wallPushBarCounter = 0;
@@ -145,9 +145,9 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, rockClusterTime, rockClusterBar);
         }
-
-        // Reset timer playing
-        playingTimer = false;
+        
+        // Play end powerup sound
+        powerupEnd.Play();
 
         // Resets power-up when time runs out
         rockClusterBar.fillAmount = 0;
@@ -162,9 +162,9 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, spikeChainTime, spikeChainBar);
         }
-
-        // Reset timer playing
-        playingTimer = false;
+        
+        // Play end powerup sound
+        powerupEnd.Play();
 
         spikeChainBar.fillAmount = 0;
         spikeChainBar.material.SetColor("_EmissionColor", Color.white);
@@ -178,9 +178,9 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, earthquakeTime, earthquakeBar);
         }
-
-        // Reset timer playing
-        playingTimer = false;
+        
+        // Play end powerup sound
+        powerupEnd.Play();
 
         earthquakeBar.fillAmount = 0;
         earthquakeBar.material.SetColor("_EmissionColor", Color.white);
@@ -194,9 +194,9 @@ public class PowerupController : MonoBehaviour
         {
             yield return DrainAbilityBar(startTime, wallPushTime, wallPushBar);
         }
-
-        // Reset timer playing
-        playingTimer = false;
+        
+        // Play end powerup sound
+        powerupEnd.Play();
 
         wallPushBar.fillAmount = 0;
         wallPushBar.material.SetColor("_EmissionColor", Color.white);
@@ -211,11 +211,10 @@ public class PowerupController : MonoBehaviour
         bar.fillAmount = barValuePercent;
 
         // If low on time, play timer sound clip
-        if (!playingTimer && timeRemaining < timerDuration)
+        if (!powerupTimer.isPlaying && timeRemaining < timerDuration)
         {
-            playingTimer = true;
-            audioSource.Play();
-            audioSource.time = Mathf.Clamp(timerDuration - timeRemaining, 0f, timerDuration);
+            powerupTimer.Play();
+            powerupTimer.time = Mathf.Clamp(timerDuration - timeRemaining, 0f, timerDuration);
         }
 
         Color baseColor = Color.cyan;
