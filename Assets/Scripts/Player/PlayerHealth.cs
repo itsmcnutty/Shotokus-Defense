@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("Sounds")]
     public FadeAudioSource healLoop;
     public AudioSource healFull;
-    public AudioSource lowHealth;
+    public FadeAudioSource lowHealth;
 
     private float prevHealth; // For calculating change in health per frame
     private float currentHealth;

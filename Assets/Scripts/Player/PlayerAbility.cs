@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class PlayerAbility : MonoBehaviour
     public float rockCreationDistance = 3f;
     public static float RockCreationDistance = 0f;
     public LayerMask outlineLayerMask;
+
+    [Header("Audio")] public AudioSource menuClick;
 
     private Hand hand;
     private PlayerEnergy playerEnergy;
@@ -103,7 +106,7 @@ public class PlayerAbility : MonoBehaviour
     }
 
     private Rocks rocks;
-    public GameObject activeRock;
+    [NonSerialized] public GameObject activeRock;
 
     private SpikeQuicksand spikeQuicksand;
     private List<GameObject> spikeQuicksandOutlines = new List<GameObject>();
@@ -377,6 +380,9 @@ public class PlayerAbility : MonoBehaviour
 
     private void ActivateUIInteractable()
     {
+        // Play sound
+        menuClick.Play();
+        
         GameObject hitObject = arc.GetPointerHitObject();
         if (hitObject && hitObject.name.Equals("Show Tutorial Sphere"))
         {
