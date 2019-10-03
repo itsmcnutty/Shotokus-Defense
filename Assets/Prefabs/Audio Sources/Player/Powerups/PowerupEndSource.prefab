@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1169895027615376396
+--- !u!1 &8894343520076206288
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 336208629459164366}
-  - component: {fileID: 7742026811542818811}
+  - component: {fileID: 6617274815603976627}
+  - component: {fileID: 1020306270293470240}
   m_Layer: 0
-  m_Name: EneryUsageLoopSource
+  m_Name: Powerup_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &336208629459164366
+--- !u!4 &6617274815603976627
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169895027615376396}
+  m_GameObject: {fileID: 8894343520076206288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,26 +31,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &7742026811542818811
+--- !u!82 &1020306270293470240
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169895027615376396}
+  m_GameObject: {fileID: 8894343520076206288}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -7004990833320723430, guid: eb549c7c6d1a7ef4c8fe87d94bf6d2ef,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: a9014daa7eff89d4d9506f53424256bc, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 76841388d46c58c48b52786fb511f6a6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.645
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 5
+  Priority: 128
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 20
@@ -65,15 +65,6 @@ AudioSource:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.98931503
       inSlope: 0
       outSlope: 0
       tangentMode: 0

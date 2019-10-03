@@ -17,13 +17,15 @@ public class PlayerEnergy : MonoBehaviour
     public bool debugShowEnergyText = false;
 
     [Header("Audio")]
-    public AudioSource useEnergyLoop;
+    public FadeAudioSource useEnergyLoop;
+    public AudioSource noEnergy;
     public float ENERGY_LOOP_PITCH_RANGE;
     
     private float currentEnergy;
     private float lastAbilityUsedTime;
     private Dictionary<Hand, float> activeAbilityEnergyCost;
     private bool infiniteEnergyDisabled = true;
+    private bool hasPlayedNoEnergySound = false; // If player has already heard sound while trying to deplete energy
 
     // Instance getter and initialization
     public static PlayerEnergy Instance
@@ -58,6 +60,9 @@ public class PlayerEnergy : MonoBehaviour
 
     public void SetTempEnergy (Hand activeHand, float energy)
     {
+        // Start use energy loop playing if it isn't already
+        useEnergyLoop.Play();
+        
         // Uses energy if not in infinite energy mode
         if (infiniteEnergyDisabled)
         {
@@ -79,13 +84,25 @@ public class PlayerEnergy : MonoBehaviour
             {
                 activeAbilityEnergyCost[activeHand] -= (afterAbilityEnergy - currentEnergy);
                 afterAbilityEnergy = currentEnergy;
+                
+                // Play out of energy sound
+                if (!hasPlayedNoEnergySound && !noEnergy.isPlaying)
+                {
+                    noEnergy.Play();
+                    hasPlayedNoEnergySound = true;
+                }
+            }
+            else
+            {
+                // No longer depleting energy
+                hasPlayedNoEnergySound = false;
             }
             energyBarAfter.value = currentEnergy - afterAbilityEnergy;
         }
         UpdateAbilityUseTime ();
         
         // Adjust sound pitch
-        useEnergyLoop.pitch = MapEnergyLevelToPitch(GetRemainingEnergy());
+        useEnergyLoop.source.pitch = MapEnergyLevelToPitch(GetRemainingEnergy());
     }
 
     public void DrainRealEnergy (float energy)
@@ -100,6 +117,9 @@ public class PlayerEnergy : MonoBehaviour
                 if (currentEnergy < 0)
                 {
                     currentEnergy = 0;
+                
+                    // Play out of energy sound
+                    noEnergy.Play();
                 }
                 energyBarBefore.value = currentEnergy;
                 energyBarAfter.value = currentEnergy;
@@ -132,6 +152,9 @@ public class PlayerEnergy : MonoBehaviour
         
         // Stop looping sound
         useEnergyLoop.Stop();
+        
+        // No longer depleting energy
+        hasPlayedNoEnergySound = false;
     }
 
     public void CancelEnergyUsage (Hand activeHand)
@@ -255,8 +278,10 @@ public class PlayerEnergy : MonoBehaviour
     // Takes an amount of energy and return a pitch value for the energy audio loop
     public float MapEnergyLevelToPitch(float energy)
     {
-        // Map from -1 to 1
-        float normalized = energy / maxEnergy;
+        // Map to -1 to 1
+        float normalized = 2f * energy / maxEnergy - 1;
+        
+        // Scale pitch up or down based on the specified range
         return 1 + normalized * ENERGY_LOOP_PITCH_RANGE;
     }
     

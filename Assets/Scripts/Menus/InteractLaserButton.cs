@@ -31,8 +31,6 @@ public class InteractLaserButton : MonoBehaviour
     private Hand leftHandComp;
     private GameObject rightHandHeld;
     private GameObject leftHandHeld;
-    
-    private AudioSource audioSource;
 
     // event system to keep track of selected buttons
     private EventSystem eventSystem;
@@ -56,7 +54,6 @@ public class InteractLaserButton : MonoBehaviour
         laserPointerL.active = false;
         laserPointerR.active = false;
         
-        audioSource = GetComponent<AudioSource>();
         eventSystem = GameController.Instance.GetComponent<EventSystem>();
     }
 
@@ -107,6 +104,8 @@ public class InteractLaserButton : MonoBehaviour
         if (e.target.gameObject.GetComponent<Button>() != null && button != null)
         {
 //            Debug.Log("clicking inside button");
+            //Play click sound
+            menuClick.Play();
             button.onClick.Invoke();
         }
         else

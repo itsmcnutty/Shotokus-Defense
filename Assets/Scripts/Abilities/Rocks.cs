@@ -52,9 +52,10 @@ public class Rocks : MonoBehaviour
         }
     }
 
-    public GameObject PickupRock(GameObject pickup, Hand hand, Hand otherHand)
+    public RockProperties PickupRock(GameObject pickup, Hand hand, Hand otherHand)
     {
-        GameObject activeRock = null;
+        RockProperties activeRock = null;
+        GameObject activeRockObject = null;
         hand.DetachObject(pickup);
         // Trying to pick up a new object (not resizing)
         if (otherHand.currentAttachedObject == null)
@@ -62,11 +63,12 @@ public class Rocks : MonoBehaviour
             if (GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
             {
                 // Grabs the rock if the player's energy allows for it
-                activeRock = pickup;
+                activeRock = pickup.GetComponent<RockProperties>();
+                activeRockObject = pickup;
                 playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
-                hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
-                hand.AttachObject(activeRock, GrabTypes.Scripted);
-                activeRock.GetComponent<RockProperties>().CancelDestructionTimer();
+                hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRockObject) < maxRockEnergyCost);
+                hand.AttachObject(activeRockObject, GrabTypes.Scripted);
+                activeRockObject.GetComponent<RockProperties>().CancelDestructionTimer();
             }
             else
             {
@@ -77,36 +79,38 @@ public class Rocks : MonoBehaviour
         else if (pickup != otherHand.currentAttachedObject && GetRockEnergyCost(pickup) < playerEnergy.GetRemainingEnergy())
         {
             // Pickups rock when the other hand is holding one
-            activeRock = pickup;
+            activeRock = pickup.GetComponent<RockProperties>();
+            activeRockObject = pickup;
             playerEnergy.SetTempEnergy(hand, GetRockEnergyCost(pickup));
-            hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRock) < maxRockEnergyCost);
-            hand.AttachObject(activeRock, GrabTypes.Scripted);
-            activeRock.GetComponent<RockProperties>().CancelDestructionTimer();
+            hand.SetAllowResize(playerEnergy.GetRemainingEnergy() > 0 && GetRockEnergyCost(activeRockObject) < maxRockEnergyCost);
+            hand.AttachObject(activeRockObject, GrabTypes.Scripted);
+            activeRockObject.GetComponent<RockProperties>().CancelDestructionTimer();
         }
         return activeRock;
     }
 
-    public GameObject CreateNewRock(Hand hand, ControllerArc arc)
+    public RockProperties CreateNewRock(Hand hand, ControllerArc arc)
     {
         // Gets a rock from the stash and attaches it to the player's hand
-        GameObject activeRock = GetNewRock();
-        activeRock.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - minRockDiameter, arc.GetEndPosition().z);
-        activeRock.transform.localScale = new Vector3(minRockDiameter, minRockDiameter, minRockDiameter);
-        activeRock.GetComponent<Rigidbody>().mass = rockMassScale * minRockDiameter;
-        hand.AttachObject(activeRock, GrabTypes.Scripted);
+        GameObject activeRockObject = GetNewRock();
+        RockProperties activeRock = activeRockObject.GetComponent<RockProperties>();
+        activeRockObject.transform.position = new Vector3(arc.GetEndPosition().x, arc.GetEndPosition().y - minRockDiameter, arc.GetEndPosition().z);
+        activeRockObject.transform.localScale = new Vector3(minRockDiameter, minRockDiameter, minRockDiameter);
+        activeRockObject.GetComponent<Rigidbody>().mass = rockMassScale * minRockDiameter;
+        hand.AttachObject(activeRockObject, GrabTypes.Scripted);
         playerEnergy.SetTempEnergy(hand, 0);
 
         // Plays a particle effect at the point of picking up a rock
         ParticleSystem rockParticleSystem = Instantiate(createRockParticles);
-        rockParticleSystem.transform.position = activeRock.transform.position;
+        rockParticleSystem.transform.position = activeRockObject.transform.position;
 
         return activeRock;
     }
 
-    public void UpdateRock(GameObject activeRock, Hand hand)
+    public void UpdateRock(RockProperties activeRock, Hand hand)
     {
         // Play regrowth audio if not looping it already
-        AudioSource activeRockAudio = activeRock.GetComponent<AudioSource>();
+        AudioSource activeRockAudio = activeRock.GetActiveRockAudioSource();
         if (!activeRockAudio.isPlaying)
         {
             activeRockAudio.loop = true;
@@ -114,9 +118,9 @@ public class Rocks : MonoBehaviour
         }
         
         // Sets energy cost and mass of the rock
-        float rockEnergyCost = GetRockEnergyCost(activeRock);
+        float rockEnergyCost = GetRockEnergyCost(activeRock.gameObject);
         rockEnergyCost = (rockEnergyCost < 0) ? 0 : rockEnergyCost;
-        activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
+        activeRock.GetRigidbody().mass = rockMassScale * activeRock.transform.localScale.x;
         playerEnergy.SetTempEnergy(hand, rockEnergyCost);
 
         // Prevents resizing if the player doesn't have enough energy
@@ -131,15 +135,15 @@ public class Rocks : MonoBehaviour
         }
 
         // Sets position of the particle system to be at the rocks new position;
-        SkinnedMeshRenderer skinnedMeshRenderer = activeRock.GetComponent<SkinnedMeshRenderer>();
+        SkinnedMeshRenderer skinnedMeshRenderer = activeRock.GetMeshRenderer();
         currentRegrowthParticleSystem.transform.position = skinnedMeshRenderer.bounds.center;
         currentRegrowthSwirlSystem.transform.position = skinnedMeshRenderer.bounds.center;
     }
 
-    public void StopRegrowthParticles(GameObject activeRock)
+    public void StopRegrowthParticles(RockProperties activeRock)
     {
         // Stop regrowth audio on rock
-        activeRock.GetComponent<AudioSource>().Stop();
+        activeRock.GetActiveRockAudioSource().Stop();
 
         if (currentRegrowthParticleSystem != null)
         {
@@ -156,12 +160,13 @@ public class Rocks : MonoBehaviour
         }
     }
 
-    public void ThrowRock(GameObject activeRock, Hand hand, Hand otherHand)
+    public void ThrowRock(RockProperties activeRock, Hand hand, Hand otherHand)
     {
+        GameObject activeRockObject = activeRock.gameObject;
         // Detaches the rock from the player's hand
-        hand.DetachObject(activeRock);
+        hand.DetachObject(activeRockObject);
 
-        if (otherHand.currentAttachedObject == activeRock)
+        if (otherHand.currentAttachedObject == activeRockObject)
         {
             // Rebases the rock to the other hand if it's still holding the rock at the time of release
             float rockSize = (float) Math.Pow(Math.Floor(activeRock.transform.localScale.x * activeRock.transform.localScale.y * activeRock.transform.localScale.z), 3);
@@ -174,14 +179,14 @@ public class Rocks : MonoBehaviour
             hand.SetAllowResize(true);
 
             // Adds the RockProperties component to the rock to begin the death countdown
-            activeRock.GetComponent<RockProperties>().StartDestructionTimer();
+            activeRock.StartDestructionTimer();
 
             // Gets the final mass of the rock
-            activeRock.GetComponent<Rigidbody>().mass = rockMassScale * activeRock.transform.localScale.x;
+            activeRock.GetRigidbody().mass = rockMassScale * activeRock.transform.localScale.x;
             playerEnergy.UseEnergy(hand);
             StartCoroutine(PlayerAbility.LongVibration(hand, 0.1f, 1000));
 
-            PlayThrowRockSound(activeRock);
+            PlayThrowRockSound(activeRockObject);
 
             // Uses power-up if enabled
             if (PlayerAbility.RockClusterEnabled)
