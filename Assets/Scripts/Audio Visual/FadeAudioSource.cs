@@ -24,7 +24,7 @@ public class FadeAudioSource : MonoBehaviour
     public bool Play()
     {
     // Calculate how much to update volume per second (regardless of current volume)
-        volumeUpdatePerSecond = 1f / fadeInTime;
+        volumeUpdatePerSecond = 1f / (fadeInTime <= 0 ? 0.000001f : fadeInTime);
         
         if (!source.isPlaying)
         {
@@ -43,7 +43,7 @@ public class FadeAudioSource : MonoBehaviour
         if (source.isPlaying)
         {
             // Calculate how much to update volume per second (regardless of current volume)
-            volumeUpdatePerSecond = -1f / fadeOutTime;
+            volumeUpdatePerSecond = -1f / (fadeOutTime <= 0 ? 0.000001f : fadeOutTime);
             return true;
         }
         
