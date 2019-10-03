@@ -13,6 +13,13 @@ public class ProjectileCollide : MonoBehaviour
     public float projectileDamage = 100;
     public TrailRenderer trail;
 
+    [Header("Audio")]
+    public FadeAudioSource flyLoop;
+    public AudioSource hitPlayer;
+    public AudioMultiClipSource hitSolid;
+    public AudioMultiClipSource hitFoliage;
+    public PhysicMaterial foliageMaterial;
+
     private Rigidbody projectileRigidbody;
     private float WALL_LIFETIME = 3f;
     private Quaternion initialRotation;
@@ -33,6 +40,11 @@ public class ProjectileCollide : MonoBehaviour
     {
         if (trail.enabled)
         {
+            // Begin flying audio loop
+            if (!flyLoop.source.isPlaying)
+            {
+                flyLoop.Play();
+            }
             transform.rotation = Quaternion.LookRotation(projectileRigidbody.velocity) * initialRotation;
         }
     }
@@ -44,14 +56,34 @@ public class ProjectileCollide : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        // No longer flying
+        flyLoop.Stop();
         trail.enabled = false;
+        
         // todo in theory nothing else but the player should have the player collider tag, therefore i can be sure that inside this if statement i should damage the player
-        if (other.gameObject.CompareTag("PlayerCollider"))
+        if (other.gameObject.CompareTag("PlayerCollider") && projectileDamage > 0)
         {
             // Needed if doing non-VR mode
             if (playerHealth != null)
             {
+                // Play sound and deal damage
+                hitPlayer.Play();
                 playerHealth.TakeDamage(projectileDamage);
+                
+                // Slow arrow
+                projectileRigidbody.velocity *= 0.3f;
+            }
+        }
+        else
+        {
+            // Collision sound
+            if (other.collider.material.Equals(foliageMaterial))
+            {
+                hitFoliage.PlayRandom();
+            }
+            else
+            {
+                hitSolid.PlayRandom();
             }
         }
         // destroy projectile after colliding with any object and make its damage 0
