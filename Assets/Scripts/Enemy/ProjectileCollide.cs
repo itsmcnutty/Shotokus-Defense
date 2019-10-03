@@ -33,9 +33,6 @@ public class ProjectileCollide : MonoBehaviour
         projectileRigidbody = GetComponent<Rigidbody>();
         initialRotation = Quaternion.Euler(90, 0, 0);
         trail.enabled = false;
-        
-        // Begin flying audio loop
-        flyLoop.Play();
     }
 
     // Update is called once per frame
@@ -43,6 +40,11 @@ public class ProjectileCollide : MonoBehaviour
     {
         if (trail.enabled)
         {
+            // Begin flying audio loop
+            if (!flyLoop.isPlaying)
+            {
+                flyLoop.Play();
+            }
             transform.rotation = Quaternion.LookRotation(projectileRigidbody.velocity) * initialRotation;
         }
     }
@@ -58,18 +60,8 @@ public class ProjectileCollide : MonoBehaviour
         flyLoop.Stop();
         trail.enabled = false;
         
-        // Collision sound
-        if (other.collider.material.Equals(foliageMaterial))
-        {
-            hitFoliage.PlayRandom();
-        }
-        else
-        {
-            hitSolid.PlayRandom();
-        }
-        
         // todo in theory nothing else but the player should have the player collider tag, therefore i can be sure that inside this if statement i should damage the player
-        if (other.gameObject.CompareTag("PlayerCollider"))
+        if (other.gameObject.CompareTag("PlayerCollider") && projectileDamage > 0)
         {
             // Needed if doing non-VR mode
             if (playerHealth != null)
@@ -77,6 +69,18 @@ public class ProjectileCollide : MonoBehaviour
                 // Play sound and deal damage
                 hitPlayer.Play();
                 playerHealth.TakeDamage(projectileDamage);
+            }
+        }
+        else
+        {
+            // Collision sound
+            if (other.collider.material.Equals(foliageMaterial))
+            {
+                hitFoliage.PlayRandom();
+            }
+            else
+            {
+                hitSolid.PlayRandom();
             }
         }
         // destroy projectile after colliding with any object and make its damage 0
