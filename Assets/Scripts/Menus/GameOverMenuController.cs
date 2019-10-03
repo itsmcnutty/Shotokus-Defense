@@ -32,7 +32,9 @@ public class GameOverMenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // if inside game over menu
+        // toggle like the pause menu with button press
+//        if ()
     }
 
     // Creates the game over screen and pauses the game
