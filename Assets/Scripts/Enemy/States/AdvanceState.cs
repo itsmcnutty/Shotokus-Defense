@@ -127,9 +127,7 @@ public class AdvanceState : IState
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
 	// is possible
 	public IState Transition()
-	{
-		Debug.Log("im advancing");
-		
+	{	
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
 		{
