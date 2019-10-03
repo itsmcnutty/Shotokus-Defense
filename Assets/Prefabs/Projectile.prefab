@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileDamage: 85
   trail: {fileID: 3880749310294276023}
-  flyLoop: {fileID: 559825253761766077}
+  flyLoop: {fileID: 2877177322806694035}
   hitPlayer: {fileID: 8045066306172797553}
   hitSolid: {fileID: 719045568211836881}
   hitFoliage: {fileID: 5999662636650765547}
@@ -339,12 +339,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 966003154456090645}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &559825253761766077 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 766466094306183848, guid: 61a3b560e5877534c9d7a935459f6b20,
+--- !u!114 &2877177322806694035 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3065305685512210566, guid: 61a3b560e5877534c9d7a935459f6b20,
     type: 3}
   m_PrefabInstance: {fileID: 966003154456090645}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44bd4b5d00c384c4696a7f72fea99c5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2483832007612133914
 PrefabInstance:
   m_ObjectHideFlags: 0

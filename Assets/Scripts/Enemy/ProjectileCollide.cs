@@ -14,7 +14,7 @@ public class ProjectileCollide : MonoBehaviour
     public TrailRenderer trail;
 
     [Header("Audio")]
-    public AudioSource flyLoop;
+    public FadeAudioSource flyLoop;
     public AudioSource hitPlayer;
     public AudioMultiClipSource hitSolid;
     public AudioMultiClipSource hitFoliage;
@@ -41,7 +41,7 @@ public class ProjectileCollide : MonoBehaviour
         if (trail.enabled)
         {
             // Begin flying audio loop
-            if (!flyLoop.isPlaying)
+            if (!flyLoop.source.isPlaying)
             {
                 flyLoop.Play();
             }
@@ -69,6 +69,9 @@ public class ProjectileCollide : MonoBehaviour
                 // Play sound and deal damage
                 hitPlayer.Play();
                 playerHealth.TakeDamage(projectileDamage);
+                
+                // Slow arrow
+                projectileRigidbody.velocity *= 0.3f;
             }
         }
         else
