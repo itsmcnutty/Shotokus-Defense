@@ -13,6 +13,13 @@ public class ProjectileCollide : MonoBehaviour
     public float projectileDamage = 100;
     public TrailRenderer trail;
 
+    [Header("Audio")]
+    public AudioSource flyLoop;
+    public AudioSource hitPlayer;
+    public AudioMultiClipSource hitSolid;
+    public AudioMultiClipSource hitFoliage;
+    public PhysicMaterial foliageMaterial;
+
     private Rigidbody projectileRigidbody;
     private float WALL_LIFETIME = 3f;
     private Quaternion initialRotation;
@@ -26,6 +33,9 @@ public class ProjectileCollide : MonoBehaviour
         projectileRigidbody = GetComponent<Rigidbody>();
         initialRotation = Quaternion.Euler(90, 0, 0);
         trail.enabled = false;
+        
+        // Begin flying audio loop
+        flyLoop.Play();
     }
 
     // Update is called once per frame
@@ -44,13 +54,28 @@ public class ProjectileCollide : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        // No longer flying
+        flyLoop.Stop();
         trail.enabled = false;
+        
+        // Collision sound
+        if (other.collider.material.Equals(foliageMaterial))
+        {
+            hitFoliage.PlayRandom();
+        }
+        else
+        {
+            hitSolid.PlayRandom();
+        }
+        
         // todo in theory nothing else but the player should have the player collider tag, therefore i can be sure that inside this if statement i should damage the player
         if (other.gameObject.CompareTag("PlayerCollider"))
         {
             // Needed if doing non-VR mode
             if (playerHealth != null)
             {
+                // Play sound and deal damage
+                hitPlayer.Play();
                 playerHealth.TakeDamage(projectileDamage);
             }
         }
