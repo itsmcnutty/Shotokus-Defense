@@ -17,7 +17,7 @@ public class SpikeQuicksand : MonoBehaviour
     public float spikeMinHandMovement = 0.05f;
     public float quicksandMinHandMovement = 0.05f;
     public float baseSpikeRadius = 0.5f;
-    public float spikeSpeedReduction = 10f;
+    public float spikeSpeedScalar = 5f;
     public float spikeMinSpeed = .05f;
     public float spikeMaxHeight = 1.75f;
     public float energyPerSpikeInChain = 50;
@@ -378,7 +378,7 @@ public class SpikeQuicksand : MonoBehaviour
         if (PlayerAbility.SpikeChainEnabled)
         {
             playerEnergy.UseEnergy(hand);
-            float spikeVelocity = (controllerPose.GetVelocity().y / spikeSpeedReduction) + spikeMinSpeed;
+            float spikeVelocity = (controllerPose.GetVelocity().y * spikeSpeedScalar) + spikeMinSpeed;
             // Creates a Co-Routine for each spike chain so that they work independently from one-another
             while (spikeQuicksandOutlines.Count > 0)
             {
@@ -433,7 +433,7 @@ public class SpikeQuicksand : MonoBehaviour
                 spike.transform.localScale = new Vector3(finalSpikeRadius, finalSpikeHeight, finalSpikeRadius);
 
                 // Sets the spikes to come out at the player's hand velocity to a position 2 meters above the surface
-                float spikeVelocity = (controllerVelocity / spikeSpeedReduction) + spikeMinSpeed;
+                float spikeVelocity = (controllerVelocity * spikeSpeedScalar) + spikeMinSpeed;
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
