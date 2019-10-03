@@ -47,6 +47,7 @@ public class GameController : MonoBehaviour
     private bool pauseWaveSystem = true;
     private float availableSpots; // keeps track of how many more enemies can be spawned in the scene
     private bool gameWon;
+    private GameObject[] enemyList; // keeps track of enemies that hide and unhide
 
     // Constructor
     private GameController() { }
@@ -335,18 +336,21 @@ public class GameController : MonoBehaviour
     // this function hides/unhides all the enemies in the scene:
     public void hideEnemies(bool hide)
     {
-        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        foreach (var enemy in enemies)
-        {
-            if (hide)
-            {
-                enemy.SetActive(false);
-            }
-            else
-            {
-                enemy.SetActive(true);
-            }
-        }
+        
+        // todo do something with making the meshes transparent, check clodumovement
+//        if (hide)
+//            enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+//        foreach (var enemy in enemyList)
+//        {
+//            if (hide)
+//            {
+//                enemy.SetActive(false);
+//            }
+//            else
+//            {
+//                enemy.SetActive(true);
+//            }
+//        }
     }
 
     // This function is called when player looses
