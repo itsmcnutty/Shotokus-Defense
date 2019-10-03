@@ -61,7 +61,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (currentHealth >= 0)
         {
-            StartCoroutine(FlashDamageIndicator((health / 100) * 255));
+            StartCoroutine(FlashDamageIndicator((health / 50)));
             currentHealth -= health;
             healthBar.value = currentHealth;
             SetHealthBarText();
@@ -136,7 +136,7 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator FlashDamageIndicator(float damagePercent)
     {
-        yield return FadeTo(4, 0.05f);
+        yield return FadeTo(damagePercent, 0.05f);
         yield return FadeTo(0, 0.45f);
     }
 
