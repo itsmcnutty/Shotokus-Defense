@@ -42,7 +42,7 @@ public class GameOverMenuController : MonoBehaviour
     {
         // if inside game over menu
         // toggle like the pause menu with button press
-        if (PausePress() && GameObject.FindGameObjectWithTag("Menu").name == "GameOverMenu")
+        if (PausePress() && GameObject.FindGameObjectWithTag("Menu").GetComponent<GameOverProperties>() != null)
         {
             GameController.Instance.RestartWave();
         }
