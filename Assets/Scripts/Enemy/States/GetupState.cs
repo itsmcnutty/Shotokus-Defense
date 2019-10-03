@@ -13,6 +13,9 @@ public class GetUpState : IState
 	
 	// This enemy's GameObject
 	private GameObject gameObj;
+	// The enemy's ragdoll controller
+	private RagdollController ragdollController;
+
 
 	// Timer variables to wait for getup animation
 	private float waitTimeOut = 2f;
@@ -20,10 +23,12 @@ public class GetUpState : IState
 	
 	// States to transition to
 	private IState resetState;
+	private RagdollState ragdollState;
 
 	public GetUpState(EnemyProperties enemyProps)
 	{
 		animator = enemyProps.animator;
+		ragdollController = enemyProps.ragdollController;
 		obstacle = enemyProps.obstacle;
 		gameObj = enemyProps.gameObject;
 	}
@@ -75,6 +80,13 @@ public class GetUpState : IState
 	// is possible
 	public IState Transition()
 	{
+		// Transition to ragdoll state if ragdolling
+		if (ragdollController.IsRagdolling())
+		{
+			animator.SetTrigger("Ragdoll");
+			return ragdollState;
+		}
+
 		// If the enemy can recover from ragdolling, transition to resetState
 		if (waitTimer > waitTimeOut)
 		{

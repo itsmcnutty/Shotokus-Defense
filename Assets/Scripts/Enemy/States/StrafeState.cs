@@ -347,7 +347,7 @@ public class StrafeState : IState
 	// is possible
 	public IState Transition()
 	{
-////		// todo debug getup animation only - delete later 
+//////		// todo debug getup animation only - delete later 
 //		timer += Time.deltaTime;
 //		if (timer > timeout)
 //		{
