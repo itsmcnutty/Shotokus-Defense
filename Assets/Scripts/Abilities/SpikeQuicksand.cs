@@ -97,6 +97,7 @@ public class SpikeQuicksand : MonoBehaviour
 
         spikeQuicksandOutline.transform.position = arc.GetEndPosition();
         startingSpikeHandHeight = hand.transform.position.y;
+        previousVelocities.Clear();
 
         if (PlayerAbility.SpikeChainEnabled)
         {
@@ -292,7 +293,7 @@ public class SpikeQuicksand : MonoBehaviour
         }
         else
         {
-            controllerVelocity = previousVelocities.Average();   
+            controllerVelocity = previousVelocities.Average() * spikeSpeedScalar + spikeMinSpeed;
         }
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
         if (handPos < -quicksandMinHandMovement && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]) && PlayerAbility.QuicksandAbilityEnabled)
@@ -378,12 +379,11 @@ public class SpikeQuicksand : MonoBehaviour
         if (PlayerAbility.SpikeChainEnabled)
         {
             playerEnergy.UseEnergy(hand);
-            float spikeVelocity = (controllerPose.GetVelocity().y * spikeSpeedScalar) + spikeMinSpeed;
             // Creates a Co-Routine for each spike chain so that they work independently from one-another
             while (spikeQuicksandOutlines.Count > 0)
             {
                 GameObject outline = spikeQuicksandOutlines[0];
-                StartCoroutine(CreateChainSpike(hand, outline, horizontalSpikeChainVelocity, spikeVelocity));
+                StartCoroutine(CreateChainSpike(hand, outline, horizontalSpikeChainVelocity, controllerVelocity));
                 spikeQuicksandOutlines.Remove(outline);
             }
         }
@@ -433,7 +433,6 @@ public class SpikeQuicksand : MonoBehaviour
                 spike.transform.localScale = new Vector3(finalSpikeRadius, finalSpikeHeight, finalSpikeRadius);
 
                 // Sets the spikes to come out at the player's hand velocity to a position 2 meters above the surface
-                float spikeVelocity = (controllerVelocity * spikeSpeedScalar) + spikeMinSpeed;
                 Vector3 spikeEndPosition = spike.transform.position;
                 spikeEndPosition.y += (finalSpikeHeight * spikeMaxHeight);
 
@@ -445,7 +444,7 @@ public class SpikeQuicksand : MonoBehaviour
                 rockParticleSystem.transform.localScale = spike.transform.localScale;
 
                 // Adds the SpikeMovement component to the spike to start the death countdown once it reaches it's final height and play particles later in life
-                SpikeMovement.CreateComponent(spike, spikeVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles, spikeBreakSound);
+                SpikeMovement.CreateComponent(spike, controllerVelocity, spikeEndPosition, createSpikeEarthParticles, destroySpikeParticles, spikeBreakSound);
             }
             // Removes all spike locations calculated
             allSpikes.Clear();
