@@ -106,7 +106,7 @@ public class PlayerAbility : MonoBehaviour
     }
 
     private Rocks rocks;
-    [NonSerialized] public GameObject activeRock;
+    [NonSerialized] public RockProperties activeRock;
 
     private SpikeQuicksand spikeQuicksand;
     private List<GameObject> spikeQuicksandOutlines = new List<GameObject>();
