@@ -38,6 +38,7 @@ public class GetUpState : IState
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
 	{
 		resetState = enemyProps.advanceState;
+		ragdollState = enemyProps.ragdollState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -45,6 +46,7 @@ public class GetUpState : IState
 	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
 		resetState = enemyProps.runState;
+		ragdollState = enemyProps.ragdollState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -52,6 +54,7 @@ public class GetUpState : IState
 	public void InitializeStates(EnemyLightProperties enemyProps)
 	{
 		resetState = enemyProps.runState;
+		ragdollState = enemyProps.ragdollState;
 	}
 	
 	// Called upon entering this state from anywhere

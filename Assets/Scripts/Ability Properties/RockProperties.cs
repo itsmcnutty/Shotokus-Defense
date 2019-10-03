@@ -147,7 +147,7 @@ public class RockProperties : MonoBehaviour
         collidedWithNonEnemy = true;
         collidedWithEnemy = false;
         
-        if (other.collider.material == foliageMaterial)
+        if (other.collider.material.Equals(foliageMaterial))
         {
             randomizedAudioSource.waveFiles = rockHitFoliage;
         }
