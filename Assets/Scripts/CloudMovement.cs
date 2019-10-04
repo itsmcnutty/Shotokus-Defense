@@ -18,8 +18,9 @@ public class CloudMovement : MonoBehaviour
     void Start()
     {
         objectRenderer = gameObject.GetComponent<Renderer>();
-        objectColor = objectRenderer.sharedMaterial.color;
+        objectColor = objectRenderer.sharedMaterial.GetColor("_BaseColor");
         initialAlpha = objectColor.a;
+        Debug.Log(initialAlpha);
         block = new MaterialPropertyBlock();
 
         startLocation3D = new Vector3(startLocation.x, transform.position.y, startLocation.y);
@@ -29,7 +30,7 @@ public class CloudMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, endLocation, moveSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, endLocation3D, moveSpeed);
 
         Vector3 distanceToStartVector = startLocation3D - transform.position;
         float distanceToStart = Vector3.SqrMagnitude(distanceToStartVector);
