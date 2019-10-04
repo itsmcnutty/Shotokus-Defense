@@ -340,20 +340,20 @@ public class StrafeState : IState
 	}
 	
 	//		// todo debug getup animation only - delete later 
-	private float timer = 0;
-	private float timeout = 2;
+//	private float timer = 0;
+//	private float timeout = 2;
 	
 	// Called immediately after Action. Returns an IState if it can transition to that state, and null if no transition
 	// is possible
 	public IState Transition()
 	{
 //////		// todo debug getup animation only - delete later 
-		timer += Time.deltaTime;
-		if (timer > timeout)
-		{
-			timer = 0;
-			ragdollController.StartRagdoll();
-		}
+//		timer += Time.deltaTime;
+//		if (timer > timeout)
+//		{
+//			timer = 0;
+//			ragdollController.StartRagdoll();
+//		}
 
 		// Transition to ragdoll state if ragdolling
 		if (ragdollController.IsRagdolling())
