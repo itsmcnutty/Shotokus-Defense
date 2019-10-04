@@ -23,6 +23,10 @@ public class EnemyLightProperties : EnemyProperties
     [NonSerialized] public int lastPointIndex; // last point index value in the pointsAroundTarget array
     [NonSerialized] public bool isClockwise = false; // walk in a clockwise direction when strafying
 
+    // Getup animation speed
+    [Header("Animation")]
+    public float getUpStateTimeOut;
+
     // All states
     [NonSerialized] public RunState runState;
     [NonSerialized] public StrafeState strafeState;
