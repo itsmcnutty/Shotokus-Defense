@@ -455,7 +455,7 @@ MonoBehaviour:
   targetDummy: {fileID: 2962684539835844489}
   rockVideos:
   - slideTitle: Create Rock
-    captionText: 
+    captionText: Look down and hold trigger
     video: {fileID: 32900000, guid: 0192e96bd10e3b5488e7d3825e25adbc, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
@@ -470,7 +470,7 @@ MonoBehaviour:
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Power-up
-    captionText: Deal damage to charge
+    captionText: Deal damage to charge the meter
     video: {fileID: 32900000, guid: 272369a3a07a302408d9353f99255f54, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
@@ -481,12 +481,12 @@ MonoBehaviour:
       type: 3}
   spikeVideos:
   - slideTitle: Create Spike
-    captionText: 
+    captionText: Move faster to create faster spikes
     video: {fileID: 32900000, guid: b106e966d6bcf23438c2687b3b090423, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
   - slideTitle: Power-up
-    captionText: Deal damage to charge
+    captionText: Deal damage to charge the meter
     video: {fileID: 32900000, guid: 181441878a4604149829b910a83146f3, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
@@ -507,13 +507,13 @@ MonoBehaviour:
     controllerInstruction: {fileID: 32900000, guid: c575be6a9cb370e40874dfc376a7faf2,
       type: 3}
   - slideTitle: Power-up
-    captionText: Use energy to charge
+    captionText: Use energy to charge the meter
     video: {fileID: 32900000, guid: 0622e967549ca2248815137f475b599a, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 0f026e8c156bfee49b3006351539c7fb,
       type: 3}
   quicksandVideos:
   - slideTitle: Create Quicksand
-    captionText: 
+    captionText: Deals no damage, slows enemies
     video: {fileID: 32900000, guid: 2a9e6e0101cf54a4d9b2997034764231, type: 3}
     controllerInstruction: {fileID: 32900000, guid: 3316b832eb3e50547823cfddc9ca8cdc,
       type: 3}
