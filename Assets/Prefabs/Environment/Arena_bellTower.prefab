@@ -11,12 +11,14 @@ GameObject:
   - component: {fileID: 5617915377904165077}
   - component: {fileID: 3507704852142725859}
   - component: {fileID: 7174611962534979098}
+  - component: {fileID: 4993127414745858782}
+  - component: {fileID: 5979818702422615161}
   m_Layer: 0
   m_Name: Arena_bellTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5617915377904165077
 Transform:
@@ -25,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8911921751122268870}
-  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -18.36, y: 0.98, z: -36.8}
   m_LocalScale: {x: 1.6399134, y: 1.6399134, z: 1.6399134}
   m_Children: []
@@ -77,3 +79,30 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &4993127414745858782
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8911921751122268870}
+  m_Material: {fileID: 13400000, guid: c084b62037a9e6e488cfca0e71495117, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 3819469092432913009, guid: 35df1de1bab3cf04e94992439ada77b5, type: 3}
+--- !u!65 &5979818702422615161
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8911921751122268870}
+  m_Material: {fileID: 13400000, guid: 41e7866c0e73445468fde85f39d61eb7, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.3706511, y: 1.2736269, z: 1.3631284}
+  m_Center: {x: 0.0015388988, y: 2.3151562, z: -0.004833756}

@@ -1743,6 +1743,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7105610547345390793}
     m_Modifications:
+    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
+        type: 3}
+      propertyPath: m_Name
+      value: Temple_wall_corner_NE
+      objectReference: {fileID: 0}
     - target: {fileID: 7966378676455037299, guid: 64e56b65862301241964b60b019c1f18,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1797,11 +1802,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
-        type: 3}
-      propertyPath: m_Name
-      value: Temple_wall_corner_NE
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64e56b65862301241964b60b019c1f18, type: 3}
@@ -2288,6 +2288,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5170098679932627057}
     m_Modifications:
+    - target: {fileID: 3621097367781317775, guid: 72b32d25a9645bf4794b05b05aa51066,
+        type: 3}
+      propertyPath: m_Name
+      value: Entrance_north
+      objectReference: {fileID: 0}
     - target: {fileID: 296077617216614044, guid: 72b32d25a9645bf4794b05b05aa51066,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2342,11 +2347,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3621097367781317775, guid: 72b32d25a9645bf4794b05b05aa51066,
-        type: 3}
-      propertyPath: m_Name
-      value: Entrance_north
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72b32d25a9645bf4794b05b05aa51066, type: 3}
@@ -2523,6 +2523,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5170098679932627057}
     m_Modifications:
+    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
+        type: 3}
+      propertyPath: m_Name
+      value: Entrance_south
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 2982317230196208975, guid: 7dcd18e519123634cbfc7882fc3c958f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2577,16 +2587,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
-        type: 3}
-      propertyPath: m_Name
-      value: Entrance_south
-      objectReference: {fileID: 0}
-    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dcd18e519123634cbfc7882fc3c958f, type: 3}
@@ -3308,6 +3308,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7105610547345390793}
     m_Modifications:
+    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
+        type: 3}
+      propertyPath: m_Name
+      value: Temple_wall_corner_NW
+      objectReference: {fileID: 0}
+    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7966378676455037299, guid: 64e56b65862301241964b60b019c1f18,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3362,16 +3372,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
-        type: 3}
-      propertyPath: m_Name
-      value: Temple_wall_corner_NW
-      objectReference: {fileID: 0}
-    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64e56b65862301241964b60b019c1f18, type: 3}
@@ -4783,6 +4783,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6887546734991391752}
     m_Modifications:
+    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
+        type: 3}
+      propertyPath: m_Name
+      value: Temple_wall_corner_SE
+      objectReference: {fileID: 0}
     - target: {fileID: 7966378676455037299, guid: 64e56b65862301241964b60b019c1f18,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4837,11 +4842,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
-        type: 3}
-      propertyPath: m_Name
-      value: Temple_wall_corner_SE
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64e56b65862301241964b60b019c1f18, type: 3}
@@ -5013,6 +5013,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5170098679932627057}
     m_Modifications:
+    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
+        type: 3}
+      propertyPath: m_Name
+      value: Entrance_west
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 2982317230196208975, guid: 7dcd18e519123634cbfc7882fc3c958f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5067,16 +5077,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
-        type: 3}
-      propertyPath: m_Name
-      value: Entrance_west
-      objectReference: {fileID: 0}
-    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dcd18e519123634cbfc7882fc3c958f, type: 3}
@@ -5318,6 +5318,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6887546734991391752}
     m_Modifications:
+    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
+        type: 3}
+      propertyPath: m_Name
+      value: Temple_wall_corner_SW
+      objectReference: {fileID: 0}
+    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7966378676455037299, guid: 64e56b65862301241964b60b019c1f18,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5372,16 +5382,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
-        type: 3}
-      propertyPath: m_Name
-      value: Temple_wall_corner_SW
-      objectReference: {fileID: 0}
-    - target: {fileID: 6401052038705163104, guid: 64e56b65862301241964b60b019c1f18,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64e56b65862301241964b60b019c1f18, type: 3}
@@ -5548,6 +5548,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5170098679932627057}
     m_Modifications:
+    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
+        type: 3}
+      propertyPath: m_Name
+      value: Entrance_east
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 2982317230196208975, guid: 7dcd18e519123634cbfc7882fc3c958f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5602,16 +5612,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
-        type: 3}
-      propertyPath: m_Name
-      value: Entrance_east
-      objectReference: {fileID: 0}
-    - target: {fileID: 2249557225079687004, guid: 7dcd18e519123634cbfc7882fc3c958f,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dcd18e519123634cbfc7882fc3c958f, type: 3}
