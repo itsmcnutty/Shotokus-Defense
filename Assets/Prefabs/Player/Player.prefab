@@ -2534,7 +2534,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.05
-  far clip plane: 300
+  far clip plane: 3000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -3027,7 +3027,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.05
-  far clip plane: 300
+  far clip plane: 3000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -5042,6 +5042,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2938945288640545838}
     m_Modifications:
+    - target: {fileID: 6589349534390304382, guid: f4a865cc4fca98c4ba1772f10d05d426,
+        type: 3}
+      propertyPath: m_Name
+      value: WallPushTriggerSource
+      objectReference: {fileID: 0}
     - target: {fileID: 6429445449828289021, guid: f4a865cc4fca98c4ba1772f10d05d426,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5097,11 +5102,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6589349534390304382, guid: f4a865cc4fca98c4ba1772f10d05d426,
-        type: 3}
-      propertyPath: m_Name
-      value: WallPushTriggerSource
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4a865cc4fca98c4ba1772f10d05d426, type: 3}
 --- !u!4 &1902331440517124943 stripped
@@ -5123,6 +5123,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2938945288640545838}
     m_Modifications:
+    - target: {fileID: 9113227238778571230, guid: 6896af60215daa24db7c4a4d9fbaad2a,
+        type: 3}
+      propertyPath: m_Name
+      value: EarthquakeTriggerSource
+      objectReference: {fileID: 0}
     - target: {fileID: 8912929803359515324, guid: 6896af60215daa24db7c4a4d9fbaad2a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5177,11 +5182,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9113227238778571230, guid: 6896af60215daa24db7c4a4d9fbaad2a,
-        type: 3}
-      propertyPath: m_Name
-      value: EarthquakeTriggerSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6896af60215daa24db7c4a4d9fbaad2a, type: 3}
@@ -5383,6 +5383,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2938945288640545838}
     m_Modifications:
+    - target: {fileID: 7449511953876594383, guid: d11aae13d38db3448b243b9aadc1fcf1,
+        type: 3}
+      propertyPath: m_Name
+      value: RockBurstTriggerSource
+      objectReference: {fileID: 0}
     - target: {fileID: 4612982323921493305, guid: d11aae13d38db3448b243b9aadc1fcf1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5437,11 +5442,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7449511953876594383, guid: d11aae13d38db3448b243b9aadc1fcf1,
-        type: 3}
-      propertyPath: m_Name
-      value: RockBurstTriggerSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d11aae13d38db3448b243b9aadc1fcf1, type: 3}
@@ -5545,6 +5545,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2938945288640545838}
     m_Modifications:
+    - target: {fileID: 8894343520076206288, guid: e4efa0484b60f5b42bc5c0bb2a274c37,
+        type: 3}
+      propertyPath: m_Name
+      value: PowerupEndSource
+      objectReference: {fileID: 0}
     - target: {fileID: 6617274815603976627, guid: e4efa0484b60f5b42bc5c0bb2a274c37,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5599,11 +5604,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8894343520076206288, guid: e4efa0484b60f5b42bc5c0bb2a274c37,
-        type: 3}
-      propertyPath: m_Name
-      value: PowerupEndSource
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4efa0484b60f5b42bc5c0bb2a274c37, type: 3}
