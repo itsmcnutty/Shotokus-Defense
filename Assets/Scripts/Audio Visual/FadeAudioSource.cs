@@ -21,6 +21,8 @@ public class FadeAudioSource : MonoBehaviour
     public bool useDucking;
     // How long the sound takes to duck down
     public float duckTime;
+    // How long the sound takes to restore to full volume from ducking
+    public float stopDuckTime;
     // How quiet to make the sound when ducking
     public float duckVolume;
 
@@ -29,12 +31,21 @@ public class FadeAudioSource : MonoBehaviour
     // True if audio should stop reducing volume at duckVolume
     private bool isCurrentlyDucking = false;
 
+    private void Start()
+    {
+        // No dividing by 0 allowed
+        fadeInTime = fadeInTime <= 0 ? 0.000001f : fadeInTime;
+        fadeOutTime = fadeOutTime <= 0 ? 0.000001f : fadeOutTime;
+        duckTime = duckTime <= 0 ? 0.000001f : duckTime;
+        stopDuckTime = stopDuckTime <= 0 ? 0.000001f : stopDuckTime;
+    }
+
     // Plays the sound if not already looping (Fades back in whether stopped or in middle of fade out)
     // Returns false if the sound was already playing
     public bool Play()
     {
     // Calculate how much to update volume per second (regardless of current volume)
-        volumeUpdatePerSecond = 1f / (fadeInTime <= 0 ? 0.000001f : fadeInTime);
+        volumeUpdatePerSecond = 1f / fadeInTime;
         
         if (!source.isPlaying)
         {
@@ -53,7 +64,7 @@ public class FadeAudioSource : MonoBehaviour
         if (source.isPlaying)
         {
             // Calculate how much to update volume per second (regardless of current volume)
-            volumeUpdatePerSecond = -1f / (fadeOutTime <= 0 ? 0.000001f : fadeOutTime);
+            volumeUpdatePerSecond = -1f / fadeOutTime;
             return true;
         }
         
@@ -61,13 +72,29 @@ public class FadeAudioSource : MonoBehaviour
         return false;
     }
     
-    // Set the volume update rate so that the audio can duck as specified
-    private void SetDucking()
+    // Sets the pitch of the audio source, disabling ducking if it was happening
+    public void SetPitch(float newPitch)
     {
-        
+        source.pitch = newPitch;
+        SetDucking(false);
+    }
+    
+    // Set the volume update rate so that the audio can duck or un-duck as specified
+    private void SetDucking(bool duck)
+    {
+        if (duck)
+        {
+            isCurrentlyDucking = true;
+            volumeUpdatePerSecond = -1f / duckTime;
+        }
+        else
+        {
+            isCurrentlyDucking = false;
+            volumeUpdatePerSecond = 1f / stopDuckTime;
+        }
     }
 
-        // Update is called once per frame. 
+    // Update is called once per frame
     void Update()
     {
         // Update volume if playing
@@ -76,9 +103,20 @@ public class FadeAudioSource : MonoBehaviour
             source.volume += volumeUpdatePerSecond * Time.deltaTime;
         }
 
+        // Check if reached volume goal (maximum, muted, ducking volume)
         if (source.volume >= 1)
         {
-            // Max volume achieved, stop updating volume
+            // Max volume achieved, stop updating volume and begin ducking if allowed
+            volumeUpdatePerSecond = 0;
+            if (useDucking)
+            {
+                SetDucking(true);
+            }
+        }
+        else if (isCurrentlyDucking && source.volume <= duckVolume)
+        {
+            // Ducking volume achieved, stop updating volume
+            source.volume = duckVolume;
             volumeUpdatePerSecond = 0;
         }
         else if (source.volume <= 0)
