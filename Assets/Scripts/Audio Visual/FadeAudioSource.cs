@@ -15,9 +15,19 @@ public class FadeAudioSource : MonoBehaviour
     public float fadeInTime;
     // How long (in seconds) to spend on fade out
     public float fadeOutTime;
-    
+
+    [Header("Ducking variables")]
+    // The audio will duck down if the pitch is not changing
+    public bool useDucking;
+    // How long the sound takes to duck down
+    public float duckTime;
+    // How quiet to make the sound when ducking
+    public float duckVolume;
+
     // How much volume should be modified by each second
     private float volumeUpdatePerSecond = 0;
+    // True if audio should stop reducing volume at duckVolume
+    private bool isCurrentlyDucking = false;
 
     // Plays the sound if not already looping (Fades back in whether stopped or in middle of fade out)
     // Returns false if the sound was already playing
@@ -50,8 +60,14 @@ public class FadeAudioSource : MonoBehaviour
         // Sound was not playing
         return false;
     }
+    
+    // Set the volume update rate so that the audio can duck as specified
+    private void SetDucking()
+    {
+        
+    }
 
-    // Update is called once per frame. 
+        // Update is called once per frame. 
     void Update()
     {
         // Update volume if playing
