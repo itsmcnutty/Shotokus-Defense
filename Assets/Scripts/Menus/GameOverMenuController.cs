@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 public class GameOverMenuController : MonoBehaviour
 {
 
     public GameObject gameoverMenuPrefab;
+
+    public SteamVR_Action_Boolean pauseAction;
+    public SteamVR_Input_Sources rightHandInput;
+    public SteamVR_Input_Sources leftHandInput;
+
 
     private GameObject player; // get coordinates of player, to instate menu in front of them
     private Camera vrCamera;
@@ -23,6 +29,8 @@ public class GameOverMenuController : MonoBehaviour
         player = GameObject.FindWithTag("MainCamera");
         vrCamera = player.GetComponent<Camera>();
         laserPointer = this.GetComponent<InteractLaserButton>();
+        
+
     }
 
     // Start is called before the first frame update
@@ -32,7 +40,12 @@ public class GameOverMenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // if inside game over menu
+        // toggle like the pause menu with button press
+        if (PausePress() && GameObject.FindGameObjectWithTag("Menu").GetComponent<GameOverProperties>() != null)
+        {
+            GameController.Instance.RestartWave();
+        }
     }
 
     // Creates the game over screen and pauses the game
@@ -70,6 +83,21 @@ public class GameOverMenuController : MonoBehaviour
         GetComponent<MenuUIController>().enabled = false;
 
         // when menu is destroyed, time becomes normal and lasers are toggled again
+    }
+    
+    public bool PausePress()
+    {
+        return PausePressLeft() || PausePressRight();
+    }
+
+    public bool PausePressRight()
+    {
+        return pauseAction.GetStateDown(rightHandInput);
+    }
+
+    public bool PausePressLeft()
+    {
+        return pauseAction.GetStateDown(leftHandInput);
     }
 
 }

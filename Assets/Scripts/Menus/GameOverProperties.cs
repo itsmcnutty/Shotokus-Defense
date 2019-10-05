@@ -24,10 +24,17 @@ public class GameOverProperties : MonoBehaviour
     {
         // active abilities and ability laser
         laserPointer.toggleLaser();
-        PlayerAbility.ToggleSpikeAbility();
-        PlayerAbility.ToggleWallAbility();
-        PlayerAbility.ToggleQuicksandAbility();
-        PlayerAbility.ToggleRockAbility();
+        if (TutorialController.Instance.TutorialWaveInProgress())
+        {
+            TutorialController.Instance.ToggleTutorialAbilities();
+        }
+        else
+        {
+            PlayerAbility.ToggleSpikeAbility();
+            PlayerAbility.ToggleWallAbility();
+            PlayerAbility.ToggleQuicksandAbility();
+            PlayerAbility.ToggleRockAbility();
+        }
         Time.timeScale = 1;
     }
 }

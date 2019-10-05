@@ -40,17 +40,15 @@ public class ProjectileCollide : MonoBehaviour
     {
         if (trail.enabled)
         {
-            // Begin flying audio loop
-            if (!flyLoop.source.isPlaying)
-            {
-                flyLoop.Play();
-            }
             transform.rotation = Quaternion.LookRotation(projectileRigidbody.velocity) * initialRotation;
         }
     }
 
     public void StartRotation()
     {
+        // Begin flying audio loop
+        flyLoop.Play();
+        GetComponent<CapsuleCollider>().enabled = true;
         trail.enabled = true;
     }
 

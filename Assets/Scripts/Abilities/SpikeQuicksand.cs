@@ -293,7 +293,7 @@ public class SpikeQuicksand : MonoBehaviour
         }
         else
         {
-            controllerVelocity = previousVelocities.Average() * spikeSpeedScalar + spikeMinSpeed;
+            controllerVelocity = previousVelocities.Average() * spikeSpeedScalar;
         }
         float handPos = (hand.transform.position.y - startingSpikeHandHeight);
         if (handPos < -quicksandMinHandMovement && SpikeQuicksandIsValid(arc, spikeQuicksandOutlines[0]) && PlayerAbility.QuicksandAbilityEnabled)
@@ -304,6 +304,7 @@ public class SpikeQuicksand : MonoBehaviour
         else if (handPos > spikeMinHandMovement && controllerVelocity > 0 && PlayerAbility.SpikeAbilityEnabled)
         {
             // Creates spikes if the player raised their hands and they have upward velocity
+            controllerVelocity = (controllerVelocity < spikeMinSpeed) ? spikeMinSpeed : controllerVelocity;
             CreateSpikes(spikeQuicksandOutlines, hand, arc, controllerPose, controllerVelocity, horizontalSpikeChainVelocity);
         }
         else

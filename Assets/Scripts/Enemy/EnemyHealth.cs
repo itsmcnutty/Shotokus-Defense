@@ -215,13 +215,14 @@ public class EnemyHealth : CallParentCollision
 			float damageScalar = 1f;
 			if (rock.transform.parent && rock.transform.parent.gameObject.layer == 10)
 			{
-				if ((damage * damageScalar) < 1000)
+				if ((damage * damageScalar) < 750)
 				{
 					return 0;
 				}
 				else
 				{
 					StartCoroutine(properties.TempAddEnemy(gameObject.GetInstanceID()));
+					ragdollController.StartRagdoll();
 				}
 			}
 			else

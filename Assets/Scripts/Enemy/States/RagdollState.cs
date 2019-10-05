@@ -20,9 +20,10 @@ public class RagdollState : IState
 	
 	// Total time spent in animation (seconds)
 	private float timeRagdolling = 0f;
-	
+
 	// States to transition to
-	private IState resetState;
+//	private IState resetState;
+	private GetUpState getUpState;
 
 	public RagdollState(EnemyProperties enemyProps)
 	{
@@ -36,21 +37,24 @@ public class RagdollState : IState
 	// necessary states for the machine
 	public void InitializeStates(EnemyHeavyProperties enemyProps)
 	{
-		resetState = enemyProps.advanceState;
+//		resetState = enemyProps.advanceState;
+		getUpState = enemyProps.getUpState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyMediumProperties enemyProps)
 	{
-		resetState = enemyProps.runState;
+//		resetState = enemyProps.runState;
+		getUpState = enemyProps.getUpState;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
 	// necessary states for the machine
 	public void InitializeStates(EnemyLightProperties enemyProps)
 	{
-		resetState = enemyProps.runState;
+//		resetState = enemyProps.runState;
+		getUpState = enemyProps.getUpState;
 	}
 	
 	// Called upon entering this state from anywhere
@@ -68,9 +72,21 @@ public class RagdollState : IState
 	{
 		// Stop ragdolling
 		ragdollController.StopRagdoll();
+		
+		// Start animation on Getup State
+		Rigidbody hips = gameObj.GetComponentInChildren<Rigidbody>();
+		// check if hips are pointing upwards or backwards
+		if (hips.transform.forward.y < 0)
+		{
+			animator.SetTrigger("GetUpFront");
+		}
+		else
+		{
+			animator.SetTrigger("GetUpBack");
+		}
         
 		// Restart animation in Walking state
-		animator.SetTrigger("Ragdoll");
+//		animator.SetTrigger("Ragdoll");
 	}
 
 	// Called during Update while currently in this state
@@ -83,13 +99,25 @@ public class RagdollState : IState
 	// is possible
 	public IState Transition()
 	{
+		
+		
 		// If the enemy can recover from ragdolling, transition to resetState
 		if (CanRecover() && timeRagdolling > MINIMUM_DURATION)
 		{
+			Rigidbody hips = gameObj.GetComponentInChildren<Rigidbody>();
+			// check if hips are pointing upwards or backwards
+			if (hips.transform.forward.y > 0)
+			{
+				animator.SetTrigger("GetUpFront");
+			}
+			else
+			{
+				animator.SetTrigger("GetUpBack");
+			}
 //			animator.SetTrigger("Ragdoll");
-			return resetState;
+			return getUpState;
 		}
-		
+
 		// Continue ragdolling
 		return null;
 	}
@@ -112,6 +140,7 @@ public class RagdollState : IState
 		}
 		return false;
 	}
+	
 
 	public override string ToString()
 	{

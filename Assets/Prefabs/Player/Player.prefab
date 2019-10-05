@@ -2599,7 +2599,7 @@ MonoBehaviour:
   maxHealth: 1000
   regenHealthRate: 250
   debugShowHealthText: 0
-  LOW_HEALTH_THRESHOLD: 0.2
+  LOW_HEALTH_THRESHOLD: 0.35
   healLoop: {fileID: 7064786889005971413}
   healFull: {fileID: 4295960866068445350}
   lowHealth: {fileID: 5024146101150750153}
@@ -2646,9 +2646,9 @@ MonoBehaviour:
   earthquakeBar: {fileID: 3058137215862545778}
   wallPushBar: {fileID: 3058137216310128169}
   pointsForRockCluster: 50000
-  pointsForSpikeChain: 50000
-  pointsForEarthquake: 10000
-  pointsForWallPush: 10000
+  pointsForSpikeChain: 60000
+  pointsForEarthquake: 7000
+  pointsForWallPush: 7000
   rockClusterTime: 30
   spikeChainTime: 30
   earthquakeTime: 30
@@ -2726,7 +2726,7 @@ MonoBehaviour:
   quicksandMinHandMovement: 0.05
   baseSpikeRadius: 0.5
   spikeSpeedScalar: 3
-  spikeMinSpeed: 0.05
+  spikeMinSpeed: 0.75
   spikeMaxHeight: 1.75
   energyPerSpikeInChain: 50
   maxNumberOfSpikeChains: 6

@@ -31,6 +31,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.value = maxHealth;
+        TakeDamage(250);
         SetHealthBarText();
     }
 
@@ -109,6 +110,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         healthBar.value = currentHealth;
+        lowHealth.Stop();
         SetHealthBarText();
     }
 

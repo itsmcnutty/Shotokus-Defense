@@ -41,6 +41,11 @@ public class EnemyMediumProperties : EnemyProperties
     // Allowed space around attack radius that enemies can attack from
     [NonSerialized] public float ATTACK_MARGIN = 1f;
     
+    // Getup animation speed
+    [Header("Animation")]
+    public float getUpStateTimeOut;
+
+    
     // All states
     [NonSerialized] public RunState runState;
     [NonSerialized] public StrafeState strafeState;
@@ -51,6 +56,7 @@ public class EnemyMediumProperties : EnemyProperties
     [NonSerialized] public RagdollState ragdollState;
     [NonSerialized] public ClimbingState climbingState;
     [NonSerialized] public AboveWallState aboveWallState;
+    [NonSerialized] public GetUpState getUpState;
 
     // Start is called before the first frame update
     new void Start()
@@ -80,6 +86,7 @@ public class EnemyMediumProperties : EnemyProperties
         ragdollState = new RagdollState(this);
         climbingState = new ClimbingState(this);
         aboveWallState = new AboveWallState(this);
+        getUpState = new GetUpState(this);
 		
         // Initialize states within these state objects
         runState.InitializeStates(this);
@@ -91,7 +98,8 @@ public class EnemyMediumProperties : EnemyProperties
         ragdollState.InitializeStates(this);
         climbingState.InitializeStates(this);
         aboveWallState.InitializeStates(this);
-		
+        getUpState.InitializeStates(this);
+
         // Give FSM an initial state
         stateMachine.ChangeState(runState);
     }

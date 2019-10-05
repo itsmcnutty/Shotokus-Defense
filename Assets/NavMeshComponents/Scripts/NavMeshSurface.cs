@@ -110,6 +110,8 @@ namespace UnityEngine.AI
             var isPrefab = isInPreviewScene || EditorUtility.IsPersistent(this);
             if (isPrefab)
             {
+                //Debug.LogFormat("NavMeshData from {0}.{1} will not be added to the NavMesh world because the gameObject is a prefab.",
+                //    gameObject.name, name);
                 return;
             }
 #endif
@@ -199,6 +201,8 @@ namespace UnityEngine.AI
             var isPrefab = isInPreviewScene || EditorUtility.IsPersistent(surface);
             if (isPrefab)
             {
+                //Debug.LogFormat("NavMeshData from {0}.{1} will not be added to the NavMesh world because the gameObject is a prefab.",
+                //    surface.gameObject.name, surface.name);
                 return;
             }
 #endif
