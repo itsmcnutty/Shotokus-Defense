@@ -181,7 +181,8 @@ public class Walls : MonoBehaviour
             // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
             WallProperties.UpdateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed);
             playerEnergy.UseEnergy(firstHandHeld);
-            wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
+            
+//            wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
             surfaceWalls.BuildNavMesh();
         }
         //raiseWall.Stop();

@@ -40,6 +40,9 @@ public class RunState : IState
 	private StrafeState strafeState;
 	private RagdollState ragdollState;
 	private ClimbingState climbingState;
+	
+	// only recalculate destination once entering state
+	private bool firstRun;
 
 	public RunState(EnemyMediumProperties enemyProps)
 	{
@@ -101,14 +104,21 @@ public class RunState : IState
 		agent.stoppingDistance = rangedRadius;
 		agent.speed = maxRunSpeed;
 		agent.angularSpeed = 8000f;
+		
+		// first time entering the state should make the agent recalculate once
+		firstRun = true;
 	}
 
 	// Called upon exiting this state
-	public void Exit() {}
+	public void Exit()
+	{
+		firstRun = false;
+	}
 
 	// Called during Update while currently in this state
 	public void Action()
 	{
+		Debug.Log("im running");
 		// Store transform variables for player
 		playerPos = player.transform.position;
         
@@ -120,9 +130,13 @@ public class RunState : IState
 		if (agent.enabled && !debugNoWalk)
 		{
 			// Too far, walk closer
-			agent.SetDestination(playerPos);
-
-
+			// only calculate first time comming into state
+			if (firstRun)
+			{
+				firstRun = false;
+				agent.SetDestination(playerPos);
+			}
+			
 			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed
 			agent.stoppingDistance = rangedRadius +
 			                         ((maxStrafeSpeed * maxStrafeSpeed - moveSpeed * moveSpeed )/ (2 * agent.acceleration));

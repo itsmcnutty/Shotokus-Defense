@@ -92,6 +92,7 @@ public class InteractLaserButton : MonoBehaviour
     
     public void PointerOutside(object sender, PointerEventArgs e)
     {
+//        Debug.Log("outside pointer + " + e.target.gameObject.name);
         button = null;
         if (eventSystem.currentSelectedGameObject != null)
         {

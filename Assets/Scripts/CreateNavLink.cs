@@ -31,7 +31,7 @@ public class CreateNavLink : MonoBehaviour
         
     }
 
-    public void createLinks(float wallMaxHeight)
+    public void createLinks()
     {
         // get position of wall
         Vector3 wallPos = transform.position;

@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 4908549075520174}
   - component: {fileID: 205672583516231646}
   - component: {fileID: 1357478457920030074}
+  - component: {fileID: 7706672739210205259}
   m_Layer: 20
   m_Name: Bush3
   m_TagString: Untagged
@@ -147,6 +148,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300024, guid: 2072bd79c1ae41441b0d087f04e9ec49, type: 3}
+--- !u!114 &7706672739210205259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132051335097494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &1914610615308322
 GameObject:
   m_ObjectHideFlags: 0

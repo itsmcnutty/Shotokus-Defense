@@ -11,12 +11,14 @@ public class WallProperties : MonoBehaviour
     private Vector3 direction = new Vector3();
     private ParticleSystem destroyWallParticles;
 
-    private NavMeshSurface surfaceWalls;
+    public static NavMeshSurface surfaceWalls;
     private GameObject parentObject;
+    public static CreateNavLink navLink;
 
     // Start is called before the first frame update
     void Start()
     {
+        navLink = GetComponent<CreateNavLink>();
         surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
         InvokeRepeating("MoveWall", 0, 0.01f);
     }
@@ -24,6 +26,9 @@ public class WallProperties : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        surfaceWalls.BuildNavMesh();
+
+        
         //breakWall.Play();
         Destroy(gameObject, wallLifetime);
     }
@@ -79,6 +84,8 @@ public class WallProperties : MonoBehaviour
                 foreach(Rigidbody rigidbodyWall in rigidbodyWalls)
                 {
                     rigidbodyWall.isKinematic = true;
+                    navLink.createLinks();
+                    surfaceWalls.BuildNavMesh();
                 }
             }
         }
