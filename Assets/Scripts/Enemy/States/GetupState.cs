@@ -18,7 +18,7 @@ public class GetUpState : IState
 
 
 	// Timer variables to wait for getup animation
-	private float waitTimeOut = 0.5f;
+	private float waitTimeOut = 2f;
 	private float waitTimer = 0;
 	
 	// States to transition to
@@ -39,6 +39,7 @@ public class GetUpState : IState
 	{
 		resetState = enemyProps.advanceState;
 		ragdollState = enemyProps.ragdollState;
+		waitTimer = enemyProps.getUpStateTimeOut;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -47,6 +48,7 @@ public class GetUpState : IState
 	{
 		resetState = enemyProps.runState;
 		ragdollState = enemyProps.ragdollState;
+		waitTimer = enemyProps.getUpStateTimeOut;
 	}
 	
 	// Initializes the IState instance fields. This occurs after the enemy properties class has constructed all of the
@@ -55,6 +57,7 @@ public class GetUpState : IState
 	{
 		resetState = enemyProps.runState;
 		ragdollState = enemyProps.ragdollState;
+		waitTimer = enemyProps.getUpStateTimeOut;
 	}
 	
 	// Called upon entering this state from anywhere

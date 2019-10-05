@@ -10,6 +10,10 @@ public class EnemyHeavyProperties : EnemyProperties
 	public float ATTACK_DELAY = 2f;
 	// Radius for attacking
 	public float ATTACK_RADIUS;
+	
+	// Getup animation speed
+	[Header("Animation")]
+	public float getUpStateTimeOut;
 
 	// Allowed space around attack radius that enemies can attack from
 	[NonSerialized] public float ATTACK_MARGIN = 1f;

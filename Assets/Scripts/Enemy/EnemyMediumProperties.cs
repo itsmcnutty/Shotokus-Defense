@@ -41,6 +41,11 @@ public class EnemyMediumProperties : EnemyProperties
     // Allowed space around attack radius that enemies can attack from
     [NonSerialized] public float ATTACK_MARGIN = 1f;
     
+    // Getup animation speed
+    [Header("Animation")]
+    public float getUpStateTimeOut;
+
+    
     // All states
     [NonSerialized] public RunState runState;
     [NonSerialized] public StrafeState strafeState;
