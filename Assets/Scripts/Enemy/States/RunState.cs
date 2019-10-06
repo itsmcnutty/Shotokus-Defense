@@ -120,7 +120,7 @@ public class RunState : IState
 		// Pass speed to animation controller
 		float moveSpeed = agent.velocity.magnitude;
 		animator.SetFloat("RunSpeed", moveSpeed);
-		
+
 		// Move to player if outside attack range, otherwise transition
 		if (agent.enabled && !debugNoWalk)
 		{
@@ -131,6 +131,7 @@ public class RunState : IState
 				agent.SetDestination(playerPos);
 			}
 
+			Debug.Log("Is path stale?: " + agent.isPathStale);
 
 			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed
 			agent.stoppingDistance = rangedRadius +
