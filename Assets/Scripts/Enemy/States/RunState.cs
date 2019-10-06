@@ -131,11 +131,20 @@ public class RunState : IState
 				agent.SetDestination(playerPos);
 			}
 
+
+			if (agent.isPathStale)
+			{
+				Debug.Log("Path became stale, recalculate again");
+//				Vector3 backupPos = new Vector3(-3.6f,0.8f,3.9f);
+				Vector3 backupPos = new Vector3(-6.8f,0.8f,23.2f);
+				agent.SetDestination(backupPos);
+			}
+
 			Debug.Log("Is path stale?: " + agent.isPathStale);
 
 			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed
-			agent.stoppingDistance = rangedRadius +
-			                         ((maxStrafeSpeed * maxStrafeSpeed - moveSpeed * moveSpeed )/ (2 * agent.acceleration));
+//			agent.stoppingDistance = rangedRadius +
+//			                         ((maxStrafeSpeed * maxStrafeSpeed - moveSpeed * moveSpeed )/ (2 * agent.acceleration));
 		}
 	}
 
