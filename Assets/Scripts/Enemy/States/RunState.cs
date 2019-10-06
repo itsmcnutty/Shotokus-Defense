@@ -35,6 +35,8 @@ public class RunState : IState
 	private GameObject gameObj;
 	// The enemy properties component
 	private EnemyProperties enemyProps;
+
+	private bool firstRun;
 	
 	// States to transition to
 	private StrafeState strafeState;
@@ -97,6 +99,9 @@ public class RunState : IState
 		obstacle.enabled = false;
 		enemyProps.EnablePathfind();
 		
+		// first time running
+		firstRun = true;
+		
 		// Settings for agent
 		agent.stoppingDistance = rangedRadius;
 		agent.speed = maxRunSpeed;
@@ -120,7 +125,11 @@ public class RunState : IState
 		if (agent.enabled && !debugNoWalk)
 		{
 			// Too far, walk closer
-			agent.SetDestination(playerPos);
+			if (firstRun)
+			{
+				firstRun = false;
+				agent.SetDestination(playerPos);
+			}
 
 
 			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed
