@@ -44,8 +44,9 @@ public class FadeAudioSource : MonoBehaviour
     // Returns false if the sound was already playing
     public bool Play()
     {
-    // Calculate how much to update volume per second (regardless of current volume)
+        // Calculate how much to update volume per second (regardless of current volume)
         volumeUpdatePerSecond = 1f / fadeInTime;
+        isCurrentlyDucking = false;
         
         if (!source.isPlaying)
         {
@@ -65,6 +66,7 @@ public class FadeAudioSource : MonoBehaviour
         {
             // Calculate how much to update volume per second (regardless of current volume)
             volumeUpdatePerSecond = -1f / fadeOutTime;
+            isCurrentlyDucking = false;
             return true;
         }
         
