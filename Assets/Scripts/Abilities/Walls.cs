@@ -18,6 +18,10 @@ public class Walls : MonoBehaviour
     public ParticleSystem wallCreateParticles;
     public ParticleSystem wallDestroyParticles;
 
+    [Header("Audio")]
+    public AudioSource wallToggleOn;
+    public AudioSource wallToggleOff;
+
     private GameObject wallOutlinePrefab;
     private PlayerEnergy playerEnergy;
     private Material invalidOutlineMat;
@@ -229,6 +233,9 @@ public class Walls : MonoBehaviour
             wallOutline = Instantiate(wallOutlinePrefab) as GameObject;
             SetWallLocation(hand.GetComponentInChildren<ControllerArc>(), otherHand.GetComponentInChildren<ControllerArc>());
             firstHandHeld = null;
+            
+            // Play toggle sound
+            wallToggleOn.Play();
         }
         else
         {
@@ -255,6 +262,9 @@ public class Walls : MonoBehaviour
             Destroy(wallOutline);
             ResetWallInfo();
             firstHandReleased = null;
+            
+            // Play toggle sound
+            wallToggleOff.Play();
         }
         else
         {
