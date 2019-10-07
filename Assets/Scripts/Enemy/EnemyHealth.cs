@@ -49,9 +49,9 @@ public class EnemyHealth : CallParentCollision
 	public Slider healthBarBefore;
 
 	[Header("Audio")]
-	public AudioMultiClipSource heavyHurt;
-	public AudioSource heavyDeath;
-	private float MAX_DMG_FOR_SOUND = 3000f;
+	public AudioMultiClipSource enemyHurt;
+	public AudioSource enemyDeath;
+	public float maxDmgForSound;
 
 // Canvas renderers for all of the above for fade in effect
 	private CanvasRenderer canvasRendererBackground;
@@ -168,7 +168,7 @@ public class EnemyHealth : CallParentCollision
 		// Update health and health bar
 		health -= damage;
 		healthBarActual.SetValueWithoutNotify(health);
-		heavyHurt.PlayFromParam(damage / MAX_DMG_FOR_SOUND);
+		enemyHurt.PlayFromParam(damage / maxDmgForSound);
 		UpdateHealthString();
 		isDamaged = true;
 
@@ -184,7 +184,7 @@ public class EnemyHealth : CallParentCollision
 		if (health <= 0f && !isDead)
 		{
 			isDead = true;
-			heavyDeath.Play();
+			enemyDeath.Play();
 			ragdollController.StartRagdoll();
 		}
 	}
