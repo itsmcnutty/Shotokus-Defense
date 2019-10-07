@@ -35,6 +35,8 @@ public class RunState : IState
 	private GameObject gameObj;
 	// The enemy properties component
 	private EnemyProperties enemyProps;
+
+	private bool firstRun;
 	
 	// States to transition to
 	private StrafeState strafeState;
@@ -97,6 +99,9 @@ public class RunState : IState
 		obstacle.enabled = false;
 		enemyProps.EnablePathfind();
 		
+		// first time running
+		firstRun = true;
+		
 		// Settings for agent
 		agent.stoppingDistance = rangedRadius;
 		agent.speed = maxRunSpeed;
@@ -115,13 +120,25 @@ public class RunState : IState
 		// Pass speed to animation controller
 		float moveSpeed = agent.velocity.magnitude;
 		animator.SetFloat("RunSpeed", moveSpeed);
-		
+
 		// Move to player if outside attack range, otherwise transition
 		if (agent.enabled && !debugNoWalk)
 		{
 			// Too far, walk closer
-			agent.SetDestination(playerPos);
+			if (firstRun)
+			{
+				firstRun = false;
+				agent.SetDestination(playerPos);
+			}
 
+
+			if (agent.isPathStale)
+			{
+				Debug.Log("Path became stale, recalculate again");
+//				Vector3 backupPos = new Vector3(-3.6f,0.8f,3.9f);
+				Vector3 backupPos = new Vector3(-6.8f,0.8f,23.2f);
+				agent.SetDestination(backupPos);
+			}
 
 			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed
 			agent.stoppingDistance = rangedRadius +
