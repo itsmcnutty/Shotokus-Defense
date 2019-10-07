@@ -140,11 +140,9 @@ public class RunState : IState
 				agent.SetDestination(backupPos);
 			}
 
-			Debug.Log("Is path stale?: " + agent.isPathStale);
-
 			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed
-//			agent.stoppingDistance = rangedRadius +
-//			                         ((maxStrafeSpeed * maxStrafeSpeed - moveSpeed * moveSpeed )/ (2 * agent.acceleration));
+			agent.stoppingDistance = rangedRadius +
+			                         ((maxStrafeSpeed * maxStrafeSpeed - moveSpeed * moveSpeed )/ (2 * agent.acceleration));
 		}
 	}
 
