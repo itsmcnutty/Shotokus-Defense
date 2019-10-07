@@ -8,35 +8,52 @@ public class EnemyHealth : CallParentCollision
 {
 	// Height at which to kill falling enemy
 	private static float DEATH_Y = -10.0f;
+
 	// How much HP is represented by 1m (world space) of UI health bar
 	private static float HP_PER_METER = 5000;
+
 	// How fast the enemy health bar fades in
 	private static float FADE_SPEED = 0.03f;
 
 	// The enemy's max health
 	public float MAX_HEALTH;
+
 	// How much damage a hit must deal to pierce armor reduction completely
 	public float ARMOR_CUTOFF;
+
 	// How effective armor is when hit by something below cutoff
 	public float ARMOR_PROFICIENCY;
+
 	// How much damage a hit must deal to send the enemy ragdolling
 	public float RAGDOLL_DMG_THRESHOLD;
+
 	// The percentage of the total mass that would result in dealing 100% of damage
 	public float FULL_MASS_DAMAGE_PERC = 0.15f;
 
 	// Show health value for debugging
 	public bool debugShowHealthText = false;
+
 	// UI canvas containing healthbar elements
 	public Canvas healthBarCanvas;
+
 	// Text that displays the enemy's health
 	public Text healthBarText;
+
 	// Shape that forms background of health bar
 	public RectTransform healthBarBackground;
+
 	// Slider which reflects actual health of enemy
 	public Slider healthBarActual;
+
 	// Slider which highlights how much damage the enemy took recently
 	public Slider healthBarBefore;
-	// Canvas renderers for all of the above for fade in effect
+
+	[Header("Audio")]
+	public AudioMultiClipSource heavyHurt;
+	public AudioSource heavyDeath;
+	private float MAX_DMG_FOR_SOUND = 3000f;
+
+// Canvas renderers for all of the above for fade in effect
 	private CanvasRenderer canvasRendererBackground;
 	private CanvasRenderer canvasRendererBefore;
 	private CanvasRenderer canvasRendererActual;
@@ -151,6 +168,7 @@ public class EnemyHealth : CallParentCollision
 		// Update health and health bar
 		health -= damage;
 		healthBarActual.SetValueWithoutNotify(health);
+		heavyHurt.PlayFromParam(damage / MAX_DMG_FOR_SOUND);
 		UpdateHealthString();
 		isDamaged = true;
 
@@ -166,6 +184,7 @@ public class EnemyHealth : CallParentCollision
 		if (health <= 0f && !isDead)
 		{
 			isDead = true;
+			heavyDeath.Play();
 			ragdollController.StartRagdoll();
 		}
 	}
