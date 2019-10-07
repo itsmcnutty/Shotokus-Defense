@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-
 public class ShootingAbility : MonoBehaviour
 {
     public GameObject projectilePrefab;
 
     [Header("Sounds")]
-    public AudioClip bowDraw;
-    public AudioClip bowRelease;
+    public AudioSource bowDraw;
+    public AudioSource bowRelease;
 
     private GameObject projectile;
     private Rigidbody projectileRigidbody;
@@ -66,7 +64,7 @@ public class ShootingAbility : MonoBehaviour
         if (projectile)
         {
             // Play sound
-            audioSource.PlayOneShot(bowRelease);
+            bowRelease.Play();
             
             // Store location of player and projectile
             Vector3 playerPos = player.transform.position;
