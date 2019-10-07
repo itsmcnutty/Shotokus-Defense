@@ -125,4 +125,33 @@ public class EnemyMediumProperties : EnemyProperties
 			    return 0;
 	    }
     }
+
+    public override void PlayFootstepSound()
+    {
+	    if (agent.enabled)
+	    {
+		    if (isStrafing)
+		    {
+			    if (agent.speed < MAX_STRAFE_SPEED)
+			    {
+				    quicksandFootstep.PlayRandom();
+			    }
+			    else
+			    {
+				    groundFootstep.PlayRandom();
+			    }
+		    }
+		    else
+		    {
+			    if (agent.speed < MAX_RUN_SPEED)
+			    {
+				    quicksandFootstep.PlayRandom();
+			    }
+			    else
+			    {
+				    groundFootstep.PlayRandom();
+			    }
+		    }
+	    }
+    }
 }
