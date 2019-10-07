@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7467930627781661286
+--- !u!1 &4812758136483413278
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 456832485761374938}
-  - component: {fileID: 5705900346941597955}
+  - component: {fileID: 3223240118074553118}
+  - component: {fileID: 5122080973262307952}
   m_Layer: 0
-  m_Name: HeavyDeathSource
+  m_Name: SwordHitSource
   m_TagString: Audio
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &456832485761374938
+--- !u!4 &3223240118074553118
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7467930627781661286}
+  m_GameObject: {fileID: 4812758136483413278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,26 +31,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &5705900346941597955
+--- !u!82 &5122080973262307952
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7467930627781661286}
+  m_GameObject: {fileID: 4812758136483413278}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 53535178299451121, guid: eb549c7c6d1a7ef4c8fe87d94bf6d2ef,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 82163e58b2762a64ea297359ffd98bc6, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 543ef8a7574011046bf17b96860d51e1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 1.3
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 20
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 100
