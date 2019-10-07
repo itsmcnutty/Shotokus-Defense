@@ -65,4 +65,17 @@ public class EnemyHeavyProperties : EnemyProperties
 				return 0;
 		}
 	}
+
+	public override void PlayFootstepSound()
+	{
+		if (agent.speed < MAX_RUN_SPEED)
+		{
+			// Play ground sound
+			groundFootstep.PlayRandom();
+		}
+		else
+		{
+			quicksandFootstep.PlayRandom();
+		}
+	}
 }

@@ -24,6 +24,10 @@ public abstract  class EnemyProperties : MonoBehaviour
 	// Doesn't walk if true (for debugging)
 	public bool debugNoWalk = false;
 
+	[Header("Audio")]
+	public AudioMultiClipSource groundFootstep;
+	public AudioMultiClipSource quicksandFootstep;
+
 	// How fast enemy turns to face playeplayerpos
 	private float TURN_SPEED = 0.05f;
     
@@ -89,6 +93,8 @@ public abstract  class EnemyProperties : MonoBehaviour
 	// Returns the potential maxspeed of this enemy in their current state, unhindered by slowing effects like quicksand
 	public abstract float GetCurrentMaxSpeed();
 
+	// Plays a footstep sound effect
+	public abstract void PlayFootstepSound();
 	
 	// Given two vectors, it sets the y axis to 0, and returns distance
 	// Distance just in the x,z axis. Y = 0.
