@@ -12,7 +12,7 @@ public class MeleeDamage : MonoBehaviour
     public float DAMAGE;
 
     [Header("Audio")]
-    public AudioSource tekkoHit;
+    public AudioSource hitSound;
     
     // Player camera (HMD)
     private GameObject player;
@@ -47,7 +47,7 @@ public class MeleeDamage : MonoBehaviour
             player.GetComponentInChildren<PlayerHealth>()?.TakeDamage(DAMAGE);
             
             // Play sound because successfully hitting player
-            tekkoHit.Play();
+            hitSound.Play();
         }
     }
 
