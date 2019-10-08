@@ -44,7 +44,7 @@ public class EnemyLightProperties : EnemyProperties
         // assign randomly if enemy will strafe clockwise or counter clockwise
         if (UnityEngine.Random.Range(0, 2) == 0)
         {
-            isClockwise = true;
+            isClockwise = true; // todo DEBUG DELETE
         }
         
         // Instantiate states with the properties above

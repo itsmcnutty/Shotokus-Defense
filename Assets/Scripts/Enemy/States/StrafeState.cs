@@ -285,6 +285,8 @@ public class StrafeState : IState
 
 		}
 		
+		// (37.6, 0.0, 23.0)
+		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
@@ -469,8 +471,11 @@ public class StrafeState : IState
 	private Vector3 closestPoint(Vector3 enemyPos, CircularCoord[] points)
 	{
 		// initialize temp variables to first value in array of points
-		float closestDist =  props.calculateSqrDist(enemyPos, points[0].coord);	
-		Vector3 closestPoint = points[0].coord;
+//		float closestDist =  props.calculateSqrDist(enemyPos, points[0].coord);	
+//		Vector3 closestPoint = points[0].coord;
+		float closestDist =  999999999f; // no distance should be bigger than this
+		Vector3 closestPoint = Vector3.zero;
+		
         
 		for(int i = 0; i < points.Length; i++)
 		{

@@ -39,15 +39,15 @@ public class navmeshDebug : MonoBehaviour
         else
         {
             lineRenderer.enabled = false;
-//            Debug.Log("my path is: " + agent.hasPath);
-//            Debug.Log("my ispathstale is : "+ agent.isPathStale);
-            Vector3 destination = agent.destination;
-            if (firstTime)
-            {
-                agent.ResetPath();
-                agent.SetDestination(new Vector3(0,0,0));
-                firstTime = false;
-            }
+////            Debug.Log("my path is: " + agent.hasPath);
+////            Debug.Log("my ispathstale is : "+ agent.isPathStale);
+//            Vector3 destination = agent.destination;
+//            if (firstTime)
+//            {
+//                agent.ResetPath();
+//                agent.SetDestination(new Vector3(0,0,0));
+//                firstTime = false;
+//            }
         }
     }
     
