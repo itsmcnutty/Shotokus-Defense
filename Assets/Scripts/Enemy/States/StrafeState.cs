@@ -280,8 +280,8 @@ public class StrafeState : IState
 			agent.SetDestination(circularPointDest);
 			Debug.Log("number of points available: " + pointsAroundTarget.Length);
 			Debug.Log("my destination is " + circularPointDest);
-			GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-			cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+//			GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//			cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
 
 		}
 		
@@ -321,6 +321,7 @@ public class StrafeState : IState
 				// todo ....
 				GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 				cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+				// todo debugg .............
 
 			}
 		}
@@ -450,6 +451,14 @@ public class StrafeState : IState
 			}
 			angle += (2* Mathf.PI) / AMOUNT_OF_CIRCLE_POINTS;
 			points[i].coord = coord;
+			// todo debugg .............
+			if (points[i].isReachable)
+			{
+				GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+				sphere.transform.position = new Vector3(points[i].coord.x,2,points[i].coord.z);
+			}
+			// todo debugg .............
+
 		}
 		return points;
 	}
