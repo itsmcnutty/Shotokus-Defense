@@ -252,7 +252,7 @@ public class StrafeState : IState
 		// calculate points around center and set new destination to closest point to agent, only enters here first time it enters the strafing state
 		if (!isStrafing && agent.enabled)
 		{
-			Debug.Log("first time in strafe state");
+//			Debug.Log("first time in strafe state");
 			float distanceToPlayer = props.calculateSqrDist(playerPos, gameObjPos);
 
 			// do not enter here if already strafing
@@ -278,8 +278,8 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
-			Debug.Log("number of points available: " + pointsAroundTarget.Length);
-			Debug.Log("my destination is " + circularPointDest);
+//			Debug.Log("number of points available: " + pointsAroundTarget.Length);
+//			Debug.Log("my destination is " + circularPointDest);
 //			GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 //			cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
 
@@ -291,12 +291,12 @@ public class StrafeState : IState
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
-			Debug.Log("strafe state: moving in circles");
+//			Debug.Log("strafe state: moving in circles");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			
 			float strafeRemainingDist = props.calculateSqrDist(circularPointDest, gameObjPos);
-            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
+//            Debug.Log("remaning distance from strafe waypoint "+ strafeRemainingDist);
             
             
 			// if point reached, recalculate points around center and move to the next one
@@ -317,12 +317,12 @@ public class StrafeState : IState
 				lastPointIndex = GetNextCircularPointIndex(lastPointIndex);
 				circularPointDest = pointsAroundTarget[lastPointIndex].coord;
 //				Debug.Log("last point index: " + lastPointIndex);
-                Debug.Log("moving towards " +circularPointDest);
+//                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
 				
 				// todo ....
-				GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-				cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+//				GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//				cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
 				// todo debugg .............
 
 			}
@@ -456,8 +456,8 @@ public class StrafeState : IState
 			// todo debugg .............
 			if (points[i].isReachable)
 			{
-				GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-				sphere.transform.position = new Vector3(points[i].coord.x,2,points[i].coord.z);
+//				GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+//				sphere.transform.position = new Vector3(points[i].coord.x,2,points[i].coord.z);
 			}
 			// todo debugg .............
 
