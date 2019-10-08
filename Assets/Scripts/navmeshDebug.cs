@@ -25,8 +25,8 @@ public class navmeshDebug : MonoBehaviour
         {
             if (!firstTime)
             {
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+//                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//                cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
 
             }
             

@@ -278,14 +278,18 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
+			Debug.Log("number of points available: " + pointsAroundTarget.Length);
 			Debug.Log("my destination is " + circularPointDest);
+			GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+
 		}
 		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
 		if (isStrafing && agent.enabled)
 		{
-//			Debug.Log("strafe state: moving in circles");
+			Debug.Log("strafe state: moving in circles");
 			// do not change destination until current one is reached
 			// when destination is reached, move to next point 
 			
@@ -313,6 +317,11 @@ public class StrafeState : IState
 //				Debug.Log("last point index: " + lastPointIndex);
                 Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
+				
+				// todo ....
+				GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+
 			}
 		}
 		
