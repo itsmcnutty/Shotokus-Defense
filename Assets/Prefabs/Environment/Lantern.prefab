@@ -11,13 +11,12 @@ GameObject:
   - component: {fileID: 19745192832895401}
   - component: {fileID: 9015397878656185247}
   - component: {fileID: 3324124855461695334}
-  - component: {fileID: 7346961685986407853}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Lantern
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &19745192832895401
 Transform:
@@ -28,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3899413577433709498}
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: 1.55, y: 3.84, z: 26.83}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.27928036, y: 0.27928036, z: 0.27928036}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -78,17 +77,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &7346961685986407853
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899413577433709498}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: -5420149580168298667, guid: 2671a1816e1ba564a96201ef26a279ca, type: 3}
