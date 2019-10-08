@@ -476,6 +476,7 @@ public class StrafeState : IState
 		float closestDist =  999999999f; // no distance should be bigger than this
 		Vector3 closestPoint = Vector3.zero;
 		
+		// todo FIX THIS CODE SHOULD NOT HAVE THE LIMIT BE 9999999
         
 		for(int i = 0; i < points.Length; i++)
 		{
