@@ -100,15 +100,16 @@ public class WallProperties : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 9 && wallHeightPercent == 0)
+        if (other.gameObject.layer == 9 && (wallHeightPercent == 0 || wallMoveSpeed != 0))
         {
             other.gameObject.GetComponentInParent<RagdollController>().StartRagdoll();
         }
-        if (!other.CompareTag("Ground") && other.gameObject.layer != 11 && other.gameObject.layer != 17)
+        if (!other.CompareTag("Ground") && other.gameObject.layer != 11 && other.gameObject.layer != 17 && other.gameObject.layer != 21)
         {
             // Stops the wall from moving when it collides with something it can't move through
             Rigidbody rigidbodyWall = gameObject.GetComponent<Rigidbody>();
             rigidbodyWall.isKinematic = true;
+            wallMoveSpeed = 0;
             CancelInvoke("MoveWall");
         }
 
