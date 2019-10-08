@@ -183,7 +183,7 @@ public class Walls : MonoBehaviour
             playerEnergy.UseEnergy(firstHandHeld);
             
 //            wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
-            surfaceWalls.BuildNavMesh();
+//            surfaceWalls.BuildNavMesh();
         }
         //raiseWall.Stop();
         ResetWallInfo();
