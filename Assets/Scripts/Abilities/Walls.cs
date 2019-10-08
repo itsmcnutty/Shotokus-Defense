@@ -41,7 +41,7 @@ public class Walls : MonoBehaviour
 
     private NavMeshSurface surface;
     private NavMeshSurface surfaceLight;
-    private NavMeshSurface surfaceWalls;
+//    private NavMeshSurface surfaceWalls;
 
     public static Walls CreateComponent(GameObject player, GameObject wallOutlinePrefab, PlayerEnergy playerEnergy, Material invalidOutlineMat,
         float rockCreationDistance, LayerMask outlineLayerMask)
@@ -54,7 +54,7 @@ public class Walls : MonoBehaviour
         walls.rockCreationDistance = rockCreationDistance;
         walls.outlineLayerMask = outlineLayerMask;
         walls.player = player;
-        walls.surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
+//        walls.surfaceWalls = GameObject.FindGameObjectWithTag("NavMesh Walls").GetComponent<NavMeshSurface>();
 
         return walls;
     }

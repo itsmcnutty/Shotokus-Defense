@@ -26,9 +26,6 @@ public class WallProperties : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        surfaceWalls.BuildNavMesh();
-
-        
         //breakWall.Play();
         Destroy(gameObject, wallLifetime);
     }
@@ -84,6 +81,7 @@ public class WallProperties : MonoBehaviour
                 foreach(Rigidbody rigidbodyWall in rigidbodyWalls)
                 {
                     rigidbodyWall.isKinematic = true;
+                    // TODO TEST THAT WORKS
                     navLink.createLinks();
                     surfaceWalls.BuildNavMesh();
                 }
