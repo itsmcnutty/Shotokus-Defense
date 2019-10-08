@@ -434,25 +434,32 @@ public class GameController : MonoBehaviour
                 temp = location;
             }
 
+            // todo check if this playerObj moves the player area too
             switch (temp)
             {
                 case 0:
                     destinationPos = new Vector3(9, 0.25f, 33);
+//                    playerObj.transform.position = new Vector3(9,0.25f,33);
                     break;
                 case 1:
-                    destinationPos = new Vector3(22.6f, 0.5f, 23f);
+                    destinationPos = new Vector3(22.6f, 0.25f, 23f);
+//                playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
                     break;
                 case 2:
                     destinationPos = new Vector3(-3f, 0.75f, 3.1f);
+                    //                playerObj.transform.position = new Vector3(-3f,0.75f,3.1f);
                     break;
                 case 3:
                     destinationPos = new Vector3(26, 1f, -22.8f);
+                    //                playerObj.transform.position = new Vector3(26,1f,-22.8f);
                     break;
                 case 4:
                     destinationPos = new Vector3(-1.5f, 0.75f, -31.5f);
+                    //                playerObj.transform.position = new Vector3(-1.5f,0.75f,-31.5f);
                     break;
                 case 5:
                     destinationPos = new Vector3(39.9f, 0, 16.9f);
+                    //                playerObj.transform.position = new Vector3(39.9f, 0, 16.9f);
                     break;
                 default:
                     destinationPos = new Vector3(0, 0, 0);
@@ -475,6 +482,8 @@ public class GameController : MonoBehaviour
 
         // move
         cameraRigT.position += translateVector;
+        // todo try this one too
+        playerObj.transform.position = destinationPos;
 
         teleportPillar.SetActive(false);
     }
