@@ -456,8 +456,8 @@ public class StrafeState : IState
 			// todo debugg .............
 			if (points[i].isReachable)
 			{
-//				GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-//				sphere.transform.position = new Vector3(points[i].coord.x,2,points[i].coord.z);
+				GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+				sphere.transform.position = new Vector3(points[i].coord.x,2,points[i].coord.z);
 			}
 			// todo debugg .............
 
@@ -508,7 +508,7 @@ public class StrafeState : IState
 		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
 			// todo debug delete later
-//			isClockwise = false;
+			isClockwise = true;
 			if (isClockwise)
 			{
 				newIndex--;
