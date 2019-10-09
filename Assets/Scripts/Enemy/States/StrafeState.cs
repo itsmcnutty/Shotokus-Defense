@@ -508,7 +508,7 @@ public class StrafeState : IState
 		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
 			// todo debug delete later
-//			isClockwise = false;
+//			isClockwise = true;
 			if (isClockwise)
 			{
 				newIndex--;
