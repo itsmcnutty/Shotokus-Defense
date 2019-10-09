@@ -483,7 +483,7 @@ public class GameController : MonoBehaviour
         // move
         cameraRigT.position += translateVector;
         // todo try this one too
-        playerObj.transform.position = destinationPos;
+//        playerObj.transform.position = destinationPos;
 
         teleportPillar.SetActive(false);
     }
