@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3223240118074553118}
   - component: {fileID: 5122080973262307952}
   m_Layer: 0
-  m_Name: MediumDrawSource
+  m_Name: MediumBowDrawSource
   m_TagString: Audio
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 457a7807d6282c84eb616e01fd04e1f7, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
