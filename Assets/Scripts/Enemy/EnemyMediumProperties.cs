@@ -130,7 +130,7 @@ public class EnemyMediumProperties : EnemyProperties
     {
 	    if (agent.enabled)
 	    {
-		    if (isStrafing)
+		    if (stateMachine.GetCurrentState() == strafeState.ToString())
 		    {
 			    if (agent.speed < MAX_STRAFE_SPEED)
 			    {
