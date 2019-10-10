@@ -32,9 +32,6 @@ public class SpikeQuicksand : MonoBehaviour
     [Header("Audio")]
     public AudioClip spikeRaiseSound;
     public AudioClip spikeBreakSound;
-    public AudioClip quicksandIdleSound;
-    public AudioClip quicksandSlowSound;
-    public AudioClip quicksandBreakSound;
     
     public ParticleSystem createSpikeRockParticles;
     public ParticleSystem createSpikeEarthParticles;
@@ -340,8 +337,7 @@ public class SpikeQuicksand : MonoBehaviour
         spikeQuicksandOutlines.Remove(spikeQuicksandOutline);
 
         // Adds the quicksand component to begin the death countdown and perform the earthquake if active
-        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, destroyQuicksandParticles,
-            quicksandIdleSound, quicksandSlowSound, quicksandBreakSound);
+        QuicksandProperties.CreateComponent(quicksand, maxEarthquakeDistance, earthquakeDuration, destroyQuicksandParticles);
         if (!PlayerAbility.EarthquakeEnabled)
         {
             // Increments the earthquake counter if it's not active

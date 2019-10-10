@@ -75,5 +75,10 @@ public class EnemyLightProperties : EnemyProperties
                 return 0;
         }
     }
-    
+
+    public override void PlayFootstepSound()
+    {
+        // Sneaky boi no footstep noises
+        return;
+    }
 }

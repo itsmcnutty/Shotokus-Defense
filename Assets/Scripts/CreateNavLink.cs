@@ -31,7 +31,7 @@ public class CreateNavLink : MonoBehaviour
         
     }
 
-    public void createLinks(float wallMaxHeight)
+    public void createLinks()
     {
         // get position of wall
         Vector3 wallPos = transform.position;
@@ -102,8 +102,8 @@ public class CreateNavLink : MonoBehaviour
         directionWidthB = directionWidthF.normalized;
         
         // add the direction to the transform vector to obtain the points at the corners
-        Vector3 wallPosF = wallPos - directionWidthF * 0.25f;
-        Vector3 wallPosB = wallPos + directionWidthB * 0.25f;
+        Vector3 wallPosF = wallPos - directionWidthF * 0.2f;
+        Vector3 wallPosB = wallPos + directionWidthB * 0.2f;
 
         navMeshLinkB.startPoint = startPosB;
         navMeshLinkF.startPoint = startPosF;

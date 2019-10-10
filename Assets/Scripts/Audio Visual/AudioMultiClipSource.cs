@@ -13,13 +13,17 @@ public class AudioMultiClipSource : MonoBehaviour
     // The random pitch shift to add when playing sounds
     public float minPitch;
     public float maxPitch;
+    // How long the source should block calls to Play() after playing once
+    public float delayPlayTime;
+    
+    // Game time of the last time a sound was played from this source
+    private float lastTime = 0;
 
     // Plays a random sound from the clips array
     public void PlayRandom()
     {
         source.clip = clips[Random.Range(0, clips.Length)];
-        SetRandomPitch();
-        source.Play();
+        PlayWithRandomPitch();
     }
     
     // Maps the given parameter from [0.0 to 1.0] to [0, clips.length) and plays the sound at the corresponding
@@ -40,13 +44,20 @@ public class AudioMultiClipSource : MonoBehaviour
         
         // Play selected audio
         source.clip = clips[clipIndex];
-        SetRandomPitch();
-        source.Play();
+        PlayWithRandomPitch();
     }
 
-    // Sets a random pitch for the source between the min and max pitch properties
-    private void SetRandomPitch()
+    // Sets a random pitch for the source between the min and max pitch properties and plays the sound
+    private void PlayWithRandomPitch()
     {
+        // Block playing sound if played within the last delayPlayTime seconds
+        if (Time.time - lastTime < delayPlayTime)
+        {
+            return;
+        }
+        
         source.pitch = Random.Range(minPitch, maxPitch);
+        source.Play();
+        lastTime = Time.time;
     }
 }

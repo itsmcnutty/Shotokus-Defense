@@ -83,8 +83,6 @@ public class RagdollController : MonoBehaviour
             // Zero velocity of all rigidbodies so they don't maintain this from the animation
             foreach (var rigidbody in rigidbodies)
             {
-                rigidbody.velocity = Vector3.zero;
-                rigidbody.angularVelocity = Vector3.zero;
                 rigidbody.isKinematic = false;
             }
         }

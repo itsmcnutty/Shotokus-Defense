@@ -102,7 +102,7 @@ public class PlayerEnergy : MonoBehaviour
         UpdateAbilityUseTime ();
         
         // Adjust sound pitch
-        useEnergyLoop.source.pitch = MapEnergyLevelToPitch(GetRemainingEnergy());
+        useEnergyLoop.SetPitch(MapEnergyLevelToPitch(GetRemainingEnergy()));
     }
 
     public void DrainRealEnergy (float energy)
