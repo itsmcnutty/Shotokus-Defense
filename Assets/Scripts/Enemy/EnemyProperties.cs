@@ -23,12 +23,14 @@ public abstract  class EnemyProperties : MonoBehaviour
 	public float MAX_RUN_SPEED;
 	// Doesn't walk if true (for debugging)
 	public bool debugNoWalk = false;
+	// Rotation offset when turning to player
+	public float ROTATION_OFFSET;
 
 	[Header("Audio")]
 	public AudioMultiClipSource groundFootstep;
 	public AudioMultiClipSource quicksandFootstep;
 
-	// How fast enemy turns to face playeplayerpos
+	// How fast enemy turns to face player
 	private float TURN_SPEED = 0.05f;
     
 	// Player's head's world location
@@ -64,7 +66,7 @@ public abstract  class EnemyProperties : MonoBehaviour
 			0f);
         
 		// Lerp Y-rotation until the same as the Y-rotation of the vector to the player
-		transform.rotation = Quaternion.Lerp(transform.rotation, lookAtPlayer, TURN_SPEED);
+		transform.rotation = Quaternion.Lerp(transform.rotation, lookAtPlayer * Quaternion.Euler(0, ROTATION_OFFSET, 0), TURN_SPEED);
 	}
 
 	// Calls a coroutine to enable the navmesh agent two frames later. Used to offset the re-enabling of the agent when
