@@ -148,9 +148,6 @@ public class Walls : MonoBehaviour
 
     public void EndCreateWall(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
-        // Calculates the final hand height
-        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
-
         // Ends the creation particle loop
         UnityEngine.ParticleSystem.MainModule main = currentParticles.main;
         main.loop = false;
@@ -179,7 +176,7 @@ public class Walls : MonoBehaviour
             PowerupController.IncrementWallPushCounter(wallEnergy);
         }
 
-        if (finalHandHeight < wallMinHandMovement)
+        if (currentWallHeight < wallMinHandMovement)
         {
             Destroy(wall);
             playerEnergy.CancelEnergyUsage(firstHandHeld);
@@ -187,10 +184,10 @@ public class Walls : MonoBehaviour
         else if(wall)
         {
             // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
-            WallProperties.UpdateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed);
+            WallProperties.UpdateComponent(wall, currentWallHeight, finalVelocity, wallMoveSpeed);
             playerEnergy.UseEnergy(firstHandHeld);
-            wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
-            surfaceWalls.BuildNavMesh();
+            // wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
+            //surfaceWalls.BuildNavMesh();
         }
         ResetWallInfo();
     }
