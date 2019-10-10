@@ -32,7 +32,7 @@ public class WallProperties : MonoBehaviour
 
     void OnDestroy()
     {
-        surfaceWalls.BuildNavMesh();
+//        surfaceWalls.BuildNavMesh();
         ParticleSystem particleSystem = Instantiate(destroyWallParticles);
         particleSystem.transform.position = parentObject.transform.position;
         particleSystem.transform.rotation = parentObject.transform.rotation;
