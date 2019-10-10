@@ -136,7 +136,7 @@ public class RunState : IState
 			{
 				Debug.Log("Path became stale, recalculate again");
 //				Vector3 backupPos = new Vector3(-3.6f,0.8f,3.9f);
-				Vector3 backupPos = new Vector3(-6.8f,0.8f,23.2f);
+				Vector3 backupPos = new Vector3(0f,0f,0f);
 				agent.SetDestination(backupPos);
 			}
 
