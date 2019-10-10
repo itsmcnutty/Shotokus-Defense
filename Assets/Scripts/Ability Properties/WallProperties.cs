@@ -25,7 +25,7 @@ public class WallProperties : MonoBehaviour
     void Update()
     {
         //breakWall.Play();
-        Destroy(gameObject, wallLifetime);
+        Destroy(parentObject, wallLifetime);
     }
 
     void OnDestroy()
