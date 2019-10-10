@@ -72,12 +72,12 @@ public class EnemyHeavyProperties : EnemyProperties
 		{
 			if (agent.speed < MAX_RUN_SPEED)
 			{
-				// Play ground sound
-				groundFootstep.PlayRandom();
+				// Play quicksand sound
+				quicksandFootstep.PlayRandom();
 			}
 			else
 			{
-				quicksandFootstep.PlayRandom();
+				groundFootstep.PlayRandom();
 			}
 		}
 	}
