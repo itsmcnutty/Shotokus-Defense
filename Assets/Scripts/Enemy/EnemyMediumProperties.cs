@@ -130,9 +130,9 @@ public class EnemyMediumProperties : EnemyProperties
     {
 	    if (agent.enabled)
 	    {
-		    if (stateMachine.GetCurrentState() == strafeState.ToString())
+		    if (stateMachine.GetCurrentState().Equals(runState.ToString()))
 		    {
-			    if (agent.speed < MAX_STRAFE_SPEED)
+			    if (agent.speed < MAX_RUN_SPEED)
 			    {
 				    quicksandFootstep.PlayRandom();
 			    }
@@ -143,7 +143,7 @@ public class EnemyMediumProperties : EnemyProperties
 		    }
 		    else
 		    {
-			    if (agent.speed < MAX_RUN_SPEED)
+			    if (agent.speed < MAX_STRAFE_SPEED)
 			    {
 				    quicksandFootstep.PlayRandom();
 			    }
