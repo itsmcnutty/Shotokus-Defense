@@ -278,8 +278,14 @@ public class StrafeState : IState
             
 			// change enemy agent target to the new point
 			agent.SetDestination(circularPointDest);
+//			Debug.Log("number of points available: " + pointsAroundTarget.Length);
 //			Debug.Log("my destination is " + circularPointDest);
+//			GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//			cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+
 		}
+		
+		// (37.6, 0.0, 23.0)
 		
 		// if moving towards strafing point, check if destination has been reached
 		// if reached, calculate points around circle again with a reduced radius and start moving to the next point (medium enemy)
@@ -313,6 +319,12 @@ public class StrafeState : IState
 //				Debug.Log("last point index: " + lastPointIndex);
 //                Debug.Log("moving towards " +circularPointDest);
 				agent.SetDestination(circularPointDest);
+				
+				// todo ....
+//				GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+//				cube.transform.position = new Vector3(agent.destination.x,2,agent.destination.z);
+				// todo debugg .............
+
 			}
 		}
 		
@@ -441,6 +453,14 @@ public class StrafeState : IState
 			}
 			angle += (2* Mathf.PI) / AMOUNT_OF_CIRCLE_POINTS;
 			points[i].coord = coord;
+			// todo debugg .............
+			if (points[i].isReachable)
+			{
+//				GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+//				sphere.transform.position = new Vector3(points[i].coord.x,2,points[i].coord.z);
+			}
+			// todo debugg .............
+
 		}
 		return points;
 	}
@@ -451,8 +471,12 @@ public class StrafeState : IState
 	private Vector3 closestPoint(Vector3 enemyPos, CircularCoord[] points)
 	{
 		// initialize temp variables to first value in array of points
-		float closestDist =  props.calculateSqrDist(enemyPos, points[0].coord);	
-		Vector3 closestPoint = points[0].coord;
+//		float closestDist =  props.calculateSqrDist(enemyPos, points[0].coord);	
+//		Vector3 closestPoint = points[0].coord;
+		float closestDist =  999999999f; // no distance should be bigger than this
+		Vector3 closestPoint = Vector3.zero;
+		
+		// todo FIX THIS CODE SHOULD NOT HAVE THE LIMIT BE 9999999
         
 		for(int i = 0; i < points.Length; i++)
 		{
@@ -484,7 +508,7 @@ public class StrafeState : IState
 		for (int i = 0; i < pointsAroundTarget.Length; i++)
 		{
 			// todo debug delete later
-//			isClockwise = false;
+//			isClockwise = true;
 			if (isClockwise)
 			{
 				newIndex--;

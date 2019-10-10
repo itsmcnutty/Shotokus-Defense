@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33682300690299568}
   - component: {fileID: 23112359883218082}
   - component: {fileID: 64792726075482452}
+  - component: {fileID: -4409420375672980899}
   m_Layer: 20
   m_Name: Rock9
   m_TagString: Untagged
@@ -92,3 +93,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: b4e34f37515b540dea5e4843c169c101, type: 3}
+--- !u!208 &-4409420375672980899
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815203512773962}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.75, y: 0.5, z: 0.75}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.031000001, y: -0.082, z: -0.059000004}
+  m_TimeToStationary: 0.5

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7603973393057714486}
   - component: {fileID: 7581791459416130454}
   - component: {fileID: 1027548176502626753}
+  - component: {fileID: -2802206606884949205}
   m_Layer: 20
   m_Name: Bush6
   m_TagString: Untagged
@@ -109,3 +110,19 @@ CapsuleCollider:
   m_Height: 0.5581608
   m_Direction: 1
   m_Center: {x: 0.0148139, y: 0.2133094, z: -0.0030126572}
+--- !u!208 &-2802206606884949205
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626526303840090086}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.75, y: 0.5, z: 0.75}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.29700002, y: 1.195, z: 0.002}
+  m_TimeToStationary: 0.5
