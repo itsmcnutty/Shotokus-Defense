@@ -444,7 +444,7 @@ public class GameController : MonoBehaviour
 //                    playerObj.transform.position = new Vector3(9,0.25f,33);
                     break;
                 case 1:
-                    destinationPos = new Vector3(22.6f, 0.25f, 23f);
+                    destinationPos = new Vector3(22.6f, 0.5f, 23f);
 //                playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
                     break;
                 case 2:
