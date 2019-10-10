@@ -75,7 +75,7 @@ public class ProjectileCollide : MonoBehaviour
         else
         {
             // Collision sound
-            if (other.collider.material.Equals(foliageMaterial))
+            if (other.collider.material.name.Equals(foliageMaterial.name))
             {
                 hitFoliage.PlayRandom();
             }

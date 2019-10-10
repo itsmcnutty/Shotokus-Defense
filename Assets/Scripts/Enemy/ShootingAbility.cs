@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-
 public class ShootingAbility : MonoBehaviour
 {
     public GameObject projectilePrefab;
 
     [Header("Sounds")]
-    public AudioClip bowDraw;
-    public AudioClip bowRelease;
+    public AudioSource bowDraw;
+    public AudioSource bowRelease;
 
     private GameObject projectile;
     private Rigidbody projectileRigidbody;
     private GameObject player;
-    private AudioSource audioSource;
     private float initialVelocityX;
     private float fireRate;
 
@@ -27,7 +24,6 @@ public class ShootingAbility : MonoBehaviour
     {
         allowShoot = true;
         player = GameObject.FindWithTag("MainCamera");
-        audioSource = GetComponent<AudioSource>();
     }
 
     // Begins the shooting animation, sets velocity and fire rate of the arrow, and sets a flag to block extra shooting.
@@ -51,8 +47,8 @@ public class ShootingAbility : MonoBehaviour
     // so it is ready to shoot the target.
     public void CreateArrow()
     {
-        // Play sound
-        audioSource.PlayDelayed(0.6f);
+        // Play sound on draw
+        bowDraw.PlayDelayed(0.6f);
         
         // Instantiate and set position where projectile spawns
         projectile = Instantiate(projectilePrefab, transform);
@@ -66,7 +62,7 @@ public class ShootingAbility : MonoBehaviour
         if (projectile)
         {
             // Play sound
-            audioSource.PlayOneShot(bowRelease);
+            bowRelease.Play();
             
             // Store location of player and projectile
             Vector3 playerPos = player.transform.position;
