@@ -10,6 +10,9 @@ public class MeleeDamage : MonoBehaviour
     
     // Damage dealt by melee swing
     public float DAMAGE;
+
+    [Header("Audio")]
+    public AudioSource hitSound;
     
     // Player camera (HMD)
     private GameObject player;
@@ -42,6 +45,9 @@ public class MeleeDamage : MonoBehaviour
         {
             hitPlayer = true;
             player.GetComponentInChildren<PlayerHealth>()?.TakeDamage(DAMAGE);
+            
+            // Play sound because successfully hitting player
+            hitSound.Play();
         }
     }
 

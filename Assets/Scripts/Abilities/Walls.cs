@@ -15,11 +15,12 @@ public class Walls : MonoBehaviour
     public float wallButtonClickDelay = 0.05f;
     public float wallMinHandMovement = .27f;
 
-    [Header("Audio")]
-    public AudioClip raiseWall;
-    public AudioClip breakWall;
     public ParticleSystem wallCreateParticles;
     public ParticleSystem wallDestroyParticles;
+
+    [Header("Audio")]
+    public AudioSource wallToggleOn;
+    public AudioSource wallToggleOff;
 
     private GameObject wallOutlinePrefab;
     private PlayerEnergy playerEnergy;
@@ -27,6 +28,7 @@ public class Walls : MonoBehaviour
     private LayerMask outlineLayerMask;
     private GameObject player;
     private float rockCreationDistance;
+    private FadeAudioSource wallRaiseLoop;
 
     private static GameObject wallOutline;
     private static GameObject wall;
@@ -77,6 +79,9 @@ public class Walls : MonoBehaviour
                 wall.transform.rotation = wallOutline.transform.rotation;
                 startingHandHeight = Math.Min(hand.transform.position.y, otherHand.transform.position.y);
                 playerEnergy.SetTempEnergy(firstHandHeld, 0);
+                
+                // Get wall loop audio source
+                wallRaiseLoop = wall.GetComponentInChildren<FadeAudioSource>();
 
                 // Plays the wall creation particle effects
                 currentParticles = Instantiate(wallCreateParticles);
@@ -90,10 +95,9 @@ public class Walls : MonoBehaviour
                 UnityEngine.ParticleSystem.EmissionModule emissionModule = currentParticles.emission;
                 emissionModule.rateOverTimeMultiplier = shape.scale.x * 75;
 
-                WallProperties.CreateComponent(wall, 0, wallDestroyParticles, breakWall);
+                WallProperties.CreateComponent(wall, 0, wallDestroyParticles);
 
                 Destroy(wallOutline);
-                //raiseWall.Play();
             }
             else
             {
@@ -149,6 +153,9 @@ public class Walls : MonoBehaviour
         main.loop = false;
         Vector3 finalVelocity = Vector3.zero;
         float wallMoveSpeed = 0;
+        
+        // Stop playing the creation sound
+        wallRaiseLoop.Stop();
 
         if (PlayerAbility.WallPushEnabled)
         {
@@ -182,7 +189,6 @@ public class Walls : MonoBehaviour
             // wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
             //surfaceWalls.BuildNavMesh();
         }
-        //raiseWall.Stop();
         ResetWallInfo();
     }
 
@@ -225,6 +231,9 @@ public class Walls : MonoBehaviour
             wallOutline = Instantiate(wallOutlinePrefab) as GameObject;
             SetWallLocation(hand.GetComponentInChildren<ControllerArc>(), otherHand.GetComponentInChildren<ControllerArc>());
             firstHandHeld = null;
+            
+            // Play toggle sound
+            wallToggleOn.Play();
         }
         else
         {
@@ -251,6 +260,9 @@ public class Walls : MonoBehaviour
             Destroy(wallOutline);
             ResetWallInfo();
             firstHandReleased = null;
+            
+            // Play toggle sound
+            wallToggleOff.Play();
         }
         else
         {
