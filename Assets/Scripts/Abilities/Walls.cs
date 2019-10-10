@@ -144,9 +144,6 @@ public class Walls : MonoBehaviour
 
     public void EndCreateWall(Hand hand, Hand otherHand, SteamVR_Behaviour_Pose controllerPose)
     {
-        // Calculates the final hand height
-        float finalHandHeight = (Math.Min(hand.transform.position.y, otherHand.transform.position.y) - startingHandHeight) * wallMaxHeight;
-
         // Ends the creation particle loop
         UnityEngine.ParticleSystem.MainModule main = currentParticles.main;
         main.loop = false;
@@ -172,18 +169,18 @@ public class Walls : MonoBehaviour
             PowerupController.IncrementWallPushCounter(wallEnergy);
         }
 
-        if (finalHandHeight < wallMinHandMovement)
+        if (currentWallHeight < wallMinHandMovement)
         {
             Destroy(wall);
+            playerEnergy.CancelEnergyUsage(firstHandHeld);
         }
         else if(wall)
         {
             // Initializes the wall with the WallProperties component and creates a NavLink for wall climbing
-            WallProperties.UpdateComponent(wall, finalHandHeight, finalVelocity, wallMoveSpeed);
+            WallProperties.UpdateComponent(wall, currentWallHeight, finalVelocity, wallMoveSpeed);
             playerEnergy.UseEnergy(firstHandHeld);
-            
-//            wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
-//            surfaceWalls.BuildNavMesh();
+            // wall.GetComponentInChildren<CreateNavLink>().createLinks(wallMaxHeight);
+            //surfaceWalls.BuildNavMesh();
         }
         //raiseWall.Stop();
         ResetWallInfo();
@@ -325,9 +322,7 @@ public class Walls : MonoBehaviour
         // Wall is valid when both arcs are valid, there's no collision, and the wall is outside the player radius
         Vector3 playerFeetPos = new Vector3(player.transform.position.x, wallOutline.transform.position.y, player.transform.position.z);
         OutlineProperties properties = wallOutline.GetComponentInChildren<OutlineProperties>();
-        return (arc.CanUseAbility() &&
-            otherArc.CanUseAbility() &&
-            !properties.CollisionDetected() &&
+        return (!properties.CollisionDetected() &&
             Vector3.Distance(playerFeetPos, wallOutline.transform.position) >= rockCreationDistance);
     }
 
