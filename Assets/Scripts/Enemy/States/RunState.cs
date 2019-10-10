@@ -138,6 +138,16 @@ public class RunState : IState
 //				Vector3 backupPos = new Vector3(-3.6f,0.8f,3.9f);
 				Vector3 backupPos = new Vector3(0f,0f,0f);
 				agent.SetDestination(backupPos);
+				if (!agent.pathPending)
+				{
+					Debug.Log("paht is not calculating anymore, therefore go to agent");
+					agent.SetDestination(playerPos);
+				}
+			}
+
+			if (agent.pathPending)
+			{
+				Debug.Log("Agent is calculating navmesh");
 			}
 
 			// Stopping distance at which we want the agent to slow down to strafe speed from its current movement speed

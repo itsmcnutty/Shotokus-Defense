@@ -82,6 +82,7 @@ public class WallProperties : MonoBehaviour
                 {
                     rigidbodyWall.isKinematic = true;
                     // TODO TEST THAT WORKS
+                    wall.GetComponent<NavMeshObstacle>().carving = true;
                     navLink.createLinks();
                     surfaceWalls.BuildNavMesh();
                 }
