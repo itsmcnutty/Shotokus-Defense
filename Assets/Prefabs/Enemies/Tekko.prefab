@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DAMAGE: 250
+  hitSound: {fileID: 3044048609005359917}
 --- !u!54 &356752638836607805
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,11 +131,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4687669883987991774}
     m_Modifications:
-    - target: {fileID: 4812758136483413278, guid: 9e44e43aaad0e8a42abb0612ec737e52,
-        type: 3}
-      propertyPath: m_Name
-      value: TekkoHitSource
-      objectReference: {fileID: 0}
     - target: {fileID: 3223240118074553118, guid: 9e44e43aaad0e8a42abb0612ec737e52,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -190,11 +186,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4812758136483413278, guid: 9e44e43aaad0e8a42abb0612ec737e52,
+        type: 3}
+      propertyPath: m_Name
+      value: TekkoHitSource
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e44e43aaad0e8a42abb0612ec737e52, type: 3}
 --- !u!4 &4724509494258704963 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3223240118074553118, guid: 9e44e43aaad0e8a42abb0612ec737e52,
+    type: 3}
+  m_PrefabInstance: {fileID: 7866640200001065309}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &3044048609005359917 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5122080973262307952, guid: 9e44e43aaad0e8a42abb0612ec737e52,
     type: 3}
   m_PrefabInstance: {fileID: 7866640200001065309}
   m_PrefabAsset: {fileID: 0}
