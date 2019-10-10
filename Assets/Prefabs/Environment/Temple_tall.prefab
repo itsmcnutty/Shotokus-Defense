@@ -140,7 +140,12 @@ PrefabInstance:
     - target: {fileID: -1504981713932161579, guid: 5e2cf3b6b77925943aeed92fbdc92f8c,
         type: 3}
       propertyPath: m_ScaleInLightmap
-      value: 0.02
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 5e2cf3b6b77925943aeed92fbdc92f8c,
+        type: 3}
+      propertyPath: m_ImportantGI
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e2cf3b6b77925943aeed92fbdc92f8c, type: 3}
@@ -236,7 +241,7 @@ PrefabInstance:
     - target: {fileID: -1504981713932161579, guid: 9f49f5dce3d301347a4410f4d23ec8de,
         type: 3}
       propertyPath: m_ScaleInLightmap
-      value: 0.03
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f49f5dce3d301347a4410f4d23ec8de, type: 3}
