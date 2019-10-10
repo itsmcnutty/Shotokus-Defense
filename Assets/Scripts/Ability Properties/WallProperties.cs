@@ -23,7 +23,7 @@ public class WallProperties : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Destroy(gameObject, wallLifetime);
+        Destroy(parentObject, wallLifetime);
     }
 
     void OnDestroy()
@@ -107,7 +107,7 @@ public class WallProperties : MonoBehaviour
         if (other.gameObject.name == "Player Ability Area" && wallHeightPercent != 0)
         {
             // Destroys the wall if it enters the player's play area
-            Destroy(gameObject);
+            Destroy(parentObject);
         }
     }
 

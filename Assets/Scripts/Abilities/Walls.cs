@@ -182,6 +182,7 @@ public class Walls : MonoBehaviour
         if (finalHandHeight < wallMinHandMovement)
         {
             Destroy(wall);
+            playerEnergy.CancelEnergyUsage(firstHandHeld);
         }
         else if(wall)
         {
