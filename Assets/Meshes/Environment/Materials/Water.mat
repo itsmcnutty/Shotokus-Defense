@@ -110,6 +110,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShoreTex:
+        m_Texture: {fileID: 2800000, guid: 5fbcffe9c2077f04186883cb39275fcc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -156,7 +160,9 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rough: 0.1
-    - _Smoothness: 0.221
+    - _SampleGI: 0
+    - _Shininess: 10
+    - _Smoothness: 0.426
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -169,11 +175,16 @@ Material:
     - _UVSec: 0
     - _WorkflowMode: 0
     - _ZWrite: 0
+    - _isInnerAlphaBlendOrColor: 0
     m_Colors:
-    - _BaseColor: {r: 0.33406153, g: 0.48120773, b: 0.517, a: 0.5176471}
+    - _BaseColor: {r: 0.32920966, g: 0.47298396, b: 0.509434, a: 0.53333336}
+    - _BumpDirection: {r: 1, g: 1, b: -1, a: 1}
+    - _BumpTiling: {r: 1, g: 1, b: -2, a: 3}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _ColorA: {r: 1, g: 1, b: 1, a: 1}
     - _ColorB: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flow: {r: 0, g: 1, b: 0, a: -1}
-    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Foam: {r: 0.1, g: 0.375, b: 0, a: 0}
+    - _InvFadeParemeter: {r: 0.2, g: 0.39, b: 0.5, a: 1}
+    - _SpecColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
