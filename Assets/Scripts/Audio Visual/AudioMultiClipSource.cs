@@ -13,6 +13,8 @@ public class AudioMultiClipSource : MonoBehaviour
     // The random pitch shift to add when playing sounds
     public float minPitch;
     public float maxPitch;
+    // How long the source should block calls to Play() after playing once
+    public float delayPlayTime;
 
     // Plays a random sound from the clips array
     public void PlayRandom()
