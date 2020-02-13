@@ -120,6 +120,13 @@ public class EnemyProducer : MonoBehaviour
         }
     }
     
+    // reset enemy queue
+    public void ResetEnemyQueue()
+    {
+        enemyQueue = new Queue<EnemyInfo>();
+    }
+    
+    
     // Update is called once per frame
     void Update()
     {

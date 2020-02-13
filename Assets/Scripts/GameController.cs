@@ -240,6 +240,7 @@ public class GameController : MonoBehaviour
         // Reset values of wave (queue, timer, enemies counter)
         enemiesAlive = 0;
         currentTime = 0;
+        enemyProducer.ResetEnemyQueue();
         restartQueue();
 
         // destroy all objects in scene before restarting
@@ -287,6 +288,7 @@ public class GameController : MonoBehaviour
         {
             allLocationWaves.Enqueue(JsonParser.parseJson(locationWaveFiles[i]));
         }
+        enemyProducer.ResetEnemyQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
         
@@ -442,7 +444,7 @@ public class GameController : MonoBehaviour
 //                    playerObj.transform.position = new Vector3(9,0.25f,33);
                     break;
                 case 1:
-                    destinationPos = new Vector3(22.6f, 0.25f, 23f);
+                    destinationPos = new Vector3(22.6f, 0.5f, 23f);
 //                playerObj.transform.position = new Vector3(22.6f,0.25f,18.8f);
                     break;
                 case 2:
