@@ -24,6 +24,9 @@ public class GameController : MonoBehaviour
     public float limitAmountEnemies; // maximum amount of enemies at one time in the game
     public GameObject teleportPillar;
     public GameObject spawnArea;
+    
+    // External control keys
+    private KeyCode KEY_RESTART_GAME = KeyCode.Backspace;
 
     // variables for teleport function
     private int caseSwitch;
@@ -100,6 +103,12 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KEY_RESTART_GAME))
+        {
+            RestartGame();
+            return;
+        }
+        
         if (pauseWaveSystem)
         {
             return;
