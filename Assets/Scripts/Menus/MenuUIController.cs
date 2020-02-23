@@ -17,6 +17,9 @@ public class MenuUIController : MonoBehaviour
     [Header("Audio Sources")]
     public AudioSource menuShow;
     public AudioSource menuHide;
+    
+    // External control keys
+    private KeyCode KEY_RESTART_GAME = KeyCode.Backspace;
 
     private GameObject cameraRig; // this is the Player game object with tag "Player"
     private GameObject player; // get coordinates of player, to instate menu in front of them. THIS IS NOT THE PLAYER, THIS IS THE PLAYER'S HEAD
@@ -62,6 +65,21 @@ public class MenuUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KEY_RESTART_GAME))
+        {
+            if (isPauseMenuActive)
+            {
+                GameController.Instance.RestartGame();
+            }
+            else
+            {
+                pauseToggle();
+                GameController.Instance.RestartGame();
+            }
+
+            return;
+        }
+
         if (PausePress())
         {
             pauseToggle();
