@@ -100,7 +100,7 @@ public class EnemyProducer : MonoBehaviour
         }
     }
     
-    // Spawn function that takes an number of enemies to be spawned form the queue
+    // Spawn function that takes an number of enemies to be spawned from the queue
     public void SpawnFromQueue(float spawningAmount)
     {
         // check that we dont try to spawn more enemies than the number of enemies queued (ex. lenght of queue = 2 and available spots = 3, that could break the loop)

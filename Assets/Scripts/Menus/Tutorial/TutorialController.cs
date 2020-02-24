@@ -252,6 +252,8 @@ public class TutorialController : MonoBehaviour
 
     public void RestartTutorial()
     {
+        EndTutorial();
+        currentTargetDummy.SetActive(false);
         startTutorialPillar.SetActive(true);
     }
     

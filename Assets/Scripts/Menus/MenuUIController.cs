@@ -69,11 +69,11 @@ public class MenuUIController : MonoBehaviour
         {
             if (isPauseMenuActive)
             {
+                pauseToggle();
                 GameController.Instance.RestartGame();
             }
             else
             {
-                pauseToggle();
                 GameController.Instance.RestartGame();
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -202,6 +203,7 @@ public class GameController : MonoBehaviour
         spawnArea.SetActive(false);
         Teleport(false);
         TutorialController.Instance.SelectTutorial(TutorialController.TutorialSections.Rock);
+        playerHealth.TakeDamage(250);
     }
 
     public void StartGameWithoutTutorial()
@@ -215,7 +217,7 @@ public class GameController : MonoBehaviour
         PlayerAbility.ToggleQuicksandAbility();
     }
 
-    // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location postion counter
+    // this function restarts the allLocationWaves queue by enqueue all the location json files based on the current location position counter
     public void restartQueue()
     {
         TutorialController.tutorialWaveInProgress = false;
@@ -291,6 +293,7 @@ public class GameController : MonoBehaviour
         enemyProducer.ResetEnemyQueue();
         currentLocation = allLocationWaves.Dequeue();
         currentWave = currentLocation.GetNextWave();
+        CancelInvoke("TogglePauseWaveSystem");
         
         playerHealth.RecoverAllHealth();
         MenuUIController.Instance.ToggleLaser();
