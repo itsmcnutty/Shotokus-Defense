@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -21,10 +22,10 @@ public class TutorialController : MonoBehaviour
     public SteamVR_Action_Boolean grabAction;
 
     [Header("UI Elements")]
-    public Text tutorialText;
-    public Text captionText;
-    public Text nextSlideText;
-    public Text backSlideText;
+    public TextMeshProUGUI tutorialText;
+    public TextMeshProUGUI captionText;
+    public TextMeshProUGUI nextSlideText;
+    public TextMeshProUGUI backSlideText;
     public VideoPlayer tutorialVideo;
     public VideoPlayer controllerVideo;
 
@@ -190,7 +191,7 @@ public class TutorialController : MonoBehaviour
         {
             GameController.Instance.RestartWave();
             GameController.Instance.TogglePauseWaveSystem();
-            showTutorialPillar.GetComponentInChildren<Text>().text = "Show Tutorial";
+            showTutorialPillar.GetComponentInChildren<TextMeshProUGUI>().text = "Show Tutorial";
             tutorialWaveInProgress = false;
         }
     }
@@ -205,7 +206,7 @@ public class TutorialController : MonoBehaviour
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
         tutorialWaveInProgress = true;
-        showTutorialPillar.GetComponentInChildren<Text>().text = "Return to tutorial";
+        showTutorialPillar.GetComponentInChildren<TextMeshProUGUI>().text = "Return to tutorial";
     }
 
     public bool TutorialWaveInProgress()
@@ -231,7 +232,7 @@ public class TutorialController : MonoBehaviour
         tutorialWaveInProgress = false;
         startWavePillar.SetActive(!startWavePillar.activeSelf);
         currentTargetDummy.SetActive(!currentTargetDummy.activeSelf);
-        showTutorialPillar.GetComponentInChildren<Text>().text = "Show Tutorial";
+        showTutorialPillar.GetComponentInChildren<TextMeshProUGUI>().text = "Show Tutorial";
         ToggleTutorialOptions();
     }
 

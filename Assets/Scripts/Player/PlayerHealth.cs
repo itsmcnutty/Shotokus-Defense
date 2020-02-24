@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public Slider healthBar;
-    public Text healthPointText;
+    public TextMeshProUGUI healthPointText;
     public MeshRenderer damageIndicator;
     public float maxHealth = 100;
     public float regenHealthRate;

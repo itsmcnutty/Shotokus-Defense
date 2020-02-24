@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -403,11 +404,11 @@ public class GameController : MonoBehaviour
 
         if (gameWon)
         {
-            teleportPillar.GetComponentInChildren<Text>().text = "Congratulations!";
+            teleportPillar.GetComponentInChildren<TextMeshProUGUI>().text = "Congratulations!";
         }
         else
         {
-            teleportPillar.GetComponentInChildren<Text>().text = "Teleport";
+            teleportPillar.GetComponentInChildren<TextMeshProUGUI>().text = "Teleport";
         }
     }
 

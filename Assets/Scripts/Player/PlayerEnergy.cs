@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
@@ -10,7 +11,7 @@ public class PlayerEnergy : MonoBehaviour
     public static PlayerEnergy instance;
     public Slider energyBarBefore;
     public Slider energyBarAfter;
-    public Text energyBarText;
+    public TextMeshProUGUI energyBarText;
     public float maxEnergy;
     public float energyRegenPerSecond;
     public float regenDelayInSec;
